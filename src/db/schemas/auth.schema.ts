@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import { boolean, index, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
@@ -14,9 +14,9 @@ export const users = pgTable('users', {
     .notNull(),
   // Custom
   onboarded: boolean('onboarded').default(false).notNull(),
-  currentWeight: integer('current_weight'),
-  goalWeight: integer('goal_weight'),
-  height: integer('height')
+  currentWeight: real('current_weight'),
+  goalWeight: real('goal_weight'),
+  height: real('height')
 })
 
 export const sessions = pgTable(

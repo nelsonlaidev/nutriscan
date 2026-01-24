@@ -34,6 +34,10 @@ CREATE TABLE "users" (
 	"image" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"onboarded" boolean DEFAULT false NOT NULL,
+	"current_weight" real,
+	"goal_weight" real,
+	"height" real,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

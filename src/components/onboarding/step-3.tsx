@@ -7,8 +7,8 @@ import { useAction } from 'next-safe-action/hooks'
 
 import { completeOnboarding } from '@/actions/onboarding'
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
-import { OnboardingStep3FormSchema } from '@/lib/zod-schemas'
 import { onActionError } from '@/lib/safe-action-utils'
+import { OnboardingStep3FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
@@ -74,8 +74,8 @@ function Step3() {
                       type='number'
                       min={50}
                       max={250}
-                      step={1}
-                      inputMode='numeric'
+                      step={0.1}
+                      inputMode='decimal'
                       onBlur={field.handleBlur}
                       onChange={(e) => {
                         const value = e.target.valueAsNumber

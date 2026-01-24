@@ -58,8 +58,8 @@ function Step1() {
                       type='number'
                       min={20}
                       max={300}
-                      step={1}
-                      inputMode='numeric'
+                      step={0.1}
+                      inputMode='decimal'
                       onBlur={field.handleBlur}
                       onChange={(e) => {
                         const value = e.target.valueAsNumber

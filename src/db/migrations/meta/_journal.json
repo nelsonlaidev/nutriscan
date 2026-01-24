@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1769246208712,
-      "tag": "0000_same_blob",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1769261402815,
-      "tag": "0001_heavy_bullseye",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1769275365032,
-      "tag": "0002_complete_the_captain",
+      "when": 1769278704958,
+      "tag": "0000_daily_franklin_storm",
       "breakpoints": true
     }
   ]
