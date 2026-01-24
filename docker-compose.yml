@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: nutriscan-postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nutriscan
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - nutriscan-network
+
+volumes:
+  db:
+
+networks:
+  nutriscan-network:
+    driver: bridge

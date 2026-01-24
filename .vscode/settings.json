@@ -18,5 +18,5 @@
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.tsdk": "node_modules/typescript/lib",
 
-  "cSpell.words": ["nutriscan"]
+  "cSpell.words": ["dotenvx", "nelsonlaidev", "nutriscan"]
 }

@@ -4,6 +4,8 @@ import '../styles/globals.css'
 
 import { Geist } from 'next/font/google'
 
+import { Toaster } from '@/components/ui/sonner'
+
 const geistSans = Geist({
   subsets: ['latin']
 })
@@ -22,7 +24,16 @@ function Layout(props: LayoutProps) {
 
   return (
     <html lang='en' className={geistSans.className}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster
+          toastOptions={{
+            duration: 2500
+          }}
+          visibleToasts={5}
+          expand
+        />
+      </body>
     </html>
   )
 }
