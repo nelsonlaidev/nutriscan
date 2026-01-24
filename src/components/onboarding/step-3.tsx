@@ -7,7 +7,7 @@ import { useAction } from 'next-safe-action/hooks'
 
 import { completeOnboarding } from '@/actions/onboarding'
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
-import { OnboardingStep3Schema } from '@/lib/form-schemas'
+import { OnboardingStep3FormSchema } from '@/lib/zod-schemas'
 import { onActionError } from '@/lib/safe-action-utils'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
@@ -33,7 +33,7 @@ function Step3() {
       height: data.height
     },
     validators: {
-      onSubmit: OnboardingStep3Schema
+      onSubmit: OnboardingStep3FormSchema
     },
     onSubmit: ({ value }) => {
       execute({

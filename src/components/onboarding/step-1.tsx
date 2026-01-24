@@ -4,7 +4,7 @@ import { useForm } from '@tanstack/react-form'
 import { WeightIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
-import { OnboardingStep1Schema } from '@/lib/form-schemas'
+import { OnboardingStep1FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
@@ -21,7 +21,7 @@ function Step1() {
       currentWeight: data.currentWeight
     },
     validators: {
-      onSubmit: OnboardingStep1Schema
+      onSubmit: OnboardingStep1FormSchema
     },
     onSubmit: ({ value }) => {
       updateForm(value)

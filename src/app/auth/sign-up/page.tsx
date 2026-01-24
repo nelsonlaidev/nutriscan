@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { signUp } from '@/lib/auth-client'
-import { SignUpSchema } from '@/lib/form-schemas'
+import { SignUpFormSchema } from '@/lib/zod-schemas'
 
 function Page() {
   const router = useRouter()
@@ -26,7 +26,7 @@ function Page() {
       confirmPassword: ''
     },
     validators: {
-      onSubmit: SignUpSchema
+      onSubmit: SignUpFormSchema
     },
     onSubmit: ({ value }) => {
       signUp.email(
