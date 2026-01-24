@@ -1,6 +1,13 @@
 import { atom, useAtom } from 'jotai'
 
-const onboardingFormAtom = atom({
+type OnboardingForm = {
+  currentWeight: number | ''
+  goalWeight: number | ''
+  height: number | ''
+  currentStep: number
+}
+
+const onboardingFormAtom = atom<OnboardingForm>({
   currentWeight: 70,
   goalWeight: 60,
   height: 170,

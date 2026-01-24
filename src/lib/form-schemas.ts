@@ -1,15 +1,39 @@
 import * as z from 'zod'
 
 export const OnboardingStep1Schema = z.object({
-  currentWeight: z.number().min(1, 'Current weight is not valid')
+  currentWeight: z
+    .number()
+    .min(20, 'Weight must be at least 20 kg')
+    .max(300, 'Weight must be at most 300 kg')
+    .positive('Weight must be a positive number')
+    .or(z.literal(''))
+    .refine((val) => val !== '', {
+      message: 'Please enter your current weight'
+    })
 })
 
 export const OnboardingStep2Schema = z.object({
-  goalWeight: z.number().min(1, 'Goal weight is not valid')
+  goalWeight: z
+    .number()
+    .min(20, 'Goal weight must be at least 20 kg')
+    .max(300, 'Goal weight must be at most 300 kg')
+    .positive('Goal weight must be a positive number')
+    .or(z.literal(''))
+    .refine((val) => val !== '', {
+      message: 'Please enter your goal weight'
+    })
 })
 
 export const OnboardingStep3Schema = z.object({
-  height: z.number().min(1, 'Height is not valid')
+  height: z
+    .number()
+    .min(50, 'Height must be at least 50 cm')
+    .max(250, 'Height must be at most 250 cm')
+    .positive('Height must be a positive number')
+    .or(z.literal(''))
+    .refine((val) => val !== '', {
+      message: 'Please enter your height'
+    })
 })
 
 export const SignInSchema = z.object({

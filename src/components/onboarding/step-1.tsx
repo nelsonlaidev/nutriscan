@@ -56,9 +56,14 @@ function Step1() {
                       name={field.name}
                       value={field.state.value}
                       type='number'
+                      min={20}
+                      max={300}
+                      step={0.1}
+                      inputMode='decimal'
                       onBlur={field.handleBlur}
                       onChange={(e) => {
-                        field.handleChange(e.target.valueAsNumber)
+                        const value = e.target.valueAsNumber
+                        field.handleChange(Number.isNaN(value) ? '' : value)
                       }}
                       aria-invalid={isInvalid}
                       placeholder='Enter weight'
