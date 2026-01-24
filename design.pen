@@ -6477,7 +6477,7 @@
       "id": "44prw",
       "x": 2040,
       "y": 3710,
-      "name": "auth-login",
+      "name": "auth-signin",
       "clip": true,
       "width": 440,
       "height": 956,
@@ -6687,6 +6687,241 @@
                       "name": "signUpLink",
                       "fill": "$--foreground",
                       "content": "Sign Up",
+                      "fontFamily": "Outfit",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UgK3c",
+      "x": 2580,
+      "y": 3710,
+      "name": "auth-signup",
+      "clip": true,
+      "width": 440,
+      "height": 956,
+      "fill": "$--background",
+      "layout": "vertical",
+      "padding": [
+        0,
+        32
+      ],
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "CRLyU",
+          "name": "content",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "IpFK2",
+              "name": "header",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "nfzJy",
+                  "name": "appIcon",
+                  "width": 64,
+                  "height": 64,
+                  "fill": "$--primary",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "2zcLs",
+                      "name": "iconText",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "leaf",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--primary-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "QjRqd",
+                  "name": "title",
+                  "fill": "#1A1918",
+                  "content": "Create Account",
+                  "fontFamily": "Outfit",
+                  "fontSize": 28,
+                  "fontWeight": "700",
+                  "letterSpacing": -1
+                },
+                {
+                  "type": "text",
+                  "id": "4obBH",
+                  "name": "subtitle",
+                  "fill": "#6D6C6A",
+                  "content": "Sign up to start tracking your nutrition",
+                  "fontFamily": "Outfit",
+                  "fontSize": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "m94Ee",
+              "name": "form",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "4FCQH",
+                  "type": "ref",
+                  "ref": "1415a",
+                  "width": "fill_container",
+                  "name": "emailInput",
+                  "descendants": {
+                    "QRy7x": {
+                      "fill": {
+                        "type": "color",
+                        "color": "$--white",
+                        "enabled": false
+                      }
+                    },
+                    "BX0XX": {
+                      "content": "Email",
+                      "fill": "$--foreground"
+                    },
+                    "i0Z3E": {
+                      "fill": "$--background"
+                    },
+                    "SDRKn": {
+                      "content": "you@example.com",
+                      "fill": "$--muted-foreground"
+                    }
+                  }
+                },
+                {
+                  "id": "Bas1R",
+                  "type": "ref",
+                  "ref": "1415a",
+                  "width": "fill_container",
+                  "name": "passwordInput",
+                  "descendants": {
+                    "QRy7x": {
+                      "fill": {
+                        "type": "color",
+                        "color": "$--white",
+                        "enabled": false
+                      }
+                    },
+                    "BX0XX": {
+                      "content": "Password",
+                      "fill": "$--foreground"
+                    },
+                    "i0Z3E": {
+                      "fill": "$--background"
+                    },
+                    "SDRKn": {
+                      "content": "Enter your password",
+                      "fill": "$--muted-foreground"
+                    }
+                  }
+                },
+                {
+                  "id": "oTUWK",
+                  "type": "ref",
+                  "ref": "1415a",
+                  "name": "confirmPasswordInput",
+                  "width": "fill_container",
+                  "descendants": {
+                    "QRy7x": {
+                      "fill": {
+                        "type": "color",
+                        "color": "$--white",
+                        "enabled": false
+                      }
+                    },
+                    "BX0XX": {
+                      "content": "Confirm Password",
+                      "fill": "$--foreground"
+                    },
+                    "i0Z3E": {
+                      "fill": "$--background"
+                    },
+                    "SDRKn": {
+                      "content": "Re-enter your password",
+                      "fill": "$--muted-foreground"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eyhr7",
+              "name": "actions",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "m5rz6",
+                  "type": "ref",
+                  "ref": "C3KOZ",
+                  "width": "fill_container",
+                  "name": "signInBtn",
+                  "fill": "$--primary",
+                  "descendants": {
+                    "RO4Ll": {
+                      "enabled": false
+                    },
+                    "UiOOr": {
+                      "fill": "$--primary-foreground"
+                    },
+                    "NEMHS": {
+                      "content": "Sign Up",
+                      "fill": "$--primary-foreground"
+                    }
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "TNlSu",
+                  "name": "signInRow",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "gNjzJ",
+                      "name": "haveAccount",
+                      "fill": "$--muted-foreground",
+                      "content": "Already have an account?",
+                      "fontFamily": "Outfit",
+                      "fontSize": 14
+                    },
+                    {
+                      "type": "text",
+                      "id": "Oy6EV",
+                      "name": "signInLink",
+                      "fill": "$--foreground",
+                      "content": "Sign In",
                       "fontFamily": "Outfit",
                       "fontSize": 14,
                       "fontWeight": "600"
