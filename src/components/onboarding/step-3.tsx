@@ -1,0 +1,82 @@
+'use client'
+
+import { useForm } from '@tanstack/react-form'
+import { TargetIcon } from 'lucide-react'
+
+import { useOnboardingForm } from '@/hooks/use-onboarding-form'
+import { OnboardingStep3Schema } from '@/lib/form-schemas'
+
+import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
+
+import OnboardingLayout from './onboarding-layout'
+
+const FORM_ID = 'onboarding-step-3'
+
+function Step3() {
+  const { data, setStep, updateForm } = useOnboardingForm()
+
+  const form = useForm({
+    defaultValues: {
+      goalWeight: data.goalWeight
+    },
+    validators: {
+      onSubmit: OnboardingStep3Schema
+    },
+    onSubmit: ({ value }) => {
+      updateForm(value)
+      setStep(4)
+    }
+  })
+
+  return (
+    <OnboardingLayout
+      formId={FORM_ID}
+      stepName="What's your goal weight?"
+      stepDescription='Setting a goal helps us track your progress and provide personalized meal recommendations.'
+      stepIcon={<TargetIcon className='size-9 text-background' />}
+    >
+      <form
+        id={FORM_ID}
+        onSubmit={(e) => {
+          e.preventDefault()
+          form.handleSubmit()
+        }}
+      >
+        <FieldGroup>
+          <form.Field name='goalWeight'>
+            {(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Goal Weight</FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      type='number'
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        field.handleChange(e.target.valueAsNumber)
+                      }}
+                      aria-invalid={isInvalid}
+                      placeholder='Enter goal weight'
+                    />
+                    <InputGroupAddon align='inline-start'>
+                      <TargetIcon className='text-muted-foreground' />
+                    </InputGroupAddon>
+                    <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
+                  </InputGroup>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              )
+            }}
+          </form.Field>
+        </FieldGroup>
+      </form>
+    </OnboardingLayout>
+  )
+}
+
+export default Step3
