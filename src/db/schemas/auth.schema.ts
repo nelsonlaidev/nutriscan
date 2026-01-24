@@ -11,7 +11,9 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at')
     .defaultNow()
     .$onUpdate(() => new Date())
-    .notNull()
+    .notNull(),
+  // Custom
+  onboarded: boolean('onboarded').default(false).notNull()
 })
 
 export const sessions = pgTable(

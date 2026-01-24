@@ -7,6 +7,11 @@ const PUBLIC_ROUTES = new Set(['/auth/sign-in', '/auth/sign-up'])
 export async function proxy(request: NextRequest) {
   const session = await getSession()
 
+  // Redirect authenticated users if they are not onboarded
+  if (session && !session.user.onboarded && !request.nextUrl.pathname.startsWith('/onboarding')) {
+    return NextResponse.redirect(new URL('/onboarding', request.url))
+  }
+
   // Redirect authenticated users away from auth pages
   if (session && request.nextUrl.pathname.startsWith('/auth/')) {
     return NextResponse.redirect(new URL('/', request.url))
