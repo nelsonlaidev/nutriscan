@@ -1,7 +1,7 @@
 'use client'
 
 import { useForm } from '@tanstack/react-form'
-import { TargetIcon } from 'lucide-react'
+import { RulerIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep3Schema } from '@/lib/form-schemas'
@@ -18,7 +18,7 @@ function Step3() {
 
   const form = useForm({
     defaultValues: {
-      goalWeight: data.goalWeight
+      height: data.height
     },
     validators: {
       onSubmit: OnboardingStep3Schema
@@ -32,9 +32,9 @@ function Step3() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName="What's your goal weight?"
-      stepDescription='Setting a goal helps us track your progress and provide personalized meal recommendations.'
-      stepIcon={<TargetIcon className='size-9 text-background' />}
+      stepName="What's your height?"
+      stepDescription='Your height helps us provide accurate BMI calculations and personalized recommendations.'
+      stepIcon={<RulerIcon className='size-9 text-background' />}
     >
       <form
         id={FORM_ID}
@@ -44,12 +44,12 @@ function Step3() {
         }}
       >
         <FieldGroup>
-          <form.Field name='goalWeight'>
+          <form.Field name='height'>
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Goal Weight</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Height</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -61,12 +61,12 @@ function Step3() {
                         field.handleChange(e.target.valueAsNumber)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter goal weight'
+                      placeholder='Enter height'
                     />
                     <InputGroupAddon align='inline-start'>
-                      <TargetIcon className='text-muted-foreground' />
+                      <RulerIcon className='text-muted-foreground' />
                     </InputGroupAddon>
-                    <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
+                    <InputGroupAddon align='inline-end'>cm</InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>

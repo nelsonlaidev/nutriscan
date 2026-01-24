@@ -1,7 +1,7 @@
 'use client'
 
 import { useForm } from '@tanstack/react-form'
-import { WeightIcon } from 'lucide-react'
+import { TargetIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep2Schema } from '@/lib/form-schemas'
@@ -18,7 +18,7 @@ function Step2() {
 
   const form = useForm({
     defaultValues: {
-      currentWeight: data.currentWeight
+      goalWeight: data.goalWeight
     },
     validators: {
       onSubmit: OnboardingStep2Schema
@@ -32,9 +32,9 @@ function Step2() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName="What's current weight?"
-      stepDescription='This helps us calculate your daily nutritional needs and track your progress.'
-      stepIcon={<WeightIcon className='size-9 text-background' />}
+      stepName="What's your goal weight?"
+      stepDescription='Setting a goal helps us track your progress and provide personalized meal recommendations.'
+      stepIcon={<TargetIcon className='size-9 text-background' />}
     >
       <form
         id={FORM_ID}
@@ -44,12 +44,12 @@ function Step2() {
         }}
       >
         <FieldGroup>
-          <form.Field name='currentWeight'>
+          <form.Field name='goalWeight'>
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Current Weight</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Goal Weight</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -61,10 +61,10 @@ function Step2() {
                         field.handleChange(e.target.valueAsNumber)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter weight'
+                      placeholder='Enter goal weight'
                     />
                     <InputGroupAddon align='inline-start'>
-                      <WeightIcon className='text-muted-foreground' />
+                      <TargetIcon className='text-muted-foreground' />
                     </InputGroupAddon>
                     <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
                   </InputGroup>

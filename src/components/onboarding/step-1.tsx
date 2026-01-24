@@ -1,7 +1,7 @@
 'use client'
 
 import { useForm } from '@tanstack/react-form'
-import { UserIcon } from 'lucide-react'
+import { WeightIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep1Schema } from '@/lib/form-schemas'
@@ -18,7 +18,7 @@ function Step1() {
 
   const form = useForm({
     defaultValues: {
-      name: data.name
+      currentWeight: data.currentWeight
     },
     validators: {
       onSubmit: OnboardingStep1Schema
@@ -32,9 +32,9 @@ function Step1() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName="What's your name?"
-      stepDescription='Let us know what to call you. This will be your display name in NutriScan.'
-      stepIcon={<UserIcon className='size-9 text-background' />}
+      stepName="What's current weight?"
+      stepDescription='This helps us calculate your daily nutritional needs and track your progress.'
+      stepIcon={<WeightIcon className='size-9 text-background' />}
     >
       <form
         id={FORM_ID}
@@ -44,28 +44,29 @@ function Step1() {
         }}
       >
         <FieldGroup>
-          <form.Field name='name'>
+          <form.Field name='currentWeight'>
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Display Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Current Weight</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
-                      type='text'
+                      type='number'
                       onBlur={field.handleBlur}
                       onChange={(e) => {
-                        field.handleChange(e.target.value)
+                        field.handleChange(e.target.valueAsNumber)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Name'
+                      placeholder='Enter weight'
                     />
                     <InputGroupAddon align='inline-start'>
-                      <UserIcon className='text-muted-foreground' />
+                      <WeightIcon className='text-muted-foreground' />
                     </InputGroupAddon>
+                    <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
