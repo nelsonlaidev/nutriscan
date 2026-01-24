@@ -2,9 +2,13 @@
 
 import { useForm } from '@tanstack/react-form'
 import { RulerIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useAction } from 'next-safe-action/hooks'
 
+import { completeOnboarding } from '@/actions/onboarding'
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep3Schema } from '@/lib/form-schemas'
+import { onActionError } from '@/lib/safe-action-utils'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
@@ -14,7 +18,15 @@ import OnboardingLayout from './onboarding-layout'
 const FORM_ID = 'onboarding-step-3'
 
 function Step3() {
-  const { data, setStep, updateForm } = useOnboardingForm()
+  const router = useRouter()
+  const { data } = useOnboardingForm()
+
+  const { execute, isPending } = useAction(completeOnboarding, {
+    onSuccess: () => {
+      router.push('/')
+    },
+    onError: onActionError
+  })
 
   const form = useForm({
     defaultValues: {
@@ -24,8 +36,11 @@ function Step3() {
       onSubmit: OnboardingStep3Schema
     },
     onSubmit: ({ value }) => {
-      updateForm(value)
-      setStep(4)
+      execute({
+        currentWeight: data.currentWeight as number,
+        goalWeight: data.goalWeight as number,
+        height: value.height as number
+      })
     }
   })
 
@@ -35,6 +50,7 @@ function Step3() {
       stepName="What's your height?"
       stepDescription='Your height helps us provide accurate BMI calculations and personalized recommendations.'
       stepIcon={<RulerIcon className='size-9 text-background' />}
+      continueDisabled={isPending}
     >
       <form
         id={FORM_ID}
@@ -58,8 +74,8 @@ function Step3() {
                       type='number'
                       min={50}
                       max={250}
-                      step={0.1}
-                      inputMode='decimal'
+                      step={1}
+                      inputMode='numeric'
                       onBlur={field.handleBlur}
                       onChange={(e) => {
                         const value = e.target.valueAsNumber
@@ -67,6 +83,7 @@ function Step3() {
                       }}
                       aria-invalid={isInvalid}
                       placeholder='Enter height'
+                      disabled={isPending}
                     />
                     <InputGroupAddon align='inline-start'>
                       <RulerIcon className='text-muted-foreground' />

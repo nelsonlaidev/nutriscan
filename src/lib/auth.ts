@@ -19,6 +19,18 @@ export const auth = betterAuth({
         input: false,
         defaultValue: false,
         required: true
+      },
+      currentWeight: {
+        type: 'number',
+        required: false
+      },
+      goalWeight: {
+        type: 'number',
+        required: false
+      },
+      height: {
+        type: 'number',
+        required: false
       }
     }
   }
