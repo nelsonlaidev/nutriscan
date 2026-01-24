@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import '../styles/globals.css'
 
+import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
 
 import { Toaster } from '@/components/ui/sonner'
@@ -25,14 +26,16 @@ function Layout(props: LayoutProps) {
   return (
     <html lang='en' className={geistSans.className}>
       <body>
-        {children}
-        <Toaster
-          toastOptions={{
-            duration: 2500
-          }}
-          visibleToasts={5}
-          expand
-        />
+        <JotaiProvider>
+          {children}
+          <Toaster
+            toastOptions={{
+              duration: 2500
+            }}
+            visibleToasts={5}
+            expand
+          />
+        </JotaiProvider>
       </body>
     </html>
   )
