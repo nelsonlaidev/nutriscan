@@ -3,7 +3,7 @@ import { atom, useAtom } from 'jotai'
 const onboardingFormAtom = atom({
   name: '',
   currentWeight: 70,
-  targetWeight: 60,
+  goalWeight: 60,
   height: 170,
   currentStep: 1
 })
