@@ -3538,7 +3538,7 @@
                   "type": "ref",
                   "ref": "C3KOZ",
                   "x": 24,
-                  "y": 24.019943701668048,
+                  "y": 24.01994370166805,
                   "width": "fill_container",
                   "descendants": {
                     "NEMHS": {
@@ -4459,7 +4459,7 @@
     {
       "type": "frame",
       "id": "FDmNr",
-      "x": 1500,
+      "x": 1000,
       "y": 3710,
       "name": "home",
       "clip": true,
@@ -5323,259 +5323,8 @@
     },
     {
       "type": "frame",
-      "id": "RnyfQ",
-      "x": -500,
-      "y": 3710,
-      "name": "onboarding-name",
-      "clip": true,
-      "width": 440,
-      "height": 956,
-      "fill": "#FFFFFF",
-      "layout": "vertical",
-      "children": [
-        {
-          "type": "frame",
-          "id": "RVwav",
-          "name": "content",
-          "width": "fill_container",
-          "height": "fill_container",
-          "layout": "vertical",
-          "gap": 32,
-          "padding": [
-            56,
-            32,
-            40,
-            32
-          ],
-          "children": [
-            {
-              "type": "frame",
-              "id": "IYE1Y",
-              "name": "backBtn",
-              "height": 40,
-              "fill": "#F4F4F5",
-              "cornerRadius": 20,
-              "gap": 4,
-              "padding": [
-                0,
-                12,
-                0,
-                10
-              ],
-              "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "UDJUs",
-                  "name": "backIcon",
-                  "width": 20,
-                  "height": 20,
-                  "iconFontName": "arrow-left",
-                  "iconFontFamily": "lucide",
-                  "fill": "#18181B"
-                },
-                {
-                  "type": "text",
-                  "id": "XYedY",
-                  "name": "backText",
-                  "fill": "#18181B",
-                  "content": "Back",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "500"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "OeBAf",
-              "name": "headerSection",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 16,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "QwSpT",
-                  "name": "iconFrame",
-                  "width": 72,
-                  "height": 72,
-                  "fill": "#EA580C",
-                  "cornerRadius": 20,
-                  "layout": "none",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "X3BCZ",
-                      "x": 18,
-                      "y": 18,
-                      "name": "iconInner",
-                      "width": 36,
-                      "height": 36,
-                      "iconFontName": "scan-line",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "zjcJQ",
-                  "name": "titleGroup",
-                  "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 8,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "49HlD",
-                      "name": "titleText",
-                      "fill": "#18181B",
-                      "content": "What's your name?",
-                      "textAlign": "center",
-                      "fontFamily": "Plus Jakarta Sans",
-                      "fontSize": 28,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "R0ZWI",
-                      "name": "subtitleText",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Let us know what to call you. This will be your display name in NutriScan.",
-                      "lineHeight": 1.5,
-                      "textAlign": "center",
-                      "fontFamily": "Inter",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "Ujwcn",
-              "name": "formSection",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 8,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "Wwi2n",
-                  "name": "labelText",
-                  "fill": "#18181B",
-                  "content": "Display Name",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "frame",
-                  "id": "nZ4yn",
-                  "name": "inputFrame",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#F4F4F5",
-                  "cornerRadius": 24,
-                  "gap": 12,
-                  "padding": [
-                    0,
-                    20
-                  ],
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "wELBW",
-                      "name": "userIcon",
-                      "width": 20,
-                      "height": 20,
-                      "iconFontName": "user",
-                      "iconFontFamily": "lucide",
-                      "fill": "#A1A1AA"
-                    },
-                    {
-                      "type": "text",
-                      "id": "4BPkc",
-                      "name": "inputText",
-                      "fill": "#A1A1AA",
-                      "content": "Enter your name",
-                      "fontFamily": "Inter",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "ikerU",
-              "name": "spacer",
-              "width": "fill_container",
-              "height": "fill_container",
-              "layout": "none"
-            },
-            {
-              "type": "frame",
-              "id": "8vI6s",
-              "name": "bottomSection",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 16,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "NRDB2",
-                  "name": "continueBtn",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#EA580C",
-                  "cornerRadius": 24,
-                  "gap": 8,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "KCZhs",
-                      "name": "btnText",
-                      "fill": "#FFFFFF",
-                      "content": "Continue",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "icon_font",
-                      "id": "u873X",
-                      "name": "btnIcon",
-                      "width": 20,
-                      "height": 20,
-                      "iconFontName": "arrow-right",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
       "id": "weuAO",
-      "x": 0,
+      "x": -500,
       "y": 3710,
       "name": "onboarding-current-weight",
       "clip": true,
@@ -5871,7 +5620,7 @@
     {
       "type": "frame",
       "id": "pkH2Z",
-      "x": 1000,
+      "x": 500,
       "y": 3710,
       "name": "onboarding-height",
       "clip": true,
@@ -6179,7 +5928,7 @@
     {
       "type": "frame",
       "id": "uGuuz",
-      "x": 500,
+      "x": 0,
       "y": 3710,
       "name": "onboarding-goal-weight",
       "clip": true,
@@ -6475,7 +6224,7 @@
     {
       "type": "frame",
       "id": "44prw",
-      "x": 2040,
+      "x": 1540,
       "y": 3710,
       "name": "auth-signin",
       "clip": true,
@@ -6550,7 +6299,8 @@
                   "fill": "#6D6C6A",
                   "content": "Track your nutrition, reach your goals",
                   "fontFamily": "Outfit",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6679,7 +6429,8 @@
                       "fill": "$--muted-foreground",
                       "content": "Don't have an account?",
                       "fontFamily": "Outfit",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -6702,7 +6453,7 @@
     {
       "type": "frame",
       "id": "UgK3c",
-      "x": 2580,
+      "x": 2080,
       "y": 3710,
       "name": "auth-signup",
       "clip": true,
@@ -6777,7 +6528,8 @@
                   "fill": "#6D6C6A",
                   "content": "Sign up to start tracking your nutrition",
                   "fontFamily": "Outfit",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6790,11 +6542,11 @@
               "gap": 16,
               "children": [
                 {
-                  "id": "4FCQH",
+                  "id": "ViJk5",
                   "type": "ref",
                   "ref": "1415a",
                   "width": "fill_container",
-                  "name": "emailInput",
+                  "name": "displayNameInput",
                   "descendants": {
                     "QRy7x": {
                       "fill": {
@@ -6804,14 +6556,14 @@
                       }
                     },
                     "BX0XX": {
-                      "content": "Email",
+                      "content": "Display Name",
                       "fill": "$--foreground"
                     },
                     "i0Z3E": {
                       "fill": "$--background"
                     },
                     "SDRKn": {
-                      "content": "you@example.com",
+                      "content": "Enter your name",
                       "fill": "$--muted-foreground"
                     }
                   }
@@ -6839,6 +6591,33 @@
                     },
                     "SDRKn": {
                       "content": "Enter your password",
+                      "fill": "$--muted-foreground"
+                    }
+                  }
+                },
+                {
+                  "id": "4FCQH",
+                  "type": "ref",
+                  "ref": "1415a",
+                  "width": "fill_container",
+                  "name": "emailInput",
+                  "descendants": {
+                    "QRy7x": {
+                      "fill": {
+                        "type": "color",
+                        "color": "$--white",
+                        "enabled": false
+                      }
+                    },
+                    "BX0XX": {
+                      "content": "Email",
+                      "fill": "$--foreground"
+                    },
+                    "i0Z3E": {
+                      "fill": "$--background"
+                    },
+                    "SDRKn": {
+                      "content": "you@example.com",
                       "fill": "$--muted-foreground"
                     }
                   }
@@ -6914,7 +6693,8 @@
                       "fill": "$--muted-foreground",
                       "content": "Already have an account?",
                       "fontFamily": "Outfit",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
