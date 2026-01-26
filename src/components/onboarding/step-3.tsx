@@ -49,7 +49,7 @@ function Step3() {
       formId={FORM_ID}
       stepName="What's your height?"
       stepDescription='Your height helps us provide accurate BMI calculations and personalized recommendations.'
-      stepIcon={<RulerIcon className='size-9 text-background' />}
+      stepIcon={<RulerIcon className='size-9 text-primary-foreground' />}
       continueDisabled={isPending}
     >
       <form

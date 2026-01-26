@@ -34,7 +34,7 @@ function Step1() {
       formId={FORM_ID}
       stepName="What's current weight?"
       stepDescription='This helps us calculate your daily nutritional needs and track your progress.'
-      stepIcon={<WeightIcon className='size-9 text-background' />}
+      stepIcon={<WeightIcon className='size-9 text-primary-foreground' />}
     >
       <form
         id={FORM_ID}
