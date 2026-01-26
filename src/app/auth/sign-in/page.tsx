@@ -38,7 +38,7 @@ function Page() {
           },
           onSuccess: () => {
             toast.success('Signed in successfully')
-            router.push('/')
+            router.push('/dashboard')
             setIsSubmitting(false)
           },
           onError: (ctx) => {

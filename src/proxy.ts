@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { getSession } from './lib/auth'
 
-const PUBLIC_ROUTES = new Set(['/auth/sign-in', '/auth/sign-up'])
+const PUBLIC_ROUTES = new Set(['/', '/auth/sign-in', '/auth/sign-up'])
 
 export async function proxy(request: NextRequest) {
   const session = await getSession()
@@ -13,8 +13,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // Redirect authenticated users away from auth pages
-  if (session && request.nextUrl.pathname.startsWith('/auth/')) {
-    return NextResponse.redirect(new URL('/', request.url))
+  if (session && (request.nextUrl.pathname.startsWith('/auth/') || request.nextUrl.pathname === '/')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   // Allow public routes
@@ -25,7 +25,7 @@ export async function proxy(request: NextRequest) {
   // Protect all other routes
   // Redirect unauthenticated users to sign-in page
   if (!session) {
-    return NextResponse.redirect(new URL('/auth/sign-in', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return NextResponse.next()
