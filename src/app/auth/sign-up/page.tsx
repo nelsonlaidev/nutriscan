@@ -1,6 +1,6 @@
 'use client'
 
-import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon, UserIcon } from '@phosphor-icons/react'
+import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon, UserCircleIcon } from '@phosphor-icons/react'
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -86,7 +86,7 @@ function Page() {
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
-                      <UserIcon className='text-muted-foreground' />
+                      <UserCircleIcon className='text-muted-foreground' />
                     </InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
