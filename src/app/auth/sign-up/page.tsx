@@ -1,7 +1,7 @@
 'use client'
 
+import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon, UserIcon } from '@phosphor-icons/react'
 import { useForm } from '@tanstack/react-form'
-import { Loader2Icon, LockIcon, MailIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -116,7 +116,7 @@ function Page() {
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
-                      <MailIcon className='text-muted-foreground' />
+                      <EnvelopeSimpleIcon className='text-muted-foreground' />
                     </InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -187,7 +187,7 @@ function Page() {
         </FieldGroup>
 
         <Button type='submit' disabled={isSubmitting}>
-          {isSubmitting && <Loader2Icon className='animate-spin' />}
+          {isSubmitting && <SpinnerGapIcon className='animate-spin' />}
           Sign Up
         </Button>
       </form>

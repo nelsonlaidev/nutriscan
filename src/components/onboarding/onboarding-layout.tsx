@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
+import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 

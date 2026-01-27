@@ -1,6 +1,6 @@
 'use client'
 
-import { LeafIcon } from 'lucide-react'
+import { LeafIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import { buttonVariants } from '@/components/ui/button'

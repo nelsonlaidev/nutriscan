@@ -1,7 +1,7 @@
 'use client'
 
+import { BarbellIcon } from '@phosphor-icons/react'
 import { useForm } from '@tanstack/react-form'
-import { WeightIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep1FormSchema } from '@/lib/zod-schemas'
@@ -34,7 +34,7 @@ function Step1() {
       formId={FORM_ID}
       stepName="What's current weight?"
       stepDescription='This helps us calculate your daily nutritional needs and track your progress.'
-      stepIcon={<WeightIcon className='size-9 text-primary-foreground' />}
+      stepIcon={<BarbellIcon className='size-9 text-primary-foreground' />}
     >
       <form
         id={FORM_ID}
@@ -69,7 +69,7 @@ function Step1() {
                       placeholder='Enter weight'
                     />
                     <InputGroupAddon align='inline-start'>
-                      <WeightIcon className='text-muted-foreground' />
+                      <BarbellIcon className='text-muted-foreground' />
                     </InputGroupAddon>
                     <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
                   </InputGroup>

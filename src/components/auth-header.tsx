@@ -1,4 +1,4 @@
-import { LeafIcon } from 'lucide-react'
+import { LeafIcon } from '@phosphor-icons/react'
 
 type AuthHeaderProps = {
   title: string

@@ -1,7 +1,7 @@
 'use client'
 
+import { TargetIcon } from '@phosphor-icons/react'
 import { useForm } from '@tanstack/react-form'
-import { TargetIcon } from 'lucide-react'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { OnboardingStep2FormSchema } from '@/lib/zod-schemas'
