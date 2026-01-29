@@ -14,7 +14,7 @@ function Navbar() {
 
   return (
     <div className='fixed inset-x-0 bottom-2 flex items-center justify-center gap-4'>
-      <nav className='rounded-full p-1 shadow-sm'>
+      <nav className='rounded-full bg-background p-1 shadow-sm'>
         {NAVBAR_LINKS.map((link) => {
           const active = pathname === link.href
 
@@ -27,7 +27,7 @@ function Navbar() {
                 active && 'text-foreground bg-accent rounded-full'
               )}
             >
-              <link.icon className='size-5' weight={active ? 'fill' : 'regular'} />
+              <link.icon size={20} weight={active ? 'fill' : 'regular'} />
               <span className='text-sm'>{link.title}</span>
             </Link>
           )
@@ -38,7 +38,7 @@ function Navbar() {
         aria-label='Add new item'
         className={cn(buttonVariants({ size: 'icon' }), 'size-14 rounded-full')}
       >
-        <PlusIcon className='size-5' />
+        <PlusIcon />
       </Link>
     </div>
   )

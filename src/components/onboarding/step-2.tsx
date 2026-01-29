@@ -34,7 +34,7 @@ function Step2() {
       formId={FORM_ID}
       stepName="What's your goal weight?"
       stepDescription='Setting a goal helps us track your progress and provide personalized meal recommendations.'
-      stepIcon={<TargetIcon className='size-9 text-primary-foreground' />}
+      stepIcon={<TargetIcon size={36} className='text-primary-foreground' />}
     >
       <form
         id={FORM_ID}
