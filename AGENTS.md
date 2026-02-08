@@ -79,3 +79,4 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 - Only run `pnpm typecheck` and `pnpm lint` when you want to check for errors
 - Never use `npm` or `npx`
 - Add UI components using shadcn/ui mcp
+- Always add `Icon` suffix when using Phosphor icons. E.g. `ArrowUpRightIcon` instead of `ArrowUpRight`
