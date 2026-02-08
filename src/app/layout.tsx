@@ -28,13 +28,7 @@ function Layout(props: LayoutProps) {
       <body>
         <JotaiProvider>
           {children}
-          <Toaster
-            toastOptions={{
-              duration: 2500
-            }}
-            visibleToasts={5}
-            expand
-          />
+          <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
         </JotaiProvider>
       </body>
     </html>

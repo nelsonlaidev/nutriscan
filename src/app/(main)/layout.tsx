@@ -1,13 +1,24 @@
-import Navbar from '@/components/navbar'
+import { redirect } from 'next/navigation'
 
-function Layout(props: LayoutProps<'/'>) {
+import Navbar from '@/components/navbar'
+import Providers from '@/components/providers'
+import { getSession } from '@/lib/auth'
+
+async function Layout(props: LayoutProps<'/'>) {
   const { children } = props
+  const session = await getSession()
+
+  if (!session) {
+    redirect('/')
+  }
 
   return (
-    <main className='p-6'>
-      {children}
-      <Navbar />
-    </main>
+    <Providers session={session}>
+      <main className='p-6'>
+        {children}
+        <Navbar />
+      </main>
+    </Providers>
   )
 }
 

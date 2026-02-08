@@ -117,12 +117,14 @@ function Page() {
                     </InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                  <Link
-                    href='/auth/forgot-password'
-                    className='text-right text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline'
-                  >
-                    Forgot password?
-                  </Link>
+                  <div className='flex justify-end'>
+                    <Link
+                      href='/auth/forgot-password'
+                      className='text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline'
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
                 </Field>
               )
             }}

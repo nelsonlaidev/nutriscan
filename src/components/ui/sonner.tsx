@@ -14,11 +14,11 @@ function Toaster(props: ToasterPropsType) {
       theme={theme as ToasterPropsType['theme']}
       className='toaster group'
       icons={{
-        success: <CheckCircleIcon className='size-4' />,
-        info: <InfoIcon className='size-4' />,
-        warning: <WarningIcon className='size-4' />,
-        error: <XCircleIcon className='size-4' />,
-        loading: <SpinnerIcon className='size-4 animate-spin' />
+        success: <CheckCircleIcon size={16} />,
+        info: <InfoIcon size={16} />,
+        warning: <WarningIcon size={16} />,
+        error: <XCircleIcon size={16} />,
+        loading: <SpinnerIcon size={16} className='animate-spin' />
       }}
       style={
         {
