@@ -40,6 +40,18 @@ export const OnboardingActionSchema = z.object({
   height: HeightField
 })
 
+export const ManualFoodEntrySchema = z.object({
+  foodName: z.string().min(1, 'Food name is required'),
+  servingSize: z.string().min(1, 'Serving size is required'),
+  calories: z.coerce.number().min(0, 'Must be 0 or more').max(5000, 'Must be 5000 or less'),
+  protein: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
+  carbs: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
+  fat: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
+  fiber: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less')
+})
+
+export type ManualFoodEntry = z.infer<typeof ManualFoodEntrySchema>
+
 export const SignInFormSchema = z.object({
   email: z.email('Invalid email address'),
   password: z
