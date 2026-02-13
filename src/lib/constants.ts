@@ -1,4 +1,4 @@
-import { ChartBarIcon, GearIcon, HouseIcon, UserCircleIcon } from '@phosphor-icons/react'
+import { ChartBarIcon, HouseIcon, UserCircleIcon } from '@phosphor-icons/react'
 
 export const NAVBAR_LINKS = [
   {
@@ -15,10 +15,5 @@ export const NAVBAR_LINKS = [
     title: 'Profile',
     href: '/profile',
     icon: UserCircleIcon
-  },
-  {
-    title: 'Settings',
-    href: '/settings',
-    icon: GearIcon
   }
 ]
