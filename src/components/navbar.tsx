@@ -38,7 +38,7 @@ function Navbar() {
         aria-label='Add new item'
         className={cn(buttonVariants({ size: 'icon' }), 'size-14 rounded-full')}
       >
-        <PlusIcon />
+        <PlusIcon size={24} />
       </Link>
     </div>
   )

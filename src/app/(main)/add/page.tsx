@@ -61,16 +61,16 @@ function Page() {
   }
 
   return (
-    <div className='-m-6 flex flex-col'>
+    <div className='flex flex-col gap-6'>
       {/* Header */}
-      <div className='flex items-center gap-3 px-6 pt-6 pb-4'>
-        <button type='button' onClick={handleBack} className='text-foreground'>
+      <div className='flex items-center gap-2'>
+        <Button type='button' onClick={handleBack} size='icon' variant='ghost'>
           <ArrowLeftIcon size={24} />
-        </button>
+        </Button>
         <h1 className='text-xl font-semibold'>Add Food</h1>
       </div>
 
-      <div className='flex flex-col gap-5 px-6 pb-24'>
+      <div className='flex flex-col gap-5'>
         {step === 'input' && (
           <>
             <ModeSelector value={mode} onChange={setMode} />
