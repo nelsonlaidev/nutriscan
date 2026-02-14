@@ -18,7 +18,7 @@ export const lookupBarcode = authActionClient.inputSchema(BarcodeLookupSchema).a
   }
 
   const { product } = parsed.data
-  const nutriments = product.nutriments
+  const { nutriments } = product
 
   return {
     success: true as const,

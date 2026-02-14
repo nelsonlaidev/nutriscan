@@ -2,9 +2,10 @@
 
 import { ArrowLeftIcon } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
+import { addFoodEntry } from '@/actions/add-food-entry'
 import AiImageMode from '@/components/add/ai-image-mode'
 import BarcodeMode from '@/components/add/barcode-mode'
 import ManualEntryMode from '@/components/add/manual-entry-mode'
@@ -22,6 +23,7 @@ function Page() {
   const [step, setStep] = useState<Step>('input')
   const [nutritionData, setNutritionData] = useState<NutritionData | null>(null)
   const [selectedMeal, setSelectedMeal] = useState<string | null>(null)
+  const [isPending, startTransition] = useTransition()
 
   const handleScanResult = useCallback((data: NutritionData) => {
     setNutritionData(data)
@@ -38,14 +40,33 @@ function Page() {
   }
 
   function handleAddToMeal() {
-    if (!selectedMeal) {
+    if (!selectedMeal || !nutritionData) {
       toast.error('Please select a meal category')
       return
     }
 
-    const mealName = MEAL_CATEGORIES.find((c) => c.id === selectedMeal)?.name
-    toast.success(`Food added to ${mealName}!`)
-    router.push('/dashboard')
+    startTransition(async () => {
+      const result = await addFoodEntry({
+        foodName: nutritionData.foodName,
+        servingSize: nutritionData.servingSize,
+        calories: nutritionData.calories,
+        protein: nutritionData.protein,
+        carbs: nutritionData.carbs,
+        fat: nutritionData.fat,
+        fiber: nutritionData.fiber,
+        mealCategory: selectedMeal as 'breakfast' | 'lunch' | 'dinner' | 'snacks',
+        source: mode
+      })
+
+      if (result.serverError) {
+        toast.error('Failed to save food entry. Please try again.')
+        return
+      }
+
+      const mealName = MEAL_CATEGORIES.find((c) => c.id === selectedMeal)?.name
+      toast.success(`Food added to ${mealName}!`)
+      router.push('/dashboard')
+    })
   }
 
   function handleBack() {
@@ -99,7 +120,9 @@ function Page() {
               </div>
             )}
             <MealCategoryPicker value={selectedMeal} onChange={setSelectedMeal} />
-            <Button onClick={handleAddToMeal}>Add to Meal</Button>
+            <Button onClick={handleAddToMeal} disabled={isPending}>
+              {isPending ? 'Saving...' : 'Add to Meal'}
+            </Button>
           </>
         )}
       </div>

@@ -52,6 +52,18 @@ export const ManualFoodEntrySchema = z.object({
 
 export type ManualFoodEntry = z.infer<typeof ManualFoodEntrySchema>
 
+export const AddFoodEntrySchema = z.object({
+  foodName: z.string().min(1),
+  servingSize: z.string().min(1),
+  calories: z.number().min(0),
+  protein: z.number().min(0),
+  carbs: z.number().min(0),
+  fat: z.number().min(0),
+  fiber: z.number().min(0),
+  mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
+  source: z.enum(['ai-scan', 'manual', 'barcode'])
+})
+
 export const BarcodeLookupSchema = z.object({
   barcode: z.string().regex(/^\d{8,14}$/, 'Barcode must be 8-14 digits')
 })

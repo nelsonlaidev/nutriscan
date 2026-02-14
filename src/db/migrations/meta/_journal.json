@@ -8,6 +8,13 @@
       "when": 1769278704958,
       "tag": "0000_daily_franklin_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771082992778,
+      "tag": "0001_lethal_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }

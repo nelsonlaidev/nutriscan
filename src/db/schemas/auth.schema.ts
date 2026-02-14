@@ -1,6 +1,8 @@
 import { relations } from 'drizzle-orm'
 import { boolean, index, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
 
+import { foodEntries } from './food-entry.schema'
+
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
@@ -80,7 +82,8 @@ export const verifications = pgTable(
 
 export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
-  accounts: many(accounts)
+  accounts: many(accounts),
+  foodEntries: many(foodEntries)
 }))
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
