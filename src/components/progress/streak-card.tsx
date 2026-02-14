@@ -35,7 +35,7 @@ export function StreakCard() {
                 ) : (
                   <div
                     className={cn(
-                      'w-5 h-5 rounded-full border-2',
+                      'size-5 rounded-full border-2',
                       day.isToday ? 'border-orange-200 bg-orange-50' : 'border-gray-100 bg-gray-50'
                     )}
                   />

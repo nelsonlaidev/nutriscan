@@ -15,7 +15,7 @@ function Page() {
   return (
     <div className='-m-6 flex flex-col'>
       {/* Primary gradient header */}
-      <div className='bg-gradient-to-br from-primary to-primary/85 px-6 pt-6 pb-20'>
+      <div className='bg-linear-to-br from-primary to-primary/85 px-6 pt-6 pb-20'>
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-lg font-bold text-primary-foreground'>NutriScan</h1>

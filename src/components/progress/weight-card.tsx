@@ -37,6 +37,8 @@ export function WeightCard() {
         <Button
           className='mt-4 flex w-full cursor-pointer items-center justify-between rounded-full bg-gray-900 p-6 text-white hover:bg-gray-800'
           onClick={() => {
+            // testing
+            // eslint-disable-next-line no-alert
             alert('Log Weight logic would go here')
           }}
         >

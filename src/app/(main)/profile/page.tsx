@@ -13,7 +13,7 @@ import { useSession } from '@/lib/session'
 import { getInitials } from '@/lib/utils'
 
 function formatMetric(value: number | null | undefined, unit: string) {
-  if (value == null) return 'Not set'
+  if (value === null) return 'Not set'
   return `${value} ${unit}`
 }
 

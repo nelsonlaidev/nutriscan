@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-interface CircleProgressProps {
+type CircleProgressProps = {
   value: number
   max: number
   size?: number

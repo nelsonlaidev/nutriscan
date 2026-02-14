@@ -40,7 +40,7 @@ function Step1() {
         id={FORM_ID}
         onSubmit={(e) => {
           e.preventDefault()
-          form.handleSubmit()
+          void form.handleSubmit()
         }}
       >
         <FieldGroup>

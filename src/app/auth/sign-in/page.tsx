@@ -27,7 +27,7 @@ function Page() {
       onSubmit: SignInFormSchema
     },
     onSubmit: ({ value }) => {
-      signIn.email(
+      void signIn.email(
         {
           email: value.email,
           password: value.password
@@ -57,7 +57,7 @@ function Page() {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          form.handleSubmit()
+          void form.handleSubmit()
         }}
         className='flex w-full flex-col gap-8'
       >

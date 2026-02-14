@@ -68,7 +68,7 @@ function ManualEntryMode(props: ManualEntryModeProps) {
           onChange={(e) => {
             updateField('foodName', e.target.value)
           }}
-          aria-invalid={!!errors.foodName}
+          aria-invalid={Boolean(errors.foodName)}
         />
         {errors.foodName && <span className='text-xs text-destructive'>{errors.foodName}</span>}
       </div>
@@ -84,7 +84,7 @@ function ManualEntryMode(props: ManualEntryModeProps) {
           onChange={(e) => {
             updateField('servingSize', e.target.value)
           }}
-          aria-invalid={!!errors.servingSize}
+          aria-invalid={Boolean(errors.servingSize)}
         />
         {errors.servingSize && <span className='text-xs text-destructive'>{errors.servingSize}</span>}
       </div>
@@ -100,7 +100,7 @@ function ManualEntryMode(props: ManualEntryModeProps) {
           onChange={(e) => {
             updateField('calories', e.target.value)
           }}
-          aria-invalid={!!errors.calories}
+          aria-invalid={Boolean(errors.calories)}
         />
         {errors.calories && <span className='text-xs text-destructive'>{errors.calories}</span>}
       </div>

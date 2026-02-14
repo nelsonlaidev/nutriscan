@@ -35,7 +35,7 @@ function AiImageMode(props: AiImageModeProps) {
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex aspect-[4/3] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/50'>
+      <div className='flex aspect-4/3 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/50'>
         {scanning ? (
           <div className='flex flex-col items-center gap-2 text-muted-foreground'>
             <SpinnerGapIcon size={40} className='animate-spin' />

@@ -16,7 +16,7 @@ function FieldSet(props: FieldSetProps) {
     <fieldset
       data-slot='field-set'
       className={cn(
-        'gap-6 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 flex flex-col',
+        'flex flex-col gap-6 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3',
         className
       )}
       {...rest}
@@ -48,7 +48,7 @@ function FieldGroup(props: FieldGroupProps) {
     <div
       data-slot='field-group'
       className={cn(
-        'gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col',
+        'group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4',
         className
       )}
       {...rest}
@@ -61,9 +61,9 @@ const fieldVariants = cva('group/field flex w-full gap-3 data-[invalid=true]:tex
     orientation: {
       vertical: 'flex-col *:w-full [&>.sr-only]:w-auto',
       horizontal:
-        'flex-row items-center *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
+        'flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
       responsive:
-        'flex-col *:w-full [&>.sr-only]:w-auto @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:*:data-[slot=field-label]:flex-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px'
+        'flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px'
     }
   },
   defaultVariants: {
@@ -95,7 +95,7 @@ function FieldContent(props: FieldContentProps) {
   return (
     <div
       data-slot='field-content'
-      className={cn('gap-1 group/field-content flex flex-1 flex-col leading-snug', className)}
+      className={cn('group/field-content flex flex-1 flex-col gap-1 leading-snug', className)}
       {...rest}
     />
   )
@@ -110,7 +110,7 @@ function FieldLabel(props: FieldLabelProps) {
     <Label
       data-slot='field-label'
       className={cn(
-        'has-data-checked:bg-primary/5 has-data-checked:border-primary/50 dark:has-data-checked:bg-primary/10 gap-2 group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-xl has-[>[data-slot=field]]:border *:data-[slot=field]:p-4 group/field-label peer/field-label flex w-fit leading-snug',
+        'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/50 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-xl has-[>[data-slot=field]]:border *:data-[slot=field]:p-4 dark:has-data-checked:bg-primary/10',
         'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col',
         className
       )}
@@ -128,7 +128,7 @@ function FieldTitle(props: FieldTitleProps) {
     <div
       data-slot='field-label'
       className={cn(
-        'gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50 flex w-fit items-center leading-snug',
+        'flex w-fit items-center gap-2 text-sm/snug font-medium group-data-[disabled=true]/field:opacity-50',
         className
       )}
       {...rest}
@@ -145,9 +145,9 @@ function FieldDescription(props: FieldDescriptionProps) {
     <p
       data-slot='field-description'
       className={cn(
-        'text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance',
+        'text-left text-sm/normal font-normal text-muted-foreground group-has-data-[orientation=horizontal]/field:text-balance [[data-variant=legend]+&]:-mt-1.5',
         'last:mt-0 nth-last-2:-mt-1',
-        '[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4',
+        '[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary',
         className
       )}
       {...rest}
@@ -165,8 +165,8 @@ function FieldSeparator(props: FieldSeparatorProps) {
   return (
     <div
       data-slot='field-separator'
-      data-content={!!children}
-      className={cn('-my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2 relative', className)}
+      data-content={Boolean(children)}
+      className={cn('relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2', className)}
       {...rest}
     >
       <Separator className='absolute inset-0 top-1/2' />
@@ -189,6 +189,9 @@ type FieldErrorProps = React.ComponentProps<'div'> & {
 function FieldError(props: FieldErrorProps) {
   const { className, children, errors, ...rest } = props
 
+  // ReactNode includes Promise<AwaitedReactNode>,
+  // which triggers this rule incorrectly in Client Components.
+  // eslint-disable-next-line @typescript-eslint/promise-function-async
   const content = useMemo(() => {
     if (children) {
       return children
@@ -200,7 +203,7 @@ function FieldError(props: FieldErrorProps) {
 
     const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()]
 
-    if (uniqueErrors.length == 1) {
+    if (uniqueErrors.length === 1) {
       return uniqueErrors[0]?.message
     }
 
@@ -219,7 +222,7 @@ function FieldError(props: FieldErrorProps) {
     <div
       role='alert'
       data-slot='field-error'
-      className={cn('text-destructive text-sm font-normal', className)}
+      className={cn('text-sm font-normal text-destructive', className)}
       {...rest}
     >
       {content}

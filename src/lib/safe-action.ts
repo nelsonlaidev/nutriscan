@@ -8,7 +8,7 @@ import { SERVER_ERROR_MESSAGE, VALIDATION_ERROR_MESSAGE } from './safe-action-ut
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
     if (e instanceof ZodError) {
-      console.log(e.message)
+      console.error(e.message)
       return VALIDATION_ERROR_MESSAGE
     }
 

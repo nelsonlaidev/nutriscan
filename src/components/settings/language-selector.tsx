@@ -17,8 +17,13 @@ export function LanguageSelector() {
           Language
         </Label>
       </div>
-      <Select value={language} onValueChange={setLanguage}>
-        <SelectTrigger className='w-[140px]' id='language-select'>
+      <Select
+        value={language}
+        onValueChange={(e) => {
+          if (e !== null) setLanguage(e)
+        }}
+      >
+        <SelectTrigger className='w-35' id='language-select'>
           <SelectValue placeholder='Select language' />
         </SelectTrigger>
         <SelectContent>

@@ -24,7 +24,7 @@ function Navbar() {
               key={link.href}
               className={cn(
                 'inline-flex flex-col items-center px-4 py-1 text-muted-foreground',
-                active && 'text-foreground bg-accent rounded-full'
+                active && 'rounded-full bg-accent text-foreground'
               )}
             >
               <link.icon size={20} weight={active ? 'fill' : 'regular'} />
