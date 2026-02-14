@@ -1,9 +1,10 @@
 'use client'
 
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
-import { useState } from 'react'
+import { useAtom } from 'jotai'
 
 import { Button } from '@/components/ui/button'
+import { selectedDateAtom } from '@/lib/atoms'
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -24,7 +25,7 @@ function getLabel(date: Date) {
 }
 
 function DateNavigation() {
-  const [date, setDate] = useState(() => new Date())
+  const [date, setDate] = useAtom(selectedDateAtom)
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)

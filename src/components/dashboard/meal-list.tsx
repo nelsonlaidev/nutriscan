@@ -2,7 +2,18 @@ import { PlusIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { MEAL_CATEGORIES } from '@/lib/mock-data'
+
+type MealBreakdown = {
+  id: string
+  name: string
+  emoji: string
+  items: number
+  calories: number
+}
+
+type MealListProps = {
+  meals: MealBreakdown[]
+}
 
 const EMOJI_BG: Record<string, string> = {
   breakfast: 'bg-amber-100 dark:bg-amber-950',
@@ -11,7 +22,9 @@ const EMOJI_BG: Record<string, string> = {
   snacks: 'bg-red-100 dark:bg-red-950'
 }
 
-function MealList() {
+function MealList(props: MealListProps) {
+  const { meals } = props
+
   return (
     <div className='space-y-3'>
       <div className='flex items-center justify-between'>
@@ -22,7 +35,7 @@ function MealList() {
         </Link>
       </div>
       <div className='space-y-2'>
-        {MEAL_CATEGORIES.map((meal) => (
+        {meals.map((meal) => (
           <Card key={meal.id} size='sm'>
             <CardContent className='flex items-center gap-3 p-3'>
               <div

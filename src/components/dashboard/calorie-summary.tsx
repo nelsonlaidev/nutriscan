@@ -1,36 +1,41 @@
 import CircleProgress from '@/components/dashboard/circle-progress'
 import { Card, CardContent } from '@/components/ui/card'
-import { CURRENT_INTAKE, DAILY_GOALS } from '@/lib/mock-data'
+import { DAILY_GOALS } from '@/lib/mock-data'
 
-function CalorieSummary() {
-  const remaining = DAILY_GOALS.calories - CURRENT_INTAKE.calories + CURRENT_INTAKE.burned
+type CalorieSummaryProps = {
+  calories: number
+}
+
+function CalorieSummary(props: CalorieSummaryProps) {
+  const { calories } = props
+  const remaining = DAILY_GOALS.calories - calories
 
   return (
     <Card>
       <CardContent className='flex items-center gap-6'>
         <CircleProgress
-          value={CURRENT_INTAKE.calories}
+          value={calories}
           max={DAILY_GOALS.calories}
           size={100}
           strokeWidth={8}
           progressClassName='stroke-primary'
         >
-          <span className='text-xl font-bold'>{CURRENT_INTAKE.calories}</span>
+          <span className='text-xl font-bold'>{Math.round(calories)}</span>
           <span className='text-[10px] text-muted-foreground'>kcal</span>
           <span className='text-[10px] text-muted-foreground'>of {DAILY_GOALS.calories}</span>
         </CircleProgress>
         <div className='grid flex-1 grid-cols-2 gap-y-3'>
           <div>
             <p className='text-xs text-muted-foreground'>Eaten</p>
-            <p className='text-lg font-semibold'>{CURRENT_INTAKE.calories}</p>
+            <p className='text-lg font-semibold'>{Math.round(calories)}</p>
           </div>
           <div>
             <p className='text-xs text-muted-foreground'>Remaining</p>
-            <p className='text-lg font-semibold text-primary'>{remaining}</p>
+            <p className='text-lg font-semibold text-primary'>{Math.round(remaining)}</p>
           </div>
           <div>
             <p className='text-xs text-muted-foreground'>Burned</p>
-            <p className='text-lg font-semibold text-orange-500'>{CURRENT_INTAKE.burned}</p>
+            <p className='text-lg font-semibold text-orange-500'>0</p>
           </div>
           <div>
             <p className='text-xs text-muted-foreground'>Goal</p>
