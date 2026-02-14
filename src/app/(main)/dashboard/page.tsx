@@ -23,14 +23,14 @@ function Page() {
 
   return (
     <div className='-m-6 flex flex-col'>
-      {/* Primary gradient header */}
-      <div className='bg-linear-to-br from-primary to-primary/85 px-6 pt-6 pb-20'>
+      {/* Primary header */}
+      <div className='bg-primary px-6 pt-6 pb-20'>
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-lg font-bold text-primary-foreground'>NutriScan</h1>
             <p className='text-xs text-primary-foreground/70'>Your daily nutrition</p>
           </div>
-          <Avatar size='sm'>
+          <Avatar>
             <AvatarImage src={user.image ?? undefined} alt={user.name} />
             <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
           </Avatar>
