@@ -77,6 +77,7 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 ## Policies
 
 - Only run `pnpm typecheck` and `pnpm lint` when you want to check for errors
+- Never use `pnpm check` in development, as it runs the full CI suite and is very slow
 - Never use `npm` or `npx`
 - Add UI components using shadcn/ui mcp
 - Always add `Icon` suffix when using Phosphor icons. E.g. `ArrowUpRightIcon` instead of `ArrowUpRight`
