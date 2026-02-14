@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth'
 
 import { SERVER_ERROR_MESSAGE, VALIDATION_ERROR_MESSAGE } from './safe-action-utils'
 
-export const actionClient = createSafeActionClient({
+const actionClient = createSafeActionClient({
   handleServerError(e) {
     if (e instanceof ZodError) {
       console.error(e.message)

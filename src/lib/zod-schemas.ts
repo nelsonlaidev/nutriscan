@@ -18,7 +18,7 @@ const HeightField = z
   .max(250, 'Height must be at most 250 cm')
   .positive('Height must be a positive number')
 
-export const OnboardingFieldsFormSchema = z.object({
+const OnboardingFieldsFormSchema = z.object({
   currentWeight: CurrentWeightField.or(z.literal('')).refine((val) => val !== '', {
     message: 'Please enter your current weight'
   }),

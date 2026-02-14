@@ -1,9 +1,9 @@
-export type WeightData = {
+type WeightData = {
   date: string
   weight: number
 }
 
-export type DayStatus = {
+type DayStatus = {
   day: string // 'S', 'M', 'T', 'W', 'T', 'F', 'S'
   isComplete: boolean
   isToday?: boolean
