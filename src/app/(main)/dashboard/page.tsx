@@ -7,14 +7,11 @@ import DateNavigation from '@/components/dashboard/date-navigation'
 import MacronutrientCards from '@/components/dashboard/macronutrient-cards'
 import MealList from '@/components/dashboard/meal-list'
 import WaterIntake from '@/components/dashboard/water-intake'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/user-avatar'
 import { selectedDateAtom } from '@/lib/atoms'
-import { useSession } from '@/lib/session'
-import { getInitials } from '@/lib/utils'
 import { computeMealBreakdowns, computeTotals, useFoodEntries } from '@/queries/food-entries'
 
 function Page() {
-  const { user } = useSession()
   const selectedDate = useAtomValue(selectedDateAtom)
   const { data: entries = [] } = useFoodEntries(selectedDate)
 
@@ -30,10 +27,7 @@ function Page() {
             <h1 className='text-lg font-bold text-primary-foreground'>NutriScan</h1>
             <p className='text-xs text-primary-foreground/70'>Your daily nutrition</p>
           </div>
-          <Avatar>
-            <AvatarImage src={user.image ?? undefined} alt={user.name} />
-            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-          </Avatar>
+          <UserAvatar />
         </div>
       </div>
 

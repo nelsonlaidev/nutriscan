@@ -2,8 +2,8 @@
 
 import { UserCircleIcon } from '@phosphor-icons/react'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { UserAvatar } from '@/components/user-avatar'
 import { useSession } from '@/lib/auth-client'
 
 export function PersonalInfo() {
@@ -21,10 +21,7 @@ export function PersonalInfo() {
         </CardTitle>
       </CardHeader>
       <CardContent className='flex items-center gap-4'>
-        <Avatar className='size-16'>
-          <AvatarImage src={user.image ?? undefined} alt={user.name} />
-          <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <UserAvatar className='size-16' fallbackClassName='text-2xl' />
         <div className='space-y-1'>
           <p className='font-medium'>{user.name}</p>
           <p className='text-sm text-muted-foreground'>{user.email}</p>

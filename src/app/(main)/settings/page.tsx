@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator'
 
 export default function SettingsPage() {
   return (
-    <div className='flex flex-col gap-6 p-4 pb-20 md:p-6 md:pb-6'>
+    <div className='flex flex-col gap-6 pb-20'>
       <PageTitle title='Settings' />
 
       <div className='space-y-6'>

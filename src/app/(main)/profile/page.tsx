@@ -1,16 +1,15 @@
 'use client'
 
 import { GearIcon, SignOutIcon, SpinnerGapIcon } from '@phosphor-icons/react'
-import { UserCircleIcon } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import PageTitle from '@/components/page-title'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { UserAvatar } from '@/components/user-avatar'
 import { authClient } from '@/lib/auth-client'
 import { useSession } from '@/lib/session'
-import { getInitials } from '@/lib/utils'
 
 function formatMetric(value: number | null | undefined, unit: string) {
   if (value === null) return 'Not set'
@@ -44,21 +43,14 @@ function Page() {
     <div className='flex flex-col gap-4'>
       <div className='flex items-center justify-between'>
         <PageTitle title='Profile' />
-        <Button variant='ghost' size='icon'>
+        <Link href='/settings' className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
           <GearIcon size={28} />
-        </Button>
+        </Link>
       </div>
 
       {/* Avatar + Name + Email */}
       <div className='flex flex-col items-center gap-2 py-4'>
-        {user.image ? (
-          <Avatar className='size-24'>
-            <AvatarImage src={user.image} />
-            <AvatarFallback className='text-2xl'>{getInitials(displayName)}</AvatarFallback>
-          </Avatar>
-        ) : (
-          <UserCircleIcon size={96} />
-        )}
+        <UserAvatar className='size-24' fallbackClassName='text-4xl' />
         <div className='text-center'>
           <p className='text-xl font-semibold'>{displayName}</p>
           <p className='text-sm text-muted-foreground'>{user.email}</p>
