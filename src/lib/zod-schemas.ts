@@ -52,6 +52,36 @@ export const ManualFoodEntrySchema = z.object({
 
 export type ManualFoodEntry = z.infer<typeof ManualFoodEntrySchema>
 
+export const BarcodeLookupSchema = z.object({
+  barcode: z.string().regex(/^\d{8,14}$/, 'Barcode must be 8-14 digits')
+})
+
+export const OpenFoodFactsResponseSchema = z.object({
+  status: z.number(),
+  product: z
+    .object({
+      product_name: z.string().optional().default('Unknown Product'),
+      serving_size: z.string().optional().default('100g'),
+      nutriments: z
+        .object({
+          'energy-kcal_100g': z.number().optional().default(0),
+          proteins_100g: z.number().optional().default(0),
+          carbohydrates_100g: z.number().optional().default(0),
+          fat_100g: z.number().optional().default(0),
+          fiber_100g: z.number().optional().default(0)
+        })
+        .optional()
+        .default({
+          'energy-kcal_100g': 0,
+          proteins_100g: 0,
+          carbohydrates_100g: 0,
+          fat_100g: 0,
+          fiber_100g: 0
+        })
+    })
+    .optional()
+})
+
 export const SignInFormSchema = z.object({
   email: z.email('Invalid email address'),
   password: z
