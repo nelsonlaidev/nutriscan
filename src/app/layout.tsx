@@ -4,6 +4,7 @@ import '../styles/globals.css'
 
 import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 
 import { Toaster } from '@/components/ui/sonner'
 
@@ -24,12 +25,14 @@ function Layout(props: LayoutProps) {
   const { children } = props
 
   return (
-    <html lang='en' className={geistSans.className}>
+    <html lang='en' className={geistSans.className} suppressHydrationWarning>
       <body>
-        <JotaiProvider>
-          {children}
-          <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
-        </JotaiProvider>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+          <JotaiProvider>
+            {children}
+            <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+          </JotaiProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
