@@ -64,7 +64,8 @@ export const AddFoodEntrySchema = z.object({
   fiber: z.number().min(0),
   mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
   source: z.enum(['ai-scan', 'manual', 'barcode']),
-  imageUrl: z.url().optional()
+  imageUrl: z.url().optional(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
 })
 
 export const BarcodeLookupSchema = z.object({

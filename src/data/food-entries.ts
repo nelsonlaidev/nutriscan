@@ -1,5 +1,4 @@
-import { addDays, parse, startOfDay } from 'date-fns'
-import { and, eq, gte, lt } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { foodEntries } from '@/db/schemas/food-entry.schema'
@@ -16,13 +15,10 @@ type FoodEntry = {
 }
 
 export async function getFoodEntriesByDate(userId: string, date: string) {
-  const start = startOfDay(parse(date, 'yyyy-MM-dd', new Date()))
-  const end = addDays(start, 1)
-
   return db
     .select()
     .from(foodEntries)
-    .where(and(eq(foodEntries.userId, userId), gte(foodEntries.createdAt, start), lt(foodEntries.createdAt, end)))
+    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.date, date)))
 }
 
 export function computeTotals(entries: FoodEntry[]) {

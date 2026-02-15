@@ -24,9 +24,13 @@ export const foodEntries = pgTable(
     }).notNull(),
     source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
     imageUrl: text('image_url'),
-    createdAt: timestamp('created_at').defaultNow().notNull()
+    date: text('date').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
   },
-  (table) => [index('food_entry_userId_idx').on(table.userId)]
+  (table) => [
+    index('food_entry_userId_idx').on(table.userId),
+    index('food_entry_userId_date_idx').on(table.userId, table.date)
+  ]
 )
 
 export const foodEntryRelations = relations(foodEntries, ({ one }) => ({

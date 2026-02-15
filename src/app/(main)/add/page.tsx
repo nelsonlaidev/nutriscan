@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowLeftIcon } from '@phosphor-icons/react/ssr'
+import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -57,7 +58,8 @@ function Page() {
         fiber: nutritionData.fiber,
         mealCategory: selectedMeal as 'breakfast' | 'lunch' | 'dinner' | 'snacks',
         source: mode,
-        imageUrl: nutritionData.imageUrl
+        imageUrl: nutritionData.imageUrl,
+        date: format(new Date(), 'yyyy-MM-dd')
       })
 
       if (result.serverError) {
