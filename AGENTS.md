@@ -28,14 +28,14 @@ This file provides guidance to AI agents when working with code in this reposito
 
 ### Route structure (`src/app/`)
 
-- `(main)/` — authenticated layout group (dashboard, add, progress, profile). Layout fetches session and wraps children in `<Providers>` + `<Navbar>`.
+- `(main)/` — authenticated layout group (dashboard, add, progress, profile, settings). Layout fetches session and wraps children in `<Providers>` + `<Navbar>`.
 - `auth/` — sign-in/sign-up pages (public)
 - `onboarding/` — post-signup onboarding flow
 - `api/auth/[...all]/` — Better Auth catch-all API handler
 
 ### Authentication (Better Auth)
 
-- **Server config**: `src/lib/auth.ts` — `betterAuth()` with Drizzle adapter, email/password, custom user fields (onboarded, currentWeight, goalWeight, height)
+- **Server config**: `src/lib/auth.ts` — `betterAuth()` with Drizzle adapter, email/password, custom user fields (onboarded, currentWeight, goalWeight, height, locale)
 - **Client**: `src/lib/auth-client.ts` — exports `signIn`, `signUp`, `signOut`, `useSession`
 - **Server session helper**: `getSession()` in `src/lib/auth.ts`
 - **React session context**: `src/lib/session.tsx` — `SessionProvider` / `useSession` for server-fetched session in client components
@@ -48,15 +48,26 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 
 - **PostgreSQL** via Docker (`docker-compose.yml` — postgres:17-alpine on port 5432)
 - **Drizzle ORM** with `postgres` driver (`src/db/index.ts`)
-- Schemas in `src/db/schemas/` (barrel export via `index.ts`)
+- Schemas in `src/db/schemas/` (barrel export via `index.ts`):
+  - `auth.schema.ts` — users, sessions, accounts, verifications
+  - `food-entry.schema.ts` — foodEntries table with relations to users
 - Migrations output to `src/db/migrations/`
+
+### Data Layer
+
+- Query functions in `src/data/` for data fetching and transformations
+- `food-entries.ts` — exports `getFoodEntriesByDate`, `computeTotals`, `computeMealBreakdowns`
 
 ### Server Actions
 
 - `next-safe-action` with two clients in `src/lib/safe-action.ts`:
   - `actionClient` — unauthenticated
   - `authActionClient` — middleware that requires session and injects `ctx.user`
-- Action files live in `src/actions/`
+- Action files in `src/actions/`:
+  - `add-food-entry.ts` — add new food entry
+  - `barcode-lookup.ts` — lookup nutrition info by barcode
+  - `onboarding.ts` — complete user onboarding
+  - `update-locale.ts` — update user language preference
 
 ### State management
 
@@ -66,6 +77,12 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 
 - **shadcn/ui** (base-maia style) with Phosphor icons, Base UI components
 - UI components in `src/components/ui/`
+- Feature-based components in `src/components/`:
+  - `add/` — AI scan, barcode, manual entry, meal category picker, nutrition result
+  - `dashboard/` — calorie summary, date navigation, macronutrient cards, meal list, water intake
+  - `onboarding/` — multi-step onboarding flow
+  - `progress/` — calories, streak, weight cards and charts
+  - `settings/` — language selector, personal info, theme toggle, sign out
 - Toasts via Sonner
 
 ### i18n (next-intl)
