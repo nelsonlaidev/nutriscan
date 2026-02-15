@@ -86,8 +86,8 @@ function Page() {
     <div className='flex flex-col gap-6'>
       <div className='flex items-center gap-3'>
         {step !== 'input' && (
-          <Button onClick={handleBack} type='button' size='icon-sm' variant='ghost'>
-            <ArrowLeftIcon size={24} />
+          <Button onClick={handleBack} type='button' size='icon-sm' variant='outline'>
+            <ArrowLeftIcon size={20} />
           </Button>
         )}
         <PageTitle title='Add Food' />
