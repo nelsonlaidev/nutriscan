@@ -24,7 +24,7 @@ async function Page(props: PageProps<'/dashboard'>) {
 
   return (
     <div className='flex flex-col'>
-      <div className='p-6'>
+      <div className='pb-6'>
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-lg font-semibold'>NutriScan</h1>
@@ -34,7 +34,7 @@ async function Page(props: PageProps<'/dashboard'>) {
         </div>
       </div>
 
-      <div className='flex flex-col gap-5 px-4 pb-24'>
+      <div className='flex flex-col gap-5'>
         <DateNavigation />
         <CalorieSummary calories={totals.calories} />
         <MacronutrientCards values={totals} />

@@ -6,7 +6,7 @@ import { WeightChart } from '@/components/progress/weight-chart'
 
 export default function ProgressPage() {
   return (
-    <div className='space-y-6 pb-20'>
+    <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <PageTitle title='Progress' />
       </div>

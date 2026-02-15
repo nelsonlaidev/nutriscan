@@ -14,7 +14,7 @@ async function Layout(props: LayoutProps<'/'>) {
 
   return (
     <Providers session={session}>
-      <main>
+      <main className='px-4 pt-6 pb-20'>
         {children}
         <Navbar />
       </main>
