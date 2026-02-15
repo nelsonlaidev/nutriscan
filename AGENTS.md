@@ -90,5 +90,5 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 - Never use `npm` or `npx`
 - Add UI components using shadcn/ui mcp
 - Always add `Icon` suffix when using Phosphor icons. E.g. `ArrowUpRightIcon` instead of `ArrowUpRight`
-- When using Phosphor icons, mark sure it is client component
+- Prefer importing Phosphor icons from `@phosphor-icons/react/ssr` instead of `@phosphor-icons/react`
 - **Database migrations**: When updating database schemas, NEVER run `pnpm db:push` or `pnpm db:migrate`. Instead, ask the user to run migrations manually after making schema changes
