@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation'
 
 import { CalorieSummary } from '@/components/dashboard/calorie-summary'
+import { DashboardHeader } from '@/components/dashboard/dashboard-header'
 import { DateNavigation } from '@/components/dashboard/date-navigation'
 import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
 import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
-import { UserAvatar } from '@/components/user-avatar'
 import { computeMealBreakdowns, computeTotals, getFoodEntriesByDate } from '@/data/food-entries'
 import { getWaterIntake } from '@/data/water-intake'
 import { getSession } from '@/lib/auth'
@@ -29,13 +29,7 @@ async function Page(props: PageProps<'/dashboard'>) {
   return (
     <div className='flex flex-col'>
       <div className='pb-6'>
-        <div className='flex items-center justify-between'>
-          <div>
-            <h1 className='text-lg font-semibold'>NutriScan</h1>
-            <p className='text-xs'>Your daily nutrition</p>
-          </div>
-          <UserAvatar />
-        </div>
+        <DashboardHeader />
       </div>
 
       <div className='flex flex-col gap-5'>

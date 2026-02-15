@@ -3,5 +3,10 @@
     "title": "Settings",
     "dark-mode": "Dark Mode",
     "language": "Language"
+  },
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
   }
 }

@@ -3,5 +3,10 @@
     "title": "設定",
     "dark-mode": "深色模式",
     "language": "語言"
+  },
+  "greeting": {
+    "morning": "早安",
+    "afternoon": "午安",
+    "evening": "晚安"
   }
 }
