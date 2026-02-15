@@ -2,6 +2,10 @@ import { createEnv } from '@t3-oss/env-nextjs'
 import * as z from 'zod'
 
 export const env = createEnv({
+  shared: {
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development')
+  },
+
   server: {
     DATABASE_URL: z.url(),
 
@@ -18,7 +22,9 @@ export const env = createEnv({
 
   client: {},
 
-  experimental__runtimeEnv: {},
+  experimental__runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV
+  },
 
   emptyStringAsUndefined: true
 })

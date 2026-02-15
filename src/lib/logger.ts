@@ -1,6 +1,6 @@
 import pino from 'pino'
 
-const isDev = process.env.NODE_ENV === 'development'
+import { isDev } from './constants'
 
 export const logger = pino({
   level: isDev ? 'debug' : 'silent',
