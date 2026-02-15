@@ -32,6 +32,12 @@ export const auth = betterAuth({
       height: {
         type: 'number',
         required: false
+      },
+      locale: {
+        type: 'string',
+        required: false,
+        defaultValue: 'en',
+        input: false
       }
     }
   }

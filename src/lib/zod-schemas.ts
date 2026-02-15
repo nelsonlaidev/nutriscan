@@ -1,5 +1,7 @@
 import * as z from 'zod'
 
+import { LOCALES } from './constants'
+
 const CurrentWeightField = z
   .number()
   .min(20, 'Weight must be at least 20 kg')
@@ -116,3 +118,7 @@ export const SignUpFormSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword']
   })
+
+export const UpdateLocaleSchema = z.object({
+  locale: z.enum(LOCALES)
+})

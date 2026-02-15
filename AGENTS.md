@@ -68,6 +68,15 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 - UI components in `src/components/ui/`
 - Toasts via Sonner
 
+### i18n (next-intl)
+
+- **Cookie-based locale** (no URL prefix) — config in `src/i18n/request.ts`
+- Translation files in `messages/en.json` and `messages/zh-TW.json`
+- Keys use **kebab-case** with dot-notation grouping: `settings.dark-mode`, `nav.dashboard`
+- **No namespaces** — always call `getTranslations()` / `useTranslations()` without arguments, then use dot path: `t('settings.title')`
+- Server components: `const t = await getTranslations()` from `next-intl/server`
+- Client components: `const t = useTranslations()` from `next-intl`
+
 ### Environment
 
 - `src/env.ts` — `@t3-oss/env-nextjs` schema validating `DATABASE_URL` and `BETTER_AUTH_SECRET`
@@ -82,3 +91,4 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 - Add UI components using shadcn/ui mcp
 - Always add `Icon` suffix when using Phosphor icons. E.g. `ArrowUpRightIcon` instead of `ArrowUpRight`
 - When using Phosphor icons, mark sure it is client component
+- **Database migrations**: When updating database schemas, NEVER run `pnpm db:push` or `pnpm db:migrate`. Instead, ask the user to run migrations manually after making schema changes

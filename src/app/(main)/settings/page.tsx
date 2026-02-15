@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import { PageTitle } from '@/components/page-title'
 import { LanguageSelector } from '@/components/settings/language-selector'
 import { PersonalInfo } from '@/components/settings/personal-info'
@@ -5,10 +7,12 @@ import { SignOutButton } from '@/components/settings/sign-out-button'
 import { ThemeToggle } from '@/components/settings/theme-toggle'
 import { Card, CardContent } from '@/components/ui/card'
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const t = await getTranslations()
+
   return (
     <div className='flex flex-col gap-6 pb-20'>
-      <PageTitle title='Settings' />
+      <PageTitle title={t('settings.title')} />
 
       <div className='space-y-6'>
         <PersonalInfo />

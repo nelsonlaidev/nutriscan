@@ -4,6 +4,8 @@ import '../styles/globals.css'
 
 import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 
 import { Toaster } from '@/components/ui/sonner'
@@ -21,16 +23,20 @@ type LayoutProps = {
   children: React.ReactNode
 }
 
-function Layout(props: LayoutProps) {
+async function Layout(props: LayoutProps) {
   const { children } = props
+  const locale = await getLocale()
+  const messages = await getMessages()
 
   return (
-    <html lang='en' className={geistSans.className} suppressHydrationWarning>
+    <html lang={locale} className={geistSans.className} suppressHydrationWarning>
       <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <JotaiProvider>
-            {children}
-            <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+            <NextIntlClientProvider messages={messages}>
+              {children}
+              <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+            </NextIntlClientProvider>
           </JotaiProvider>
         </ThemeProvider>
       </body>

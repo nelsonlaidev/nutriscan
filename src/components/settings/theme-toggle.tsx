@@ -1,6 +1,7 @@
 'use client'
 
 import { MoonIcon, SunIcon } from '@phosphor-icons/react'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 
 import { Label } from '@/components/ui/label'
@@ -10,6 +11,7 @@ import { useIsMounted } from '@/hooks/use-is-mounted'
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
   const isMounted = useIsMounted()
+  const t = useTranslations()
 
   if (!isMounted) return null
 
@@ -19,7 +21,7 @@ export function ThemeToggle() {
         <SunIcon size={20} className='dark:hidden' />
         <MoonIcon size={20} className='hidden dark:block' />
         <Label htmlFor='theme-mode' className='text-base font-normal'>
-          Dark Mode
+          {t('settings.dark-mode')}
         </Label>
       </div>
       <Switch

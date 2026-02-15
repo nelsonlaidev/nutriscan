@@ -15,6 +15,13 @@
       "when": 1771082992778,
       "tag": "0001_lethal_thaddeus_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771144477700,
+      "tag": "0002_daily_stephen_strange",
+      "breakpoints": true
     }
   ]
 }

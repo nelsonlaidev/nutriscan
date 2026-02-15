@@ -18,7 +18,8 @@ export const users = pgTable('users', {
   onboarded: boolean('onboarded').default(false).notNull(),
   currentWeight: real('current_weight'),
   goalWeight: real('goal_weight'),
-  height: real('height')
+  height: real('height'),
+  locale: text('locale').default('en').notNull()
 })
 
 export const sessions = pgTable(
