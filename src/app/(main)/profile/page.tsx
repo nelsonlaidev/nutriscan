@@ -1,14 +1,12 @@
 'use client'
 
-import { GearIcon, SignOutIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { GearIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useState } from 'react'
 
 import { PageTitle } from '@/components/page-title'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
-import { authClient } from '@/lib/auth-client'
 import { useSession } from '@/lib/session'
 
 function formatMetric(value: number | null | undefined, unit: string) {
@@ -18,21 +16,8 @@ function formatMetric(value: number | null | undefined, unit: string) {
 
 function Page() {
   const { user } = useSession()
-  const [signingOut, setSigningOut] = useState(false)
 
   const displayName = user.name
-
-  async function handleSignOut() {
-    setSigningOut(true)
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          globalThis.location.href = '/auth/sign-in'
-        }
-      }
-    })
-    setSigningOut(false)
-  }
 
   const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
     month: 'long',
@@ -88,14 +73,6 @@ function Page() {
           <p className='text-sm text-muted-foreground'>{memberSince}</p>
         </div>
       </div>
-
-      <Separator />
-
-      {/* Sign Out */}
-      <Button variant='destructive' onClick={handleSignOut} disabled={signingOut} className='w-full'>
-        {signingOut ? <SpinnerGapIcon size={20} className='animate-spin' /> : <SignOutIcon size={20} />}
-        {signingOut ? 'Signing out...' : 'Sign out'}
-      </Button>
     </div>
   )
 }
