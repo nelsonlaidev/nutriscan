@@ -56,7 +56,8 @@ function Page() {
         fat: nutritionData.fat,
         fiber: nutritionData.fiber,
         mealCategory: selectedMeal as 'breakfast' | 'lunch' | 'dinner' | 'snacks',
-        source: mode
+        source: mode,
+        imageUrl: nutritionData.imageUrl
       })
 
       if (result.serverError) {

@@ -23,6 +23,7 @@ export const foodEntries = pgTable(
       enum: ['breakfast', 'lunch', 'dinner', 'snacks']
     }).notNull(),
     source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
+    imageUrl: text('image_url'),
     createdAt: timestamp('created_at').defaultNow().notNull()
   },
   (table) => [index('food_entry_userId_idx').on(table.userId)]

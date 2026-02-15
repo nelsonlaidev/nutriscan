@@ -8,6 +8,7 @@ export type NutritionData = {
   carbs: number
   fat: number
   fiber: number
+  imageUrl?: string
 }
 
 type NutritionResultProps = {

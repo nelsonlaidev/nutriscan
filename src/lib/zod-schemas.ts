@@ -63,7 +63,8 @@ export const AddFoodEntrySchema = z.object({
   fat: z.number().min(0),
   fiber: z.number().min(0),
   mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
-  source: z.enum(['ai-scan', 'manual', 'barcode'])
+  source: z.enum(['ai-scan', 'manual', 'barcode']),
+  imageUrl: z.url().optional()
 })
 
 export const BarcodeLookupSchema = z.object({
@@ -94,6 +95,10 @@ export const OpenFoodFactsResponseSchema = z.object({
         })
     })
     .optional()
+})
+
+export const AiImageScanSchema = z.object({
+  imageBase64: z.string().min(1)
 })
 
 export const SignInFormSchema = z.object({
