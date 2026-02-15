@@ -12,6 +12,7 @@ import { ManualEntryMode } from '@/components/add/manual-entry-mode'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
 import { type Mode, ModeSelector } from '@/components/add/mode-selector'
 import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
+import { PageTitle } from '@/components/page-title'
 import { Button } from '@/components/ui/button'
 import { MEAL_CATEGORIES } from '@/lib/mock-data'
 
@@ -73,22 +74,23 @@ function Page() {
     if (step === 'meal-pick') {
       setStep(mode === 'manual' ? 'input' : 'review')
       setSelectedMeal(null)
-    } else if (step === 'review') {
+    }
+
+    if (step === 'review') {
       setStep('input')
       setNutritionData(null)
-    } else {
-      router.back()
     }
   }
 
   return (
     <div className='flex flex-col gap-6'>
-      {/* Header */}
-      <div className='flex items-center gap-2'>
-        <Button type='button' onClick={handleBack} size='icon' variant='ghost'>
-          <ArrowLeftIcon size={24} />
-        </Button>
-        <h1 className='text-xl font-semibold'>Add Food</h1>
+      <div className='flex items-center gap-3'>
+        {step !== 'input' && (
+          <Button onClick={handleBack} type='button' size='icon-sm' variant='ghost'>
+            <ArrowLeftIcon size={24} />
+          </Button>
+        )}
+        <PageTitle title='Add Food' />
       </div>
 
       <div className='flex flex-col gap-5'>
