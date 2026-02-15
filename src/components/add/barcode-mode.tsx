@@ -1,5 +1,3 @@
-'use client'
-
 import type { NutritionData } from './nutrition-result'
 
 import { BarcodeIcon, CameraIcon, SpinnerGapIcon, WarningIcon, XIcon } from '@phosphor-icons/react'
@@ -12,7 +10,7 @@ type BarcodeModeProps = {
   onResult: (data: NutritionData) => void
 }
 
-function BarcodeMode(props: BarcodeModeProps) {
+export function BarcodeMode(props: BarcodeModeProps) {
   const { onResult } = props
   const { state, startScanning, stopScanning, active, handleScan, handleError } = useBarcodeScanner(onResult)
 
@@ -66,5 +64,3 @@ function BarcodeMode(props: BarcodeModeProps) {
     </div>
   )
 }
-
-export default BarcodeMode

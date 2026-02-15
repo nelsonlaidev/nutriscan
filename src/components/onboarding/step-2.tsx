@@ -9,11 +9,11 @@ import { OnboardingStep2FormSchema } from '@/lib/zod-schemas'
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
-import OnboardingLayout from './onboarding-layout'
+import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-2'
 
-function Step2() {
+export function Step2() {
   const { data, setStep, updateForm } = useOnboardingForm()
 
   const form = useForm({
@@ -83,5 +83,3 @@ function Step2() {
     </OnboardingLayout>
   )
 }
-
-export default Step2

@@ -1,5 +1,3 @@
-'use client'
-
 import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react'
 
 import { cn } from '@/lib/utils'
@@ -17,7 +15,7 @@ type ModeSelectorProps = {
   onChange: (mode: Mode) => void
 }
 
-function ModeSelector(props: ModeSelectorProps) {
+export function ModeSelector(props: ModeSelectorProps) {
   const { value, onChange } = props
 
   return (
@@ -44,5 +42,3 @@ function ModeSelector(props: ModeSelectorProps) {
     </div>
   )
 }
-
-export default ModeSelector

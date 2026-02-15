@@ -1,5 +1,3 @@
-'use client'
-
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
 
 import { useState } from 'react'
@@ -12,7 +10,7 @@ type ManualEntryModeProps = {
   onSubmit: (data: ManualFoodEntry) => void
 }
 
-function ManualEntryMode(props: ManualEntryModeProps) {
+export function ManualEntryMode(props: ManualEntryModeProps) {
   const { onSubmit } = props
   const [form, setForm] = useState({
     foodName: '',
@@ -164,5 +162,3 @@ function ManualEntryMode(props: ManualEntryModeProps) {
     </div>
   )
 }
-
-export default ManualEntryMode

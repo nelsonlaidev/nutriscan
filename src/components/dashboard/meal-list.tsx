@@ -22,7 +22,7 @@ const EMOJI_BG: Record<string, string> = {
   snacks: 'bg-red-100 dark:bg-red-950'
 }
 
-function MealList(props: MealListProps) {
+export function MealList(props: MealListProps) {
   const { meals } = props
 
   return (
@@ -56,5 +56,3 @@ function MealList(props: MealListProps) {
     </div>
   )
 }
-
-export default MealList

@@ -1,5 +1,3 @@
-'use client'
-
 import type { NutritionData } from './nutrition-result'
 
 import { CameraIcon, ImageIcon, SpinnerGapIcon } from '@phosphor-icons/react'
@@ -21,7 +19,7 @@ type AiImageModeProps = {
   onResult: (data: NutritionData) => void
 }
 
-function AiImageMode(props: AiImageModeProps) {
+export function AiImageMode(props: AiImageModeProps) {
   const { onResult } = props
   const [scanning, setScanning] = useState(false)
 
@@ -62,5 +60,3 @@ function AiImageMode(props: AiImageModeProps) {
     </div>
   )
 }
-
-export default AiImageMode

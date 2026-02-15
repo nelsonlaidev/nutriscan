@@ -13,7 +13,7 @@ type OnboardingLayoutProps = {
   continueDisabled?: boolean
 }
 
-function OnboardingLayout(props: OnboardingLayoutProps) {
+export function OnboardingLayout(props: OnboardingLayoutProps) {
   const { children, formId, stepName, stepDescription, stepIcon, continueDisabled = false } = props
   const { data, setStep } = useOnboardingForm()
 
@@ -50,5 +50,3 @@ function OnboardingLayout(props: OnboardingLayoutProps) {
     </div>
   )
 }
-
-export default OnboardingLayout

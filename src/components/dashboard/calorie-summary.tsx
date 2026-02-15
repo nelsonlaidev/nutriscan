@@ -1,4 +1,4 @@
-import CircleProgress from '@/components/dashboard/circle-progress'
+import { CircleProgress } from '@/components/dashboard/circle-progress'
 import { Card, CardContent } from '@/components/ui/card'
 import { DAILY_GOALS } from '@/lib/mock-data'
 
@@ -6,7 +6,7 @@ type CalorieSummaryProps = {
   calories: number
 }
 
-function CalorieSummary(props: CalorieSummaryProps) {
+export function CalorieSummary(props: CalorieSummaryProps) {
   const { calories } = props
   const remaining = DAILY_GOALS.calories - calories
 
@@ -46,5 +46,3 @@ function CalorieSummary(props: CalorieSummaryProps) {
     </Card>
   )
 }
-
-export default CalorieSummary

@@ -4,7 +4,7 @@ import { GearIcon, SignOutIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import PageTitle from '@/components/page-title'
+import { PageTitle } from '@/components/page-title'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'

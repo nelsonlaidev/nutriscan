@@ -13,11 +13,11 @@ import { OnboardingStep3FormSchema } from '@/lib/zod-schemas'
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
-import OnboardingLayout from './onboarding-layout'
+import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-3'
 
-function Step3() {
+export function Step3() {
   const router = useRouter()
   const { data } = useOnboardingForm()
 
@@ -100,5 +100,3 @@ function Step3() {
     </OnboardingLayout>
   )
 }
-
-export default Step3

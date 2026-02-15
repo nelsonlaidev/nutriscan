@@ -1,4 +1,4 @@
-import PageTitle from '@/components/page-title'
+import { PageTitle } from '@/components/page-title'
 import { CaloriesCard } from '@/components/progress/calories-card'
 import { StreakCard } from '@/components/progress/streak-card'
 import { WeightCard } from '@/components/progress/weight-card'

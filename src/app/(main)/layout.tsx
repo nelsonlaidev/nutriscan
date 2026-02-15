@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
-import Navbar from '@/components/navbar'
-import Providers from '@/components/providers'
+import { Navbar } from '@/components/navbar'
+import { Providers } from '@/components/providers'
 import { getSession } from '@/lib/auth'
 
 async function Layout(props: LayoutProps<'/'>) {

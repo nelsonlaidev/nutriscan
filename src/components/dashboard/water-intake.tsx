@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { WATER_GOAL } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 
-function WaterIntake() {
+export function WaterIntake() {
   const [count, setCount] = useState(0)
 
   function increment() {
@@ -62,5 +62,3 @@ function WaterIntake() {
     </Card>
   )
 }
-
-export default WaterIntake

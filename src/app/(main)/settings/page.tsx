@@ -1,4 +1,4 @@
-import PageTitle from '@/components/page-title'
+import { PageTitle } from '@/components/page-title'
 import { LanguageSelector } from '@/components/settings/language-selector'
 import { PersonalInfo } from '@/components/settings/personal-info'
 import { SignOutButton } from '@/components/settings/sign-out-button'

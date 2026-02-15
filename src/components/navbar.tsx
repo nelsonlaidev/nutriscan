@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 import { buttonVariants } from './ui/button'
 
-function Navbar() {
+export function Navbar() {
   const pathname = usePathname()
 
   return (
@@ -43,5 +43,3 @@ function Navbar() {
     </div>
   )
 }
-
-export default Navbar

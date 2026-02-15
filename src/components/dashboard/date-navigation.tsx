@@ -24,7 +24,7 @@ function getLabel(date: Date) {
   return date.toLocaleDateString('en-US', { weekday: 'long' })
 }
 
-function DateNavigation() {
+export function DateNavigation() {
   const [date, setDate] = useAtom(selectedDateAtom)
 
   const today = new Date()
@@ -78,5 +78,3 @@ function DateNavigation() {
     </div>
   )
 }
-
-export default DateNavigation

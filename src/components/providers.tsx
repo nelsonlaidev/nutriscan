@@ -12,7 +12,7 @@ type ProvidersProps = {
   session: Session
 }
 
-function Providers(props: ProvidersProps) {
+export function Providers(props: ProvidersProps) {
   const { children, session } = props
   const [queryClient] = useState(() => new QueryClient())
 
@@ -22,5 +22,3 @@ function Providers(props: ProvidersProps) {
     </QueryClientProvider>
   )
 }
-
-export default Providers

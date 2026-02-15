@@ -2,11 +2,11 @@
 
 import { useAtomValue } from 'jotai'
 
-import CalorieSummary from '@/components/dashboard/calorie-summary'
-import DateNavigation from '@/components/dashboard/date-navigation'
-import MacronutrientCards from '@/components/dashboard/macronutrient-cards'
-import MealList from '@/components/dashboard/meal-list'
-import WaterIntake from '@/components/dashboard/water-intake'
+import { CalorieSummary } from '@/components/dashboard/calorie-summary'
+import { DateNavigation } from '@/components/dashboard/date-navigation'
+import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
+import { MealList } from '@/components/dashboard/meal-list'
+import { WaterIntake } from '@/components/dashboard/water-intake'
 import { UserAvatar } from '@/components/user-avatar'
 import { selectedDateAtom } from '@/lib/atoms'
 import { computeMealBreakdowns, computeTotals, useFoodEntries } from '@/queries/food-entries'

@@ -11,7 +11,7 @@ type CircleProgressProps = {
   children?: React.ReactNode
 }
 
-function CircleProgress(props: CircleProgressProps) {
+export function CircleProgress(props: CircleProgressProps) {
   const { value, max, size = 80, strokeWidth = 6, className, trackClassName, progressClassName, children } = props
 
   const radius = (size - strokeWidth) / 2
@@ -49,5 +49,3 @@ function CircleProgress(props: CircleProgressProps) {
     </div>
   )
 }
-
-export default CircleProgress

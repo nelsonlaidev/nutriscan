@@ -1,5 +1,3 @@
-'use client'
-
 import { MEAL_CATEGORIES } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 
@@ -8,7 +6,7 @@ type MealCategoryPickerProps = {
   onChange: (categoryId: string) => void
 }
 
-function MealCategoryPicker(props: MealCategoryPickerProps) {
+export function MealCategoryPicker(props: MealCategoryPickerProps) {
   const { value, onChange } = props
 
   return (
@@ -38,5 +36,3 @@ function MealCategoryPicker(props: MealCategoryPickerProps) {
     </div>
   )
 }
-
-export default MealCategoryPicker

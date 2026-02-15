@@ -5,7 +5,7 @@ type AuthHeaderProps = {
   description: string
 }
 
-function AuthHeader(props: AuthHeaderProps) {
+export function AuthHeader(props: AuthHeaderProps) {
   const { title, description } = props
 
   return (
@@ -20,5 +20,3 @@ function AuthHeader(props: AuthHeaderProps) {
     </div>
   )
 }
-
-export default AuthHeader

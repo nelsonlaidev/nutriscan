@@ -1,5 +1,3 @@
-'use client'
-
 import { Input } from '@/components/ui/input'
 
 export type NutritionData = {
@@ -17,7 +15,7 @@ type NutritionResultProps = {
   onChange: (data: NutritionData) => void
 }
 
-function NutritionResult(props: NutritionResultProps) {
+export function NutritionResult(props: NutritionResultProps) {
   const { data, onChange } = props
 
   function updateField(field: keyof NutritionData, value: string) {
@@ -128,5 +126,3 @@ function NutritionResult(props: NutritionResultProps) {
     </div>
   )
 }
-
-export default NutritionResult

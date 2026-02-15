@@ -1,4 +1,4 @@
-import CircleProgress from '@/components/dashboard/circle-progress'
+import { CircleProgress } from '@/components/dashboard/circle-progress'
 import { Card, CardContent } from '@/components/ui/card'
 import { DAILY_GOALS } from '@/lib/mock-data'
 
@@ -16,7 +16,7 @@ const MACROS = [
   { key: 'fiber' as const, label: 'Fiber', color: 'stroke-primary' }
 ]
 
-function MacronutrientCards({ protein, carbs, fat, fiber }: MacronutrientCardsProps) {
+export function MacronutrientCards({ protein, carbs, fat, fiber }: MacronutrientCardsProps) {
   const values = { protein, carbs, fat, fiber }
 
   return (
@@ -43,5 +43,3 @@ function MacronutrientCards({ protein, carbs, fat, fiber }: MacronutrientCardsPr
     </div>
   )
 }
-
-export default MacronutrientCards

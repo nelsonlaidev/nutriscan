@@ -1,8 +1,8 @@
 'use client'
 
-import Step1 from '@/components/onboarding/step-1'
-import Step2 from '@/components/onboarding/step-2'
-import Step3 from '@/components/onboarding/step-3'
+import { Step1 } from '@/components/onboarding/step-1'
+import { Step2 } from '@/components/onboarding/step-2'
+import { Step3 } from '@/components/onboarding/step-3'
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 
 function Page() {
