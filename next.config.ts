@@ -1,15 +1,13 @@
 import type { NextConfig } from 'next'
 
-import './src/env'
-
 import createNextIntlPlugin from 'next-intl/plugin'
 
-const r2Hostname = process.env.R2_PUBLIC_URL ? new URL(process.env.R2_PUBLIC_URL).hostname : undefined
+import { env } from './src/env'
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
   images: {
-    remotePatterns: r2Hostname ? [{ protocol: 'https', hostname: r2Hostname }] : []
+    remotePatterns: [new URL(env.R2_PUBLIC_URL)]
   },
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
@@ -21,4 +19,5 @@ const nextConfig: NextConfig = {
 }
 
 const withNextIntl = createNextIntlPlugin()
+
 export default withNextIntl(nextConfig)
