@@ -1,6 +1,6 @@
-'use client'
+import type { SearchParams } from 'nuqs/server'
 
-import { useAtomValue } from 'jotai'
+import { redirect } from 'next/navigation'
 
 import { CalorieSummary } from '@/components/dashboard/calorie-summary'
 import { DateNavigation } from '@/components/dashboard/date-navigation'
@@ -8,13 +8,22 @@ import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
 import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
 import { UserAvatar } from '@/components/user-avatar'
-import { selectedDateAtom } from '@/lib/atoms'
-import { computeMealBreakdowns, computeTotals, useFoodEntries } from '@/queries/food-entries'
+import { computeMealBreakdowns, computeTotals, getFoodEntriesByDate } from '@/data/food-entries'
+import { getSession } from '@/lib/auth'
 
-function Page() {
-  const selectedDate = useAtomValue(selectedDateAtom)
-  const { data: entries = [] } = useFoodEntries(selectedDate)
+import { dashboardCache } from './search-params'
 
+type PageProps = {
+  searchParams: Promise<SearchParams>
+}
+
+async function Page({ searchParams }: PageProps) {
+  const { date } = await dashboardCache.parse(searchParams)
+
+  const session = await getSession()
+  if (!session) redirect('/')
+
+  const entries = await getFoodEntriesByDate(session.user.id, date)
   const totals = computeTotals(entries)
   const meals = computeMealBreakdowns(entries)
 

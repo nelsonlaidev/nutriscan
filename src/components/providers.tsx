@@ -2,9 +2,6 @@
 
 import type { Session } from '@/lib/auth'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useState } from 'react'
-
 import { SessionProvider } from '@/lib/session'
 
 type ProvidersProps = {
@@ -14,11 +11,6 @@ type ProvidersProps = {
 
 export function Providers(props: ProvidersProps) {
   const { children, session } = props
-  const [queryClient] = useState(() => new QueryClient())
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>{children}</SessionProvider>
-    </QueryClientProvider>
-  )
+  return <SessionProvider session={session}>{children}</SessionProvider>
 }

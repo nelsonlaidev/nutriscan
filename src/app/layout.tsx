@@ -7,6 +7,7 @@ import { Geist } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { Toaster } from '@/components/ui/sonner'
 
@@ -33,10 +34,12 @@ async function Layout(props: LayoutProps) {
       <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <JotaiProvider>
-            <NextIntlClientProvider messages={messages}>
-              {children}
-              <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
-            </NextIntlClientProvider>
+            <NuqsAdapter>
+              <NextIntlClientProvider messages={messages}>
+                {children}
+                <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+              </NextIntlClientProvider>
+            </NuqsAdapter>
           </JotaiProvider>
         </ThemeProvider>
       </body>

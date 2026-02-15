@@ -1,26 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { addDays, parse, startOfDay } from 'date-fns'
+import { and, eq, gte, lt } from 'drizzle-orm'
 
-import { getFoodEntries } from '@/actions/get-food-entries'
-
-function formatDateKey(date: Date) {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-export function useFoodEntries(date: Date) {
-  const dateKey = formatDateKey(date)
-
-  return useQuery({
-    queryKey: ['food-entries', dateKey],
-    queryFn: async () => {
-      const result = await getFoodEntries({ date: dateKey })
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- result.data is undefined when action errors
-      return result?.data ?? []
-    }
-  })
-}
+import { db } from '@/db'
+import { foodEntries } from '@/db/schemas/food-entry.schema'
 
 export type MealCategory = 'breakfast' | 'lunch' | 'dinner' | 'snacks'
 
@@ -31,6 +13,16 @@ type FoodEntry = {
   fat: number
   fiber: number
   mealCategory: MealCategory
+}
+
+export async function getFoodEntriesByDate(userId: string, date: string) {
+  const start = startOfDay(parse(date, 'yyyy-MM-dd', new Date()))
+  const end = addDays(start, 1)
+
+  return db
+    .select()
+    .from(foodEntries)
+    .where(and(eq(foodEntries.userId, userId), gte(foodEntries.createdAt, start), lt(foodEntries.createdAt, end)))
 }
 
 export function computeTotals(entries: FoodEntry[]) {
