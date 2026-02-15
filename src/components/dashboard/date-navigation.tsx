@@ -1,7 +1,7 @@
 'use client'
 
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react/ssr'
-import { addDays, format, isToday, isYesterday, parse, subDays } from 'date-fns'
+import { addDays, differenceInDays, format, isToday, isYesterday, parse, startOfDay, subDays } from 'date-fns'
 import { useQueryState } from 'nuqs'
 
 import { dashboardParsers } from '@/app/(main)/dashboard/search-params'
@@ -18,8 +18,10 @@ export function DateNavigation() {
   const currentDate = parse(date, 'yyyy-MM-dd', new Date())
 
   const isTodayDate = isToday(currentDate)
+  const isOldestDate = differenceInDays(startOfDay(new Date()), currentDate) >= 6
 
   function goBack() {
+    if (isOldestDate) return
     void setDate(format(subDays(currentDate, 1), 'yyyy-MM-dd'))
   }
 
@@ -30,7 +32,7 @@ export function DateNavigation() {
 
   return (
     <div className='flex items-center justify-between rounded-2xl px-4 py-3'>
-      <Button variant='ghost' size='icon-sm' onClick={goBack}>
+      <Button variant='ghost' size='icon-sm' onClick={goBack} disabled={isOldestDate} className='disabled:opacity-30'>
         <CaretLeftIcon size={20} weight='bold' />
       </Button>
       <div className='text-center'>
