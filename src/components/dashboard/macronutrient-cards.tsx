@@ -1,45 +1,55 @@
-import { CircleProgress } from '@/components/dashboard/circle-progress'
-import { Card, CardContent } from '@/components/ui/card'
+import { BowlFoodIcon } from '@phosphor-icons/react/ssr'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
 import { DAILY_GOALS } from '@/lib/mock-data'
 
 type MacronutrientCardsProps = {
-  protein: number
-  carbs: number
-  fat: number
-  fiber: number
+  values: {
+    protein: number
+    carbs: number
+    fat: number
+    fiber: number
+  }
 }
 
 const MACROS = [
-  { key: 'protein' as const, label: 'Protein', color: 'stroke-blue-500' },
-  { key: 'carbs' as const, label: 'Carbs', color: 'stroke-amber-500' },
-  { key: 'fat' as const, label: 'Fat', color: 'stroke-rose-500' },
-  { key: 'fiber' as const, label: 'Fiber', color: 'stroke-primary' }
+  { key: 'protein' as const, label: 'Protein', className: '**:data-[slot=progress-indicator]:bg-blue-500' },
+  { key: 'carbs' as const, label: 'Carbs', className: '**:data-[slot=progress-indicator]:bg-amber-500' },
+  { key: 'fat' as const, label: 'Fat', className: '**:data-[slot=progress-indicator]:bg-rose-500' },
+  { key: 'fiber' as const, label: 'Fiber', className: '**:data-[slot=progress-indicator]:bg-primary' }
 ]
 
 export function MacronutrientCards(props: MacronutrientCardsProps) {
-  const values = props
+  const { values } = props
 
   return (
-    <div className='space-y-2'>
-      <h2 className='text-base font-semibold'>Macronutrients</h2>
-      <div className='grid grid-cols-4 gap-2'>
-        {MACROS.map((macro) => (
-          <Card key={macro.key} size='sm'>
-            <CardContent className='flex flex-col items-center gap-1 p-3'>
-              <CircleProgress
-                value={values[macro.key]}
-                max={DAILY_GOALS[macro.key]}
-                size={48}
-                strokeWidth={4}
-                progressClassName={macro.color}
-              />
-              <span className='text-sm font-bold'>{Math.round(values[macro.key])}g</span>
-              <span className='text-[10px] text-muted-foreground'>{macro.label}</span>
-              <span className='text-[10px] text-muted-foreground'>/ {DAILY_GOALS[macro.key]}g</span>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <Card size='sm'>
+      <CardHeader>
+        <CardTitle className='flex items-center gap-2'>
+          <BowlFoodIcon className='size-5' />
+          Macronutrients
+        </CardTitle>
+      </CardHeader>
+      <CardContent className='space-y-4'>
+        {MACROS.map((macro) => {
+          const value = Math.round(values[macro.key])
+          const goal = DAILY_GOALS[macro.key]
+          const percentage = Math.min(Math.round((value / goal) * 100), 100)
+
+          return (
+            <div key={macro.key} className='space-y-1'>
+              <div className='flex items-center justify-between'>
+                <span className='text-sm font-medium'>{macro.label}</span>
+                <span className='ml-auto text-sm text-muted-foreground'>
+                  {value}g / {goal}g
+                </span>
+              </div>
+              <Progress value={percentage} className={macro.className} />
+            </div>
+          )
+        })}
+      </CardContent>
+    </Card>
   )
 }

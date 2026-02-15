@@ -24,7 +24,7 @@ export function WaterIntake() {
       <CardContent className='space-y-3'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
-            <DropIcon size={20} weight='fill' className='text-blue-400' />
+            <DropIcon size={20} />
             <span className='text-sm font-semibold'>Water Intake</span>
           </div>
           <span className='text-sm font-medium text-blue-500'>

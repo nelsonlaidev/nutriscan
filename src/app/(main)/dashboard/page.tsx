@@ -37,7 +37,7 @@ async function Page(props: PageProps<'/dashboard'>) {
       <div className='flex flex-col gap-5 px-4 pb-24'>
         <DateNavigation />
         <CalorieSummary calories={totals.calories} />
-        <MacronutrientCards protein={totals.protein} carbs={totals.carbs} fat={totals.fat} fiber={totals.fiber} />
+        <MacronutrientCards values={totals} />
         <WaterIntake />
         <MealList meals={meals} />
       </div>
