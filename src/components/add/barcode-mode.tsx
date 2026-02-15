@@ -1,6 +1,6 @@
 import type { NutritionData } from './nutrition-result'
 
-import { BarcodeIcon, CameraIcon, SpinnerGapIcon, WarningIcon, XIcon } from '@phosphor-icons/react'
+import { BarcodeIcon, CameraIcon, SpinnerGapIcon, WarningIcon, XIcon } from '@phosphor-icons/react/ssr'
 import { Scanner } from '@yudiel/react-qr-scanner'
 
 import { Button } from '@/components/ui/button'

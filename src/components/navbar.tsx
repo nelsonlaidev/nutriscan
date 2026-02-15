@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusIcon } from '@phosphor-icons/react'
+import { PlusIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 

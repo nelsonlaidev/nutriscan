@@ -1,6 +1,6 @@
 'use client'
 
-import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

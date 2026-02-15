@@ -1,6 +1,6 @@
 'use client'
 
-import { FlagIcon } from '@phosphor-icons/react'
+import { FlagIcon } from '@phosphor-icons/react/ssr'
 import { useState } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { SignOutIcon } from '@phosphor-icons/react'
+import { SignOutIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'

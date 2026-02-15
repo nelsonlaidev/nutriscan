@@ -1,6 +1,6 @@
 'use client'
 
-import { GearIcon } from '@phosphor-icons/react'
+import { GearIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 
 import { PageTitle } from '@/components/page-title'

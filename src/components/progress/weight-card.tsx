@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRightIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon } from '@phosphor-icons/react/ssr'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'

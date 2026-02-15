@@ -1,6 +1,6 @@
 import type { NutritionData } from './nutrition-result'
 
-import { CameraIcon, ImageIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { CameraIcon, ImageIcon, SpinnerGapIcon } from '@phosphor-icons/react/ssr'
 import { useCallback, useState } from 'react'
 
 import { Button } from '@/components/ui/button'

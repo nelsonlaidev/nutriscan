@@ -1,4 +1,4 @@
-import { LeafIcon } from '@phosphor-icons/react'
+import { LeafIcon } from '@phosphor-icons/react/ssr'
 
 type AuthHeaderProps = {
   title: string

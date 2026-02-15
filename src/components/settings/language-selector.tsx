@@ -1,6 +1,6 @@
 'use client'
 
-import { GlobeIcon } from '@phosphor-icons/react'
+import { GlobeIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 

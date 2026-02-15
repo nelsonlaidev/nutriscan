@@ -1,6 +1,6 @@
 'use client'
 
-import { BarbellIcon } from '@phosphor-icons/react'
+import { BarbellIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'

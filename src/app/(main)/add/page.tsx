@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeftIcon } from '@phosphor-icons/react'
+import { ArrowLeftIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'

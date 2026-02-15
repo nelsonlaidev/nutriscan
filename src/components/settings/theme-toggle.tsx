@@ -1,6 +1,6 @@
 'use client'
 
-import { MoonIcon, SunIcon } from '@phosphor-icons/react'
+import { MoonIcon, SunIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 

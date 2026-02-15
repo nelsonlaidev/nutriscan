@@ -1,6 +1,6 @@
 'use client'
 
-import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react/ssr'
 import { addDays, format, isToday, isYesterday, parse, subDays } from 'date-fns'
 import { useQueryState } from 'nuqs'
 

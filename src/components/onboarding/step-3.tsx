@@ -1,6 +1,6 @@
 'use client'
 
-import { RulerIcon } from '@phosphor-icons/react'
+import { RulerIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 import { useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'

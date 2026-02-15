@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react'
+import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 

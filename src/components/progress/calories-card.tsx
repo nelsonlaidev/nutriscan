@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpRightIcon } from '@phosphor-icons/react'
+import { ArrowUpRightIcon } from '@phosphor-icons/react/ssr'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { caloriesData } from '@/lib/mock/progress-data'

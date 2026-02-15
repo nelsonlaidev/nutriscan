@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircleIcon, FireIcon } from '@phosphor-icons/react'
+import { CheckCircleIcon, FireIcon } from '@phosphor-icons/react/ssr'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { streakData } from '@/lib/mock/progress-data'

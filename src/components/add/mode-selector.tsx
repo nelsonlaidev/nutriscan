@@ -1,4 +1,4 @@
-import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react'
+import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
 
 import { cn } from '@/lib/utils'
 
