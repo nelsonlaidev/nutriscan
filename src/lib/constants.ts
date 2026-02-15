@@ -1,4 +1,4 @@
-import { ChartBarIcon, HouseIcon, UserCircleIcon } from '@phosphor-icons/react/ssr'
+import { CameraIcon, ChartBarIcon, ChatsCircleIcon, HouseIcon } from '@phosphor-icons/react/ssr'
 
 import { env } from '@/env'
 
@@ -24,8 +24,19 @@ export const NAVBAR_LINKS = [
     icon: ChartBarIcon
   },
   {
+    title: 'Add',
+    href: '/add',
+    icon: CameraIcon,
+    primary: true
+  },
+  {
+    title: 'Chat',
+    href: '/chat',
+    icon: ChatsCircleIcon
+  },
+  {
     title: 'Profile',
     href: '/profile',
-    icon: UserCircleIcon
+    icon: null
   }
 ]
