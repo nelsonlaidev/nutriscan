@@ -2,21 +2,22 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useSession } from '@/lib/session'
-import { cn, getInitials } from '@/lib/utils'
 
-type UserAvatarProps = {
-  className?: string
-  fallbackClassName?: string
-  initialsLimit?: number
-}
+import { Skeleton } from './ui/skeleton'
 
-export function UserAvatar({ className, fallbackClassName, initialsLimit = 2 }: UserAvatarProps) {
+type UserAvatarProps = React.ComponentProps<typeof Avatar>
+
+export function UserAvatar(props: UserAvatarProps) {
   const { user } = useSession()
 
+  const imageSrc = user.image ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${user.id}`
+
   return (
-    <Avatar className={cn(className)}>
-      <AvatarImage src={user.image ?? undefined} alt={user.name} />
-      <AvatarFallback className={fallbackClassName}>{getInitials(user.name, initialsLimit)}</AvatarFallback>
+    <Avatar {...props}>
+      <AvatarImage src={imageSrc} alt={`${user.name}'s avatar`} />
+      <AvatarFallback>
+        <Skeleton className='size-full' />
+      </AvatarFallback>
     </Avatar>
   )
 }

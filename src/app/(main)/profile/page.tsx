@@ -50,7 +50,7 @@ function Page() {
 
       {/* Avatar + Name + Email */}
       <div className='flex flex-col items-center gap-2 py-4'>
-        <UserAvatar className='size-24' fallbackClassName='text-4xl' />
+        <UserAvatar className='size-24' />
         <div className='text-center'>
           <p className='text-xl font-semibold'>{displayName}</p>
           <p className='text-sm text-muted-foreground'>{user.email}</p>
