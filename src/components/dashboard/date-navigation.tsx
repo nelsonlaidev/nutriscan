@@ -14,7 +14,7 @@ function getLabel(date: Date) {
 }
 
 export function DateNavigation() {
-  const [date, setDate] = useQueryState('date', dashboardParsers.date)
+  const [date, setDate] = useQueryState('date', { ...dashboardParsers.date, shallow: false })
   const currentDate = parse(date, 'yyyy-MM-dd', new Date())
 
   const isTodayDate = isToday(currentDate)
