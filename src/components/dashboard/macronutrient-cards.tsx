@@ -16,8 +16,8 @@ const MACROS = [
   { key: 'fiber' as const, label: 'Fiber', color: 'stroke-primary' }
 ]
 
-export function MacronutrientCards({ protein, carbs, fat, fiber }: MacronutrientCardsProps) {
-  const values = { protein, carbs, fat, fiber }
+export function MacronutrientCards(props: MacronutrientCardsProps) {
+  const values = props
 
   return (
     <div className='space-y-2'>

@@ -1,5 +1,3 @@
-import type { SearchParams } from 'nuqs/server'
-
 import { redirect } from 'next/navigation'
 
 import { CalorieSummary } from '@/components/dashboard/calorie-summary'
@@ -13,11 +11,8 @@ import { getSession } from '@/lib/auth'
 
 import { dashboardCache } from './search-params'
 
-type PageProps = {
-  searchParams: Promise<SearchParams>
-}
-
-async function Page({ searchParams }: PageProps) {
+async function Page(props: PageProps<'/dashboard'>) {
+  const { searchParams } = props
   const { date } = await dashboardCache.parse(searchParams)
 
   const session = await getSession()
@@ -28,20 +23,18 @@ async function Page({ searchParams }: PageProps) {
   const meals = computeMealBreakdowns(entries)
 
   return (
-    <div className='-m-6 flex flex-col'>
-      {/* Primary header */}
-      <div className='bg-primary px-6 pt-6 pb-20'>
+    <div className='flex flex-col'>
+      <div className='p-6'>
         <div className='flex items-center justify-between'>
           <div>
-            <h1 className='text-lg font-bold text-primary-foreground'>NutriScan</h1>
-            <p className='text-xs text-primary-foreground/70'>Your daily nutrition</p>
+            <h1 className='text-lg font-semibold'>NutriScan</h1>
+            <p className='text-xs'>Your daily nutrition</p>
           </div>
           <UserAvatar />
         </div>
       </div>
 
-      {/* Content area overlapping the header */}
-      <div className='-mt-14 flex flex-col gap-5 px-4 pb-24'>
+      <div className='flex flex-col gap-5 px-4 pb-24'>
         <DateNavigation />
         <CalorieSummary calories={totals.calories} />
         <MacronutrientCards protein={totals.protein} carbs={totals.carbs} fat={totals.fat} fiber={totals.fiber} />

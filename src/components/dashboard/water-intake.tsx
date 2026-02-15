@@ -20,7 +20,7 @@ export function WaterIntake() {
   }
 
   return (
-    <Card>
+    <Card size='sm'>
       <CardContent className='space-y-3'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>

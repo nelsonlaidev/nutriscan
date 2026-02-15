@@ -11,7 +11,7 @@ export function CalorieSummary(props: CalorieSummaryProps) {
   const remaining = DAILY_GOALS.calories - calories
 
   return (
-    <Card>
+    <Card size='sm'>
       <CardContent className='flex items-center gap-6'>
         <CircleProgress
           value={calories}
