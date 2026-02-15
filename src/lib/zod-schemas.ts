@@ -122,3 +122,8 @@ export const SignUpFormSchema = z
 export const UpdateLocaleSchema = z.object({
   locale: z.enum(LOCALES)
 })
+
+export const UpdateWaterIntakeSchema = z.object({
+  count: z.number().int().min(0).max(8),
+  date: z.string()
+})

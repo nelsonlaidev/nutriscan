@@ -22,6 +22,13 @@
       "when": 1771144477700,
       "tag": "0002_daily_stephen_strange",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771150383154,
+      "tag": "0003_abandoned_karen_page",
+      "breakpoints": true
     }
   ]
 }

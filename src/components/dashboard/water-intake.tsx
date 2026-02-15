@@ -2,21 +2,41 @@
 
 import { DropIcon, MinusIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import { useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
+import { updateWaterIntake } from '@/actions/update-water-intake'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { WATER_GOAL } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 
-export function WaterIntake() {
-  const [count, setCount] = useState(0)
+type WaterIntakeProps = {
+  initialCount: number
+  date: string
+}
+
+export function WaterIntake(props: WaterIntakeProps) {
+  const { initialCount, date } = props
+  const [count, setCount] = useState(initialCount)
+
+  const debouncedSave = useDebouncedCallback((value: number) => {
+    void updateWaterIntake({ count: value, date })
+  }, 500)
 
   function increment() {
-    setCount((c) => Math.min(c + 1, WATER_GOAL))
+    setCount((c) => {
+      const next = Math.min(c + 1, WATER_GOAL)
+      debouncedSave(next)
+      return next
+    })
   }
 
   function decrement() {
-    setCount((c) => Math.max(c - 1, 0))
+    setCount((c) => {
+      const next = Math.max(c - 1, 0)
+      debouncedSave(next)
+      return next
+    })
   }
 
   return (
