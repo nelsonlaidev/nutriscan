@@ -8,7 +8,7 @@ export function PersonalInfo() {
   const { user } = useSession()
 
   return (
-    <Card>
+    <Card size='sm'>
       <CardContent className='flex items-center gap-3'>
         <UserAvatar className='size-14' />
         <div>

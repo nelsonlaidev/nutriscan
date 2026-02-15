@@ -8,6 +8,8 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { signOut } from '@/lib/auth-client'
 
+import { Spinner } from '../ui/spinner'
+
 export function SignOutButton() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -30,9 +32,9 @@ export function SignOutButton() {
   }
 
   return (
-    <Button variant='destructive' className='w-full sm:w-auto' onClick={handleSignOut} disabled={loading}>
-      <SignOutIcon className='mr-2' size={20} />
-      {loading ? 'Signing out...' : 'Sign Out'}
+    <Button variant='destructive' className='w-full' onClick={handleSignOut} disabled={loading}>
+      {loading ? <Spinner data-icon='inline-start' /> : <SignOutIcon data-icon='inline-start' />}
+      Sign Out
     </Button>
   )
 }
