@@ -2,6 +2,8 @@
 
 This file provides guidance to AI agents when working with code in this repository.
 
+**Note: This app is in active development.** Database migrations can be run directly without concern for backfill or conflicts. Breaking changes are acceptable.
+
 ## Commands
 
 - `pnpm dev` — start dev server (http://localhost:3000)
@@ -108,4 +110,4 @@ Route protection logic: redirects unauthenticated users to `/`, redirects authen
 - Add UI components using shadcn/ui mcp
 - Always add `Icon` suffix when using Phosphor icons. E.g. `ArrowUpRightIcon` instead of `ArrowUpRight`
 - Prefer importing Phosphor icons from `@phosphor-icons/react/ssr` instead of `@phosphor-icons/react`
-- **Database migrations**: When updating database schemas, NEVER run `pnpm db:push` or `pnpm db:migrate`. Instead, ask the user to run migrations manually after making schema changes
+- **Database migrations**: Use `pnpm db:push` for quick schema changes during development. No need to worry about backfill or migration conflicts—this is a development app
