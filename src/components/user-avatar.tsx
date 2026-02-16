@@ -16,7 +16,7 @@ export function UserAvatar(props: UserAvatarProps) {
     <Avatar {...props}>
       <AvatarImage src={imageSrc} alt={`${user.name}'s avatar`} />
       <AvatarFallback>
-        <Skeleton className='size-full' />
+        <Skeleton className='size-full rounded-full' />
       </AvatarFallback>
     </Avatar>
   )
