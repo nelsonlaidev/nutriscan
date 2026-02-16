@@ -7,12 +7,13 @@ import { useDebouncedCallback } from 'use-debounce'
 import { updateWaterIntake } from '@/actions/update-water-intake'
 import { Button } from '@/components/ui/button'
 import { MAX_WATER_INTAKE } from '@/lib/constants'
-import { formatMl } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
 
+import { WaterAmountDialog } from './water-amount-dialog'
 import { WaterDroplet } from './water-droplet'
 import { WaterGoalDialog } from './water-goal-dialog'
+import { WeeklyWaterTracker } from './weekly-water-tracker'
 
 const QUICK_ADD_OPTIONS = [100, 200, 300, 500]
 
@@ -20,10 +21,11 @@ type WaterTrackerProps = {
   initialAmount: number
   initialGoal: number
   date: string
+  weekData: Array<{ date: string; amount: number }>
 }
 
 export function WaterTracker(props: WaterTrackerProps) {
-  const { initialAmount, initialGoal, date } = props
+  const { initialAmount, initialGoal, date, weekData } = props
   const [amount, setAmount] = useState(initialAmount)
   const [goal, setGoal] = useState(initialGoal)
 
@@ -43,10 +45,11 @@ export function WaterTracker(props: WaterTrackerProps) {
 
   return (
     <div className='flex flex-col items-center gap-8'>
+      <WeeklyWaterTracker weekData={weekData} goal={goal} todayAmount={amount} date={date} />
       <Card className='w-full' size='sm'>
         <CardContent className='flex flex-col items-center gap-4'>
           <WaterDroplet percentage={percentage} />
-          <span className='text-3xl font-semibold'>{formatMl(amount)}</span>
+          <WaterAmountDialog amount={amount} date={date} onAmountChange={setAmount} />
           <WaterGoalDialog currentGoal={goal} onGoalChange={setGoal} />
         </CardContent>
       </Card>
