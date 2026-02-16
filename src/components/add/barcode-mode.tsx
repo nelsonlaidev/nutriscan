@@ -2,6 +2,7 @@ import type { NutritionData } from './nutrition-result'
 
 import { BarcodeIcon, CameraIcon, SpinnerGapIcon, WarningIcon, XIcon } from '@phosphor-icons/react/ssr'
 import { Scanner } from '@yudiel/react-qr-scanner'
+import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
 import { useBarcodeScanner } from '@/hooks/use-barcode-scanner'
@@ -12,6 +13,7 @@ type BarcodeModeProps = {
 
 export function BarcodeMode(props: BarcodeModeProps) {
   const { onResult } = props
+  const t = useTranslations()
   const { state, startScanning, stopScanning, active, handleScan, handleError } = useBarcodeScanner(onResult)
 
   return (
@@ -29,7 +31,7 @@ export function BarcodeMode(props: BarcodeModeProps) {
         ) : (
           <div className='flex flex-col items-center gap-2 text-muted-foreground'>
             <BarcodeIcon size={40} />
-            <span className='text-sm'>Point camera at barcode</span>
+            <span className='text-sm'>{t('add-food.point-camera')}</span>
           </div>
         )}
 
@@ -37,7 +39,7 @@ export function BarcodeMode(props: BarcodeModeProps) {
         {state.status === 'looking-up' && (
           <div className='absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40'>
             <SpinnerGapIcon size={40} className='animate-spin text-white' />
-            <span className='text-sm font-medium text-white'>Looking up product...</span>
+            <span className='text-sm font-medium text-white'>{t('add-food.looking-up')}</span>
           </div>
         )}
 
@@ -53,12 +55,12 @@ export function BarcodeMode(props: BarcodeModeProps) {
       {active ? (
         <Button variant='outline' onClick={stopScanning}>
           <XIcon size={16} />
-          Stop
+          {t('add-food.stop')}
         </Button>
       ) : (
         <Button onClick={startScanning}>
           <CameraIcon size={16} />
-          Start Scanning
+          {t('add-food.start-scanning')}
         </Button>
       )}
     </div>

@@ -1,44 +1,61 @@
+import type { Translator } from '@/types'
+
 import * as z from 'zod'
 
 import { LOCALES, MAX_WATER_INTAKE } from './constants'
 
-const CurrentWeightField = z
-  .number()
-  .min(20, 'Weight must be at least 20 kg')
-  .max(300, 'Weight must be at most 300 kg')
-  .positive('Weight must be a positive number')
+export function createCurrentWeightField(t: Translator) {
+  return z
+    .number()
+    .min(20, t('validation.weight-min'))
+    .max(300, t('validation.weight-max'))
+    .positive(t('validation.weight-positive'))
+}
 
-const GoalWeightField = z
-  .number()
-  .min(20, 'Goal weight must be at least 20 kg')
-  .max(300, 'Goal weight must be at most 300 kg')
-  .positive('Goal weight must be a positive number')
+export function createGoalWeightField(t: Translator) {
+  return z
+    .number()
+    .min(20, t('validation.goal-weight-min'))
+    .max(300, t('validation.goal-weight-max'))
+    .positive(t('validation.goal-weight-positive'))
+}
 
-const HeightField = z
-  .number()
-  .min(50, 'Height must be at least 50 cm')
-  .max(250, 'Height must be at most 250 cm')
-  .positive('Height must be a positive number')
+export function createHeightField(t: Translator) {
+  return z
+    .number()
+    .min(50, t('validation.height-min'))
+    .max(250, t('validation.height-max'))
+    .positive(t('validation.height-positive'))
+}
 
 const NumberOrEmpty = (field: z.ZodNumber, message: string) =>
   field.or(z.literal('')).refine((val) => val !== '', { message })
 
-export const OnboardingStep1FormSchema = z.object({
-  currentWeight: NumberOrEmpty(CurrentWeightField, 'Please enter your current weight'),
-  goalWeight: NumberOrEmpty(GoalWeightField, 'Please enter your goal weight')
-})
+export function createOnboardingStep1FormSchema(t: Translator) {
+  const CurrentWeightField = createCurrentWeightField(t)
+  const GoalWeightField = createGoalWeightField(t)
 
-export const OnboardingStep2FormSchema = z.object({
-  birthday: z.string().min(1, 'Please enter your birthday'),
-  height: NumberOrEmpty(HeightField, 'Please enter your height'),
-  gender: z.enum(['male', 'female', 'other'], { message: 'Please select a gender' }),
-  plan: z.enum(['relaxed', 'steady', 'accelerated'], { message: 'Please select a plan' })
-})
+  return z.object({
+    currentWeight: NumberOrEmpty(CurrentWeightField, t('validation.current-weight-required')),
+    goalWeight: NumberOrEmpty(GoalWeightField, t('validation.goal-weight-required'))
+  })
+}
+
+export function createOnboardingStep2FormSchema(t: Translator) {
+  const HeightField = createHeightField(t)
+
+  return z.object({
+    birthday: z.string().min(1, t('validation.birthday-required')),
+    height: NumberOrEmpty(HeightField, t('validation.height-required')),
+    gender: z.enum(['male', 'female', 'other'], { message: t('validation.gender-required') }),
+    plan: z.enum(['relaxed', 'steady', 'accelerated'], { message: t('validation.plan-required') })
+  })
+}
 
 export const OnboardingActionSchema = z.object({
-  currentWeight: CurrentWeightField,
-  goalWeight: GoalWeightField,
-  height: HeightField,
+  currentWeight: z.number().min(20).max(300).positive(),
+  goalWeight: z.number().min(20).max(300).positive(),
+  height: z.number().min(50).max(250).positive(),
   birthday: z.string().min(1),
   gender: z.enum(['male', 'female', 'other']),
   calorieBudget: z.number().int().min(1),
@@ -47,16 +64,24 @@ export const OnboardingActionSchema = z.object({
   fatTarget: z.number().int().min(1)
 })
 
-export const ManualFoodEntrySchema = z.object({
-  foodName: z.string().min(1, 'Food name is required'),
-  servingSize: z.string().min(1, 'Serving size is required'),
-  calories: z.coerce.number().min(0, 'Must be 0 or more').max(5000, 'Must be 5000 or less'),
-  protein: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
-  carbs: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
-  fat: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less')
-})
+export function createManualFoodEntrySchema(t: Translator) {
+  return z.object({
+    foodName: z.string().min(1, t('validation.food-name-required')),
+    servingSize: z.string().min(1, t('validation.serving-size-required')),
+    calories: z.coerce
+      .number()
+      .min(0, t('validation.must-be-0-or-more'))
+      .max(5000, t('validation.must-be-5000-or-less')),
+    protein: z.coerce
+      .number()
+      .min(0, t('validation.must-be-0-or-more'))
+      .max(1000, t('validation.must-be-1000-or-less')),
+    carbs: z.coerce.number().min(0, t('validation.must-be-0-or-more')).max(1000, t('validation.must-be-1000-or-less')),
+    fat: z.coerce.number().min(0, t('validation.must-be-0-or-more')).max(1000, t('validation.must-be-1000-or-less'))
+  })
+}
 
-export type ManualFoodEntry = z.infer<typeof ManualFoodEntrySchema>
+export type ManualFoodEntry = z.infer<ReturnType<typeof createManualFoodEntrySchema>>
 
 export const AddFoodEntrySchema = z.object({
   foodName: z.string().min(1),
@@ -79,8 +104,8 @@ export const OpenFoodFactsResponseSchema = z.object({
   status: z.number(),
   product: z
     .object({
-      product_name: z.string().optional().default('Unknown Product'),
-      serving_size: z.string().optional().default('100g'),
+      product_name: z.string().optional().default(''),
+      serving_size: z.string().optional().default(''),
       nutriments: z
         .object({
           'energy-kcal_100g': z.number().optional().default(0),
@@ -103,28 +128,26 @@ export const AiImageScanSchema = z.object({
   imageBase64: z.string().min(1)
 })
 
-export const SignInFormSchema = z.object({
-  email: z.email('Invalid email address'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .max(128, 'Password must be at most 128 characters long')
-})
+export function createSignInFormSchema(t: Translator) {
+  return z.object({
+    email: z.email(t('validation.invalid-email')),
+    password: z.string().min(8, t('validation.password-min')).max(128, t('validation.password-max'))
+  })
+}
 
-export const SignUpFormSchema = z
-  .object({
-    name: z.string().min(1, 'Display name is required'),
-    email: z.email('Invalid email address'),
-    password: z
-      .string()
-      .min(8, 'Password must be at least 8 characters long')
-      .max(128, 'Password must be at most 128 characters long'),
-    confirmPassword: z.string()
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword']
-  })
+export function createSignUpFormSchema(t: Translator) {
+  return z
+    .object({
+      name: z.string().min(1, t('validation.display-name-required')),
+      email: z.email(t('validation.invalid-email')),
+      password: z.string().min(8, t('validation.password-min')).max(128, t('validation.password-max')),
+      confirmPassword: z.string()
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('validation.passwords-no-match'),
+      path: ['confirmPassword']
+    })
+}
 
 export const UpdateLocaleSchema = z.object({
   locale: z.enum(LOCALES)

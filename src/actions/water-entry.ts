@@ -1,5 +1,7 @@
 'use server'
 
+import type { ErrorResponse } from '@/types'
+
 import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
@@ -29,7 +31,9 @@ export const updateWaterEntry = authActionClient
       .where(and(eq(waterEntries.id, parsedInput.id), eq(waterEntries.userId, ctx.user.id)))
       .limit(1)
 
-    if (!existing) throw new Error('Entry not found')
+    if (!existing) {
+      return { success: false, error: 'errors.entry-not-found' } satisfies ErrorResponse
+    }
 
     await db
       .update(waterEntries)
@@ -48,7 +52,9 @@ export const deleteWaterEntry = authActionClient
       .where(and(eq(waterEntries.id, parsedInput.id), eq(waterEntries.userId, ctx.user.id)))
       .limit(1)
 
-    if (!entry) throw new Error('Entry not found')
+    if (!entry) {
+      return { success: false, error: 'errors.entry-not-found' } satisfies ErrorResponse
+    }
 
     await db.delete(waterEntries).where(and(eq(waterEntries.id, parsedInput.id), eq(waterEntries.userId, ctx.user.id)))
 

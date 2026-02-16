@@ -2,6 +2,7 @@
 
 import { CheckCircleIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useAction } from 'next-safe-action/hooks'
 import { useMemo } from 'react'
 
@@ -24,6 +25,7 @@ import { OnboardingLayout } from './onboarding-layout'
 export function Step3() {
   const router = useRouter()
   const { data } = useOnboardingForm()
+  const t = useTranslations()
 
   const computed = useMemo(() => {
     const currentWeight = data.currentWeight as number
@@ -63,52 +65,59 @@ export function Step3() {
 
   return (
     <OnboardingLayout
-      stepName='Your plan summary'
-      stepDescription="Here's your personalized nutrition plan."
+      stepName={t('onboarding.step-3-title')}
+      stepDescription={t('onboarding.step-3-description')}
       stepIcon={<CheckCircleIcon size={36} className='text-primary-foreground' />}
-      continueLabel='Confirm'
+      continueLabel={t('onboarding.confirm')}
       continueDisabled={isPending}
       onSubmit={handleConfirm}
     >
       <div className='flex flex-col gap-4'>
         <Card size='sm'>
           <CardHeader>
-            <CardTitle>Goal</CardTitle>
+            <CardTitle>{t('onboarding.summary-goal')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-2'>
             <p className='text-sm text-muted-foreground'>
-              Lose {computed.weightToLose.toFixed(1)} kg — target {computed.goalWeight} kg
+              {t('onboarding.summary-goal-value', {
+                weight: computed.weightToLose.toFixed(1),
+                target: computed.goalWeight
+              })}
             </p>
           </CardContent>
         </Card>
 
         <Card size='sm'>
           <CardHeader>
-            <CardTitle>Daily Budget</CardTitle>
+            <CardTitle>{t('onboarding.daily-budget')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <p className='text-2xl font-bold text-primary'>{computed.calories} cal/day</p>
-            <p className='text-sm text-muted-foreground'>~{computed.weeklyLoss} kg/week</p>
+            <p className='text-2xl font-bold text-primary'>
+              {t('onboarding.daily-budget-value', { calories: computed.calories })}
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              {t('onboarding.weekly-rate', { loss: computed.weeklyLoss })}
+            </p>
           </CardContent>
         </Card>
 
         <Card size='sm'>
           <CardHeader>
-            <CardTitle>Nutrient Targets</CardTitle>
+            <CardTitle>{t('onboarding.nutrient-targets')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-2'>
             <div className='grid grid-cols-3 gap-3'>
               <div className='text-center'>
                 <p className='text-lg font-semibold'>{computed.macros.protein}g</p>
-                <p className='text-xs text-muted-foreground'>Protein</p>
+                <p className='text-xs text-muted-foreground'>{t('dashboard.protein')}</p>
               </div>
               <div className='text-center'>
                 <p className='text-lg font-semibold'>{computed.macros.carbs}g</p>
-                <p className='text-xs text-muted-foreground'>Carbs</p>
+                <p className='text-xs text-muted-foreground'>{t('dashboard.carbs')}</p>
               </div>
               <div className='text-center'>
                 <p className='text-lg font-semibold'>{computed.macros.fat}g</p>
-                <p className='text-xs text-muted-foreground'>Fat</p>
+                <p className='text-xs text-muted-foreground'>{t('dashboard.fat')}</p>
               </div>
             </div>
           </CardContent>

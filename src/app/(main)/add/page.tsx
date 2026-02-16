@@ -2,6 +2,7 @@
 
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
@@ -15,16 +16,18 @@ import { type NutritionData, NutritionResult } from '@/components/add/nutrition-
 import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { Button } from '@/components/ui/button'
-import { MEAL_CATEGORIES } from '@/lib/constants'
+import { Spinner } from '@/components/ui/spinner'
+import { DEFAULT_MEAL, type Meal } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
 
 function Page() {
+  const t = useTranslations()
   const router = useRouter()
   const [mode, setMode] = useState<Mode>('ai-scan')
   const [step, setStep] = useState<Step>('input')
   const [nutritionData, setNutritionData] = useState<NutritionData | null>(null)
-  const [selectedMeal, setSelectedMeal] = useState<string | null>(null)
+  const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
   const [isPending, startTransition] = useTransition()
 
   const handleScanResult = useCallback((data: NutritionData) => {
@@ -42,8 +45,8 @@ function Page() {
   }
 
   function handleAddToMeal() {
-    if (!selectedMeal || !nutritionData) {
-      toast.error('Please select a meal category')
+    if (!nutritionData) {
+      toast.error(t('add-food.select-meal-error'))
       return
     }
 
@@ -55,19 +58,18 @@ function Page() {
         protein: nutritionData.protein,
         carbs: nutritionData.carbs,
         fat: nutritionData.fat,
-        mealCategory: selectedMeal as 'breakfast' | 'lunch' | 'dinner' | 'snacks',
+        mealCategory: selectedMeal,
         source: mode,
         imageUrl: nutritionData.imageUrl,
         date: format(new Date(), 'yyyy-MM-dd')
       })
 
       if (result.serverError) {
-        toast.error('Failed to save food entry. Please try again.')
+        toast.error(t('add-food.save-error'))
         return
       }
 
-      const mealName = MEAL_CATEGORIES.find((c) => c.id === selectedMeal)?.name
-      toast.success(`Food added to ${mealName}!`)
+      toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
       router.push('/dashboard')
     })
   }
@@ -75,7 +77,7 @@ function Page() {
   function handleBack() {
     if (step === 'meal-pick') {
       setStep(mode === 'manual' ? 'input' : 'review')
-      setSelectedMeal(null)
+      setSelectedMeal(DEFAULT_MEAL)
     }
 
     if (step === 'review') {
@@ -86,7 +88,7 @@ function Page() {
 
   return (
     <PageContainer>
-      <PageTitle title='Add Food' withBackButton={step !== 'input'} onClickBack={handleBack} />
+      <PageTitle title={t('add-food.page-title')} withBackButton={step !== 'input'} onClickBack={handleBack} />
 
       <div className='flex flex-col gap-5'>
         {step === 'input' && (
@@ -102,7 +104,7 @@ function Page() {
         {step === 'review' && nutritionData && (
           <>
             <NutritionResult data={nutritionData} onChange={setNutritionData} />
-            <Button onClick={handleConfirmNutrition}>Confirm</Button>
+            <Button onClick={handleConfirmNutrition}>{t('add-food.confirm')}</Button>
           </>
         )}
 
@@ -118,7 +120,8 @@ function Page() {
             )}
             <MealCategoryPicker value={selectedMeal} onChange={setSelectedMeal} />
             <Button onClick={handleAddToMeal} disabled={isPending}>
-              {isPending ? 'Saving...' : 'Add to Meal'}
+              {isPending && <Spinner data-icon='inline-start' />}
+              {t('add-food.add-to-meal')}
             </Button>
           </>
         )}

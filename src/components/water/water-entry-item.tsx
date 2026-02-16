@@ -4,6 +4,7 @@ import type { WaterEntry } from '@/data/water-entries'
 
 import { DropIcon, PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { format } from 'date-fns'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -31,16 +32,17 @@ type WaterEntryItemProps = {
 
 export function WaterEntryItem(props: WaterEntryItemProps) {
   const { entry, onUpdate, onDelete } = props
+  const t = useTranslations()
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(String(entry.amount))
   const [saving, setSaving] = useState(false)
 
-  const timeStr = format(entry.createdAt, 'hh:mm a')
+  const timeStr = format(entry.createdAt, t('water.time-format'))
 
   async function handleSave() {
     const parsed = Number.parseInt(value, 10)
     if (Number.isNaN(parsed) || parsed < 1 || parsed > MAX_WATER_INTAKE) {
-      toast.error(`Amount must be between 1 and ${formatMl(MAX_WATER_INTAKE)}`)
+      toast.error(t('water.amount-range-error', { max: formatMl(MAX_WATER_INTAKE) }))
       return
     }
 
@@ -51,9 +53,9 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
     if (result.data?.success) {
       onUpdate(entry.id, parsed)
       setOpen(false)
-      toast.success('Water entry updated')
+      toast.success(t('water.entry-updated'))
     } else {
-      toast.error('Failed to update entry')
+      toast.error(t('water.entry-update-error'))
     }
   }
 
@@ -65,9 +67,9 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
     if (result.data?.success) {
       onDelete(entry.id)
       setOpen(false)
-      toast.success('Water entry deleted')
+      toast.success(t('water.entry-deleted'))
     } else {
-      toast.error('Failed to delete entry')
+      toast.error(t('water.entry-delete-error'))
     }
   }
 
@@ -76,7 +78,7 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
       <div className='flex items-center gap-3'>
         <DropIcon size={20} weight='fill' className='text-blue-500' />
         <div>
-          <p className='text-sm font-medium'>Water</p>
+          <p className='text-sm font-medium'>{t('water.water')}</p>
           <p className='text-xs text-muted-foreground'>{timeStr}</p>
         </div>
       </div>
@@ -98,11 +100,11 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
           />
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Water Entry</DialogTitle>
-              <DialogDescription>Update the amount or delete this entry.</DialogDescription>
+              <DialogTitle>{t('water.edit-entry-title')}</DialogTitle>
+              <DialogDescription>{t('water.edit-entry-description')}</DialogDescription>
             </DialogHeader>
             <div className='space-y-2'>
-              <Label htmlFor='edit-water-amount'>Amount (mL)</Label>
+              <Label htmlFor='edit-water-amount'>{t('water.amount-ml')}</Label>
               <Input
                 id='edit-water-amount'
                 type='number'
@@ -118,10 +120,10 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
             <DialogFooter className='flex gap-2'>
               <Button variant='destructive' onClick={handleDelete} disabled={saving}>
                 <TrashIcon size={16} data-icon='inline-start' />
-                Delete
+                {t('water.delete')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? t('water.saving') : t('water.save')}
               </Button>
             </DialogFooter>
           </DialogContent>

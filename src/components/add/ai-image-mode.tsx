@@ -3,6 +3,7 @@ import type { NutritionData } from './nutrition-result'
 import { CameraIcon, ImageIcon, SpinnerGapIcon } from '@phosphor-icons/react/ssr'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useAction } from 'next-safe-action/hooks'
 import { useCallback, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -17,6 +18,7 @@ type AiImageModeProps = {
 
 export function AiImageMode(props: AiImageModeProps) {
   const { onResult } = props
+  const t = useTranslations()
   const [preview, setPreview] = useState<string | null>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
@@ -30,7 +32,7 @@ export function AiImageMode(props: AiImageModeProps) {
       }
     },
     onError: () => {
-      toast.error('Failed to analyze image')
+      toast.error(t('errors.ai-scan-failed'))
     }
   })
 
@@ -78,18 +80,18 @@ export function AiImageMode(props: AiImageModeProps) {
 
       <div className='relative flex aspect-4/3 flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-border bg-muted/50'>
         {preview ? (
-          <Image src={preview} alt='Food preview' fill className='object-cover' />
+          <Image src={preview} alt={t('add-food.food-preview')} fill className='object-cover' />
         ) : (
           <div className='flex flex-col items-center gap-2 text-muted-foreground'>
             <CameraIcon size={40} />
-            <span className='text-sm'>Take or upload a photo of food</span>
+            <span className='text-sm'>{t('add-food.take-upload-photo')}</span>
           </div>
         )}
 
         {isPending && (
           <div className='absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40'>
             <SpinnerGapIcon size={40} className='animate-spin text-white' />
-            <span className='text-sm font-medium text-white'>Analyzing image...</span>
+            <span className='text-sm font-medium text-white'>{t('add-food.analyzing-image')}</span>
           </div>
         )}
       </div>
@@ -101,13 +103,13 @@ export function AiImageMode(props: AiImageModeProps) {
             if (isMobile) {
               cameraInputRef.current?.click()
             } else {
-              toast.info('Camera is only available on mobile devices. Please upload an image instead.')
+              toast.info(t('add-food.camera-unavailable'))
             }
           }}
           disabled={isPending}
         >
           <CameraIcon size={16} />
-          Take Photo
+          {t('add-food.take-photo')}
         </Button>
         <Button
           variant='outline'
@@ -116,7 +118,7 @@ export function AiImageMode(props: AiImageModeProps) {
           disabled={isPending}
         >
           <ImageIcon size={16} />
-          Upload Photo
+          {t('add-food.upload-photo')}
         </Button>
       </div>
     </div>

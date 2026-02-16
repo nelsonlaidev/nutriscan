@@ -3,6 +3,7 @@
 import type { WaterEntry } from '@/data/water-entries'
 
 import { PlusIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import { addWaterEntry } from '@/actions/water-entry'
@@ -28,6 +29,7 @@ type WaterTrackerProps = {
 
 export function WaterTracker(props: WaterTrackerProps) {
   const { initialGoal, date, weekData, initialEntries } = props
+  const t = useTranslations()
   const [entries, setEntries] = useState(initialEntries)
   const [goal, setGoal] = useState(initialGoal)
 
@@ -91,7 +93,7 @@ export function WaterTracker(props: WaterTrackerProps) {
             }}
           >
             <PlusIcon size={14} data-icon='inline-start' />
-            {ml} mL
+            {t('water.ml', { ml })}
           </Button>
         ))}
       </div>
@@ -105,7 +107,7 @@ export function WaterTracker(props: WaterTrackerProps) {
         }}
       >
         <PlusIcon size={18} data-icon='inline-start' />
-        Drink Water (+250 mL)
+        {t('water.drink-water')}
       </Button>
 
       {/* Water entry history */}

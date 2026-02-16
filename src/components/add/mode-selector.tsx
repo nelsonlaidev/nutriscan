@@ -1,13 +1,14 @@
 import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 
 export type Mode = 'ai-scan' | 'manual' | 'barcode'
 
 const MODES = [
-  { id: 'ai-scan', label: 'AI Scan', icon: CameraIcon },
-  { id: 'manual', label: 'Manual', icon: PencilSimpleIcon },
-  { id: 'barcode', label: 'Barcode', icon: BarcodeIcon }
+  { id: 'ai-scan', icon: CameraIcon },
+  { id: 'manual', icon: PencilSimpleIcon },
+  { id: 'barcode', icon: BarcodeIcon }
 ] as const
 
 type ModeSelectorProps = {
@@ -17,6 +18,13 @@ type ModeSelectorProps = {
 
 export function ModeSelector(props: ModeSelectorProps) {
   const { value, onChange } = props
+  const t = useTranslations()
+
+  const modeLabels: Record<Mode, string> = {
+    'ai-scan': t('add-food.ai-scan'),
+    manual: t('add-food.manual'),
+    barcode: t('add-food.barcode')
+  }
 
   return (
     <div className='flex gap-1 rounded-full bg-muted p-1'>
@@ -35,7 +43,7 @@ export function ModeSelector(props: ModeSelectorProps) {
             )}
           >
             <mode.icon size={16} weight={active ? 'fill' : 'regular'} />
-            {mode.label}
+            {modeLabels[mode.id]}
           </button>
         )
       })}

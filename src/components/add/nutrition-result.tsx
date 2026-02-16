@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { Input } from '@/components/ui/input'
 
 export type NutritionData = {
@@ -17,6 +19,7 @@ type NutritionResultProps = {
 
 export function NutritionResult(props: NutritionResultProps) {
   const { data, onChange } = props
+  const t = useTranslations()
 
   function updateField(field: keyof NutritionData, value: string) {
     if (field === 'foodName' || field === 'servingSize') {
@@ -31,7 +34,7 @@ export function NutritionResult(props: NutritionResultProps) {
       <div className='flex flex-col gap-3'>
         <div className='flex flex-col gap-1'>
           <label htmlFor='nr-foodName' className='text-sm font-medium'>
-            Food Name
+            {t('add-food.food-name')}
           </label>
           <Input
             id='nr-foodName'
@@ -43,7 +46,7 @@ export function NutritionResult(props: NutritionResultProps) {
         </div>
         <div className='flex flex-col gap-1'>
           <label htmlFor='nr-servingSize' className='text-sm font-medium'>
-            Serving Size
+            {t('add-food.serving-size')}
           </label>
           <Input
             id='nr-servingSize'
@@ -57,7 +60,7 @@ export function NutritionResult(props: NutritionResultProps) {
 
       <div className='flex flex-col gap-1'>
         <label htmlFor='nr-calories' className='text-sm font-medium'>
-          Calories
+          {t('add-food.calories')}
         </label>
         <Input
           id='nr-calories'
@@ -72,7 +75,7 @@ export function NutritionResult(props: NutritionResultProps) {
       <div className='grid grid-cols-2 gap-3'>
         <div className='flex flex-col gap-1'>
           <label htmlFor='nr-protein' className='text-sm text-muted-foreground'>
-            Protein (g)
+            {t('add-food.protein-grams')}
           </label>
           <Input
             id='nr-protein'
@@ -85,7 +88,7 @@ export function NutritionResult(props: NutritionResultProps) {
         </div>
         <div className='flex flex-col gap-1'>
           <label htmlFor='nr-carbs' className='text-sm text-muted-foreground'>
-            Carbs (g)
+            {t('add-food.carbs-grams')}
           </label>
           <Input
             id='nr-carbs'
@@ -98,7 +101,7 @@ export function NutritionResult(props: NutritionResultProps) {
         </div>
         <div className='flex flex-col gap-1'>
           <label htmlFor='nr-fat' className='text-sm text-muted-foreground'>
-            Fat (g)
+            {t('add-food.fat-grams')}
           </label>
           <Input
             id='nr-fat'

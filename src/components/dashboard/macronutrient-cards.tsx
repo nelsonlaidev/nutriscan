@@ -1,4 +1,5 @@
 import { BowlFoodIcon } from '@phosphor-icons/react/ssr'
+import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -14,21 +15,26 @@ type MacronutrientCardsProps = {
   goals: MacroGoals
 }
 
-const MACROS = [
-  { key: 'protein' as const, label: 'Protein', className: '**:data-[slot=progress-indicator]:bg-blue-500' },
-  { key: 'carbs' as const, label: 'Carbs', className: '**:data-[slot=progress-indicator]:bg-amber-500' },
-  { key: 'fat' as const, label: 'Fat', className: '**:data-[slot=progress-indicator]:bg-rose-500' }
-]
-
-export function MacronutrientCards(props: MacronutrientCardsProps) {
+export async function MacronutrientCards(props: MacronutrientCardsProps) {
   const { values, goals } = props
+  const t = await getTranslations()
+
+  const MACROS = [
+    {
+      key: 'protein' as const,
+      label: t('dashboard.protein'),
+      className: '**:data-[slot=progress-indicator]:bg-blue-500'
+    },
+    { key: 'carbs' as const, label: t('dashboard.carbs'), className: '**:data-[slot=progress-indicator]:bg-amber-500' },
+    { key: 'fat' as const, label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' }
+  ]
 
   return (
     <Card size='sm'>
       <CardHeader>
         <CardTitle className='flex items-center gap-2'>
           <BowlFoodIcon className='size-5' />
-          Macronutrients
+          {t('dashboard.macronutrients')}
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
@@ -42,7 +48,7 @@ export function MacronutrientCards(props: MacronutrientCardsProps) {
               <div className='flex items-center justify-between'>
                 <span className='text-sm font-medium'>{macro.label}</span>
                 <span className='ml-auto text-sm text-muted-foreground'>
-                  {value}g / {goal}g
+                  {t('dashboard.grams-of-goal', { value, goal })}
                 </span>
               </div>
               <Progress value={percentage} className={macro.className} />

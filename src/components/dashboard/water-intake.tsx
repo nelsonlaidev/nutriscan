@@ -1,5 +1,6 @@
 import { DropIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { formatMl } from '@/lib/utils'
@@ -9,8 +10,9 @@ type WaterIntakeProps = {
   goal: number
 }
 
-export function WaterIntake(props: WaterIntakeProps) {
+export async function WaterIntake(props: WaterIntakeProps) {
   const { amount, goal } = props
+  const t = await getTranslations()
 
   const percentage = goal > 0 ? Math.min((amount / goal) * 100, 100) : 0
 
@@ -21,10 +23,10 @@ export function WaterIntake(props: WaterIntakeProps) {
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <DropIcon size={20} />
-              <span className='text-sm font-semibold'>Water Intake</span>
+              <span className='text-sm font-semibold'>{t('dashboard.water-intake')}</span>
             </div>
             <span className='text-sm font-medium text-blue-500'>
-              {formatMl(amount)} / {formatMl(goal)}
+              {t('dashboard.water-amount-of-goal', { amount: formatMl(amount), goal: formatMl(goal) })}
             </span>
           </div>
           <div className='relative h-7 overflow-hidden rounded-md bg-blue-100 dark:bg-blue-950'>

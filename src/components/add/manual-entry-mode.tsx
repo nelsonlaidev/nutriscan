@@ -1,10 +1,11 @@
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
 
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ManualFoodEntrySchema } from '@/lib/zod-schemas'
+import { createManualFoodEntrySchema } from '@/lib/zod-schemas'
 
 type ManualEntryModeProps = {
   onSubmit: (data: ManualFoodEntry) => void
@@ -12,6 +13,8 @@ type ManualEntryModeProps = {
 
 export function ManualEntryMode(props: ManualEntryModeProps) {
   const { onSubmit } = props
+  const t = useTranslations()
+  const ManualFoodEntrySchema = createManualFoodEntrySchema(t)
   const [form, setForm] = useState({
     foodName: '',
     servingSize: '',
@@ -55,11 +58,11 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
     <div className='flex flex-col gap-4'>
       <div className='flex flex-col gap-1'>
         <label htmlFor='me-foodName' className='text-sm font-medium'>
-          Food Name
+          {t('add-food.food-name')}
         </label>
         <Input
           id='me-foodName'
-          placeholder='e.g. Grilled Chicken'
+          placeholder={t('add-food.food-name-placeholder')}
           value={form.foodName}
           onChange={(e) => {
             updateField('foodName', e.target.value)
@@ -71,11 +74,11 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
 
       <div className='flex flex-col gap-1'>
         <label htmlFor='me-servingSize' className='text-sm font-medium'>
-          Serving Size
+          {t('add-food.serving-size')}
         </label>
         <Input
           id='me-servingSize'
-          placeholder='e.g. 100g, 1 cup'
+          placeholder={t('add-food.serving-size-placeholder')}
           value={form.servingSize}
           onChange={(e) => {
             updateField('servingSize', e.target.value)
@@ -87,7 +90,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
 
       <div className='flex flex-col gap-1'>
         <label htmlFor='me-calories' className='text-sm font-medium'>
-          Calories
+          {t('add-food.calories')}
         </label>
         <Input
           id='me-calories'
@@ -104,7 +107,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
       <div className='grid grid-cols-2 gap-3'>
         <div className='flex flex-col gap-1'>
           <label htmlFor='me-protein' className='text-sm text-muted-foreground'>
-            Protein (g)
+            {t('add-food.protein-grams')}
           </label>
           <Input
             id='me-protein'
@@ -117,7 +120,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
         </div>
         <div className='flex flex-col gap-1'>
           <label htmlFor='me-carbs' className='text-sm text-muted-foreground'>
-            Carbs (g)
+            {t('add-food.carbs-grams')}
           </label>
           <Input
             id='me-carbs'
@@ -130,7 +133,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
         </div>
         <div className='flex flex-col gap-1'>
           <label htmlFor='me-fat' className='text-sm text-muted-foreground'>
-            Fat (g)
+            {t('add-food.fat-grams')}
           </label>
           <Input
             id='me-fat'
@@ -143,7 +146,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
         </div>
       </div>
 
-      <Button onClick={handleSubmit}>Add</Button>
+      <Button onClick={handleSubmit}>{t('add-food.add')}</Button>
     </div>
   )
 }

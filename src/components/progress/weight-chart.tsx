@@ -1,6 +1,7 @@
 'use client'
 
 import { FlagIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -12,6 +13,7 @@ const TimeRanges = ['90D', '6M', '1Y', 'ALL']
 
 export function WeightChart() {
   const [activeRange, setActiveRange] = useState('6M')
+  const t = useTranslations()
 
   // In a real app, filtering logic would go here based on activeRange
   const data = weightHistory
@@ -20,10 +22,10 @@ export function WeightChart() {
     <Card className='mt-6 w-full overflow-hidden rounded-3xl border-none bg-white shadow-sm'>
       <CardContent className='p-6'>
         <div className='mb-6 flex items-center justify-between'>
-          <h3 className='text-xl font-semibold text-gray-900'>Weight Progress</h3>
+          <h3 className='text-xl font-semibold text-gray-900'>{t('progress.weight-progress')}</h3>
           <div className='flex items-center space-x-2 rounded-full bg-gray-50 px-3 py-1'>
             <FlagIcon className='size-4 text-gray-400' weight='fill' />
-            <span className='text-sm font-medium text-gray-600'>80% of goal</span>
+            <span className='text-sm font-medium text-gray-600'>{t('progress.percent-of-goal', { percent: 80 })}</span>
           </div>
         </div>
 
@@ -52,10 +54,16 @@ export function WeightChart() {
                     return (
                       <div className='rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-xl'>
                         {/* fix later */}
-                        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
-                        <div className='mb-1 font-bold'>{payload[0].value} lbs</div>
-                        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
-                        <div className='text-gray-400'>{payload[0].payload.date}, 2025</div>
+                        {}
+                        <div className='mb-1 font-bold'>
+                          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                          {t('progress.weight-tooltip', { weight: payload[0].value as number })}
+                        </div>
+                        {}
+                        <div className='text-gray-400'>
+                          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                          {t('progress.weight-date-tooltip', { date: payload[0].payload.date as string })}
+                        </div>
                         <div className='absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45 transform bg-gray-900'></div>
                       </div>
                     )
@@ -94,7 +102,7 @@ export function WeightChart() {
         </div>
 
         <div className='mt-4 rounded-xl bg-green-50 px-4 py-3 text-center text-xs font-medium text-green-600'>
-          Great job! Consistency is key, and you're mastering it!
+          {t('progress.encouragement')}
         </div>
       </CardContent>
     </Card>

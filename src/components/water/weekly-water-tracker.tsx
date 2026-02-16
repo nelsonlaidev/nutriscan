@@ -1,6 +1,7 @@
 'use client'
 
 import { eachDayOfInterval, endOfWeek, format, isToday, startOfWeek } from 'date-fns'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 
@@ -61,6 +62,7 @@ function CircularProgress({
 
 export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
   const { weekData, goal, todayAmount, date } = props
+  const t = useTranslations()
 
   const today = new Date()
   const weekStart = startOfWeek(today, { weekStartsOn: 1 })
@@ -87,7 +89,7 @@ export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
             )}
           >
             <span className={cn('text-xs font-medium text-muted-foreground', current && 'text-blue-500')}>
-              {format(day, 'EEE')}
+              {format(day, t('water.day-format'))}
             </span>
             <div className='relative flex items-center justify-center'>
               <CircularProgress percentage={percentage} />

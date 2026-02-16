@@ -4,6 +4,7 @@ import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon } from '@phosphor-icons/re
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -12,9 +13,10 @@ import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { signIn } from '@/lib/auth-client'
-import { SignInFormSchema } from '@/lib/zod-schemas'
+import { createSignInFormSchema } from '@/lib/zod-schemas'
 
 function Page() {
+  const t = useTranslations()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -24,7 +26,7 @@ function Page() {
       password: ''
     },
     validators: {
-      onSubmit: SignInFormSchema
+      onSubmit: createSignInFormSchema(t)
     },
     onSubmit: ({ value }) => {
       void signIn.email(
@@ -37,12 +39,12 @@ function Page() {
             setIsSubmitting(true)
           },
           onSuccess: () => {
-            toast.success('Signed in successfully')
+            toast.success(t('auth.success-signed-in'))
             router.push('/dashboard')
             setIsSubmitting(false)
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message || 'Failed to sign in')
+            toast.error(ctx.error.message || t('auth.error-sign-in'))
             setIsSubmitting(false)
           }
         }
@@ -52,7 +54,7 @@ function Page() {
 
   return (
     <div className='flex w-full max-w-sm flex-col items-center justify-center gap-8'>
-      <AuthHeader title='NutriScan' description='Track your nutrition, reach your goals' />
+      <AuthHeader title={t('auth.app-name')} description={t('auth.tagline')} />
 
       <form
         onSubmit={(e) => {
@@ -67,7 +69,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.email')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -79,7 +81,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='john@example.com'
+                      placeholder={t('auth.email-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -97,7 +99,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.password')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -109,7 +111,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter your password'
+                      placeholder={t('auth.password-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -122,7 +124,7 @@ function Page() {
                       href='/auth/forgot-password'
                       className='text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline'
                     >
-                      Forgot password?
+                      {t('auth.forgot-password')}
                     </Link>
                   </div>
                 </Field>
@@ -133,14 +135,14 @@ function Page() {
 
         <Button type='submit' disabled={isSubmitting}>
           {isSubmitting && <SpinnerGapIcon className='animate-spin' />}
-          Sign In
+          {t('auth.sign-in')}
         </Button>
       </form>
 
       <p className='text-center text-sm text-muted-foreground'>
-        Don&apos;t have an account?{' '}
+        {t('auth.no-account')}{' '}
         <Link href='/auth/sign-up' className='text-foreground hover:underline'>
-          Sign Up
+          {t('auth.sign-up')}
         </Link>
       </p>
     </div>

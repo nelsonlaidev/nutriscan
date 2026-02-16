@@ -2,9 +2,10 @@
 
 import { BarbellIcon, TargetIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
+import { useTranslations } from 'next-intl'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
-import { OnboardingStep1FormSchema } from '@/lib/zod-schemas'
+import { createOnboardingStep1FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
@@ -15,6 +16,8 @@ const FORM_ID = 'onboarding-step-1'
 
 export function Step1() {
   const { data, setStep, updateForm } = useOnboardingForm()
+  const t = useTranslations()
+  const OnboardingStep1FormSchema = createOnboardingStep1FormSchema(t)
 
   const form = useForm({
     defaultValues: {
@@ -33,8 +36,8 @@ export function Step1() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName='Set your weight goal'
-      stepDescription='Where are you now and where do you want to be?'
+      stepName={t('onboarding.step-1-title')}
+      stepDescription={t('onboarding.step-1-description')}
       stepIcon={<TargetIcon size={36} className='text-primary-foreground' />}
     >
       <form
@@ -50,7 +53,7 @@ export function Step1() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Current Weight</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('onboarding.current-weight')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -67,7 +70,7 @@ export function Step1() {
                         field.handleChange(Number.isNaN(value) ? '' : value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter weight'
+                      placeholder={t('onboarding.current-weight-placeholder')}
                     />
                     <InputGroupAddon align='inline-start'>
                       <BarbellIcon className='text-muted-foreground' />
@@ -85,7 +88,7 @@ export function Step1() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Goal Weight</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('onboarding.goal-weight')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -102,7 +105,7 @@ export function Step1() {
                         field.handleChange(Number.isNaN(value) ? '' : value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter goal weight'
+                      placeholder={t('onboarding.goal-weight-placeholder')}
                     />
                     <InputGroupAddon align='inline-start'>
                       <TargetIcon className='text-muted-foreground' />
@@ -124,7 +127,7 @@ export function Step1() {
             if (diff === null || diff <= 0) return null
             return (
               <p className='mt-4 text-center text-sm text-muted-foreground'>
-                Lose {diff.toFixed(1)} kg — starting at {cw} kg
+                {t('onboarding.weight-loss-plan', { diff: diff.toFixed(1), current: cw })}
               </p>
             )
           }}

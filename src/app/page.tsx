@@ -1,11 +1,11 @@
-'use client'
-
 import { LeafIcon } from '@phosphor-icons/react/ssr'
-import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
-import { buttonVariants } from '@/components/ui/button'
+import { LandingButtons } from '@/components/landing-buttons'
 
-function Page() {
+async function Page() {
+  const t = await getTranslations()
+
   return (
     <div className='flex min-h-svh flex-col p-6'>
       <div className='flex-1' />
@@ -13,17 +13,10 @@ function Page() {
         <div className='flex size-18 items-center justify-center rounded-2xl bg-primary'>
           <LeafIcon size={36} className='text-primary-foreground' />
         </div>
-        <h1 className='text-3xl font-semibold'>NutriScan</h1>
+        <h1 className='text-3xl font-semibold'>{t('landing.app-name')}</h1>
       </div>
       <div className='flex-1' />
-      <div className='flex flex-col gap-4'>
-        <Link href='/auth/sign-up' className={buttonVariants({ size: 'lg' })}>
-          Sign Up
-        </Link>
-        <Link href='/auth/sign-in' className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
-          Sign In
-        </Link>
-      </div>
+      <LandingButtons signUpText={t('auth.sign-up')} signInText={t('auth.sign-in')} />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { EnvelopeSimpleIcon, LockIcon, SpinnerGapIcon, UserCircleIcon } from '@p
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -13,9 +14,10 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { signUp } from '@/lib/auth-client'
 import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT } from '@/lib/constants'
-import { SignUpFormSchema } from '@/lib/zod-schemas'
+import { createSignUpFormSchema } from '@/lib/zod-schemas'
 
 function Page() {
+  const t = useTranslations()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -27,7 +29,7 @@ function Page() {
       confirmPassword: ''
     },
     validators: {
-      onSubmit: SignUpFormSchema
+      onSubmit: createSignUpFormSchema(t)
     },
     onSubmit: ({ value }) => {
       void signUp.email(
@@ -44,12 +46,12 @@ function Page() {
             setIsSubmitting(true)
           },
           onSuccess: () => {
-            toast.success('Account created successfully')
+            toast.success(t('auth.success-account-created'))
             router.push('/onboarding')
             setIsSubmitting(false)
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message || 'Failed to create account')
+            toast.error(ctx.error.message || t('auth.error-create-account'))
             setIsSubmitting(false)
           }
         }
@@ -59,7 +61,7 @@ function Page() {
 
   return (
     <div className='flex w-full max-w-sm flex-col items-center justify-center gap-8'>
-      <AuthHeader title='Create Account' description='Sign up to start tracking your nutrition' />
+      <AuthHeader title={t('auth.create-account')} description={t('auth.create-account-description')} />
 
       <form
         onSubmit={(e) => {
@@ -74,7 +76,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Display Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.display-name')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -86,7 +88,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='John Doe'
+                      placeholder={t('auth.display-name-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -104,7 +106,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.email')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -116,7 +118,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='john@example.com'
+                      placeholder={t('auth.email-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -134,7 +136,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.password')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -146,7 +148,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter your password'
+                      placeholder={t('auth.password-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -164,7 +166,7 @@ function Page() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('auth.confirm-password')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -176,7 +178,7 @@ function Page() {
                         field.handleChange(e.target.value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Re-enter your password'
+                      placeholder={t('auth.confirm-password-placeholder')}
                       disabled={isSubmitting}
                     />
                     <InputGroupAddon align='inline-start'>
@@ -192,14 +194,14 @@ function Page() {
 
         <Button type='submit' disabled={isSubmitting}>
           {isSubmitting && <SpinnerGapIcon className='animate-spin' />}
-          Sign Up
+          {t('auth.sign-up')}
         </Button>
       </form>
 
       <p className='text-center text-sm text-muted-foreground'>
-        Already have an account?{' '}
+        {t('auth.has-account')}{' '}
         <Link href='/auth/sign-in' className='text-foreground hover:underline'>
-          Sign In
+          {t('auth.sign-in')}
         </Link>
       </p>
     </div>

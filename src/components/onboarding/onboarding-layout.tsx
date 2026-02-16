@@ -1,4 +1,7 @@
+'use client'
+
 import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 
@@ -23,10 +26,11 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
     stepDescription,
     stepIcon,
     continueDisabled = false,
-    continueLabel = 'Continue',
+    continueLabel,
     onSubmit
   } = props
   const { data, setStep } = useOnboardingForm()
+  const t = useTranslations()
 
   function handleBack() {
     setStep(data.currentStep - 1)
@@ -38,7 +42,7 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
         <div>
           <Button variant='secondary' className='inline-flex' onClick={handleBack}>
             <ArrowLeftIcon />
-            Back
+            {t('onboarding.back')}
           </Button>
         </div>
       )}
@@ -56,7 +60,7 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
       <div className='flex-1' />
 
       <Button disabled={continueDisabled} form={formId} type={formId ? 'submit' : 'button'} onClick={onSubmit}>
-        {continueLabel} <ArrowRightIcon />
+        {continueLabel ?? t('onboarding.continue')} <ArrowRightIcon />
       </Button>
     </div>
   )

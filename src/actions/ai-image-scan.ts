@@ -1,5 +1,7 @@
 'use server'
 
+import type { ErrorResponse } from '@/types'
+
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { generateText, Output } from 'ai'
 import * as z from 'zod'
@@ -56,7 +58,7 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
     })
 
     return {
-      success: true as const,
+      success: true,
       data: {
         foodName: output.foodName,
         servingSize: output.servingSize,
@@ -69,6 +71,6 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
     }
   } catch (error) {
     console.error('AI scan error:', error)
-    return { success: false as const, error: 'Failed to analyze image' }
+    return { success: false, error: 'errors.ai-scan-failed' } satisfies ErrorResponse
   }
 })

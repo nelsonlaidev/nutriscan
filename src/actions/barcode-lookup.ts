@@ -1,5 +1,7 @@
 'use server'
 
+import type { ErrorResponse } from '@/types'
+
 import { authActionClient } from '@/lib/safe-action'
 import { BarcodeLookupSchema, OpenFoodFactsResponseSchema } from '@/lib/zod-schemas'
 
@@ -7,24 +9,24 @@ export const lookupBarcode = authActionClient.inputSchema(BarcodeLookupSchema).a
   const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${parsedInput.barcode}.json`)
 
   if (!response.ok) {
-    return { success: false as const, error: 'product-not-found' as const }
+    return { success: false, error: 'errors.product-not-found' } satisfies ErrorResponse
   }
 
   const json = await response.json()
   const parsed = OpenFoodFactsResponseSchema.safeParse(json)
 
   if (!parsed.success || parsed.data.status !== 1 || !parsed.data.product) {
-    return { success: false as const, error: 'product-not-found' as const }
+    return { success: false, error: 'errors.product-not-found' } satisfies ErrorResponse
   }
 
   const { product } = parsed.data
   const { nutriments } = product
 
   return {
-    success: true as const,
+    success: true,
     data: {
-      foodName: product.product_name,
-      servingSize: product.serving_size,
+      foodName: product.product_name || '',
+      servingSize: product.serving_size || '',
       calories: Math.round(nutriments['energy-kcal_100g']),
       protein: Math.round(nutriments.proteins_100g),
       carbs: Math.round(nutriments.carbohydrates_100g),

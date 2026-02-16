@@ -1,5 +1,6 @@
 import { eachDayOfInterval, endOfWeek, format, startOfWeek, subDays } from 'date-fns'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
@@ -10,6 +11,8 @@ import { getSession } from '@/lib/auth'
 async function Page() {
   const session = await getSession()
   if (!session) redirect('/')
+
+  const t = await getTranslations()
 
   const today = new Date()
   const todayStr = format(today, 'yyyy-MM-dd')
@@ -29,7 +32,7 @@ async function Page() {
 
   return (
     <PageContainer>
-      <PageTitle title='Water Tracker' withBackButton />
+      <PageTitle title={t('water.page-title')} withBackButton />
       <WaterTracker initialGoal={waterGoal} date={todayStr} weekData={weekData} initialEntries={entries} />
     </PageContainer>
   )

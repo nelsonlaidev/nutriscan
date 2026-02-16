@@ -1,5 +1,6 @@
 import { CaretRightIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -23,16 +24,17 @@ const EMOJI_BG: Record<string, string> = {
   snacks: 'bg-red-100 dark:bg-red-950'
 }
 
-export function MealList(props: MealListProps) {
+export async function MealList(props: MealListProps) {
   const { meals, date } = props
+  const t = await getTranslations()
 
   return (
     <div className='space-y-3'>
       <div className='flex items-center justify-between'>
-        <h2 className='text-base font-semibold'>Today&apos;s Meals</h2>
+        <h2 className='text-base font-semibold'>{t('dashboard.todays-meals')}</h2>
         <Link href='/add' className='inline-flex items-center gap-1 text-sm font-medium text-primary'>
           <PlusIcon size={16} weight='bold' />
-          Add Food
+          {t('dashboard.add-food')}
         </Link>
       </div>
       <div className='space-y-4'>
@@ -49,7 +51,7 @@ export function MealList(props: MealListProps) {
                   <div>
                     <p className='text-sm font-semibold'>{meal.name}</p>
                     <p className='text-xs text-muted-foreground'>
-                      {meal.items} items &middot; {meal.calories} kcal
+                      {t('dashboard.items-calories', { count: meal.items, calories: meal.calories })}
                     </p>
                   </div>
                 </div>

@@ -1,19 +1,24 @@
 'use client'
 
+import type { NavbarLink } from '@/lib/links'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
-import { NAVBAR_LINKS } from '@/lib/links'
+import { getNavbarLinks } from '@/lib/links'
 
 import { UserAvatar } from './user-avatar'
 
 export function Navbar() {
   const pathname = usePathname()
+  const t = useTranslations()
+  const navbarLinks = getNavbarLinks(t)
 
   return (
     <div className='fixed inset-x-0 bottom-2 flex items-center justify-center'>
       <nav className='flex items-center gap-1 rounded-full bg-background p-2 shadow-sm'>
-        {NAVBAR_LINKS.map((link) => {
+        {navbarLinks.map((link: NavbarLink) => {
           const active = pathname === link.href
           const isPrimary = link.primary
 

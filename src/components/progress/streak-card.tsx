@@ -1,6 +1,7 @@
 'use client'
 
 import { CheckCircleIcon, FireIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { streakData } from '@/lib/mock/progress-data'
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils'
 
 export function StreakCard() {
   const { currentStreak, weeklyProgress } = streakData
+  const t = useTranslations()
 
   return (
     <Card className='size-full overflow-hidden rounded-3xl border-none bg-white shadow-sm'>
@@ -20,7 +22,7 @@ export function StreakCard() {
           </div>
           <div className='text-center'>
             <span className='block text-3xl leading-none font-bold text-orange-500'>{currentStreak}</span>
-            <span className='text-sm font-medium text-orange-400'>Day Streak</span>
+            <span className='text-sm font-medium text-orange-400'>{t('progress.day-streak')}</span>
           </div>
         </div>
 

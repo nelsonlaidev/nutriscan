@@ -2,6 +2,7 @@
 
 import { SignOutIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -11,6 +12,7 @@ import { signOut } from '@/lib/auth-client'
 import { Spinner } from '../ui/spinner'
 
 export function SignOutButton() {
+  const t = useTranslations()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -25,7 +27,7 @@ export function SignOutButton() {
         }
       })
     } catch {
-      toast.error('Failed to sign out')
+      toast.error(t('auth.error-sign-out'))
     } finally {
       setLoading(false)
     }
@@ -34,7 +36,7 @@ export function SignOutButton() {
   return (
     <Button variant='destructive' className='w-full' onClick={handleSignOut} disabled={loading}>
       {loading ? <Spinner data-icon='inline-start' /> : <SignOutIcon data-icon='inline-start' />}
-      Sign Out
+      {t('auth.sign-out')}
     </Button>
   )
 }

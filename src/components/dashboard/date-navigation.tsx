@@ -2,23 +2,25 @@
 
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react/ssr'
 import { addDays, differenceInDays, format, isToday, isYesterday, parse, startOfDay, subDays } from 'date-fns'
+import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
 
 import { dashboardParsers } from '@/app/(main)/dashboard/search-params'
 import { Button } from '@/components/ui/button'
 
-function getLabel(date: Date) {
-  if (isToday(date)) return 'Today'
-  if (isYesterday(date)) return 'Yesterday'
-  return format(date, 'EEEE')
-}
-
 export function DateNavigation() {
+  const t = useTranslations()
   const [date, setDate] = useQueryState('date', { ...dashboardParsers.date, shallow: false })
   const currentDate = parse(date, 'yyyy-MM-dd', new Date())
 
   const isTodayDate = isToday(currentDate)
   const isOldestDate = differenceInDays(startOfDay(new Date()), currentDate) >= 6
+
+  function getLabel(d: Date) {
+    if (isToday(d)) return t('dashboard.today')
+    if (isYesterday(d)) return t('dashboard.yesterday')
+    return format(d, 'EEEE')
+  }
 
   function goBack() {
     if (isOldestDate) return

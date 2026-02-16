@@ -1,4 +1,7 @@
+'use client'
+
 import { PencilSimpleIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -24,6 +27,7 @@ type WaterGoalDialogProps = {
 
 export function WaterGoalDialog(props: WaterGoalDialogProps) {
   const { currentGoal, onGoalChange } = props
+  const t = useTranslations()
   const [open, setOpen] = useState(false)
   const [goal, setGoal] = useState(String(currentGoal))
   const [saving, setSaving] = useState(false)
@@ -31,7 +35,7 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
   async function handleSave() {
     const parsed = Number.parseInt(goal, 10)
     if (Number.isNaN(parsed) || parsed < 500 || parsed > 10_000) {
-      toast.error('Goal must be between 500 and 10,000 mL')
+      toast.error(t('water.goal-range-error'))
       return
     }
 
@@ -42,9 +46,9 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
     if (result.data?.success) {
       onGoalChange(parsed)
       setOpen(false)
-      toast.success('Water goal updated')
+      toast.success(t('water.goal-updated'))
     } else {
-      toast.error('Failed to update water goal')
+      toast.error(t('water.goal-update-error'))
     }
   }
 
@@ -53,18 +57,18 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
       <DialogTrigger
         render={
           <Button variant='ghost'>
-            <span>Daily goal: {formatMl(currentGoal)}</span>
+            <span>{t('water.daily-goal-button', { goal: formatMl(currentGoal) })}</span>
             <PencilSimpleIcon size={14} />
           </Button>
         }
       />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Daily Water Goal</DialogTitle>
-          <DialogDescription>Set your daily water intake target in milliliters.</DialogDescription>
+          <DialogTitle>{t('water.daily-goal-title')}</DialogTitle>
+          <DialogDescription>{t('water.daily-goal-description')}</DialogDescription>
         </DialogHeader>
         <div className='space-y-2'>
-          <Label htmlFor='water-goal'>Goal (mL)</Label>
+          <Label htmlFor='water-goal'>{t('water.goal-ml')}</Label>
           <Input
             id='water-goal'
             type='number'
@@ -76,11 +80,11 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
               setGoal(e.target.value)
             }}
           />
-          <p className='text-xs text-muted-foreground'>Recommended: 2,000–3,000 mL per day</p>
+          <p className='text-xs text-muted-foreground'>{t('water.goal-recommended')}</p>
         </div>
         <DialogFooter>
           <Button onClick={handleSave} disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? t('water.saving') : t('water.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

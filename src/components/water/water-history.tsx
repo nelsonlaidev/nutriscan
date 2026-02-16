@@ -3,6 +3,7 @@
 import type { WaterEntry } from '@/data/water-entries'
 
 import { format, isToday, isYesterday, parseISO } from 'date-fns'
+import { useTranslations } from 'next-intl'
 
 import { WaterEntryItem } from './water-entry-item'
 
@@ -12,17 +13,18 @@ type WaterHistoryProps = {
   onDelete: (id: string) => void
 }
 
-function formatDateHeader(dateStr: string) {
-  const date = parseISO(dateStr)
-  const formatted = format(date, 'd MMM yyyy')
-
-  if (isToday(date)) return `Today, ${formatted}`
-  if (isYesterday(date)) return `Yesterday, ${formatted}`
-  return formatted
-}
-
 export function WaterHistory(props: WaterHistoryProps) {
   const { entries, onUpdate, onDelete } = props
+  const t = useTranslations()
+
+  function formatDateHeader(dateStr: string) {
+    const date = parseISO(dateStr)
+    const formatted = format(date, 'd MMM yyyy')
+
+    if (isToday(date)) return t('water.today-date', { date: formatted })
+    if (isYesterday(date)) return t('water.yesterday-date', { date: formatted })
+    return formatted
+  }
 
   if (entries.length === 0) return null
 

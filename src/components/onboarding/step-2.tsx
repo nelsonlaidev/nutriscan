@@ -4,10 +4,11 @@ import type { CaloriePlan, Gender } from '@/lib/calculations'
 
 import { FireIcon, RulerIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
+import { useTranslations } from 'next-intl'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { calculateAge, generatePlanOptions } from '@/lib/calculations'
-import { OnboardingStep2FormSchema } from '@/lib/zod-schemas'
+import { createOnboardingStep2FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { Input } from '../ui/input'
@@ -16,18 +17,6 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-2'
-
-const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' }
-]
-
-const PLAN_LABELS: Record<CaloriePlan, string> = {
-  relaxed: 'Relaxed',
-  steady: 'Steady',
-  accelerated: 'Accelerated'
-}
 
 function computePlanOptions(
   birthday: string,
@@ -44,6 +33,20 @@ function computePlanOptions(
 
 export function Step2() {
   const { data, setStep, updateForm } = useOnboardingForm()
+  const t = useTranslations()
+  const OnboardingStep2FormSchema = createOnboardingStep2FormSchema(t)
+
+  const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
+    { value: 'male', label: t('onboarding.male') },
+    { value: 'female', label: t('onboarding.female') },
+    { value: 'other', label: t('onboarding.other') }
+  ]
+
+  const PLAN_LABELS: Record<CaloriePlan, string> = {
+    relaxed: t('onboarding.plan-relaxed'),
+    steady: t('onboarding.plan-steady'),
+    accelerated: t('onboarding.plan-accelerated')
+  }
 
   const form = useForm({
     defaultValues: {
@@ -64,8 +67,8 @@ export function Step2() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName='Your calorie budget'
-      stepDescription='We need a few details to calculate your personalized plan.'
+      stepName={t('onboarding.step-2-title')}
+      stepDescription={t('onboarding.step-2-description')}
       stepIcon={<FireIcon size={36} className='text-primary-foreground' />}
     >
       <form
@@ -82,7 +85,7 @@ export function Step2() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Birthday</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('onboarding.birthday')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -105,7 +108,7 @@ export function Step2() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Height</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('onboarding.height')}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
@@ -122,7 +125,7 @@ export function Step2() {
                         field.handleChange(Number.isNaN(value) ? '' : value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter height'
+                      placeholder={t('onboarding.height-placeholder')}
                     />
                     <InputGroupAddon align='inline-start'>
                       <RulerIcon className='text-muted-foreground' />
@@ -140,7 +143,7 @@ export function Step2() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel>Gender</FieldLabel>
+                  <FieldLabel>{t('onboarding.gender')}</FieldLabel>
                   <div className='grid grid-cols-3 gap-2'>
                     {GENDER_OPTIONS.map((option) => (
                       <button
@@ -187,6 +190,7 @@ export function Step2() {
                       onSelect={field.handleChange}
                       isInvalid={isInvalid}
                       errors={field.state.meta.errors}
+                      planLabels={PLAN_LABELS}
                     />
                   )
                 }}
@@ -207,14 +211,16 @@ type PlanOptionsProps = {
   onSelect: (plan: CaloriePlan) => void
   isInvalid: boolean
   errors: Array<{ message?: string } | undefined>
+  planLabels: Record<CaloriePlan, string>
 }
 
 function PlanOptions(props: PlanOptionsProps) {
-  const { options, selectedPlan, onSelect, isInvalid, errors } = props
+  const { options, selectedPlan, onSelect, isInvalid, errors, planLabels } = props
+  const t = useTranslations()
 
   return (
     <Field data-invalid={isInvalid}>
-      <FieldLabel>Choose your plan</FieldLabel>
+      <FieldLabel>{t('onboarding.choose-plan')}</FieldLabel>
       <div className='flex flex-col gap-2'>
         {options.map((option) => (
           <button
@@ -228,11 +234,13 @@ function PlanOptions(props: PlanOptionsProps) {
             }`}
           >
             <div className='flex items-center justify-between'>
-              <span className='font-medium'>{PLAN_LABELS[option.plan]}</span>
-              <span className='text-sm font-semibold text-primary'>{option.calories} cal/day</span>
+              <span className='font-medium'>{planLabels[option.plan]}</span>
+              <span className='text-sm font-semibold text-primary'>
+                {t('onboarding.calories-per-day', { calories: option.calories })}
+              </span>
             </div>
             <p className='mt-1 text-xs text-muted-foreground'>
-              ~{option.weeklyLoss} kg/week &middot; {option.weeksToGoal} weeks to goal
+              {t('onboarding.plan-details', { weeklyLoss: option.weeklyLoss, weeks: option.weeksToGoal })}
             </p>
           </button>
         ))}
