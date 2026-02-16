@@ -12,12 +12,12 @@ export const updateWaterIntake = authActionClient
       .insert(waterIntakes)
       .values({
         userId: ctx.user.id,
-        count: parsedInput.count,
+        amount: parsedInput.amount,
         date: parsedInput.date
       })
       .onConflictDoUpdate({
         target: [waterIntakes.userId, waterIntakes.date],
-        set: { count: parsedInput.count, updatedAt: new Date() }
+        set: { amount: parsedInput.amount, updatedAt: new Date() }
       })
 
     return { success: true }

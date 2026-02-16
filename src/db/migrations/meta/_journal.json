@@ -43,6 +43,13 @@
       "when": 1771173913076,
       "tag": "0005_dear_captain_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1771175597673,
+      "tag": "0006_quiet_stingray",
+      "breakpoints": true
     }
   ]
 }

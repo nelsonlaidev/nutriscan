@@ -19,12 +19,13 @@ async function Page(props: PageProps<'/dashboard'>) {
   const session = await getSession()
   if (!session) redirect('/')
 
-  const [entries, waterCount] = await Promise.all([
+  const [entries, waterAmount] = await Promise.all([
     getFoodEntriesByDate(session.user.id, date),
     getWaterIntake(session.user.id, date)
   ])
   const totals = computeTotals(entries)
   const meals = computeMealBreakdowns(entries)
+  const { waterGoal } = session.user
 
   return (
     <div className='flex flex-col'>
@@ -36,7 +37,7 @@ async function Page(props: PageProps<'/dashboard'>) {
         <DateNavigation />
         <CalorieSummary calories={totals.calories} />
         <MacronutrientCards values={totals} />
-        <WaterIntake initialCount={waterCount} date={date} />
+        <WaterIntake initialAmount={waterAmount} goal={waterGoal} date={date} />
         <MealList meals={meals} />
       </div>
     </div>

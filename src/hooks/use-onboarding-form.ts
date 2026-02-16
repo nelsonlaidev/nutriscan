@@ -1,5 +1,7 @@
 import { atom, useAtom } from 'jotai'
 
+import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT } from '@/lib/constants'
+
 type OnboardingForm = {
   currentWeight: number | ''
   goalWeight: number | ''
@@ -8,9 +10,9 @@ type OnboardingForm = {
 }
 
 const onboardingFormAtom = atom<OnboardingForm>({
-  currentWeight: 70,
-  goalWeight: 60,
-  height: 170,
+  currentWeight: DEFAULT_CURRENT_WEIGHT,
+  goalWeight: DEFAULT_GOAL_WEIGHT,
+  height: DEFAULT_HEIGHT,
   currentStep: 1
 })
 

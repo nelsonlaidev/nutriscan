@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { LOCALES } from './constants'
+import { LOCALES, MAX_WATER_INTAKE } from './constants'
 
 const CurrentWeightField = z
   .number()
@@ -130,6 +130,10 @@ export const UpdateLocaleSchema = z.object({
 })
 
 export const UpdateWaterIntakeSchema = z.object({
-  count: z.number().int().min(0).max(8),
+  amount: z.number().int().min(0).max(MAX_WATER_INTAKE),
   date: z.string()
+})
+
+export const UpdateWaterGoalSchema = z.object({
+  goal: z.number().int().min(500).max(MAX_WATER_INTAKE)
 })

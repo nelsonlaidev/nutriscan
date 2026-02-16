@@ -12,7 +12,7 @@ export const waterIntakes = pgTable(
     userId: text('user_id')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    count: integer('count').notNull().default(0),
+    amount: integer('amount').notNull().default(0),
     date: text('date').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')

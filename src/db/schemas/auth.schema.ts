@@ -1,5 +1,7 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
+import { boolean, index, integer, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
+
+import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT, DEFAULT_WATER_GOAL } from '@/lib/constants'
 
 import { foodEntries } from './food-entry.schema'
 
@@ -16,10 +18,11 @@ export const users = pgTable('users', {
     .notNull(),
   // Custom
   onboarded: boolean('onboarded').default(false).notNull(),
-  currentWeight: real('current_weight'),
-  goalWeight: real('goal_weight'),
-  height: real('height'),
-  locale: text('locale').default('en').notNull()
+  currentWeight: real('current_weight').notNull().default(DEFAULT_CURRENT_WEIGHT),
+  goalWeight: real('goal_weight').notNull().default(DEFAULT_GOAL_WEIGHT),
+  height: real('height').notNull().default(DEFAULT_HEIGHT),
+  locale: text('locale').default('en').notNull(),
+  waterGoal: integer('water_goal').notNull().default(DEFAULT_WATER_GOAL)
 })
 
 export const sessions = pgTable(

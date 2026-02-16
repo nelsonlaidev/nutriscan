@@ -1,6 +1,5 @@
 'use client'
 
-import { ArrowLeftIcon } from '@phosphor-icons/react/ssr'
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState, useTransition } from 'react'
@@ -87,14 +86,7 @@ function Page() {
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex items-center gap-3'>
-        {step !== 'input' && (
-          <Button onClick={handleBack} type='button' size='icon-sm' variant='outline'>
-            <ArrowLeftIcon size={20} />
-          </Button>
-        )}
-        <PageTitle title='Add Food' />
-      </div>
+      <PageTitle title='Add Food' withBackButton={step !== 'input'} onClickBack={handleBack} />
 
       <div className='flex flex-col gap-5'>
         {step === 'input' && (

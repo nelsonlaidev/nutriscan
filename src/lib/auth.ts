@@ -23,20 +23,26 @@ export const auth = betterAuth({
       },
       currentWeight: {
         type: 'number',
-        required: false
+        required: true
       },
       goalWeight: {
         type: 'number',
-        required: false
+        required: true
       },
       height: {
         type: 'number',
-        required: false
+        required: true
       },
       locale: {
         type: 'string',
-        required: false,
+        required: true,
         defaultValue: 'en',
+        input: false
+      },
+      waterGoal: {
+        type: 'number',
+        required: true,
+        defaultValue: 2500,
         input: false
       }
     }

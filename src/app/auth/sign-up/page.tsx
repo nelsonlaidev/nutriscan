@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { signUp } from '@/lib/auth-client'
+import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT } from '@/lib/constants'
 import { SignUpFormSchema } from '@/lib/zod-schemas'
 
 function Page() {
@@ -33,7 +34,10 @@ function Page() {
         {
           email: value.email,
           password: value.password,
-          name: value.name
+          name: value.name,
+          currentWeight: DEFAULT_CURRENT_WEIGHT,
+          goalWeight: DEFAULT_GOAL_WEIGHT,
+          height: DEFAULT_HEIGHT
         },
         {
           onRequest: () => {

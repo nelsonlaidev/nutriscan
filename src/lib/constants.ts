@@ -40,3 +40,10 @@ export const NAVBAR_LINKS = [
     icon: null
   }
 ]
+
+export const DEFAULT_CURRENT_WEIGHT = 70
+export const DEFAULT_GOAL_WEIGHT = 60
+export const DEFAULT_HEIGHT = 170
+export const DEFAULT_WATER_GOAL = 2500
+
+export const MAX_WATER_INTAKE = 10_000

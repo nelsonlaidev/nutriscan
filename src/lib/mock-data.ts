@@ -6,8 +6,6 @@ export const DAILY_GOALS = {
   fiber: 30
 }
 
-export const WATER_GOAL = 8
-
 export const MEAL_CATEGORIES = [
   { id: 'breakfast', name: 'Breakfast', emoji: '🍞', items: 0, calories: 0 },
   { id: 'lunch', name: 'Lunch', emoji: '🌤️', items: 0, calories: 0 },
