@@ -12,6 +12,7 @@ import { ManualEntryMode } from '@/components/add/manual-entry-mode'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
 import { type Mode, ModeSelector } from '@/components/add/mode-selector'
 import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
+import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { Button } from '@/components/ui/button'
 import { MEAL_CATEGORIES } from '@/lib/constants'
@@ -84,7 +85,7 @@ function Page() {
   }
 
   return (
-    <div className='flex flex-col gap-6'>
+    <PageContainer>
       <PageTitle title='Add Food' withBackButton={step !== 'input'} onClickBack={handleBack} />
 
       <div className='flex flex-col gap-5'>
@@ -122,7 +123,7 @@ function Page() {
           </>
         )}
       </div>
-    </div>
+    </PageContainer>
   )
 }
 

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { LanguageSelector } from '@/components/settings/language-selector'
 import { PersonalInfo } from '@/components/settings/personal-info'
@@ -11,7 +12,7 @@ export default async function SettingsPage() {
   const t = await getTranslations()
 
   return (
-    <div className='flex flex-col gap-6 pb-20'>
+    <PageContainer className='pb-20'>
       <PageTitle title={t('settings.title')} />
 
       <div className='space-y-6'>
@@ -26,6 +27,6 @@ export default async function SettingsPage() {
 
         <SignOutButton />
       </div>
-    </div>
+    </PageContainer>
   )
 }
