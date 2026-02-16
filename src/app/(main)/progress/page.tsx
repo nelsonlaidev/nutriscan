@@ -7,9 +7,7 @@ import { WeightChart } from '@/components/progress/weight-chart'
 export default function ProgressPage() {
   return (
     <div className='space-y-6'>
-      <div className='flex items-center justify-between'>
-        <PageTitle title='Progress' />
-      </div>
+      <PageTitle title='Progress' />
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         <div className='w-full'>
