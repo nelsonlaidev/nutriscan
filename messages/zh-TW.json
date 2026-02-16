@@ -143,18 +143,27 @@
 
   "progress": {
     "page-title": "進度",
-    "daily-average-calories": "每日平均熱量",
     "cal-unit": "大卡",
-    "day-streak": "連續天數",
-    "your-weight": "您的體重",
-    "lbs": "磅",
-    "goal-lbs": "目標 {goal} 磅",
-    "log-weight": "記錄體重",
     "weight-progress": "體重進度",
-    "percent-of-goal": "達成 {percent}%",
-    "weight-tooltip": "{weight} 磅",
-    "weight-date-tooltip": "{date}, 2025",
-    "encouragement": "做得好！持之以恆是關鍵，您正在掌握它！"
+    "encouragement": "做得好！持之以恆是關鍵，您正在掌握它！",
+    "weekly": "每週",
+    "monthly": "每月",
+    "yearly": "每年",
+    "calories-chart": "熱量",
+    "nutrition-chart": "營養素",
+    "water-chart": "飲水量",
+    "bmi": "BMI 身體質量指數",
+    "underweight": "體重過輕",
+    "normal": "正常",
+    "overweight": "體重過重",
+    "obese": "肥胖",
+    "calorie-goal": "熱量目標",
+    "water-goal": "飲水目標",
+    "weight-goal": "體重目標",
+    "protein": "蛋白質",
+    "carbs": "碳水化合物",
+    "fat": "脂肪",
+    "no-weight-data": "尚無體重記錄"
   },
 
   "water": {

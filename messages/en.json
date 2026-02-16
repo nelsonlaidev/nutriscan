@@ -143,18 +143,27 @@
 
   "progress": {
     "page-title": "Progress",
-    "daily-average-calories": "Daily Average Calories",
     "cal-unit": "cal",
-    "day-streak": "Day Streak",
-    "your-weight": "Your Weight",
-    "lbs": "lbs",
-    "goal-lbs": "Goal {goal} lbs",
-    "log-weight": "Log Weight",
     "weight-progress": "Weight Progress",
-    "percent-of-goal": "{percent}% of goal",
-    "weight-tooltip": "{weight} lbs",
-    "weight-date-tooltip": "{date}, 2025",
-    "encouragement": "Great job! Consistency is key, and you're mastering it!"
+    "encouragement": "Great job! Consistency is key, and you're mastering it!",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "calories-chart": "Calories",
+    "nutrition-chart": "Nutrition",
+    "water-chart": "Water Intake",
+    "bmi": "BMI",
+    "underweight": "Underweight",
+    "normal": "Normal",
+    "overweight": "Overweight",
+    "obese": "Obese",
+    "calorie-goal": "Calorie goal",
+    "water-goal": "Water goal",
+    "weight-goal": "Weight goal",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat",
+    "no-weight-data": "No weight entries yet"
   },
 
   "water": {

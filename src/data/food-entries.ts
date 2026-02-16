@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm'
+import { and, eq, inArray, sql } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { foodEntries } from '@/db/schemas/food-entry.schema'
@@ -49,6 +49,34 @@ const MEAL_META: Record<MealCategory, { name: string; emoji: string }> = {
   lunch: { name: 'Lunch', emoji: MEAL_EMOJI.lunch },
   dinner: { name: 'Dinner', emoji: MEAL_EMOJI.dinner },
   snacks: { name: 'Snacks', emoji: MEAL_EMOJI.snacks }
+}
+
+export async function getCalorieTotalsByDate(userId: string, dates: string[]) {
+  if (dates.length === 0) return []
+
+  return db
+    .select({
+      date: foodEntries.date,
+      calories: sql<number>`cast(coalesce(sum(${foodEntries.calories}), 0) as real)`
+    })
+    .from(foodEntries)
+    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.date, dates)))
+    .groupBy(foodEntries.date)
+}
+
+export async function getNutritionTotalsByDate(userId: string, dates: string[]) {
+  if (dates.length === 0) return []
+
+  return db
+    .select({
+      date: foodEntries.date,
+      protein: sql<number>`cast(coalesce(sum(${foodEntries.protein}), 0) as real)`,
+      carbs: sql<number>`cast(coalesce(sum(${foodEntries.carbs}), 0) as real)`,
+      fat: sql<number>`cast(coalesce(sum(${foodEntries.fat}), 0) as real)`
+    })
+    .from(foodEntries)
+    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.date, dates)))
+    .groupBy(foodEntries.date)
 }
 
 export function computeMealBreakdowns(entries: FoodEntry[]) {

@@ -13,6 +13,7 @@ import {
 } from '@/lib/constants'
 
 import { foodEntries } from './food-entry.schema'
+import { weightEntries } from './weight-entry.schema'
 
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
@@ -102,7 +103,8 @@ export const verifications = pgTable(
 export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
-  foodEntries: many(foodEntries)
+  foodEntries: many(foodEntries),
+  weightEntries: many(weightEntries)
 }))
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
