@@ -10,7 +10,7 @@ export default defineConfig(
     },
     importX: {
       noNamespace: {
-        ignore: ['./schemas']
+        ignore: ['./schemas', 'recharts']
       },
       noUnassignedImport: {
         allow: ['./src/env']

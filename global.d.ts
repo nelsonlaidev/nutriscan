@@ -9,3 +9,9 @@ declare module 'next-intl' {
     Messages: typeof messages
   }
 }
+
+declare module 'react' {
+  interface CSSProperties {
+    [key: `--${string}`]: string | number | undefined
+  }
+}
