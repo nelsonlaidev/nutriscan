@@ -4,6 +4,17 @@
     "dark-mode": "深色模式",
     "language": "語言"
   },
+  "meals": {
+    "title": "餐點詳情",
+    "total": "總計",
+    "breakfast": "早餐",
+    "lunch": "午餐",
+    "dinner": "晚餐",
+    "snacks": "點心",
+    "no-items": "尚未記錄任何食物",
+    "items": "{count} 項食物",
+    "add-food": "新增食物"
+  },
   "greeting": {
     "morning": "早安",
     "afternoon": "午安",

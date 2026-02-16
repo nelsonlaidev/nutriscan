@@ -1,6 +1,7 @@
 import { eachDayOfInterval, endOfWeek, format, startOfWeek, subDays } from 'date-fns'
 import { redirect } from 'next/navigation'
 
+import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { WaterTracker } from '@/components/water/water-tracker'
 import { getWaterEntries, getWaterTotalsByDate } from '@/data/water-entries'
@@ -27,10 +28,10 @@ async function Page() {
   const { waterGoal } = session.user
 
   return (
-    <div className='flex flex-col gap-6'>
+    <PageContainer>
       <PageTitle title='Water Tracker' withBackButton />
       <WaterTracker initialGoal={waterGoal} date={todayStr} weekData={weekData} initialEntries={entries} />
-    </div>
+    </PageContainer>
   )
 }
 

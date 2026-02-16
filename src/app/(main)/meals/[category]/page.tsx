@@ -1,0 +1,89 @@
+import { CaretRightIcon } from '@phosphor-icons/react/ssr'
+import { format } from 'date-fns'
+import Image from 'next/image'
+import { notFound, redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
+
+import { PageContainer } from '@/components/page-container'
+import { PageTitle } from '@/components/page-title'
+import { Card, CardContent } from '@/components/ui/card'
+import { getFoodEntriesByDateAndCategory, type MealCategory } from '@/data/food-entries'
+import { getSession } from '@/lib/auth'
+import { MEAL_EMOJI } from '@/lib/constants'
+
+const VALID_CATEGORIES = new Set<MealCategory>(['breakfast', 'lunch', 'dinner', 'snacks'])
+
+async function Page({
+  params,
+  searchParams
+}: {
+  params: Promise<{ category: string }>
+  searchParams: Promise<{ date?: string }>
+}) {
+  const { category } = await params
+  const { date } = await searchParams
+
+  if (!VALID_CATEGORIES.has(category as MealCategory)) {
+    notFound()
+  }
+
+  const mealCategory = category as MealCategory
+
+  const session = await getSession()
+  if (!session) redirect('/')
+
+  const t = await getTranslations()
+  const dateStr = date ?? format(new Date(), 'yyyy-MM-dd')
+  const entries = await getFoodEntriesByDateAndCategory(session.user.id, dateStr, mealCategory)
+  const totalCalories = Math.round(entries.reduce((sum, e) => sum + e.calories, 0))
+
+  const mealName = t(`meals.${mealCategory}`)
+
+  return (
+    <PageContainer className='gap-8'>
+      <PageTitle title={mealName} withBackButton />
+
+      <div className='space-y-6'>
+        <div className='flex items-center justify-between'>
+          <div className='font-semibold'>{t('meals.total')}</div>
+          <div className='font-medium'>{totalCalories} kcal</div>
+        </div>
+
+        {entries.length === 0 ? (
+          <p className='py-8 text-center text-sm text-muted-foreground'>{t('meals.no-items')}</p>
+        ) : (
+          <div className='space-y-4'>
+            {entries.map((entry) => (
+              <Card key={entry.id} size='sm'>
+                <CardContent className='flex items-center gap-3'>
+                  {entry.imageUrl ? (
+                    <Image
+                      src={entry.imageUrl}
+                      alt={entry.foodName}
+                      width={40}
+                      height={40}
+                      className='size-10 rounded-lg object-cover'
+                    />
+                  ) : (
+                    <div className='flex size-10 items-center justify-center rounded-lg bg-muted text-lg'>
+                      {MEAL_EMOJI[mealCategory]}
+                    </div>
+                  )}
+                  <div className='flex-1'>
+                    <p className='text-sm font-semibold'>{entry.foodName}</p>
+                    <p className='text-xs text-muted-foreground'>
+                      {entry.servingSize} &middot; {Math.round(entry.calories)} kcal
+                    </p>
+                  </div>
+                  <CaretRightIcon size={16} className='text-muted-foreground' />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </PageContainer>
+  )
+}
+
+export default Page

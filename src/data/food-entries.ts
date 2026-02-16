@@ -2,6 +2,7 @@ import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { foodEntries } from '@/db/schemas/food-entry.schema'
+import { MEAL_EMOJI } from '@/lib/constants'
 
 export type MealCategory = 'breakfast' | 'lunch' | 'dinner' | 'snacks'
 
@@ -18,6 +19,13 @@ export async function getFoodEntriesByDate(userId: string, date: string) {
     .select()
     .from(foodEntries)
     .where(and(eq(foodEntries.userId, userId), eq(foodEntries.date, date)))
+}
+
+export async function getFoodEntriesByDateAndCategory(userId: string, date: string, category: MealCategory) {
+  return db
+    .select()
+    .from(foodEntries)
+    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.date, date), eq(foodEntries.mealCategory, category)))
 }
 
 export function computeTotals(entries: FoodEntry[]) {
@@ -37,10 +45,10 @@ export function computeTotals(entries: FoodEntry[]) {
 }
 
 const MEAL_META: Record<MealCategory, { name: string; emoji: string }> = {
-  breakfast: { name: 'Breakfast', emoji: '🍞' },
-  lunch: { name: 'Lunch', emoji: '🌤️' },
-  dinner: { name: 'Dinner', emoji: '🌙' },
-  snacks: { name: 'Snacks', emoji: '🍿' }
+  breakfast: { name: 'Breakfast', emoji: MEAL_EMOJI.breakfast },
+  lunch: { name: 'Lunch', emoji: MEAL_EMOJI.lunch },
+  dinner: { name: 'Dinner', emoji: MEAL_EMOJI.dinner },
+  snacks: { name: 'Snacks', emoji: MEAL_EMOJI.snacks }
 }
 
 export function computeMealBreakdowns(entries: FoodEntry[]) {

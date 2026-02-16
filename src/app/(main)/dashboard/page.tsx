@@ -34,12 +34,12 @@ async function Page(props: PageProps<'/dashboard'>) {
         <DashboardHeader />
       </div>
 
-      <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-6'>
         <DateNavigation />
         <CalorieSummary calories={totals.calories} goal={calorieBudget} />
         <MacronutrientCards values={totals} goals={macroGoals} />
         <WaterIntake amount={waterAmount} goal={waterGoal} />
-        <MealList meals={meals} />
+        <MealList meals={meals} date={date} />
       </div>
     </div>
   )

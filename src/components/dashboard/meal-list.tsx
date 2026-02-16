@@ -1,4 +1,4 @@
-import { PlusIcon } from '@phosphor-icons/react/ssr'
+import { CaretRightIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -13,6 +13,7 @@ type MealBreakdown = {
 
 type MealListProps = {
   meals: MealBreakdown[]
+  date: string
 }
 
 const EMOJI_BG: Record<string, string> = {
@@ -23,7 +24,7 @@ const EMOJI_BG: Record<string, string> = {
 }
 
 export function MealList(props: MealListProps) {
-  const { meals } = props
+  const { meals, date } = props
 
   return (
     <div className='space-y-3'>
@@ -34,23 +35,28 @@ export function MealList(props: MealListProps) {
           Add Food
         </Link>
       </div>
-      <div className='space-y-2'>
+      <div className='space-y-4'>
         {meals.map((meal) => (
-          <Card key={meal.id} size='sm'>
-            <CardContent className='flex items-center gap-3 p-3'>
-              <div
-                className={`flex size-10 items-center justify-center rounded-xl text-lg ${EMOJI_BG[meal.id] ?? 'bg-muted'}`}
-              >
-                {meal.emoji}
-              </div>
-              <div>
-                <p className='text-sm font-semibold'>{meal.name}</p>
-                <p className='text-xs text-muted-foreground'>
-                  {meal.items} items &middot; {meal.calories} kcal
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <Link key={meal.id} href={`/meals/${meal.id}?date=${date}`} className='block'>
+            <Card size='sm' className='transition-colors hover:bg-muted/50'>
+              <CardContent className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <div
+                    className={`flex size-10 items-center justify-center rounded-xl text-lg ${EMOJI_BG[meal.id] ?? 'bg-muted'}`}
+                  >
+                    {meal.emoji}
+                  </div>
+                  <div>
+                    <p className='text-sm font-semibold'>{meal.name}</p>
+                    <p className='text-xs text-muted-foreground'>
+                      {meal.items} items &middot; {meal.calories} kcal
+                    </p>
+                  </div>
+                </div>
+                <CaretRightIcon size={20} />
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>

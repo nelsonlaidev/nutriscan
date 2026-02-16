@@ -4,6 +4,17 @@
     "dark-mode": "Dark Mode",
     "language": "Language"
   },
+  "meals": {
+    "title": "Meal Details",
+    "total": "Total",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snacks": "Snacks",
+    "no-items": "No items logged yet",
+    "items": "{count} items",
+    "add-food": "Add Food"
+  },
   "greeting": {
     "morning": "Good morning",
     "afternoon": "Good afternoon",
