@@ -1,46 +1,71 @@
 'use client'
 
+import type { WaterEntry } from '@/data/water-entries'
+
 import { PlusIcon } from '@phosphor-icons/react/ssr'
 import { useState } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
 
-import { updateWaterIntake } from '@/actions/update-water-intake'
+import { addWaterEntry } from '@/actions/water-entry'
 import { Button } from '@/components/ui/button'
 import { MAX_WATER_INTAKE } from '@/lib/constants'
+import { formatMl } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
 
-import { WaterAmountDialog } from './water-amount-dialog'
 import { WaterDroplet } from './water-droplet'
 import { WaterGoalDialog } from './water-goal-dialog'
+import { WaterHistory } from './water-history'
 import { WeeklyWaterTracker } from './weekly-water-tracker'
 
 const QUICK_ADD_OPTIONS = [100, 200, 300, 500]
 
 type WaterTrackerProps = {
-  initialAmount: number
   initialGoal: number
   date: string
   weekData: Array<{ date: string; amount: number }>
+  initialEntries: WaterEntry[]
 }
 
 export function WaterTracker(props: WaterTrackerProps) {
-  const { initialAmount, initialGoal, date, weekData } = props
-  const [amount, setAmount] = useState(initialAmount)
+  const { initialGoal, date, weekData, initialEntries } = props
+  const [entries, setEntries] = useState(initialEntries)
   const [goal, setGoal] = useState(initialGoal)
+
+  // Derive today's total from entries
+  const todayEntries = entries.filter((e) => e.date === date)
+  const amount = todayEntries.reduce((sum, e) => sum + e.amount, 0)
 
   const percentage = goal > 0 ? (amount / goal) * 100 : 0
 
-  const debouncedSave = useDebouncedCallback((value: number) => {
-    void updateWaterIntake({ amount: value, date })
-  }, 500)
+  async function addWater(ml: number) {
+    // Optimistically add entry
+    const optimisticId = crypto.randomUUID()
+    const optimisticEntry: WaterEntry = {
+      id: optimisticId,
+      amount: Math.min(ml, MAX_WATER_INTAKE - amount),
+      date,
+      createdAt: new Date()
+    }
 
-  function addWater(ml: number) {
-    setAmount((prev) => {
-      const next = Math.min(prev + ml, MAX_WATER_INTAKE)
-      debouncedSave(next)
-      return next
-    })
+    setEntries((prev) => [optimisticEntry, ...prev])
+
+    const result = await addWaterEntry({ amount: optimisticEntry.amount, date })
+
+    const entry = result.data?.entry
+    if (result.data?.success && entry) {
+      // Replace optimistic entry with real one
+      setEntries((prev) =>
+        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e))
+      )
+    }
+  }
+
+  function handleEntryUpdate(id: string, newAmount: number) {
+    setEntries((prev) => prev.map((e) => (e.id === id ? { ...e, amount: newAmount } : e)))
+  }
+
+  function handleEntryDelete(id: string) {
+    setEntries((prev) => prev.filter((e) => e.id !== id))
   }
 
   return (
@@ -49,7 +74,7 @@ export function WaterTracker(props: WaterTrackerProps) {
       <Card className='w-full' size='sm'>
         <CardContent className='flex flex-col items-center gap-4'>
           <WaterDroplet percentage={percentage} />
-          <WaterAmountDialog amount={amount} date={date} onAmountChange={setAmount} />
+          <p className='text-3xl font-semibold'>{formatMl(amount)}</p>
           <WaterGoalDialog currentGoal={goal} onGoalChange={setGoal} />
         </CardContent>
       </Card>
@@ -62,7 +87,7 @@ export function WaterTracker(props: WaterTrackerProps) {
             variant='outline'
             size='sm'
             onClick={() => {
-              addWater(ml)
+              void addWater(ml)
             }}
           >
             <PlusIcon size={14} data-icon='inline-start' />
@@ -76,12 +101,15 @@ export function WaterTracker(props: WaterTrackerProps) {
         size='lg'
         className='w-full max-w-xs bg-blue-500 hover:bg-blue-600'
         onClick={() => {
-          addWater(250)
+          void addWater(250)
         }}
       >
         <PlusIcon size={18} data-icon='inline-start' />
         Drink Water (+250 mL)
       </Button>
+
+      {/* Water entry history */}
+      <WaterHistory entries={entries} onUpdate={handleEntryUpdate} onDelete={handleEntryDelete} />
     </div>
   )
 }

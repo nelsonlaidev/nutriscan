@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { NAVBAR_LINKS } from '@/lib/constants'
+import { NAVBAR_LINKS } from '@/lib/links'
 
 import { UserAvatar } from './user-avatar'
 

@@ -50,6 +50,20 @@
       "when": 1771175597673,
       "tag": "0006_quiet_stingray",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1771236650377,
+      "tag": "0007_wooden_madripoor",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1771238803515,
+      "tag": "0008_foamy_carlie_cooper",
+      "breakpoints": true
     }
   ]
 }

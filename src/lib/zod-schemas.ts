@@ -129,11 +129,20 @@ export const UpdateLocaleSchema = z.object({
   locale: z.enum(LOCALES)
 })
 
-export const UpdateWaterIntakeSchema = z.object({
-  amount: z.number().int().min(0).max(MAX_WATER_INTAKE),
-  date: z.string()
-})
-
 export const UpdateWaterGoalSchema = z.object({
   goal: z.number().int().min(500).max(MAX_WATER_INTAKE)
+})
+
+export const AddWaterEntrySchema = z.object({
+  amount: z.number().int().min(1).max(MAX_WATER_INTAKE),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+})
+
+export const UpdateWaterEntrySchema = z.object({
+  id: z.string().min(1),
+  amount: z.number().int().min(1).max(MAX_WATER_INTAKE)
+})
+
+export const DeleteWaterEntrySchema = z.object({
+  id: z.string().min(1)
 })

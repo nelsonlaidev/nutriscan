@@ -1,5 +1,3 @@
-import { CameraIcon, ChartBarIcon, ChatsCircleIcon, HouseIcon } from '@phosphor-icons/react/ssr'
-
 import { env } from '@/env'
 
 export const isProd = env.NODE_ENV === 'production'
@@ -10,35 +8,6 @@ export const LOCALES = [DEFAULT_LOCALE, 'zh-TW'] as const
 export const LOCALE_ITEMS = [
   { label: 'English', value: 'en' },
   { label: '繁體中文', value: 'zh-TW' }
-]
-
-export const NAVBAR_LINKS = [
-  {
-    title: 'Home',
-    href: '/dashboard',
-    icon: HouseIcon
-  },
-  {
-    title: 'Progress',
-    href: '/progress',
-    icon: ChartBarIcon
-  },
-  {
-    title: 'Add',
-    href: '/add',
-    icon: CameraIcon,
-    primary: true
-  },
-  {
-    title: 'Chat',
-    href: '/chat',
-    icon: ChatsCircleIcon
-  },
-  {
-    title: 'Profile',
-    href: '/profile',
-    icon: null
-  }
 ]
 
 export const DEFAULT_CURRENT_WEIGHT = 70
