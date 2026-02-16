@@ -1,4 +1,4 @@
-import { MEAL_CATEGORIES } from '@/lib/mock-data'
+import { MEAL_CATEGORIES } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 type MealCategoryPickerProps = {

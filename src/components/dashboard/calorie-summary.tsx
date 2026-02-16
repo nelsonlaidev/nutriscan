@@ -1,28 +1,22 @@
 import { CircleProgress } from '@/components/dashboard/circle-progress'
 import { Card, CardContent } from '@/components/ui/card'
-import { DAILY_GOALS } from '@/lib/mock-data'
 
 type CalorieSummaryProps = {
   calories: number
+  goal: number
 }
 
 export function CalorieSummary(props: CalorieSummaryProps) {
-  const { calories } = props
-  const remaining = DAILY_GOALS.calories - calories
+  const { calories, goal } = props
+  const remaining = goal - calories
 
   return (
     <Card size='sm'>
       <CardContent className='flex items-center gap-6'>
-        <CircleProgress
-          value={calories}
-          max={DAILY_GOALS.calories}
-          size={100}
-          strokeWidth={8}
-          progressClassName='stroke-primary'
-        >
+        <CircleProgress value={calories} max={goal} size={100} strokeWidth={8} progressClassName='stroke-primary'>
           <span className='text-xl font-bold'>{Math.round(calories)}</span>
           <span className='text-[10px] text-muted-foreground'>kcal</span>
-          <span className='text-[10px] text-muted-foreground'>of {DAILY_GOALS.calories}</span>
+          <span className='text-[10px] text-muted-foreground'>of {goal}</span>
         </CircleProgress>
         <div className='grid flex-1 grid-cols-2 gap-y-3'>
           <div>
@@ -39,7 +33,7 @@ export function CalorieSummary(props: CalorieSummaryProps) {
           </div>
           <div>
             <p className='text-xs text-muted-foreground'>Goal</p>
-            <p className='text-lg font-semibold'>{DAILY_GOALS.calories}</p>
+            <p className='text-lg font-semibold'>{goal}</p>
           </div>
         </div>
       </CardContent>

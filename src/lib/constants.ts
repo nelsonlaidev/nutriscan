@@ -20,3 +20,10 @@ export const DEFAULT_CARB_TARGET = 200
 export const DEFAULT_FAT_TARGET = 67
 
 export const MAX_WATER_INTAKE = 10_000
+
+export const MEAL_CATEGORIES = [
+  { id: 'breakfast', name: 'Breakfast', emoji: '🍞', items: 0, calories: 0 },
+  { id: 'lunch', name: 'Lunch', emoji: '🌤️', items: 0, calories: 0 },
+  { id: 'dinner', name: 'Dinner', emoji: '🌙', items: 0, calories: 0 },
+  { id: 'snacks', name: 'Snacks', emoji: '🍿', items: 0, calories: 0 }
+] as const

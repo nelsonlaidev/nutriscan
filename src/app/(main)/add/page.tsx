@@ -14,7 +14,7 @@ import { type Mode, ModeSelector } from '@/components/add/mode-selector'
 import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
 import { PageTitle } from '@/components/page-title'
 import { Button } from '@/components/ui/button'
-import { MEAL_CATEGORIES } from '@/lib/mock-data'
+import { MEAL_CATEGORIES } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
 

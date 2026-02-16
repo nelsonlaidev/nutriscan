@@ -2,14 +2,16 @@ import { BowlFoodIcon } from '@phosphor-icons/react/ssr'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { DAILY_GOALS } from '@/lib/mock-data'
+
+type MacroGoals = {
+  protein: number
+  carbs: number
+  fat: number
+}
 
 type MacronutrientCardsProps = {
-  values: {
-    protein: number
-    carbs: number
-    fat: number
-  }
+  values: MacroGoals
+  goals: MacroGoals
 }
 
 const MACROS = [
@@ -19,7 +21,7 @@ const MACROS = [
 ]
 
 export function MacronutrientCards(props: MacronutrientCardsProps) {
-  const { values } = props
+  const { values, goals } = props
 
   return (
     <Card size='sm'>
@@ -32,7 +34,7 @@ export function MacronutrientCards(props: MacronutrientCardsProps) {
       <CardContent className='space-y-4'>
         {MACROS.map((macro) => {
           const value = Math.round(values[macro.key])
-          const goal = DAILY_GOALS[macro.key]
+          const goal = goals[macro.key]
           const percentage = Math.min(Math.round((value / goal) * 100), 100)
 
           return (

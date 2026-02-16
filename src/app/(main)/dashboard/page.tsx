@@ -25,7 +25,8 @@ async function Page(props: PageProps<'/dashboard'>) {
   ])
   const totals = computeTotals(entries)
   const meals = computeMealBreakdowns(entries)
-  const { waterGoal } = session.user
+  const { waterGoal, calorieBudget, proteinTarget, carbTarget, fatTarget } = session.user
+  const macroGoals = { protein: proteinTarget, carbs: carbTarget, fat: fatTarget }
 
   return (
     <div className='flex flex-col'>
@@ -35,8 +36,8 @@ async function Page(props: PageProps<'/dashboard'>) {
 
       <div className='flex flex-col gap-5'>
         <DateNavigation />
-        <CalorieSummary calories={totals.calories} />
-        <MacronutrientCards values={totals} />
+        <CalorieSummary calories={totals.calories} goal={calorieBudget} />
+        <MacronutrientCards values={totals} goals={macroGoals} />
         <WaterIntake amount={waterAmount} goal={waterGoal} />
         <MealList meals={meals} />
       </div>
