@@ -25,9 +25,9 @@ export function PageTitle(props: PageTitleProps) {
   }
 
   return (
-    <div className='flex items-center gap-3'>
+    <div className='relative flex items-center justify-center gap-3'>
       {withBackButton && (
-        <Button onClick={handleClickBack} type='button' size='icon-sm' variant='outline'>
+        <Button onClick={handleClickBack} type='button' size='icon-sm' variant='outline' className='absolute left-0'>
           <ArrowLeftIcon size={20} />
         </Button>
       )}
