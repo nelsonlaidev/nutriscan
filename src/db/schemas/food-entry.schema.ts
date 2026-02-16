@@ -18,7 +18,6 @@ export const foodEntries = pgTable(
     protein: real('protein').notNull(),
     carbs: real('carbs').notNull(),
     fat: real('fat').notNull(),
-    fiber: real('fiber').notNull(),
     mealCategory: text('meal_category', {
       enum: ['breakfast', 'lunch', 'dinner', 'snacks']
     }).notNull(),

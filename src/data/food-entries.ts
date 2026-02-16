@@ -10,7 +10,6 @@ type FoodEntry = {
   protein: number
   carbs: number
   fat: number
-  fiber: number
   mealCategory: MealCategory
 }
 
@@ -26,17 +25,15 @@ export function computeTotals(entries: FoodEntry[]) {
   let protein = 0
   let carbs = 0
   let fat = 0
-  let fiber = 0
 
   for (const entry of entries) {
     calories += entry.calories
     protein += entry.protein
     carbs += entry.carbs
     fat += entry.fat
-    fiber += entry.fiber
   }
 
-  return { calories, protein, carbs, fat, fiber }
+  return { calories, protein, carbs, fat }
 }
 
 const MEAL_META: Record<MealCategory, { name: string; emoji: string }> = {

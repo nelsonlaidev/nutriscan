@@ -18,8 +18,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
     calories: '0',
     protein: '0',
     carbs: '0',
-    fat: '0',
-    fiber: '0'
+    fat: '0'
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -34,8 +33,7 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
       calories: Number(form.calories),
       protein: Number(form.protein),
       carbs: Number(form.carbs),
-      fat: Number(form.fat),
-      fiber: Number(form.fiber)
+      fat: Number(form.fat)
     })
 
     if (!result.success) {
@@ -140,19 +138,6 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
             value={form.fat}
             onChange={(e) => {
               updateField('fat', e.target.value)
-            }}
-          />
-        </div>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='me-fiber' className='text-sm text-muted-foreground'>
-            Fiber (g)
-          </label>
-          <Input
-            id='me-fiber'
-            type='number'
-            value={form.fiber}
-            onChange={(e) => {
-              updateField('fiber', e.target.value)
             }}
           />
         </div>

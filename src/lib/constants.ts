@@ -14,5 +14,9 @@ export const DEFAULT_CURRENT_WEIGHT = 70
 export const DEFAULT_GOAL_WEIGHT = 60
 export const DEFAULT_HEIGHT = 170
 export const DEFAULT_WATER_GOAL = 2500
+export const DEFAULT_CALORIE_BUDGET = 2000
+export const DEFAULT_PROTEIN_TARGET = 150
+export const DEFAULT_CARB_TARGET = 200
+export const DEFAULT_FAT_TARGET = 67
 
 export const MAX_WATER_INTAKE = 10_000

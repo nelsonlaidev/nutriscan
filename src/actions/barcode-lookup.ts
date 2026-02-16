@@ -28,8 +28,7 @@ export const lookupBarcode = authActionClient.inputSchema(BarcodeLookupSchema).a
       calories: Math.round(nutriments['energy-kcal_100g']),
       protein: Math.round(nutriments.proteins_100g),
       carbs: Math.round(nutriments.carbohydrates_100g),
-      fat: Math.round(nutriments.fat_100g),
-      fiber: Math.round(nutriments.fiber_100g)
+      fat: Math.round(nutriments.fat_100g)
     }
   }
 })

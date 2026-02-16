@@ -2,8 +2,7 @@ export const DAILY_GOALS = {
   calories: 2000,
   protein: 150,
   carbs: 250,
-  fat: 65,
-  fiber: 30
+  fat: 65
 }
 
 export const MEAL_CATEGORIES = [

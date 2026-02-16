@@ -13,7 +13,6 @@ function Page() {
       {data.currentStep === 1 && <Step1 />}
       {data.currentStep === 2 && <Step2 />}
       {data.currentStep === 3 && <Step3 />}
-      {data.currentStep === 4 && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </>
   )
 }

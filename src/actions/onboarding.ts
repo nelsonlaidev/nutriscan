@@ -16,6 +16,12 @@ export const completeOnboarding = authActionClient
         currentWeight: parsedInput.currentWeight,
         goalWeight: parsedInput.goalWeight,
         height: parsedInput.height,
+        birthday: parsedInput.birthday,
+        gender: parsedInput.gender,
+        calorieBudget: parsedInput.calorieBudget,
+        proteinTarget: parsedInput.proteinTarget,
+        carbTarget: parsedInput.carbTarget,
+        fatTarget: parsedInput.fatTarget,
         onboarded: true
       })
       .where(eq(users.id, ctx.user.id))

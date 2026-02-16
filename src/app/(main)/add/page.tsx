@@ -54,7 +54,6 @@ function Page() {
         protein: nutritionData.protein,
         carbs: nutritionData.carbs,
         fat: nutritionData.fat,
-        fiber: nutritionData.fiber,
         mealCategory: selectedMeal as 'breakfast' | 'lunch' | 'dinner' | 'snacks',
         source: mode,
         imageUrl: nutritionData.imageUrl,

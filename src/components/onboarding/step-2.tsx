@@ -1,24 +1,56 @@
 'use client'
 
-import { TargetIcon } from '@phosphor-icons/react/ssr'
+import type { CaloriePlan, Gender } from '@/lib/calculations'
+
+import { FireIcon, RulerIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
+import { calculateAge, generatePlanOptions } from '@/lib/calculations'
 import { OnboardingStep2FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
+import { Input } from '../ui/input'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
 import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-2'
 
+const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
+  { value: 'other', label: 'Other' }
+]
+
+const PLAN_LABELS: Record<CaloriePlan, string> = {
+  relaxed: 'Relaxed',
+  steady: 'Steady',
+  accelerated: 'Accelerated'
+}
+
+function computePlanOptions(
+  birthday: string,
+  height: number | '',
+  gender: Gender,
+  currentWeight: number | '',
+  goalWeight: number | ''
+) {
+  if (!birthday || typeof height !== 'number' || typeof currentWeight !== 'number') return null
+  const age = calculateAge(birthday)
+  if (age < 1 || age > 120) return null
+  return generatePlanOptions(currentWeight, height, age, gender, goalWeight as number)
+}
+
 export function Step2() {
   const { data, setStep, updateForm } = useOnboardingForm()
 
   const form = useForm({
     defaultValues: {
-      goalWeight: data.goalWeight
+      birthday: data.birthday,
+      height: data.height,
+      gender: data.gender,
+      plan: data.plan
     },
     validators: {
       onSubmit: OnboardingStep2FormSchema
@@ -32,9 +64,9 @@ export function Step2() {
   return (
     <OnboardingLayout
       formId={FORM_ID}
-      stepName="What's your goal weight?"
-      stepDescription='Setting a goal helps us track your progress and provide personalized meal recommendations.'
-      stepIcon={<TargetIcon size={36} className='text-primary-foreground' />}
+      stepName='Your calorie budget'
+      stepDescription='We need a few details to calculate your personalized plan.'
+      stepIcon={<FireIcon size={36} className='text-primary-foreground' />}
     >
       <form
         id={FORM_ID}
@@ -42,22 +74,46 @@ export function Step2() {
           e.preventDefault()
           void form.handleSubmit()
         }}
+        className='flex flex-col gap-6'
       >
         <FieldGroup>
-          <form.Field name='goalWeight'>
+          <form.Field name='birthday'>
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Goal Weight</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Birthday</FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type='date'
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => {
+                      field.handleChange(e.target.value)
+                    }}
+                    aria-invalid={isInvalid}
+                  />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              )
+            }}
+          </form.Field>
+
+          <form.Field name='height'>
+            {(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Height</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
                       type='number'
-                      min={20}
-                      max={300}
+                      min={50}
+                      max={250}
                       step={0.1}
                       inputMode='decimal'
                       onBlur={field.handleBlur}
@@ -66,20 +122,122 @@ export function Step2() {
                         field.handleChange(Number.isNaN(value) ? '' : value)
                       }}
                       aria-invalid={isInvalid}
-                      placeholder='Enter goal weight'
+                      placeholder='Enter height'
                     />
                     <InputGroupAddon align='inline-start'>
-                      <TargetIcon className='text-muted-foreground' />
+                      <RulerIcon className='text-muted-foreground' />
                     </InputGroupAddon>
-                    <InputGroupAddon align='inline-end'>kg</InputGroupAddon>
+                    <InputGroupAddon align='inline-end'>cm</InputGroupAddon>
                   </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               )
             }}
           </form.Field>
+
+          <form.Field name='gender'>
+            {(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel>Gender</FieldLabel>
+                  <div className='grid grid-cols-3 gap-2'>
+                    {GENDER_OPTIONS.map((option) => (
+                      <button
+                        key={option.value}
+                        type='button'
+                        onClick={() => {
+                          field.handleChange(option.value)
+                        }}
+                        className={`rounded-xl border px-3 py-2 text-sm transition-colors ${
+                          field.state.value === option.value
+                            ? 'border-primary bg-primary/10 font-medium text-primary'
+                            : 'border-border bg-card text-muted-foreground'
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              )
+            }}
+          </form.Field>
         </FieldGroup>
+
+        <form.Field name='plan'>
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <form.Subscribe selector={(state) => state.values}>
+                {(values) => {
+                  const options = computePlanOptions(
+                    values.birthday,
+                    values.height,
+                    values.gender,
+                    data.currentWeight,
+                    data.goalWeight
+                  )
+                  if (!options) return null
+                  return (
+                    <PlanOptions
+                      options={options}
+                      selectedPlan={field.state.value}
+                      onSelect={field.handleChange}
+                      isInvalid={isInvalid}
+                      errors={field.state.meta.errors}
+                    />
+                  )
+                }}
+              </form.Subscribe>
+            )
+          }}
+        </form.Field>
       </form>
     </OnboardingLayout>
+  )
+}
+
+type PlanOption = ReturnType<typeof generatePlanOptions>[number]
+
+type PlanOptionsProps = {
+  options: PlanOption[]
+  selectedPlan: CaloriePlan
+  onSelect: (plan: CaloriePlan) => void
+  isInvalid: boolean
+  errors: Array<{ message?: string } | undefined>
+}
+
+function PlanOptions(props: PlanOptionsProps) {
+  const { options, selectedPlan, onSelect, isInvalid, errors } = props
+
+  return (
+    <Field data-invalid={isInvalid}>
+      <FieldLabel>Choose your plan</FieldLabel>
+      <div className='flex flex-col gap-2'>
+        {options.map((option) => (
+          <button
+            key={option.plan}
+            type='button'
+            onClick={() => {
+              onSelect(option.plan)
+            }}
+            className={`rounded-xl border p-3 text-left transition-colors ${
+              selectedPlan === option.plan ? 'border-primary bg-primary/10' : 'border-border bg-card'
+            }`}
+          >
+            <div className='flex items-center justify-between'>
+              <span className='font-medium'>{PLAN_LABELS[option.plan]}</span>
+              <span className='text-sm font-semibold text-primary'>{option.calories} cal/day</span>
+            </div>
+            <p className='mt-1 text-xs text-muted-foreground'>
+              ~{option.weeklyLoss} kg/week &middot; {option.weeksToGoal} weeks to goal
+            </p>
+          </button>
+        ))}
+      </div>
+      {isInvalid && <FieldError errors={errors} />}
+    </Field>
   )
 }

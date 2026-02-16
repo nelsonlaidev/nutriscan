@@ -7,7 +7,6 @@ export type NutritionData = {
   protein: number
   carbs: number
   fat: number
-  fiber: number
   imageUrl?: string
 }
 
@@ -107,19 +106,6 @@ export function NutritionResult(props: NutritionResultProps) {
             value={data.fat}
             onChange={(e) => {
               updateField('fat', e.target.value)
-            }}
-          />
-        </div>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='nr-fiber' className='text-sm text-muted-foreground'>
-            Fiber (g)
-          </label>
-          <Input
-            id='nr-fiber'
-            type='number'
-            value={data.fiber}
-            onChange={(e) => {
-              updateField('fiber', e.target.value)
             }}
           />
         </div>

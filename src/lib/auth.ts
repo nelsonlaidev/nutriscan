@@ -44,6 +44,34 @@ export const auth = betterAuth({
         required: true,
         defaultValue: 2500,
         input: false
+      },
+      birthday: {
+        type: 'string',
+        required: false
+      },
+      gender: {
+        type: 'string',
+        required: false
+      },
+      calorieBudget: {
+        type: 'number',
+        required: true,
+        defaultValue: 2000
+      },
+      proteinTarget: {
+        type: 'number',
+        required: true,
+        defaultValue: 150
+      },
+      carbTarget: {
+        type: 'number',
+        required: true,
+        defaultValue: 200
+      },
+      fatTarget: {
+        type: 'number',
+        required: true,
+        defaultValue: 67
       }
     }
   }

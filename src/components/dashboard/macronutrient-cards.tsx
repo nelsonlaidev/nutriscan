@@ -9,15 +9,13 @@ type MacronutrientCardsProps = {
     protein: number
     carbs: number
     fat: number
-    fiber: number
   }
 }
 
 const MACROS = [
   { key: 'protein' as const, label: 'Protein', className: '**:data-[slot=progress-indicator]:bg-blue-500' },
   { key: 'carbs' as const, label: 'Carbs', className: '**:data-[slot=progress-indicator]:bg-amber-500' },
-  { key: 'fat' as const, label: 'Fat', className: '**:data-[slot=progress-indicator]:bg-rose-500' },
-  { key: 'fiber' as const, label: 'Fiber', className: '**:data-[slot=progress-indicator]:bg-primary' }
+  { key: 'fat' as const, label: 'Fat', className: '**:data-[slot=progress-indicator]:bg-rose-500' }
 ]
 
 export function MacronutrientCards(props: MacronutrientCardsProps) {

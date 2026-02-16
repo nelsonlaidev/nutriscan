@@ -6,15 +6,26 @@ import { Button } from '../ui/button'
 
 type OnboardingLayoutProps = {
   children: React.ReactNode
-  formId: string
+  formId?: string
   stepName: string
   stepDescription: string
   stepIcon: React.ReactNode
   continueDisabled?: boolean
+  continueLabel?: string
+  onSubmit?: () => void
 }
 
 export function OnboardingLayout(props: OnboardingLayoutProps) {
-  const { children, formId, stepName, stepDescription, stepIcon, continueDisabled = false } = props
+  const {
+    children,
+    formId,
+    stepName,
+    stepDescription,
+    stepIcon,
+    continueDisabled = false,
+    continueLabel = 'Continue',
+    onSubmit
+  } = props
   const { data, setStep } = useOnboardingForm()
 
   function handleBack() {
@@ -44,8 +55,8 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
       {/* Spacer */}
       <div className='flex-1' />
 
-      <Button disabled={continueDisabled} form={formId} type='submit'>
-        Continue <ArrowRightIcon />
+      <Button disabled={continueDisabled} form={formId} type={formId ? 'submit' : 'button'} onClick={onSubmit}>
+        {continueLabel} <ArrowRightIcon />
       </Button>
     </div>
   )

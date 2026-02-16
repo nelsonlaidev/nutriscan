@@ -20,26 +20,31 @@ const HeightField = z
   .max(250, 'Height must be at most 250 cm')
   .positive('Height must be a positive number')
 
-const OnboardingFieldsFormSchema = z.object({
-  currentWeight: CurrentWeightField.or(z.literal('')).refine((val) => val !== '', {
-    message: 'Please enter your current weight'
-  }),
-  goalWeight: GoalWeightField.or(z.literal('')).refine((val) => val !== '', {
-    message: 'Please enter your goal weight'
-  }),
-  height: HeightField.or(z.literal('')).refine((val) => val !== '', {
-    message: 'Please enter your height'
-  })
+const NumberOrEmpty = (field: z.ZodNumber, message: string) =>
+  field.or(z.literal('')).refine((val) => val !== '', { message })
+
+export const OnboardingStep1FormSchema = z.object({
+  currentWeight: NumberOrEmpty(CurrentWeightField, 'Please enter your current weight'),
+  goalWeight: NumberOrEmpty(GoalWeightField, 'Please enter your goal weight')
 })
 
-export const OnboardingStep1FormSchema = OnboardingFieldsFormSchema.pick({ currentWeight: true })
-export const OnboardingStep2FormSchema = OnboardingFieldsFormSchema.pick({ goalWeight: true })
-export const OnboardingStep3FormSchema = OnboardingFieldsFormSchema.pick({ height: true })
+export const OnboardingStep2FormSchema = z.object({
+  birthday: z.string().min(1, 'Please enter your birthday'),
+  height: NumberOrEmpty(HeightField, 'Please enter your height'),
+  gender: z.enum(['male', 'female', 'other'], { message: 'Please select a gender' }),
+  plan: z.enum(['relaxed', 'steady', 'accelerated'], { message: 'Please select a plan' })
+})
 
 export const OnboardingActionSchema = z.object({
   currentWeight: CurrentWeightField,
   goalWeight: GoalWeightField,
-  height: HeightField
+  height: HeightField,
+  birthday: z.string().min(1),
+  gender: z.enum(['male', 'female', 'other']),
+  calorieBudget: z.number().int().min(1),
+  proteinTarget: z.number().int().min(1),
+  carbTarget: z.number().int().min(1),
+  fatTarget: z.number().int().min(1)
 })
 
 export const ManualFoodEntrySchema = z.object({
@@ -48,8 +53,7 @@ export const ManualFoodEntrySchema = z.object({
   calories: z.coerce.number().min(0, 'Must be 0 or more').max(5000, 'Must be 5000 or less'),
   protein: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
   carbs: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
-  fat: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less'),
-  fiber: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less')
+  fat: z.coerce.number().min(0, 'Must be 0 or more').max(1000, 'Must be 1000 or less')
 })
 
 export type ManualFoodEntry = z.infer<typeof ManualFoodEntrySchema>
@@ -61,7 +65,6 @@ export const AddFoodEntrySchema = z.object({
   protein: z.number().min(0),
   carbs: z.number().min(0),
   fat: z.number().min(0),
-  fiber: z.number().min(0),
   mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
   source: z.enum(['ai-scan', 'manual', 'barcode']),
   imageUrl: z.url().optional(),
@@ -83,16 +86,14 @@ export const OpenFoodFactsResponseSchema = z.object({
           'energy-kcal_100g': z.number().optional().default(0),
           proteins_100g: z.number().optional().default(0),
           carbohydrates_100g: z.number().optional().default(0),
-          fat_100g: z.number().optional().default(0),
-          fiber_100g: z.number().optional().default(0)
+          fat_100g: z.number().optional().default(0)
         })
         .optional()
         .default({
           'energy-kcal_100g': 0,
           proteins_100g: 0,
           carbohydrates_100g: 0,
-          fat_100g: 0,
-          fiber_100g: 0
+          fat_100g: 0
         })
     })
     .optional()

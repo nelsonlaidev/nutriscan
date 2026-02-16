@@ -16,8 +16,7 @@ const NutritionResponseSchema = z.object({
   calories: z.number().describe('Calories in kcal'),
   protein: z.number().describe('Protein in grams'),
   carbs: z.number().describe('Carbohydrates in grams'),
-  fat: z.number().describe('Fat in grams'),
-  fiber: z.number().describe('Fiber in grams')
+  fat: z.number().describe('Fat in grams')
 })
 
 export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).action(async ({ parsedInput, ctx }) => {
@@ -49,7 +48,7 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
             },
             {
               type: 'text',
-              text: 'Analyze this food image. Identify the food item and estimate its nutritional information per serving. Return the food name, estimated serving size, calories (kcal), protein (g), carbs (g), fat (g), and fiber (g). Round all numbers to the nearest whole number.'
+              text: 'Analyze this food image. Identify the food item and estimate its nutritional information per serving. Return the food name, estimated serving size, calories (kcal), protein (g), carbs (g), and fat (g). Round all numbers to the nearest whole number.'
             }
           ]
         }
@@ -65,7 +64,6 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
         protein: Math.round(output.protein),
         carbs: Math.round(output.carbs),
         fat: Math.round(output.fat),
-        fiber: Math.round(output.fiber),
         imageUrl
       }
     }

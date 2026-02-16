@@ -1,7 +1,16 @@
 import { relations } from 'drizzle-orm'
 import { boolean, index, integer, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
 
-import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT, DEFAULT_WATER_GOAL } from '@/lib/constants'
+import {
+  DEFAULT_CALORIE_BUDGET,
+  DEFAULT_CARB_TARGET,
+  DEFAULT_CURRENT_WEIGHT,
+  DEFAULT_FAT_TARGET,
+  DEFAULT_GOAL_WEIGHT,
+  DEFAULT_HEIGHT,
+  DEFAULT_PROTEIN_TARGET,
+  DEFAULT_WATER_GOAL
+} from '@/lib/constants'
 
 import { foodEntries } from './food-entry.schema'
 
@@ -22,7 +31,13 @@ export const users = pgTable('users', {
   goalWeight: real('goal_weight').notNull().default(DEFAULT_GOAL_WEIGHT),
   height: real('height').notNull().default(DEFAULT_HEIGHT),
   locale: text('locale').default('en').notNull(),
-  waterGoal: integer('water_goal').notNull().default(DEFAULT_WATER_GOAL)
+  waterGoal: integer('water_goal').notNull().default(DEFAULT_WATER_GOAL),
+  birthday: text('birthday'),
+  gender: text('gender', { enum: ['male', 'female', 'other'] }),
+  calorieBudget: integer('calorie_budget').notNull().default(DEFAULT_CALORIE_BUDGET),
+  proteinTarget: integer('protein_target').notNull().default(DEFAULT_PROTEIN_TARGET),
+  carbTarget: integer('carb_target').notNull().default(DEFAULT_CARB_TARGET),
+  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET)
 })
 
 export const sessions = pgTable(
