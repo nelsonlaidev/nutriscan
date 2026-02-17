@@ -10,6 +10,7 @@ export const LOCALE_ITEMS = [
   { label: '繁體中文', value: 'zh-TW' }
 ]
 
+export const DEFAULT_STARTING_WEIGHT = 70
 export const DEFAULT_CURRENT_WEIGHT = 70
 export const DEFAULT_GOAL_WEIGHT = 60
 export const DEFAULT_HEIGHT = 170

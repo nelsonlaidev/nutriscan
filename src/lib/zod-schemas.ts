@@ -61,7 +61,8 @@ export const OnboardingActionSchema = z.object({
   calorieBudget: z.number().int().min(1),
   proteinTarget: z.number().int().min(1),
   carbTarget: z.number().int().min(1),
-  fatTarget: z.number().int().min(1)
+  fatTarget: z.number().int().min(1),
+  timezone: z.string().min(1)
 })
 
 export function createManualFoodEntrySchema(t: Translator) {
@@ -92,8 +93,7 @@ export const AddFoodEntrySchema = z.object({
   fat: z.number().min(0),
   mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
   source: z.enum(['ai-scan', 'manual', 'barcode']),
-  imageUrl: z.url().optional(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+  imageUrl: z.url().optional()
 })
 
 export const BarcodeLookupSchema = z.object({
@@ -158,8 +158,7 @@ export const UpdateWaterGoalSchema = z.object({
 })
 
 export const AddWaterEntrySchema = z.object({
-  amount: z.number().int().min(1).max(MAX_WATER_INTAKE),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+  amount: z.number().int().min(1).max(MAX_WATER_INTAKE)
 })
 
 export const UpdateWaterEntrySchema = z.object({
@@ -168,5 +167,18 @@ export const UpdateWaterEntrySchema = z.object({
 })
 
 export const DeleteWaterEntrySchema = z.object({
+  id: z.string().min(1)
+})
+
+export const AddWeightEntrySchema = z.object({
+  weight: z.number().min(20).max(300).positive()
+})
+
+export const UpdateWeightEntrySchema = z.object({
+  id: z.string().min(1),
+  weight: z.number().min(20).max(300).positive()
+})
+
+export const DeleteWeightEntrySchema = z.object({
   id: z.string().min(1)
 })

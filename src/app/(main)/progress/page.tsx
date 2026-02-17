@@ -13,7 +13,7 @@ import { WaterChart } from '@/components/progress/water-chart'
 import { WeightChart } from '@/components/progress/weight-chart'
 import { getCalorieTotalsByDate, getNutritionTotalsByDate } from '@/data/food-entries'
 import { getWaterTotalsByDate } from '@/data/water-entries'
-import { getLatestWeight, getWeightEntriesByDateRange } from '@/data/weight-entries'
+import { getLatestWeight, getLatestWeightBefore, getWeightEntriesByDateRange } from '@/data/weight-entries'
 import { getSession } from '@/lib/auth'
 
 import { progressCache } from './search-params'
@@ -103,12 +103,13 @@ export default async function ProgressPage({ searchParams }: ProgressPageProps) 
   const { startDate, endDate, days } = getDateRange(range)
   const dates = generateDates(startDate, days)
 
-  const [calorieRows, nutritionRows, waterRows, weightRows, latestWeight] = await Promise.all([
+  const [calorieRows, nutritionRows, waterRows, weightRows, latestWeight, weightBefore] = await Promise.all([
     getCalorieTotalsByDate(user.id, dates),
     getNutritionTotalsByDate(user.id, dates),
     getWaterTotalsByDate(user.id, dates),
     getWeightEntriesByDateRange(user.id, startDate, endDate),
-    getLatestWeight(user.id)
+    getLatestWeight(user.id),
+    getLatestWeightBefore(user.id, startDate)
   ])
 
   // Build lookup maps
@@ -141,8 +142,11 @@ export default async function ProgressPage({ searchParams }: ProgressPageProps) 
 
   // Build weight data across all display dates, carrying forward the last known value.
   // First-time user with no entries → flat line at their currentWeight.
+  // Use the latest weight before the range as carry-forward initial value.
+  // Falls back to the earliest entry in range, then user.currentWeight.
   const weightMap = new Map(weightRows.map((r) => [r.date, r.weight]))
-  const weightData = buildWeightTimeline(displayDates, weightMap, user.currentWeight, range)
+  const initialWeight = weightBefore?.weight ?? weightRows.at(0)?.weight ?? user.currentWeight
+  const weightData = buildWeightTimeline(displayDates, weightMap, initialWeight, range)
 
   const currentWeight = latestWeight?.weight ?? user.currentWeight
 

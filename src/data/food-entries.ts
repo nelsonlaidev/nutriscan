@@ -18,14 +18,14 @@ export async function getFoodEntriesByDate(userId: string, date: string) {
   return db
     .select()
     .from(foodEntries)
-    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.date, date)))
+    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.localDate, date)))
 }
 
 export async function getFoodEntriesByDateAndCategory(userId: string, date: string, category: MealCategory) {
   return db
     .select()
     .from(foodEntries)
-    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.date, date), eq(foodEntries.mealCategory, category)))
+    .where(and(eq(foodEntries.userId, userId), eq(foodEntries.localDate, date), eq(foodEntries.mealCategory, category)))
 }
 
 export function computeTotals(entries: FoodEntry[]) {
@@ -54,29 +54,33 @@ const MEAL_META: Record<MealCategory, { name: string; emoji: string }> = {
 export async function getCalorieTotalsByDate(userId: string, dates: string[]) {
   if (dates.length === 0) return []
 
-  return db
+  const rows = await db
     .select({
-      date: foodEntries.date,
-      calories: sql<number>`cast(coalesce(sum(${foodEntries.calories}), 0) as real)`
+      date: foodEntries.localDate,
+      calories: sql<number>`sum(${foodEntries.calories})`.as('calories')
     })
     .from(foodEntries)
-    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.date, dates)))
-    .groupBy(foodEntries.date)
+    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.localDate, dates)))
+    .groupBy(foodEntries.localDate)
+
+  return rows.map((r) => ({ date: r.date, calories: r.calories }))
 }
 
 export async function getNutritionTotalsByDate(userId: string, dates: string[]) {
   if (dates.length === 0) return []
 
-  return db
+  const rows = await db
     .select({
-      date: foodEntries.date,
-      protein: sql<number>`cast(coalesce(sum(${foodEntries.protein}), 0) as real)`,
-      carbs: sql<number>`cast(coalesce(sum(${foodEntries.carbs}), 0) as real)`,
-      fat: sql<number>`cast(coalesce(sum(${foodEntries.fat}), 0) as real)`
+      date: foodEntries.localDate,
+      protein: sql<number>`sum(${foodEntries.protein})`.as('protein'),
+      carbs: sql<number>`sum(${foodEntries.carbs})`.as('carbs'),
+      fat: sql<number>`sum(${foodEntries.fat})`.as('fat')
     })
     .from(foodEntries)
-    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.date, dates)))
-    .groupBy(foodEntries.date)
+    .where(and(eq(foodEntries.userId, userId), inArray(foodEntries.localDate, dates)))
+    .groupBy(foodEntries.localDate)
+
+  return rows.map((r) => ({ date: r.date, protein: r.protein, carbs: r.carbs, fat: r.fat }))
 }
 
 export function computeMealBreakdowns(entries: FoodEntry[]) {

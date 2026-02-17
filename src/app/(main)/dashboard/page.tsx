@@ -6,8 +6,10 @@ import { DateNavigation } from '@/components/dashboard/date-navigation'
 import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
 import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
+import { WeightPanel } from '@/components/dashboard/weight-panel'
 import { computeMealBreakdowns, computeTotals, getFoodEntriesByDate } from '@/data/food-entries'
 import { getWaterTotal } from '@/data/water-entries'
+import { getLatestWeight } from '@/data/weight-entries'
 import { getSession } from '@/lib/auth'
 
 import { dashboardCache } from './search-params'
@@ -19,9 +21,10 @@ async function Page(props: PageProps<'/dashboard'>) {
   const session = await getSession()
   if (!session) redirect('/')
 
-  const [entries, waterAmount] = await Promise.all([
+  const [entries, waterAmount, latestWeight] = await Promise.all([
     getFoodEntriesByDate(session.user.id, date),
-    getWaterTotal(session.user.id, date)
+    getWaterTotal(session.user.id, date),
+    getLatestWeight(session.user.id)
   ])
   const totals = computeTotals(entries)
   const meals = computeMealBreakdowns(entries)
@@ -39,6 +42,11 @@ async function Page(props: PageProps<'/dashboard'>) {
         <CalorieSummary calories={totals.calories} goal={calorieBudget} />
         <MacronutrientCards values={totals} goals={macroGoals} />
         <WaterIntake amount={waterAmount} goal={waterGoal} />
+        <WeightPanel
+          currentWeight={latestWeight?.weight ?? session.user.currentWeight}
+          startingWeight={session.user.startingWeight}
+          goalWeight={session.user.goalWeight}
+        />
         <MealList meals={meals} date={date} />
       </div>
     </div>

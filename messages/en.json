@@ -56,7 +56,11 @@
     "yesterday": "Yesterday",
     "date-format": "MMM d, yyyy",
     "water-intake": "Water Intake",
-    "water-amount-of-goal": "{amount} / {goal}"
+    "water-amount-of-goal": "{amount} / {goal}",
+    "weight": "Weight",
+    "weight-current": "{weight} kg",
+    "weight-starting": "Starting: {weight} kg",
+    "weight-goal": "Goal: {weight} kg"
   },
 
   "meals": {
@@ -193,6 +197,35 @@
     "amount-ml": "Amount (mL)",
     "delete": "Delete",
     "day-format": "EEE"
+  },
+
+  "weight": {
+    "page-title": "Weight Tracker",
+    "current": "Current Weight",
+    "starting-value": "Starting: {weight} kg",
+    "goal-value": "Goal: {weight} kg",
+    "update-weight": "Update Weight",
+    "update-weight-description": "Enter your current weight in kilograms.",
+    "weight-kg": "Weight (kg)",
+    "weight-placeholder": "e.g. 75.0",
+    "weight-hint": "Enter a value between 20 and 300 kg",
+    "weight-range-error": "Weight must be between 20 and 300 kg",
+    "save": "Save",
+    "saving": "Saving...",
+    "entry-added": "Weight entry added",
+    "entry-add-error": "Failed to add weight entry",
+    "edit": "Edit",
+    "delete": "Delete",
+    "edit-weight": "Edit Weight",
+    "edit-weight-description": "Update the weight for this entry.",
+    "entry-updated": "Weight entry updated",
+    "entry-update-error": "Failed to update weight entry",
+    "entry-deleted": "Weight entry deleted",
+    "entry-delete-error": "Failed to delete weight entry",
+    "history": "History",
+    "no-entries": "No weight entries yet",
+    "today-date": "Today, {date}",
+    "yesterday-date": "Yesterday, {date}"
   },
 
   "settings": {

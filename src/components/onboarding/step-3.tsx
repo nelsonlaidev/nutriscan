@@ -59,7 +59,8 @@ export function Step3() {
       calorieBudget: computed.calories,
       proteinTarget: computed.macros.protein,
       carbTarget: computed.macros.carbs,
-      fatTarget: computed.macros.fat
+      fatTarget: computed.macros.fat,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     })
   }
 

@@ -56,7 +56,11 @@
     "yesterday": "昨天",
     "date-format": "yyyy年M月d日",
     "water-intake": "飲水量",
-    "water-amount-of-goal": "{amount} / {goal}"
+    "water-amount-of-goal": "{amount} / {goal}",
+    "weight": "體重",
+    "weight-current": "{weight} 公斤",
+    "weight-starting": "起始：{weight} 公斤",
+    "weight-goal": "目標：{weight} 公斤"
   },
 
   "meals": {
@@ -193,6 +197,35 @@
     "amount-ml": "數量（毫升）",
     "delete": "刪除",
     "day-format": "EEE"
+  },
+
+  "weight": {
+    "page-title": "體重追蹤",
+    "current": "目前體重",
+    "starting-value": "起始：{weight} 公斤",
+    "goal-value": "目標：{weight} 公斤",
+    "update-weight": "更新體重",
+    "update-weight-description": "輸入您目前的體重（公斤）。",
+    "weight-kg": "體重（公斤）",
+    "weight-placeholder": "例如：75.0",
+    "weight-hint": "輸入 20 到 300 公斤之間的數值",
+    "weight-range-error": "體重必須在 20 到 300 公斤之間",
+    "save": "儲存",
+    "saving": "儲存中...",
+    "entry-added": "體重記錄已新增",
+    "entry-add-error": "新增體重記錄失敗",
+    "edit": "編輯",
+    "delete": "刪除",
+    "edit-weight": "編輯體重",
+    "edit-weight-description": "更新此記錄的體重。",
+    "entry-updated": "體重記錄已更新",
+    "entry-update-error": "更新體重記錄失敗",
+    "entry-deleted": "體重記錄已刪除",
+    "entry-delete-error": "刪除體重記錄失敗",
+    "history": "歷史記錄",
+    "no-entries": "尚無體重記錄",
+    "today-date": "今天，{date}",
+    "yesterday-date": "昨天，{date}"
   },
 
   "settings": {

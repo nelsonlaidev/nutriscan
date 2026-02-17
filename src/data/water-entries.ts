@@ -10,11 +10,11 @@ export async function getWaterEntries(userId: string, dates: string[]) {
     .select({
       id: waterEntries.id,
       amount: waterEntries.amount,
-      date: waterEntries.date,
+      localDate: waterEntries.localDate,
       createdAt: waterEntries.createdAt
     })
     .from(waterEntries)
-    .where(and(eq(waterEntries.userId, userId), inArray(waterEntries.date, dates)))
+    .where(and(eq(waterEntries.userId, userId), inArray(waterEntries.localDate, dates)))
     .orderBy(desc(waterEntries.createdAt))
 }
 
@@ -24,7 +24,7 @@ export async function getWaterTotal(userId: string, date: string) {
   const [row] = await db
     .select({ total: sum(waterEntries.amount) })
     .from(waterEntries)
-    .where(and(eq(waterEntries.userId, userId), eq(waterEntries.date, date)))
+    .where(and(eq(waterEntries.userId, userId), eq(waterEntries.localDate, date)))
 
   return Number(row?.total ?? 0)
 }
@@ -34,12 +34,12 @@ export async function getWaterTotalsByDate(userId: string, dates: string[]) {
 
   const rows = await db
     .select({
-      date: waterEntries.date,
-      amount: sql<number>`cast(coalesce(sum(${waterEntries.amount}), 0) as int)`
+      date: waterEntries.localDate,
+      amount: sql<number>`sum(${waterEntries.amount})`.as('amount')
     })
     .from(waterEntries)
-    .where(and(eq(waterEntries.userId, userId), inArray(waterEntries.date, dates)))
-    .groupBy(waterEntries.date)
+    .where(and(eq(waterEntries.userId, userId), inArray(waterEntries.localDate, dates)))
+    .groupBy(waterEntries.localDate)
 
-  return rows
+  return rows.map((r) => ({ date: r.date, amount: r.amount }))
 }

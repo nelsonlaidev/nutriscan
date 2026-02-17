@@ -78,6 +78,20 @@
       "when": 1771257151986,
       "tag": "0010_thankful_silvermane",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1771341165131,
+      "tag": "0011_early_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1771343477662,
+      "tag": "0012_optimal_lockheed",
+      "breakpoints": true
     }
   ]
 }

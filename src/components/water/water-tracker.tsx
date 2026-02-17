@@ -33,8 +33,8 @@ export function WaterTracker(props: WaterTrackerProps) {
   const [entries, setEntries] = useState(initialEntries)
   const [goal, setGoal] = useState(initialGoal)
 
-  // Derive today's total from entries
-  const todayEntries = entries.filter((e) => e.date === date)
+  // Derive today's total from entries matching the current date
+  const todayEntries = entries.filter((e) => e.localDate === date)
   const amount = todayEntries.reduce((sum, e) => sum + e.amount, 0)
 
   const percentage = goal > 0 ? (amount / goal) * 100 : 0
@@ -45,19 +45,21 @@ export function WaterTracker(props: WaterTrackerProps) {
     const optimisticEntry: WaterEntry = {
       id: optimisticId,
       amount: Math.min(ml, MAX_WATER_INTAKE - amount),
-      date,
+      localDate: date,
       createdAt: new Date()
     }
 
     setEntries((prev) => [optimisticEntry, ...prev])
 
-    const result = await addWaterEntry({ amount: optimisticEntry.amount, date })
+    const result = await addWaterEntry({ amount: optimisticEntry.amount })
 
     const entry = result.data?.entry
     if (result.data?.success && entry) {
       // Replace optimistic entry with real one
       setEntries((prev) =>
-        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e))
+        prev.map((e) =>
+          e.id === optimisticId ? { ...e, id: entry.id, localDate: entry.localDate, createdAt: entry.createdAt } : e
+        )
       )
     }
   }

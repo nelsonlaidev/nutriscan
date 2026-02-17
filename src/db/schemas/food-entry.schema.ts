@@ -23,12 +23,12 @@ export const foodEntries = pgTable(
     }).notNull(),
     source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
     imageUrl: text('image_url'),
-    date: text('date').notNull(),
+    localDate: text('local_date').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
   },
   (table) => [
     index('food_entry_userId_idx').on(table.userId),
-    index('food_entry_userId_date_idx').on(table.userId, table.date)
+    index('food_entry_userId_localDate_idx').on(table.userId, table.localDate)
   ]
 )
 

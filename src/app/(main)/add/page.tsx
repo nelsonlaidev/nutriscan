@@ -1,6 +1,5 @@
 'use client'
 
-import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useCallback, useState, useTransition } from 'react'
@@ -60,8 +59,7 @@ function Page() {
         fat: nutritionData.fat,
         mealCategory: selectedMeal,
         source: mode,
-        imageUrl: nutritionData.imageUrl,
-        date: format(new Date(), 'yyyy-MM-dd')
+        imageUrl: nutritionData.imageUrl
       })
 
       if (result.serverError) {

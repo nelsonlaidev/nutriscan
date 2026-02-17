@@ -9,6 +9,7 @@ import {
   DEFAULT_GOAL_WEIGHT,
   DEFAULT_HEIGHT,
   DEFAULT_PROTEIN_TARGET,
+  DEFAULT_STARTING_WEIGHT,
   DEFAULT_WATER_GOAL
 } from '@/lib/constants'
 
@@ -28,6 +29,7 @@ export const users = pgTable('users', {
     .notNull(),
   // Custom
   onboarded: boolean('onboarded').default(false).notNull(),
+  startingWeight: real('starting_weight').notNull().default(DEFAULT_STARTING_WEIGHT),
   currentWeight: real('current_weight').notNull().default(DEFAULT_CURRENT_WEIGHT),
   goalWeight: real('goal_weight').notNull().default(DEFAULT_GOAL_WEIGHT),
   height: real('height').notNull().default(DEFAULT_HEIGHT),
@@ -38,7 +40,8 @@ export const users = pgTable('users', {
   calorieBudget: integer('calorie_budget').notNull().default(DEFAULT_CALORIE_BUDGET),
   proteinTarget: integer('protein_target').notNull().default(DEFAULT_PROTEIN_TARGET),
   carbTarget: integer('carb_target').notNull().default(DEFAULT_CARB_TARGET),
-  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET)
+  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET),
+  timezone: text('timezone').default('UTC').notNull()
 })
 
 export const sessions = pgTable(

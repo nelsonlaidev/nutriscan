@@ -1,0 +1,186 @@
+'use client'
+
+import type { WeightEntry } from '@/data/weight-entries'
+
+import { DotsThreeIcon, PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react/ssr'
+import { format, isToday, isYesterday } from 'date-fns'
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+import { toast } from 'sonner'
+
+import { deleteWeightEntry, updateWeightEntry } from '@/actions/weight-entry'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+
+type WeightHistoryProps = {
+  entries: WeightEntry[]
+  onUpdate: (id: string, weight: number) => void
+  onDelete: (id: string) => void
+}
+
+export function WeightHistory(props: WeightHistoryProps) {
+  const { entries, onUpdate, onDelete } = props
+  const t = useTranslations()
+  const [editEntry, setEditEntry] = useState<WeightEntry | null>(null)
+  const [editWeight, setEditWeight] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  function formatDate(date: Date) {
+    const formatted = format(date, 'd MMM yyyy')
+
+    if (isToday(date)) return t('weight.today-date', { date: formatted })
+    if (isYesterday(date)) return t('weight.yesterday-date', { date: formatted })
+    return formatted
+  }
+
+  function getChangeBadge(index: number) {
+    const current = entries.at(index)
+    const previous = entries.at(index + 1)
+    if (!current || !previous) return null
+    const change = current.weight - previous.weight
+    if (change === 0) return null
+
+    const isPositive = change > 0
+    return (
+      <span className={`text-xs font-medium ${isPositive ? 'text-red-500' : 'text-emerald-500'}`}>
+        {isPositive ? '+' : ''}
+        {change.toFixed(1)} kg
+      </span>
+    )
+  }
+
+  function handleEditOpen(entry: WeightEntry) {
+    setEditEntry(entry)
+    setEditWeight(String(entry.weight))
+  }
+
+  async function handleEditSave(e: React.FormEvent) {
+    e.preventDefault()
+    if (!editEntry) return
+
+    const value = Number.parseFloat(editWeight)
+    if (Number.isNaN(value) || value < 20 || value > 300) {
+      toast.error(t('weight.weight-range-error'))
+      return
+    }
+
+    setSaving(true)
+    const result = await updateWeightEntry({ id: editEntry.id, weight: value })
+
+    if (result.data?.success) {
+      onUpdate(editEntry.id, value)
+      toast.success(t('weight.entry-updated'))
+      setEditEntry(null)
+    } else {
+      toast.error(t('weight.entry-update-error'))
+    }
+    setSaving(false)
+  }
+
+  async function handleDelete(id: string) {
+    onDelete(id)
+    const result = await deleteWeightEntry({ id })
+
+    if (result.data?.success) {
+      toast.success(t('weight.entry-deleted'))
+    } else {
+      toast.error(t('weight.entry-delete-error'))
+    }
+  }
+
+  if (entries.length === 0) {
+    return <p className='text-center text-sm text-muted-foreground'>{t('weight.no-entries')}</p>
+  }
+
+  return (
+    <div className='flex w-full flex-col gap-2'>
+      <h3 className='text-base font-semibold'>{t('weight.history')}</h3>
+      <div className='divide-y'>
+        {entries.map((entry, index) => (
+          <div key={entry.id} className='flex items-center justify-between py-3'>
+            <div className='flex flex-col gap-0.5'>
+              <div className='flex items-center gap-3'>
+                <span className='text-sm font-medium'>{entry.weight.toFixed(1)} kg</span>
+                {getChangeBadge(index)}
+              </div>
+              <span className='text-xs text-muted-foreground'>{formatDate(entry.createdAt)}</span>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant='ghost' size='icon' />}>
+                <DotsThreeIcon size={20} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuItem
+                  onClick={() => {
+                    handleEditOpen(entry)
+                  }}
+                >
+                  <PencilSimpleIcon size={16} />
+                  {t('weight.edit')}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    void handleDelete(entry.id)
+                  }}
+                  className='text-destructive'
+                >
+                  <TrashIcon size={16} />
+                  {t('weight.delete')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ))}
+      </div>
+
+      <Dialog
+        open={editEntry !== null}
+        onOpenChange={(open) => {
+          if (!open) setEditEntry(null)
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('weight.edit-weight')}</DialogTitle>
+            <DialogDescription>{t('weight.edit-weight-description')}</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleEditSave} id='edit-weight-entry-form'>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor='edit-weight'>{t('weight.weight-kg')}</FieldLabel>
+                <Input
+                  id='edit-weight'
+                  type='number'
+                  step='0.1'
+                  min='20'
+                  max='300'
+                  value={editWeight}
+                  onChange={(e) => {
+                    setEditWeight(e.target.value)
+                  }}
+                  placeholder={t('weight.weight-placeholder')}
+                />
+                <FieldDescription>{t('weight.weight-hint')}</FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+          <DialogFooter>
+            <Button type='submit' disabled={saving} form='edit-weight-entry-form'>
+              {saving ? t('weight.saving') : t('weight.save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}

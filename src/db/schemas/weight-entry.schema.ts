@@ -13,12 +13,12 @@ export const weightEntries = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     weight: real('weight').notNull(),
-    date: text('date').notNull(),
+    localDate: text('local_date').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
   },
   (table) => [
     index('weight_entry_userId_idx').on(table.userId),
-    index('weight_entry_userId_date_idx').on(table.userId, table.date)
+    index('weight_entry_userId_localDate_idx').on(table.userId, table.localDate)
   ]
 )
 

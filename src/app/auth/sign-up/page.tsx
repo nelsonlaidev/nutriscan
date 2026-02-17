@@ -37,6 +37,7 @@ function Page() {
           email: value.email,
           password: value.password,
           name: value.name,
+          startingWeight: DEFAULT_CURRENT_WEIGHT,
           currentWeight: DEFAULT_CURRENT_WEIGHT,
           goalWeight: DEFAULT_GOAL_WEIGHT,
           height: DEFAULT_HEIGHT

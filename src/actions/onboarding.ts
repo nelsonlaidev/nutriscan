@@ -13,6 +13,7 @@ export const completeOnboarding = authActionClient
     await db
       .update(users)
       .set({
+        startingWeight: parsedInput.currentWeight,
         currentWeight: parsedInput.currentWeight,
         goalWeight: parsedInput.goalWeight,
         height: parsedInput.height,
@@ -22,6 +23,7 @@ export const completeOnboarding = authActionClient
         proteinTarget: parsedInput.proteinTarget,
         carbTarget: parsedInput.carbTarget,
         fatTarget: parsedInput.fatTarget,
+        timezone: parsedInput.timezone,
         onboarded: true
       })
       .where(eq(users.id, ctx.user.id))

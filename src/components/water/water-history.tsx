@@ -28,14 +28,14 @@ export function WaterHistory(props: WaterHistoryProps) {
 
   if (entries.length === 0) return null
 
-  // Group entries by date
+  // Group entries by localDate
   const grouped = new Map<string, WaterEntry[]>()
   for (const entry of entries) {
-    const existing = grouped.get(entry.date)
+    const existing = grouped.get(entry.localDate)
     if (existing) {
       existing.push(entry)
     } else {
-      grouped.set(entry.date, [entry])
+      grouped.set(entry.localDate, [entry])
     }
   }
 
