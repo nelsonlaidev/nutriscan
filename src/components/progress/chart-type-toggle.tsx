@@ -14,7 +14,9 @@ export function ChartTypeToggle({ value, onChange }: ChartTypeToggleProps) {
     <div className='flex items-center gap-0.5 rounded-lg bg-muted p-0.5'>
       <button
         type='button'
-        onClick={() => { onChange('bar'); }}
+        onClick={() => {
+          onChange('bar')
+        }}
         className={`rounded-md p-1 transition-colors ${
           value === 'bar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
         }`}
@@ -23,7 +25,9 @@ export function ChartTypeToggle({ value, onChange }: ChartTypeToggleProps) {
       </button>
       <button
         type='button'
-        onClick={() => { onChange('area'); }}
+        onClick={() => {
+          onChange('area')
+        }}
         className={`rounded-md p-1 transition-colors ${
           value === 'area' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
         }`}
