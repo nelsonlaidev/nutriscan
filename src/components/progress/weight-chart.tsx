@@ -72,9 +72,6 @@ export function WeightChart({ data, goal }: WeightChartProps) {
           <span className='inline-block h-0 w-4 border-t-2 border-dashed border-emerald-400' />
           {t('progress.weight-goal')}: {goal} kg
         </div>
-        <div className='mt-3 rounded-xl bg-green-50 px-4 py-3 text-center text-xs font-medium text-green-600'>
-          {t('progress.encouragement')}
-        </div>
       </CardContent>
     </Card>
   )
