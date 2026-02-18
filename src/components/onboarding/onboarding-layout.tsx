@@ -4,6 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
 
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
+import { cn } from '@/lib/utils'
 
 import { Button } from '../ui/button'
 
@@ -31,14 +32,15 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
   } = props
   const { data, setStep } = useOnboardingForm()
   const t = useTranslations()
+  const showBackButton = data.currentStep > 1
 
   function handleBack() {
     setStep(data.currentStep - 1)
   }
 
   return (
-    <div className='flex min-h-svh flex-col gap-8 p-6'>
-      {data.currentStep > 1 && (
+    <div className={cn('flex min-h-svh flex-col gap-8 p-6', !showBackButton && 'pt-23')}>
+      {showBackButton && (
         <div>
           <Button variant='secondary' className='inline-flex' onClick={handleBack}>
             <ArrowLeftIcon />
