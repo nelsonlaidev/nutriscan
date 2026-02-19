@@ -32,24 +32,19 @@ async function Page(props: PageProps<'/dashboard'>) {
   const macroGoals = { protein: proteinTarget, carbs: carbTarget, fat: fatTarget }
 
   return (
-    <>
-      <div className='pb-6'>
-        <DashboardHeader />
-      </div>
-
-      <div className='flex flex-col gap-6'>
-        <DateNavigation />
-        <CalorieSummary calories={totals.calories} goal={calorieBudget} />
-        <MacronutrientCards values={totals} goals={macroGoals} />
-        <WaterIntake amount={waterAmount} goal={waterGoal} />
-        <WeightPanel
-          currentWeight={latestWeight?.weight ?? session.user.currentWeight}
-          startingWeight={session.user.startingWeight}
-          goalWeight={session.user.goalWeight}
-        />
-        <MealList meals={meals} date={date} />
-      </div>
-    </>
+    <div className='space-y-6'>
+      <DashboardHeader />
+      <DateNavigation />
+      <CalorieSummary calories={totals.calories} goal={calorieBudget} />
+      <MacronutrientCards values={totals} goals={macroGoals} />
+      <WaterIntake amount={waterAmount} goal={waterGoal} />
+      <WeightPanel
+        currentWeight={latestWeight?.weight ?? session.user.currentWeight}
+        startingWeight={session.user.startingWeight}
+        goalWeight={session.user.goalWeight}
+      />
+      <MealList meals={meals} date={date} />
+    </div>
   )
 }
 
