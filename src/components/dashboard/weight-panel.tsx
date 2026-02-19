@@ -19,7 +19,7 @@ export async function WeightPanel(props: WeightPanelProps) {
   const percentage = totalChange > 0 ? Math.min((currentProgress / totalChange) * 100, 100) : 0
 
   return (
-    <Link href='/weight'>
+    <Link href='/weight' className='block'>
       <Card size='sm'>
         <CardContent className='space-y-3'>
           <div className='flex items-center justify-between'>

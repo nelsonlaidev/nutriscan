@@ -17,7 +17,7 @@ export async function WaterIntake(props: WaterIntakeProps) {
   const percentage = goal > 0 ? Math.min((amount / goal) * 100, 100) : 0
 
   return (
-    <Link href='/water'>
+    <Link href='/water' className='block'>
       <Card size='sm'>
         <CardContent className='space-y-3'>
           <div className='flex items-center justify-between'>
