@@ -32,7 +32,7 @@ async function Page(props: PageProps<'/dashboard'>) {
   const macroGoals = { protein: proteinTarget, carbs: carbTarget, fat: fatTarget }
 
   return (
-    <div className='flex flex-col'>
+    <>
       <div className='pb-6'>
         <DashboardHeader />
       </div>
@@ -49,7 +49,7 @@ async function Page(props: PageProps<'/dashboard'>) {
         />
         <MealList meals={meals} date={date} />
       </div>
-    </div>
+    </>
   )
 }
 
