@@ -58,12 +58,17 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
 
       {children}
 
-      {/* Spacer */}
-      <div className='flex-1' />
-
-      <Button disabled={continueDisabled} form={formId} type={formId ? 'submit' : 'button'} onClick={onSubmit}>
-        {continueLabel ?? t('onboarding.continue')} <ArrowRightIcon />
-      </Button>
+      <div className='flex flex-1 flex-col justify-end'>
+        <Button
+          disabled={continueDisabled}
+          form={formId}
+          type={formId ? 'submit' : 'button'}
+          onClick={onSubmit}
+          className='w-full'
+        >
+          {continueLabel ?? t('onboarding.continue')} <ArrowRightIcon />
+        </Button>
+      </div>
     </div>
   )
 }

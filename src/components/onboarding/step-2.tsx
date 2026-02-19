@@ -10,9 +10,20 @@ import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import { calculateAge, generatePlanOptions } from '@/lib/calculations'
 import { createOnboardingStep2FormSchema } from '@/lib/zod-schemas'
 
-import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  FieldTitle
+} from '../ui/field'
 import { Input } from '../ui/input'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 import { OnboardingLayout } from './onboarding-layout'
 
@@ -142,28 +153,31 @@ export function Step2() {
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
-                <Field data-invalid={isInvalid}>
-                  <FieldLabel>{t('onboarding.gender')}</FieldLabel>
-                  <div className='grid grid-cols-3 gap-2'>
+                <FieldSet>
+                  <FieldLegend variant='label'>{t('onboarding.gender')}</FieldLegend>
+                  <RadioGroup
+                    name={field.name}
+                    value={field.state.value}
+                    onValueChange={field.handleChange}
+                    className='grid-cols-3'
+                  >
                     {GENDER_OPTIONS.map((option) => (
-                      <button
-                        key={option.value}
-                        type='button'
-                        onClick={() => {
-                          field.handleChange(option.value)
-                        }}
-                        className={`rounded-xl border px-3 py-2 text-sm transition-colors ${
-                          field.state.value === option.value
-                            ? 'border-primary bg-primary/10 font-medium text-primary'
-                            : 'border-border bg-card text-muted-foreground'
-                        }`}
-                      >
-                        {option.label}
-                      </button>
+                      <FieldLabel key={option.value} htmlFor={`${field.name}-${option.value}`}>
+                        <Field orientation='horizontal' data-invalid={isInvalid}>
+                          <FieldContent>
+                            <FieldTitle>{option.label}</FieldTitle>
+                          </FieldContent>
+                          <RadioGroupItem
+                            value={option.value}
+                            id={`${field.name}-${option.value}`}
+                            aria-invalid={isInvalid}
+                          />
+                        </Field>
+                      </FieldLabel>
                     ))}
-                  </div>
+                  </RadioGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
+                </FieldSet>
               )
             }}
           </form.Field>
@@ -182,16 +196,41 @@ export function Step2() {
                     data.currentWeight,
                     data.goalWeight
                   )
+
                   if (!options) return null
+
                   return (
-                    <PlanOptions
-                      options={options}
-                      selectedPlan={field.state.value}
-                      onSelect={field.handleChange}
-                      isInvalid={isInvalid}
-                      errors={field.state.meta.errors}
-                      planLabels={PLAN_LABELS}
-                    />
+                    <FieldSet>
+                      <FieldLegend variant='label'>{t('onboarding.choose-plan')}</FieldLegend>
+                      <RadioGroup name={field.name} value={field.state.value} onValueChange={field.handleChange}>
+                        {options.map((option) => (
+                          <FieldLabel key={option.plan} htmlFor={`${field.name}-${option.plan}`}>
+                            <Field orientation='horizontal' data-invalid={isInvalid}>
+                              <FieldContent>
+                                <FieldTitle>{PLAN_LABELS[option.plan]}</FieldTitle>
+                                <FieldDescription>
+                                  {t('onboarding.plan-details', {
+                                    weeklyLoss: option.weeklyLoss,
+                                    weeks: option.weeksToGoal
+                                  })}
+                                </FieldDescription>
+                              </FieldContent>
+                              <div className='flex h-full flex-col items-end justify-between'>
+                                <RadioGroupItem
+                                  value={option.plan}
+                                  id={`${field.name}-${option.plan}`}
+                                  aria-invalid={isInvalid}
+                                />
+                                <span className='text-sm font-semibold text-primary'>
+                                  {t('onboarding.calories-per-day', { calories: option.calories })}
+                                </span>
+                              </div>
+                            </Field>
+                          </FieldLabel>
+                        ))}
+                      </RadioGroup>
+                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    </FieldSet>
                   )
                 }}
               </form.Subscribe>
@@ -200,52 +239,5 @@ export function Step2() {
         </form.Field>
       </form>
     </OnboardingLayout>
-  )
-}
-
-type PlanOption = ReturnType<typeof generatePlanOptions>[number]
-
-type PlanOptionsProps = {
-  options: PlanOption[]
-  selectedPlan: CaloriePlan
-  onSelect: (plan: CaloriePlan) => void
-  isInvalid: boolean
-  errors: Array<{ message?: string } | undefined>
-  planLabels: Record<CaloriePlan, string>
-}
-
-function PlanOptions(props: PlanOptionsProps) {
-  const { options, selectedPlan, onSelect, isInvalid, errors, planLabels } = props
-  const t = useTranslations()
-
-  return (
-    <Field data-invalid={isInvalid}>
-      <FieldLabel>{t('onboarding.choose-plan')}</FieldLabel>
-      <div className='flex flex-col gap-2'>
-        {options.map((option) => (
-          <button
-            key={option.plan}
-            type='button'
-            onClick={() => {
-              onSelect(option.plan)
-            }}
-            className={`rounded-xl border p-3 text-left transition-colors ${
-              selectedPlan === option.plan ? 'border-primary bg-primary/10' : 'border-border bg-card'
-            }`}
-          >
-            <div className='flex items-center justify-between'>
-              <span className='font-medium'>{planLabels[option.plan]}</span>
-              <span className='text-sm font-semibold text-primary'>
-                {t('onboarding.calories-per-day', { calories: option.calories })}
-              </span>
-            </div>
-            <p className='mt-1 text-xs text-muted-foreground'>
-              {t('onboarding.plan-details', { weeklyLoss: option.weeklyLoss, weeks: option.weeksToGoal })}
-            </p>
-          </button>
-        ))}
-      </div>
-      {isInvalid && <FieldError errors={errors} />}
-    </Field>
   )
 }
