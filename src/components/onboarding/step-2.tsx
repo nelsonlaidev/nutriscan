@@ -2,7 +2,7 @@
 
 import type { CaloriePlan, Gender } from '@/lib/calculations'
 
-import { FireIcon, RulerIcon } from '@phosphor-icons/react/ssr'
+import { CalendarBlankIcon, FireIcon, RulerIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 import { useTranslations } from 'next-intl'
 
@@ -21,7 +21,6 @@ import {
   FieldSet,
   FieldTitle
 } from '../ui/field'
-import { Input } from '../ui/input'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
@@ -97,17 +96,22 @@ export function Step2() {
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>{t('onboarding.birthday')}</FieldLabel>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    type='date'
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value)
-                    }}
-                    aria-invalid={isInvalid}
-                  />
+                  <InputGroup>
+                    <InputGroupInput
+                      id={field.name}
+                      name={field.name}
+                      type='date'
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value)
+                      }}
+                      aria-invalid={isInvalid}
+                    />
+                    <InputGroupAddon align='inline-start'>
+                      <CalendarBlankIcon className='text-muted-foreground' />
+                    </InputGroupAddon>
+                  </InputGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               )
