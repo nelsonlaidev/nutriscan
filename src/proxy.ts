@@ -12,6 +12,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/onboarding', request.url))
   }
 
+  if (session && session.user.onboarded && request.nextUrl.pathname.startsWith('/onboarding')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
   // Redirect authenticated users away from auth pages
   if (session && (request.nextUrl.pathname.startsWith('/auth/') || request.nextUrl.pathname === '/')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
