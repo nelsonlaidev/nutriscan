@@ -1,7 +1,14 @@
+import type { NutritionData } from './nutrition-result'
+import type { ManualFoodEntry } from '@/lib/zod-schemas'
+
 import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
 
-import { cn } from '@/lib/utils'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+
+import { AiImageMode } from './ai-image-mode'
+import { BarcodeMode } from './barcode-mode'
+import { ManualEntryMode } from './manual-entry-mode'
 
 export type Mode = 'ai-scan' | 'manual' | 'barcode'
 
@@ -13,11 +20,13 @@ const MODES = [
 
 type ModeSelectorProps = {
   value: Mode
-  onChange: (mode: Mode) => void
+  onValueChange: (mode: Mode) => void
+  handleScanResult: (data: NutritionData) => void
+  handleManualSubmit: (data: ManualFoodEntry) => void
 }
 
 export function ModeSelector(props: ModeSelectorProps) {
-  const { value, onChange } = props
+  const { handleScanResult, handleManualSubmit, value, onValueChange } = props
   const t = useTranslations()
 
   const modeLabels: Record<Mode, string> = {
@@ -27,26 +36,24 @@ export function ModeSelector(props: ModeSelectorProps) {
   }
 
   return (
-    <div className='flex gap-1 rounded-full bg-muted p-1'>
-      {MODES.map((mode) => {
-        const active = value === mode.id
-        return (
-          <button
-            key={mode.id}
-            type='button'
-            onClick={() => {
-              onChange(mode.id)
-            }}
-            className={cn(
-              'flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors',
-              active ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
-            )}
-          >
-            <mode.icon size={16} weight={active ? 'fill' : 'regular'} />
+    <Tabs className='space-y-5' value={value} onValueChange={onValueChange}>
+      <TabsList className='w-full'>
+        {MODES.map((mode) => (
+          <TabsTrigger key={mode.id} value={mode.id}>
+            <mode.icon size={16} />
             {modeLabels[mode.id]}
-          </button>
-        )
-      })}
-    </div>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <TabsContent value='ai-scan'>
+        <AiImageMode onResult={handleScanResult} />
+      </TabsContent>
+      <TabsContent value='manual'>
+        <ManualEntryMode onSubmit={handleManualSubmit} />
+      </TabsContent>
+      <TabsContent value='barcode'>
+        <BarcodeMode onResult={handleScanResult} />
+      </TabsContent>
+    </Tabs>
   )
 }

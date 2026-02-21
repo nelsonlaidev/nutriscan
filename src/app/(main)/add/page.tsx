@@ -6,9 +6,6 @@ import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
 import { addFoodEntry } from '@/actions/add-food-entry'
-import { AiImageMode } from '@/components/add/ai-image-mode'
-import { BarcodeMode } from '@/components/add/barcode-mode'
-import { ManualEntryMode } from '@/components/add/manual-entry-mode'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
 import { type Mode, ModeSelector } from '@/components/add/mode-selector'
 import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
@@ -90,13 +87,12 @@ function Page() {
 
       <div className='flex flex-col gap-5'>
         {step === 'input' && (
-          <>
-            <ModeSelector value={mode} onChange={setMode} />
-
-            {mode === 'ai-scan' && <AiImageMode onResult={handleScanResult} />}
-            {mode === 'manual' && <ManualEntryMode onSubmit={handleManualSubmit} />}
-            {mode === 'barcode' && <BarcodeMode onResult={handleScanResult} />}
-          </>
+          <ModeSelector
+            handleScanResult={handleScanResult}
+            handleManualSubmit={handleManualSubmit}
+            value={mode}
+            onValueChange={setMode}
+          />
         )}
 
         {step === 'review' && nutritionData && (

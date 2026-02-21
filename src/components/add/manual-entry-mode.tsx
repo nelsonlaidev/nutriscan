@@ -1,11 +1,12 @@
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
 
+import { useForm } from '@tanstack/react-form'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { createManualFoodEntrySchema } from '@/lib/zod-schemas'
+import { createManualFoodEntryFormSchema } from '@/lib/zod-schemas'
 
 type ManualEntryModeProps = {
   onSubmit: (data: ManualFoodEntry) => void
@@ -14,139 +15,146 @@ type ManualEntryModeProps = {
 export function ManualEntryMode(props: ManualEntryModeProps) {
   const { onSubmit } = props
   const t = useTranslations()
-  const ManualFoodEntrySchema = createManualFoodEntrySchema(t)
-  const [form, setForm] = useState({
-    foodName: '',
-    servingSize: '',
-    calories: '0',
-    protein: '0',
-    carbs: '0',
-    fat: '0'
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  function updateField(field: string, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }))
-    setErrors((prev) => Object.fromEntries(Object.entries(prev).filter(([key]) => key !== field)))
-  }
-
-  function handleSubmit() {
-    const result = ManualFoodEntrySchema.safeParse({
-      ...form,
-      calories: Number(form.calories),
-      protein: Number(form.protein),
-      carbs: Number(form.carbs),
-      fat: Number(form.fat)
-    })
-
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {}
-      for (const issue of result.error.issues) {
-        const field = issue.path[0]
-        if (field && !fieldErrors[String(field)]) {
-          fieldErrors[String(field)] = issue.message
-        }
-      }
-      setErrors(fieldErrors)
-      return
+  const form = useForm({
+    defaultValues: {
+      foodName: '',
+      servingSize: '',
+      calories: '' as '' | number,
+      protein: '' as '' | number,
+      carbs: '' as '' | number,
+      fat: '' as '' | number
+    },
+    validators: {
+      onSubmit: createManualFoodEntryFormSchema(t)
+    },
+    onSubmit: ({ value }) => {
+      onSubmit({
+        foodName: value.foodName,
+        servingSize: value.servingSize,
+        calories: value.calories as number,
+        protein: value.protein as number,
+        carbs: value.carbs as number,
+        fat: value.fat as number
+      })
     }
-
-    onSubmit(result.data)
-  }
+  })
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex flex-col gap-1'>
-        <label htmlFor='me-foodName' className='text-sm font-medium'>
-          {t('add-food.food-name')}
-        </label>
-        <Input
-          id='me-foodName'
-          placeholder={t('add-food.food-name-placeholder')}
-          value={form.foodName}
-          onChange={(e) => {
-            updateField('foodName', e.target.value)
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        void form.handleSubmit()
+      }}
+      className='flex flex-col gap-4'
+    >
+      <FieldGroup className='gap-4'>
+        <form.Field name='foodName'>
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>{t('add-food.food-name')}</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  placeholder={t('add-food.food-name-placeholder')}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
           }}
-          aria-invalid={Boolean(errors.foodName)}
-        />
-        {errors.foodName && <span className='text-xs text-destructive'>{errors.foodName}</span>}
-      </div>
+        </form.Field>
 
-      <div className='flex flex-col gap-1'>
-        <label htmlFor='me-servingSize' className='text-sm font-medium'>
-          {t('add-food.serving-size')}
-        </label>
-        <Input
-          id='me-servingSize'
-          placeholder={t('add-food.serving-size-placeholder')}
-          value={form.servingSize}
-          onChange={(e) => {
-            updateField('servingSize', e.target.value)
+        <form.Field name='servingSize'>
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>{t('add-food.serving-size')}</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  placeholder={t('add-food.serving-size-placeholder')}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
           }}
-          aria-invalid={Boolean(errors.servingSize)}
-        />
-        {errors.servingSize && <span className='text-xs text-destructive'>{errors.servingSize}</span>}
-      </div>
+        </form.Field>
 
-      <div className='flex flex-col gap-1'>
-        <label htmlFor='me-calories' className='text-sm font-medium'>
-          {t('add-food.calories')}
-        </label>
-        <Input
-          id='me-calories'
-          type='number'
-          value={form.calories}
-          onChange={(e) => {
-            updateField('calories', e.target.value)
+        <form.Field name='calories'>
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>{t('add-food.calories')}</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type='number'
+                  inputMode='decimal'
+                  placeholder='0'
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber
+                    field.handleChange(Number.isNaN(value) ? '' : value)
+                  }}
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
           }}
-          aria-invalid={Boolean(errors.calories)}
-        />
-        {errors.calories && <span className='text-xs text-destructive'>{errors.calories}</span>}
-      </div>
+        </form.Field>
+      </FieldGroup>
 
       <div className='grid grid-cols-2 gap-3'>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='me-protein' className='text-sm text-muted-foreground'>
-            {t('add-food.protein-grams')}
-          </label>
-          <Input
-            id='me-protein'
-            type='number'
-            value={form.protein}
-            onChange={(e) => {
-              updateField('protein', e.target.value)
+        {(['protein', 'carbs', 'fat'] as const).map((macro) => (
+          <form.Field key={macro} name={macro}>
+            {(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              return (
+                <Field>
+                  <FieldLabel htmlFor={field.name} className='text-muted-foreground'>
+                    {t(`add-food.${macro}-grams`)}
+                  </FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type='number'
+                    inputMode='decimal'
+                    placeholder='0'
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => {
+                      const value = e.target.valueAsNumber
+                      field.handleChange(Number.isNaN(value) ? '' : value)
+                    }}
+                    aria-invalid={isInvalid}
+                  />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              )
             }}
-          />
-        </div>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='me-carbs' className='text-sm text-muted-foreground'>
-            {t('add-food.carbs-grams')}
-          </label>
-          <Input
-            id='me-carbs'
-            type='number'
-            value={form.carbs}
-            onChange={(e) => {
-              updateField('carbs', e.target.value)
-            }}
-          />
-        </div>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='me-fat' className='text-sm text-muted-foreground'>
-            {t('add-food.fat-grams')}
-          </label>
-          <Input
-            id='me-fat'
-            type='number'
-            value={form.fat}
-            onChange={(e) => {
-              updateField('fat', e.target.value)
-            }}
-          />
-        </div>
+          </form.Field>
+        ))}
       </div>
 
-      <Button onClick={handleSubmit}>{t('add-food.add')}</Button>
-    </div>
+      <Button type='submit'>{t('add-food.add')}</Button>
+    </form>
   )
 }

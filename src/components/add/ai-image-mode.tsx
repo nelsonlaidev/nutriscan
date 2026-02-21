@@ -1,6 +1,6 @@
 import type { NutritionData } from './nutrition-result'
 
-import { CameraIcon, ImageIcon, SpinnerGapIcon } from '@phosphor-icons/react/ssr'
+import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
@@ -11,6 +11,8 @@ import { toast } from 'sonner'
 
 import { scanFoodImage } from '@/actions/ai-image-scan'
 import { Button } from '@/components/ui/button'
+
+import { Spinner } from '../ui/spinner'
 
 type AiImageModeProps = {
   onResult: (data: NutritionData) => void
@@ -90,7 +92,7 @@ export function AiImageMode(props: AiImageModeProps) {
 
         {isPending && (
           <div className='absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40'>
-            <SpinnerGapIcon size={40} className='animate-spin text-white' />
+            <Spinner size={40} className='text-white' />
             <span className='text-sm font-medium text-white'>{t('add-food.analyzing-image')}</span>
           </div>
         )}
