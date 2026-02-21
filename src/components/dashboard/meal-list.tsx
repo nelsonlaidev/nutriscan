@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 type MealBreakdown = {
   id: string
@@ -43,9 +44,7 @@ export async function MealList(props: MealListProps) {
             <Card size='sm'>
               <CardContent className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                  <div
-                    className={`flex size-10 items-center justify-center rounded-xl text-lg ${EMOJI_BG[meal.id] ?? 'bg-muted'}`}
-                  >
+                  <div className={cn('flex size-10 items-center justify-center rounded-xl text-lg', EMOJI_BG[meal.id])}>
                     {meal.emoji}
                   </div>
                   <div>

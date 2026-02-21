@@ -33,15 +33,15 @@ export function DateNavigation() {
   }
 
   return (
-    <div className='flex items-center justify-between rounded-2xl px-4 py-3'>
-      <Button variant='ghost' size='icon-sm' onClick={goBack} disabled={isOldestDate} className='disabled:opacity-30'>
+    <div className='flex items-center justify-between px-1'>
+      <Button variant='ghost' size='icon-sm' onClick={goBack} disabled={isOldestDate}>
         <CaretLeftIcon size={20} weight='bold' />
       </Button>
       <div className='text-center'>
         <p className='text-sm font-semibold'>{getLabel(currentDate)}</p>
         <p className='text-xs'>{format(currentDate, 'MMM d, yyyy')}</p>
       </div>
-      <Button variant='ghost' size='icon-sm' onClick={goForward} disabled={isTodayDate} className='disabled:opacity-30'>
+      <Button variant='ghost' size='icon-sm' onClick={goForward} disabled={isTodayDate}>
         <CaretRightIcon size={20} weight='bold' />
       </Button>
     </div>

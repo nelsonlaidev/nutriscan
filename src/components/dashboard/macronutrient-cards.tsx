@@ -21,13 +21,13 @@ export async function MacronutrientCards(props: MacronutrientCardsProps) {
 
   const MACROS = [
     {
-      key: 'protein' as const,
+      key: 'protein',
       label: t('dashboard.protein'),
       className: '**:data-[slot=progress-indicator]:bg-blue-500'
     },
-    { key: 'carbs' as const, label: t('dashboard.carbs'), className: '**:data-[slot=progress-indicator]:bg-amber-500' },
-    { key: 'fat' as const, label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' }
-  ]
+    { key: 'carbs', label: t('dashboard.carbs'), className: '**:data-[slot=progress-indicator]:bg-amber-500' },
+    { key: 'fat', label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' }
+  ] as const
 
   return (
     <Card size='sm'>
@@ -45,9 +45,9 @@ export async function MacronutrientCards(props: MacronutrientCardsProps) {
 
           return (
             <div key={macro.key} className='space-y-1'>
-              <div className='flex items-center justify-between'>
-                <span className='text-sm font-medium'>{macro.label}</span>
-                <span className='text-sm text-muted-foreground'>{t('dashboard.grams-of-goal', { value, goal })}</span>
+              <div className='flex items-center justify-between text-sm'>
+                <span className='font-medium'>{macro.label}</span>
+                <span className='text-muted-foreground'>{t('dashboard.grams-of-goal', { value, goal })}</span>
               </div>
               <Progress value={percentage} className={macro.className} />
             </div>

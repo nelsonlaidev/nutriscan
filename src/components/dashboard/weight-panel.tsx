@@ -2,7 +2,9 @@ import { ScalesIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+import { Progress } from '../ui/progress'
 
 type WeightPanelProps = {
   currentWeight: number
@@ -21,22 +23,22 @@ export async function WeightPanel(props: WeightPanelProps) {
   return (
     <Link href='/weight' className='block'>
       <Card size='sm'>
-        <CardContent className='space-y-3'>
-          <div className='flex items-center justify-between'>
+        <CardHeader>
+          <CardTitle className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <ScalesIcon size={20} />
-              <span className='text-sm font-semibold'>{t('dashboard.weight')}</span>
+              {t('dashboard.weight')}
             </div>
-            <span className='text-sm font-medium text-emerald-500'>
+            <span className='text-sm font-medium text-emerald-400'>
               {t('dashboard.weight-current', { weight: currentWeight.toFixed(1) })}
             </span>
-          </div>
-          <div className='relative h-7 overflow-hidden rounded-md bg-emerald-100 dark:bg-emerald-950'>
-            <div
-              className='h-full rounded-md bg-emerald-400 transition-all duration-300'
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-3'>
+          <Progress
+            value={percentage}
+            className='**:data-[slot=progress-indicator]:rounded-md **:data-[slot=progress-indicator]:bg-emerald-400 *:data-[slot=progress-track]:h-7 *:data-[slot=progress-track]:rounded-md *:data-[slot=progress-track]:bg-emerald-100 dark:*:data-[slot=progress-track]:bg-emerald-950'
+          />
           <div className='flex justify-between text-xs text-muted-foreground'>
             <span>{t('dashboard.weight-starting', { weight: startingWeight.toFixed(1) })}</span>
             <span>{t('dashboard.weight-goal', { weight: goalWeight.toFixed(1) })}</span>

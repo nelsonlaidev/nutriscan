@@ -2,8 +2,10 @@ import { DropIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatMl } from '@/lib/utils'
+
+import { Progress } from '../ui/progress'
 
 type WaterIntakeProps = {
   amount: number
@@ -19,22 +21,22 @@ export async function WaterIntake(props: WaterIntakeProps) {
   return (
     <Link href='/water' className='block'>
       <Card size='sm'>
-        <CardContent className='space-y-3'>
-          <div className='flex items-center justify-between'>
+        <CardHeader>
+          <CardTitle className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <DropIcon size={20} />
-              <span className='text-sm font-semibold'>{t('dashboard.water-intake')}</span>
+              {t('dashboard.water-intake')}
             </div>
             <span className='text-sm font-medium text-blue-500'>
               {t('dashboard.water-amount-of-goal', { amount: formatMl(amount), goal: formatMl(goal) })}
             </span>
-          </div>
-          <div className='relative h-7 overflow-hidden rounded-md bg-blue-100 dark:bg-blue-950'>
-            <div
-              className='h-full rounded-md bg-blue-400 transition-all duration-300'
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Progress
+            value={percentage}
+            className='**:data-[slot=progress-indicator]:rounded-md **:data-[slot=progress-indicator]:bg-blue-400 *:data-[slot=progress-track]:h-7 *:data-[slot=progress-track]:rounded-md *:data-[slot=progress-track]:bg-blue-100 dark:*:data-[slot=progress-track]:bg-blue-950'
+          />
         </CardContent>
       </Card>
     </Link>
