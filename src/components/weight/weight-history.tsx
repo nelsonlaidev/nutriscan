@@ -22,6 +22,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 
+import { Spinner } from '../ui/spinner'
+
 type WeightHistoryProps = {
   entries: WeightEntry[]
   onUpdate: (id: string, weight: number) => void
@@ -51,10 +53,14 @@ export function WeightHistory(props: WeightHistoryProps) {
     if (change === 0) return null
 
     const isPositive = change > 0
+
     return (
-      <span className={`text-xs font-medium ${isPositive ? 'text-red-500' : 'text-emerald-500'}`}>
-        {isPositive ? '+' : ''}
-        {change.toFixed(1)} kg
+      <span
+        data-positive={isPositive}
+        className='text-xs font-medium data-[positive=false]:text-emerald-500 data-[positive=true]:text-red-500'
+      >
+        {isPositive ? '+' : '-'}
+        {Math.abs(change).toFixed(1)} kg
       </span>
     )
   }
@@ -104,11 +110,11 @@ export function WeightHistory(props: WeightHistoryProps) {
 
   return (
     <div className='flex w-full flex-col gap-2'>
-      <h3 className='text-base font-semibold'>{t('weight.history')}</h3>
+      <h3 className='font-semibold'>{t('weight.history')}</h3>
       <div className='divide-y'>
         {entries.map((entry, index) => (
           <div key={entry.id} className='flex items-center justify-between py-3'>
-            <div className='flex flex-col gap-0.5'>
+            <div className='flex flex-col gap-1'>
               <div className='flex items-center gap-3'>
                 <span className='text-sm font-medium'>{entry.weight.toFixed(1)} kg</span>
                 {getChangeBadge(index)}
@@ -116,9 +122,13 @@ export function WeightHistory(props: WeightHistoryProps) {
               <span className='text-xs text-muted-foreground'>{formatDate(entry.createdAt)}</span>
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant='ghost' size='icon' />}>
-                <DotsThreeIcon size={20} />
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button variant='ghost' size='icon'>
+                    <DotsThreeIcon size={20} weight='bold' />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align='end'>
                 <DropdownMenuItem
                   onClick={() => {
@@ -132,7 +142,7 @@ export function WeightHistory(props: WeightHistoryProps) {
                   onClick={() => {
                     void handleDelete(entry.id)
                   }}
-                  className='text-destructive'
+                  variant='destructive'
                 >
                   <TrashIcon size={16} />
                   {t('weight.delete')}
@@ -169,6 +179,7 @@ export function WeightHistory(props: WeightHistoryProps) {
                     setEditWeight(e.target.value)
                   }}
                   placeholder={t('weight.weight-placeholder')}
+                  disabled={saving}
                 />
                 <FieldDescription>{t('weight.weight-hint')}</FieldDescription>
               </Field>
@@ -176,6 +187,7 @@ export function WeightHistory(props: WeightHistoryProps) {
           </form>
           <DialogFooter>
             <Button type='submit' disabled={saving} form='edit-weight-entry-form'>
+              {saving && <Spinner data-icon='inline-start' />}
               {saving ? t('weight.saving') : t('weight.save')}
             </Button>
           </DialogFooter>

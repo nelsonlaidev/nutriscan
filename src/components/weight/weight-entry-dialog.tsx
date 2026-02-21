@@ -18,6 +18,8 @@ import {
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 
+import { Spinner } from '../ui/spinner'
+
 type WeightEntryDialogProps = {
   onEntryAdded: (entry: { id: string; weight: number; createdAt: Date }) => void
 }
@@ -83,6 +85,7 @@ export function WeightEntryDialog(props: WeightEntryDialogProps) {
                   setWeight(e.target.value)
                 }}
                 placeholder={t('weight.weight-placeholder')}
+                disabled={saving}
               />
               <FieldDescription>{t('weight.weight-hint')}</FieldDescription>
             </Field>
@@ -90,6 +93,7 @@ export function WeightEntryDialog(props: WeightEntryDialogProps) {
         </form>
         <DialogFooter>
           <Button type='submit' disabled={saving} form='add-weight-entry-form'>
+            {saving && <Spinner data-icon='inline-start' />}
             {saving ? t('weight.saving') : t('weight.save')}
           </Button>
         </DialogFooter>
