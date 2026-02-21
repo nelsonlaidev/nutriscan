@@ -196,6 +196,7 @@
     "edit-entry-description": "更新數量或刪除此記錄。",
     "amount-ml": "數量（毫升）",
     "delete": "刪除",
+    "deleting": "刪除中...",
     "day-format": "EEE"
   },
 

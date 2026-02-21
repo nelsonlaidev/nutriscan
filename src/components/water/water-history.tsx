@@ -42,8 +42,8 @@ export function WaterHistory(props: WaterHistoryProps) {
   return (
     <div className='flex w-full flex-col gap-4'>
       {[...grouped.entries()].map(([date, dateEntries]) => (
-        <div key={date}>
-          <h3 className='mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase'>
+        <div key={date} className='space-y-2'>
+          <h3 className='text-xs font-medium tracking-wide text-muted-foreground uppercase'>
             {formatDateHeader(date)}
           </h3>
           <div className='divide-y'>

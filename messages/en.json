@@ -196,6 +196,7 @@
     "edit-entry-description": "Update the amount or delete this entry.",
     "amount-ml": "Amount (mL)",
     "delete": "Delete",
+    "deleting": "Deleting...",
     "day-format": "EEE"
   },
 

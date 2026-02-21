@@ -3,8 +3,6 @@
 import { eachDayOfInterval, endOfWeek, format, isToday, startOfWeek } from 'date-fns'
 import { useTranslations } from 'next-intl'
 
-import { cn } from '@/lib/utils'
-
 import { CircularProgress } from '../circular-progress'
 
 type DayData = {
@@ -32,7 +30,7 @@ export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
   dataMap.set(date, todayAmount)
 
   return (
-    <div className='grid grid-cols-7 gap-1'>
+    <div className='flex w-full max-w-md items-center justify-between'>
       {days.map((day) => {
         const dateStr = format(day, 'yyyy-MM-dd')
         const amount = dataMap.get(dateStr) ?? 0
@@ -41,21 +39,15 @@ export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
         return (
           <div
             key={dateStr}
-            className={cn(
-              'flex flex-col items-center gap-1 rounded-xl px-1 py-2',
-              current && 'bg-blue-50 ring-1 ring-blue-300 dark:bg-blue-950/30'
-            )}
+            data-active={current}
+            className='group flex flex-col items-center gap-1 rounded-xl px-1 py-2 data-active:bg-blue-50 data-active:ring-1 data-active:ring-blue-300 dark:data-active:bg-blue-950/30'
           >
-            <span className={cn('text-xs font-medium text-muted-foreground', current && 'text-blue-500')}>
+            <span className='text-xs font-medium text-muted-foreground group-data-active:text-blue-500'>
               {format(day, t('water.day-format'))}
             </span>
-            <div className='relative flex items-center justify-center'>
-              <CircularProgress value={amount} max={goal} size={48} strokeWidth={4} progressClassName='stroke-blue-500'>
-                <span className={cn('absolute text-sm font-medium', current && 'text-blue-500')}>
-                  {format(day, 'd')}
-                </span>
-              </CircularProgress>
-            </div>
+            <CircularProgress value={amount} max={goal} size={48} strokeWidth={4} progressClassName='stroke-blue-500'>
+              <span className='text-sm font-medium group-data-active:text-blue-500'>{format(day, 'd')}</span>
+            </CircularProgress>
           </div>
         )
       })}

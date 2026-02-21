@@ -17,8 +17,10 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { formatMl } from '@/lib/utils'
+
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '../ui/field'
+import { Spinner } from '../ui/spinner'
 
 type WaterGoalDialogProps = {
   currentGoal: number
@@ -67,23 +69,28 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
           <DialogTitle>{t('water.daily-goal-title')}</DialogTitle>
           <DialogDescription>{t('water.daily-goal-description')}</DialogDescription>
         </DialogHeader>
-        <div className='space-y-2'>
-          <Label htmlFor='water-goal'>{t('water.goal-ml')}</Label>
-          <Input
-            id='water-goal'
-            type='number'
-            min={500}
-            max={10_000}
-            step={100}
-            value={goal}
-            onChange={(e) => {
-              setGoal(e.target.value)
-            }}
-          />
-          <p className='text-xs text-muted-foreground'>{t('water.goal-recommended')}</p>
-        </div>
+        <form>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor='water-goal'>{t('water.goal-ml')}</FieldLabel>
+              <Input
+                id='water-goal'
+                type='number'
+                min={500}
+                max={10_000}
+                step={100}
+                value={goal}
+                onChange={(e) => {
+                  setGoal(e.target.value)
+                }}
+              />
+              <FieldDescription>{t('water.goal-recommended')}</FieldDescription>
+            </Field>
+          </FieldGroup>
+        </form>
         <DialogFooter>
           <Button onClick={handleSave} disabled={saving}>
+            {saving && <Spinner data-icon='inline-start' />}
             {saving ? t('water.saving') : t('water.save')}
           </Button>
         </DialogFooter>

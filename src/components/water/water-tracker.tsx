@@ -83,7 +83,6 @@ export function WaterTracker(props: WaterTrackerProps) {
         </CardContent>
       </Card>
 
-      {/* Quick add buttons */}
       <div className='flex flex-wrap justify-center gap-2'>
         {QUICK_ADD_OPTIONS.map((ml) => (
           <Button
@@ -100,7 +99,6 @@ export function WaterTracker(props: WaterTrackerProps) {
         ))}
       </div>
 
-      {/* Main add button */}
       <Button
         size='lg'
         className='w-full max-w-xs bg-blue-500 hover:bg-blue-600'
@@ -112,7 +110,6 @@ export function WaterTracker(props: WaterTrackerProps) {
         {t('water.drink-water')}
       </Button>
 
-      {/* Water entry history */}
       <WaterHistory entries={entries} onUpdate={handleEntryUpdate} onDelete={handleEntryDelete} />
     </div>
   )

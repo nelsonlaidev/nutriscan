@@ -2,7 +2,7 @@
 
 import type { WaterEntry } from '@/data/water-entries'
 
-import { DropIcon, PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react/ssr'
+import { DropIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
 import { format } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
@@ -20,9 +20,11 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { MAX_WATER_INTAKE } from '@/lib/constants'
 import { formatMl } from '@/lib/utils'
+
+import { Field, FieldGroup, FieldLabel } from '../ui/field'
+import { Spinner } from '../ui/spinner'
 
 type WaterEntryItemProps = {
   entry: WaterEntry
@@ -36,8 +38,10 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(String(entry.amount))
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const timeStr = format(entry.createdAt, t('water.time-format'))
+  const submitting = saving || deleting
 
   async function handleSave() {
     const parsed = Number.parseInt(value, 10)
@@ -60,9 +64,9 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
   }
 
   async function handleDelete() {
-    setSaving(true)
+    setDeleting(true)
     const result = await deleteWaterEntry({ id: entry.id })
-    setSaving(false)
+    setDeleting(false)
 
     if (result.data?.success) {
       onDelete(entry.id)
@@ -82,7 +86,7 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
           <p className='text-xs text-muted-foreground'>{timeStr}</p>
         </div>
       </div>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-1'>
         <span className='text-sm font-medium'>{formatMl(entry.amount)}</span>
         <Dialog
           open={open}
@@ -103,26 +107,32 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
               <DialogTitle>{t('water.edit-entry-title')}</DialogTitle>
               <DialogDescription>{t('water.edit-entry-description')}</DialogDescription>
             </DialogHeader>
-            <div className='space-y-2'>
-              <Label htmlFor='edit-water-amount'>{t('water.amount-ml')}</Label>
-              <Input
-                id='edit-water-amount'
-                type='number'
-                min={1}
-                max={MAX_WATER_INTAKE}
-                step={50}
-                value={value}
-                onChange={(e) => {
-                  setValue(e.target.value)
-                }}
-              />
-            </div>
-            <DialogFooter className='flex gap-2'>
-              <Button variant='destructive' onClick={handleDelete} disabled={saving}>
-                <TrashIcon size={16} data-icon='inline-start' />
-                {t('water.delete')}
+            <form>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor='edit-water-amount'>{t('water.amount-ml')}</FieldLabel>
+                  <Input
+                    id='edit-water-amount'
+                    type='number'
+                    min={1}
+                    max={MAX_WATER_INTAKE}
+                    step={50}
+                    value={value}
+                    onChange={(e) => {
+                      setValue(e.target.value)
+                    }}
+                    disabled={submitting}
+                  />
+                </Field>
+              </FieldGroup>
+            </form>
+            <DialogFooter>
+              <Button variant='destructive' onClick={handleDelete} disabled={submitting}>
+                {deleting && <Spinner data-icon='inline-start' />}
+                {deleting ? t('water.deleting') : t('water.delete')}
               </Button>
-              <Button onClick={handleSave} disabled={saving}>
+              <Button onClick={handleSave} disabled={submitting}>
+                {saving && <Spinner data-icon='inline-start' />}
                 {saving ? t('water.saving') : t('water.save')}
               </Button>
             </DialogFooter>
