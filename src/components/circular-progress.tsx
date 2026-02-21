@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-type CircleProgressProps = {
+type CircularProgressProps = {
   value: number
   max: number
   size?: number
@@ -11,7 +11,7 @@ type CircleProgressProps = {
   children?: React.ReactNode
 }
 
-export function CircleProgress(props: CircleProgressProps) {
+export function CircularProgress(props: CircularProgressProps) {
   const { value, max, size = 80, strokeWidth = 6, className, trackClassName, progressClassName, children } = props
 
   const radius = (size - strokeWidth) / 2

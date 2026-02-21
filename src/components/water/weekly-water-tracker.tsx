@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 
+import { CircularProgress } from '../circular-progress'
+
 type DayData = {
   date: string
   amount: number
@@ -15,49 +17,6 @@ type WeeklyWaterTrackerProps = {
   goal: number
   todayAmount: number
   date: string
-}
-
-function CircularProgress({
-  percentage,
-  size = 48,
-  strokeWidth = 4
-}: {
-  percentage: number
-  size?: number
-  strokeWidth?: number
-}) {
-  const radius = (size - strokeWidth) / 2
-  const circumference = 2 * Math.PI * radius
-  const clampedPercentage = Math.min(Math.max(percentage, 0), 100)
-  const offset = circumference - (clampedPercentage / 100) * circumference
-
-  return (
-    <svg width={size} height={size} className='-rotate-90'>
-      {/* Background circle */}
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill='none'
-        stroke='currentColor'
-        strokeWidth={strokeWidth}
-        className='text-muted-foreground/20'
-      />
-      {/* Progress circle */}
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill='none'
-        stroke='currentColor'
-        strokeWidth={strokeWidth}
-        strokeLinecap='round'
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        className='text-blue-500 transition-all duration-300'
-      />
-    </svg>
-  )
 }
 
 export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
@@ -77,7 +36,6 @@ export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
       {days.map((day) => {
         const dateStr = format(day, 'yyyy-MM-dd')
         const amount = dataMap.get(dateStr) ?? 0
-        const percentage = goal > 0 ? (amount / goal) * 100 : 0
         const current = isToday(day)
 
         return (
@@ -92,8 +50,11 @@ export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
               {format(day, t('water.day-format'))}
             </span>
             <div className='relative flex items-center justify-center'>
-              <CircularProgress percentage={percentage} />
-              <span className={cn('absolute text-sm font-medium', current && 'text-blue-500')}>{format(day, 'd')}</span>
+              <CircularProgress value={amount} max={goal} size={48} strokeWidth={4} progressClassName='stroke-blue-500'>
+                <span className={cn('absolute text-sm font-medium', current && 'text-blue-500')}>
+                  {format(day, 'd')}
+                </span>
+              </CircularProgress>
             </div>
           </div>
         )
