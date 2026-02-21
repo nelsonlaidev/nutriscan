@@ -18,8 +18,8 @@ export async function CalorieSummary(props: CalorieSummaryProps) {
       <CardContent className='flex items-center gap-6'>
         <CircleProgress value={calories} max={goal} size={100} strokeWidth={8} progressClassName='stroke-primary'>
           <span className='text-xl font-bold'>{Math.round(calories)}</span>
-          <span className='text-[10px] text-muted-foreground'>{t('dashboard.kcal')}</span>
-          <span className='text-[10px] text-muted-foreground'>{t('dashboard.of-goal', { goal })}</span>
+          <span className='text-xs text-muted-foreground'>{t('dashboard.kcal')}</span>
+          <span className='text-xs text-muted-foreground'>{t('dashboard.of-goal', { goal })}</span>
         </CircleProgress>
         <div className='grid flex-1 grid-cols-2 gap-y-3'>
           <div>
