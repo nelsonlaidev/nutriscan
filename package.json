@@ -13,6 +13,7 @@
     "db:migrate": "pnpm with-env drizzle-kit migrate",
     "db:push": "pnpm with-env drizzle-kit push",
     "db:reset": "pnpm with-env tsx src/db/reset.ts",
+    "db:seed": "pnpm with-env tsx src/db/seed.ts",
     "db:studio": "pnpm with-env drizzle-kit studio",
     "dev": "next dev",
     "format": "prettier --write .",
@@ -63,6 +64,7 @@
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "1.52.0",
+    "@faker-js/faker": "10.3.0",
     "@nelsonlaidev/eslint-config": "3.2.0",
     "@nelsonlaidev/prettier-config": "0.1.1",
     "@nelsonlaidev/typescript-config": "1.2.0",
