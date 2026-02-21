@@ -33,7 +33,7 @@ export async function MacronutrientCards(props: MacronutrientCardsProps) {
     <Card size='sm'>
       <CardHeader>
         <CardTitle className='flex items-center gap-2'>
-          <BowlFoodIcon className='size-5' />
+          <BowlFoodIcon size={20} />
           {t('dashboard.macronutrients')}
         </CardTitle>
       </CardHeader>
@@ -47,9 +47,7 @@ export async function MacronutrientCards(props: MacronutrientCardsProps) {
             <div key={macro.key} className='space-y-1'>
               <div className='flex items-center justify-between'>
                 <span className='text-sm font-medium'>{macro.label}</span>
-                <span className='ml-auto text-sm text-muted-foreground'>
-                  {t('dashboard.grams-of-goal', { value, goal })}
-                </span>
+                <span className='text-sm text-muted-foreground'>{t('dashboard.grams-of-goal', { value, goal })}</span>
               </div>
               <Progress value={percentage} className={macro.className} />
             </div>
