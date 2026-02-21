@@ -31,7 +31,7 @@ export async function MealList(props: MealListProps) {
   return (
     <div className='space-y-3'>
       <div className='flex items-center justify-between'>
-        <h2 className='text-base font-semibold'>{t('dashboard.todays-meals')}</h2>
+        <h2 className='font-semibold'>{t('dashboard.todays-meals')}</h2>
         <Link href='/add' className='inline-flex items-center gap-1 text-sm font-medium text-primary'>
           <PlusIcon size={16} weight='bold' />
           {t('dashboard.add-food')}
@@ -40,7 +40,7 @@ export async function MealList(props: MealListProps) {
       <div className='space-y-4'>
         {meals.map((meal) => (
           <Link key={meal.id} href={`/meals/${meal.id}?date=${date}`} className='block'>
-            <Card size='sm' className='transition-colors hover:bg-muted/50'>
+            <Card size='sm'>
               <CardContent className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
                   <div
