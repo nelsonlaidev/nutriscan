@@ -5,7 +5,7 @@
 /**
  * Formats a Date to yyyy-MM-dd in the given timezone.
  */
-export function toLocalDateString(date: Date, timezone: string): string {
+function toLocalDateString(date: Date, timezone: string): string {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: timezone,
     year: 'numeric',

@@ -51,11 +51,11 @@ export const auth = betterAuth({
       },
       birthday: {
         type: 'string',
-        required: false
+        required: true
       },
       gender: {
         type: 'string',
-        required: false
+        required: true
       },
       calorieBudget: {
         type: 'number',

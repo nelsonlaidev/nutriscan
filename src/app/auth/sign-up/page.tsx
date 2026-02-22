@@ -40,7 +40,9 @@ function Page() {
           startingWeight: DEFAULT_CURRENT_WEIGHT,
           currentWeight: DEFAULT_CURRENT_WEIGHT,
           goalWeight: DEFAULT_GOAL_WEIGHT,
-          height: DEFAULT_HEIGHT
+          height: DEFAULT_HEIGHT,
+          birthday: '',
+          gender: ''
         },
         {
           onRequest: () => {

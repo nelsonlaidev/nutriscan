@@ -16,7 +16,7 @@ export function ThemeToggle() {
   if (!isMounted) return null
 
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex h-9 items-center justify-between'>
       <div className='flex items-center gap-2'>
         <SunIcon size={20} className='dark:hidden' />
         <MoonIcon size={20} className='hidden dark:block' />

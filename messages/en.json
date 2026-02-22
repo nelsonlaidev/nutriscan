@@ -6,7 +6,6 @@
     "chat": "Chat",
     "profile": "Profile"
   },
-
   "auth": {
     "app-name": "NutriScan",
     "tagline": "Track your nutrition, reach your goals",
@@ -32,11 +31,9 @@
     "error-create-account": "Failed to create account",
     "error-sign-out": "Failed to sign out"
   },
-
   "landing": {
     "app-name": "NutriScan"
   },
-
   "dashboard": {
     "kcal": "kcal",
     "of-goal": "of {goal}",
@@ -62,7 +59,6 @@
     "weight-starting": "Starting: {weight} kg",
     "weight-goal": "Goal: {weight} kg"
   },
-
   "meals": {
     "title": "Meal Details",
     "total": "Total",
@@ -75,7 +71,6 @@
     "add-food": "Add Food",
     "serving-calories": "{serving} · {calories} kcal"
   },
-
   "add-food": {
     "page-title": "Add Food",
     "confirm": "Confirm",
@@ -108,7 +103,6 @@
     "add": "Add",
     "select-meal": "Select Meal"
   },
-
   "onboarding": {
     "continue": "Continue",
     "back": "Back",
@@ -144,7 +138,6 @@
     "weekly-rate": "~{loss} kg/week",
     "nutrient-targets": "Nutrient Targets"
   },
-
   "progress": {
     "page-title": "Progress",
     "cal-unit": "cal",
@@ -168,7 +161,6 @@
     "fat": "Fat",
     "no-weight-data": "No weight entries yet"
   },
-
   "water": {
     "page-title": "Water Tracker",
     "ml": "{ml} mL",
@@ -199,7 +191,6 @@
     "deleting": "Deleting...",
     "day-format": "EEE"
   },
-
   "weight": {
     "page-title": "Weight Tracker",
     "current": "Current Weight",
@@ -228,14 +219,20 @@
     "today-date": "Today, {date}",
     "yesterday-date": "Yesterday, {date}"
   },
-
   "settings": {
     "title": "Settings",
     "dark-mode": "Dark Mode",
     "language": "Language",
-    "english": "English"
+    "english": "English",
+    "personal-details": {
+      "title": "Personal Details",
+      "description": "Update your physical attributes.",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "success": "Personal details updated",
+      "error": "Failed to update personal details"
+    }
   },
-
   "profile": {
     "page-title": "Profile",
     "not-set": "Not set",
@@ -246,13 +243,11 @@
     "account": "Account",
     "member-since": "Member since"
   },
-
   "greeting": {
     "morning": "Good morning",
     "afternoon": "Good afternoon",
     "evening": "Good evening"
   },
-
   "validation": {
     "weight-min": "Weight must be at least 20 kg",
     "weight-max": "Weight must be at most 300 kg",
@@ -283,7 +278,6 @@
     "display-name-required": "Display name is required",
     "passwords-no-match": "Passwords do not match"
   },
-
   "errors": {
     "ai-scan-failed": "Failed to analyze image",
     "product-not-found": "Product not found",

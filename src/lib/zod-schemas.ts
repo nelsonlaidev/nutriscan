@@ -44,6 +44,50 @@ export function createOnboardingStep2FormSchema(t: Translator) {
   })
 }
 
+export function createPersonalDetailsFormSchema(t: Translator) {
+  return z.object({
+    currentWeight: NumberOrEmpty(
+      z
+        .number()
+        .min(20, t('validation.weight-min'))
+        .max(300, t('validation.weight-max'))
+        .positive(t('validation.weight-positive')),
+      t('validation.current-weight-required')
+    ),
+    goalWeight: NumberOrEmpty(
+      z
+        .number()
+        .min(20, t('validation.goal-weight-min'))
+        .max(300, t('validation.goal-weight-max'))
+        .positive(t('validation.goal-weight-positive')),
+      t('validation.goal-weight-required')
+    ),
+    birthday: z.string().min(1, t('validation.birthday-required')),
+    height: NumberOrEmpty(
+      z
+        .number()
+        .min(50, t('validation.height-min'))
+        .max(250, t('validation.height-max'))
+        .positive(t('validation.height-positive')),
+      t('validation.height-required')
+    ),
+    gender: z.enum(['male', 'female', 'other'], { message: t('validation.gender-required') }),
+    plan: z.enum(['relaxed', 'steady', 'accelerated'], { message: t('validation.plan-required') })
+  })
+}
+
+export const UpdatePersonalDetailsSchema = z.object({
+  currentWeight: z.number().min(20).max(300).positive(),
+  goalWeight: z.number().min(20).max(300).positive(),
+  height: z.number().min(50).max(250).positive(),
+  birthday: z.string().min(1),
+  gender: z.enum(['male', 'female', 'other']),
+  calorieBudget: z.number().int().min(1),
+  proteinTarget: z.number().int().min(1),
+  carbTarget: z.number().int().min(1),
+  fatTarget: z.number().int().min(1)
+})
+
 export const OnboardingActionSchema = z.object({
   currentWeight: z.number().min(20).max(300).positive(),
   goalWeight: z.number().min(20).max(300).positive(),

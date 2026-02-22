@@ -70,7 +70,7 @@ export function calculateMacros(calories: number) {
 /**
  * Calculate estimated weeks to reach goal weight.
  */
-export function calculateWeeksToGoal(currentWeight: number, goalWeight: number, plan: CaloriePlan): number {
+function calculateWeeksToGoal(currentWeight: number, goalWeight: number, plan: CaloriePlan): number {
   const weightToLose = Math.abs(currentWeight - goalWeight)
   return Math.ceil(weightToLose / WEEKLY_LOSS[plan])
 }

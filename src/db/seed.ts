@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { consola } from 'consola'
+import { eq } from 'drizzle-orm'
 
 import { db } from './index'
 import { accounts, foodEntries, users, waterEntries, weightEntries } from './schemas'
@@ -18,9 +19,11 @@ async function main() {
       emailVerified: true,
       onboarded: true,
       startingWeight: 80,
-      currentWeight: 75,
+      currentWeight: 80,
       goalWeight: 70,
       height: 175,
+      birthday: '1990-06-15',
+      gender: 'male',
       waterGoal: 2500,
       calorieBudget: 2200,
       proteinTarget: 160,
@@ -122,6 +125,12 @@ async function main() {
 
     consola.info(`Inserting ${weightData.length} weight entries...`)
     await db.insert(weightEntries).values(weightData)
+
+    // Sync users.currentWeight to the latest weight entry
+    const latestWeight = weightData.at(-1)
+    if (latestWeight) {
+      await db.update(users).set({ currentWeight: latestWeight.weight }).where(eq(users.id, userId))
+    }
 
     consola.success('Data seeded successfully!')
   } catch (error) {

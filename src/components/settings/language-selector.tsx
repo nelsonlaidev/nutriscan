@@ -15,7 +15,7 @@ export function LanguageSelector() {
   const router = useRouter()
 
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex h-9 items-center justify-between'>
       <div className='flex items-center gap-2'>
         <GlobeIcon size={20} />
         <Label htmlFor='language-select' className='text-base font-normal'>
