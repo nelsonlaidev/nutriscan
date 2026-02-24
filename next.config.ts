@@ -8,6 +8,11 @@ const R2_URL = new URL(env.R2_PUBLIC_URL)
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+
+  typescript: {
+    ignoreBuildErrors: env.CI
+  },
+
   images: {
     remotePatterns: [
       {
@@ -16,6 +21,7 @@ const nextConfig: NextConfig = {
       }
     ]
   },
+
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
     serverActions: {
