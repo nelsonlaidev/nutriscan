@@ -16,30 +16,28 @@ export function Navbar() {
   const navbarLinks = getNavbarLinks(t)
 
   return (
-    <div className='fixed inset-x-0 bottom-2 flex items-center justify-center'>
-      <nav className='flex items-center gap-1 rounded-full bg-background p-2 shadow-sm'>
-        {navbarLinks.map((link: NavbarLink) => {
-          const active = pathname === link.href
-          const isPrimary = link.primary
+    <nav className='fixed inset-x-0 bottom-0 flex items-center justify-around gap-1 border-t bg-background p-2'>
+      {navbarLinks.map((link: NavbarLink) => {
+        const active = pathname === link.href
+        const isPrimary = link.primary
 
-          return (
-            <Link
-              href={link.href}
-              key={link.href}
-              aria-label={link.title}
-              data-active={active}
-              data-primary={isPrimary}
-              className='inline-flex items-center justify-center rounded-full p-3 transition-colors data-[primary=true]:bg-primary data-[primary=true]:text-primary-foreground data-active:bg-accent'
-            >
-              {link.icon ? (
-                <link.icon size={24} weight={active && !isPrimary ? 'fill' : 'regular'} />
-              ) : (
-                <UserAvatar className='size-6' />
-              )}
-            </Link>
-          )
-        })}
-      </nav>
-    </div>
+        return (
+          <Link
+            href={link.href}
+            key={link.href}
+            aria-label={link.title}
+            data-active={active}
+            data-primary={isPrimary}
+            className='inline-flex items-center justify-center rounded-full p-3 transition-colors data-[primary=true]:bg-primary data-[primary=true]:text-primary-foreground data-active:bg-accent'
+          >
+            {link.icon ? (
+              <link.icon size={24} weight={active && !isPrimary ? 'fill' : 'regular'} />
+            ) : (
+              <UserAvatar className='size-6' />
+            )}
+          </Link>
+        )
+      })}
+    </nav>
   )
 }
