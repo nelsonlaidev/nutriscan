@@ -57,7 +57,7 @@ export function WeightTracker(props: WeightTrackerProps) {
             <span className='text-2xl font-bold text-emerald-500'>{currentWeight.toFixed(1)} kg</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className='space-y-3'>
+        <CardContent className='flex flex-col gap-3'>
           <Progress
             value={percentage}
             className='**:data-[slot=progress-indicator]:rounded-md **:data-[slot=progress-indicator]:bg-emerald-400 *:data-[slot=progress-track]:h-7 *:data-[slot=progress-track]:rounded-md *:data-[slot=progress-track]:bg-emerald-100 dark:*:data-[slot=progress-track]:bg-emerald-950'
