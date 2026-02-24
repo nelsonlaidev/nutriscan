@@ -1,6 +1,6 @@
 'use client'
 
-import type { WeightEntry } from '@/data/weight-entries'
+import type { WeightEntry } from '@/data/weight'
 
 import { ScalesIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'

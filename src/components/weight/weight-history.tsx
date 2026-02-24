@@ -1,6 +1,6 @@
 'use client'
 
-import type { WeightEntry } from '@/data/weight-entries'
+import type { WeightEntry } from '@/data/weight'
 
 import { DotsThreeIcon, PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { format, isToday, isYesterday } from 'date-fns'
@@ -21,6 +21,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { toZonedDate } from '@/lib/utils'
 
 import { Spinner } from '../ui/spinner'
 
@@ -37,7 +38,8 @@ export function WeightHistory(props: WeightHistoryProps) {
   const [editWeight, setEditWeight] = useState('')
   const [saving, setSaving] = useState(false)
 
-  function formatDate(date: Date) {
+  function formatDate(rawDate: Date) {
+    const date = toZonedDate(rawDate)
     const formatted = format(date, 'd MMM yyyy')
 
     if (isToday(date)) return t('weight.today-date', { date: formatted })

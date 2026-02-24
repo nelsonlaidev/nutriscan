@@ -1,15 +1,17 @@
 'use client'
 
-import type { WaterEntry } from '@/data/water-entries'
+import type { WaterChartData } from '@/data/progress'
+import type { WaterEntry } from '@/data/water'
 
 import { PlusIcon } from '@phosphor-icons/react/ssr'
+import { isToday } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import { addWaterEntry } from '@/actions/water-entry'
 import { Button } from '@/components/ui/button'
 import { MAX_WATER_INTAKE } from '@/lib/constants'
-import { formatMl } from '@/lib/utils'
+import { formatMl, toZonedDate } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
 
@@ -22,19 +24,17 @@ const QUICK_ADD_OPTIONS = [100, 200, 300, 500]
 
 type WaterTrackerProps = {
   initialGoal: number
-  date: string
-  weekData: Array<{ date: string; amount: number }>
+  weekData: WaterChartData
   initialEntries: WaterEntry[]
 }
 
 export function WaterTracker(props: WaterTrackerProps) {
-  const { initialGoal, date, weekData, initialEntries } = props
+  const { initialGoal, weekData, initialEntries } = props
   const t = useTranslations()
   const [entries, setEntries] = useState(initialEntries)
   const [goal, setGoal] = useState(initialGoal)
 
-  // Derive today's total from entries matching the current date
-  const todayEntries = entries.filter((e) => e.localDate === date)
+  const todayEntries = entries.filter((e) => isToday(toZonedDate(e.createdAt)))
   const amount = todayEntries.reduce((sum, e) => sum + e.amount, 0)
 
   const percentage = goal > 0 ? (amount / goal) * 100 : 0
@@ -45,7 +45,6 @@ export function WaterTracker(props: WaterTrackerProps) {
     const optimisticEntry: WaterEntry = {
       id: optimisticId,
       amount: Math.min(ml, MAX_WATER_INTAKE - amount),
-      localDate: date,
       createdAt: new Date()
     }
 
@@ -57,9 +56,7 @@ export function WaterTracker(props: WaterTrackerProps) {
     if (result.data?.success && entry) {
       // Replace optimistic entry with real one
       setEntries((prev) =>
-        prev.map((e) =>
-          e.id === optimisticId ? { ...e, id: entry.id, localDate: entry.localDate, createdAt: entry.createdAt } : e
-        )
+        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e))
       )
     }
   }
@@ -74,7 +71,7 @@ export function WaterTracker(props: WaterTrackerProps) {
 
   return (
     <div className='flex flex-col items-center gap-8'>
-      <WeeklyWaterTracker weekData={weekData} goal={goal} todayAmount={amount} date={date} />
+      <WeeklyWaterTracker weekData={weekData} goal={goal} todayAmount={amount} />
       <Card className='w-full' size='sm'>
         <CardContent className='flex flex-col items-center gap-4'>
           <WaterDroplet percentage={percentage} />

@@ -7,21 +7,17 @@ import { and, desc, eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { users } from '@/db/schemas/auth.schema'
 import { weightEntries } from '@/db/schemas/weight-entry.schema'
-import { getCurrentLocalDate } from '@/lib/date-utils'
 import { authActionClient } from '@/lib/safe-action'
 import { AddWeightEntrySchema, DeleteWeightEntrySchema, UpdateWeightEntrySchema } from '@/lib/zod-schemas'
 
 export const addWeightEntry = authActionClient
   .inputSchema(AddWeightEntrySchema)
   .action(async ({ parsedInput, ctx }) => {
-    const localDate = getCurrentLocalDate(ctx.user.timezone)
-
     const entry = await db
       .insert(weightEntries)
       .values({
         userId: ctx.user.id,
-        weight: parsedInput.weight,
-        localDate
+        weight: parsedInput.weight
       })
       .returning({ id: weightEntries.id, createdAt: weightEntries.createdAt })
 

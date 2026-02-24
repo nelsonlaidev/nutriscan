@@ -3,15 +3,8 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
-
-type MealBreakdown = {
-  id: string
-  name: string
-  emoji: string
-  items: number
-  calories: number
-}
+import { MEAL_EMOJI } from '@/lib/constants'
+import { cn, type MealBreakdown } from '@/lib/utils'
 
 type MealListProps = {
   meals: MealBreakdown[]
@@ -40,15 +33,20 @@ export async function MealList(props: MealListProps) {
       </div>
       <div className='space-y-4'>
         {meals.map((meal) => (
-          <Link key={meal.id} href={`/meals/${meal.id}?date=${date}`} className='block'>
+          <Link key={meal.category} href={`/meals/${meal.category}?date=${date}`} className='block'>
             <Card size='sm'>
               <CardContent className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                  <div className={cn('flex size-10 items-center justify-center rounded-xl text-lg', EMOJI_BG[meal.id])}>
-                    {meal.emoji}
+                  <div
+                    className={cn(
+                      'flex size-10 items-center justify-center rounded-xl text-lg',
+                      EMOJI_BG[meal.category]
+                    )}
+                  >
+                    {MEAL_EMOJI[meal.category]}
                   </div>
                   <div>
-                    <p className='text-sm font-semibold'>{meal.name}</p>
+                    <p className='text-sm font-semibold'>{t(`meals.${meal.category}`)}</p>
                     <p className='text-xs text-muted-foreground'>
                       {t('dashboard.items-calories', { count: meal.items, calories: meal.calories })}
                     </p>

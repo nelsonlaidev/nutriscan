@@ -28,8 +28,7 @@ async function main() {
       calorieBudget: 2200,
       proteinTarget: 160,
       carbTarget: 220,
-      fatTarget: 70,
-      timezone: 'UTC'
+      fatTarget: 70
     })
 
     // Create an account for the user
@@ -60,10 +59,6 @@ async function main() {
       const date = new Date(today)
       date.setDate(date.getDate() - i)
 
-      // Format as YYYY-MM-DD
-      const localDate = date.toISOString().split('T')[0]
-      if (!localDate) continue
-
       const mealCategories = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
 
       // 3-5 meals a day
@@ -84,7 +79,6 @@ async function main() {
           fat: faker.number.int({ min: 5, max: 40 }),
           mealCategory,
           source: faker.helpers.arrayElement(['ai-scan', 'manual', 'barcode']),
-          localDate,
           createdAt: date
         })
       }
@@ -97,7 +91,6 @@ async function main() {
           id: faker.string.uuid(),
           userId,
           amount: 250,
-          localDate,
           createdAt: date
         })
       }
@@ -111,7 +104,6 @@ async function main() {
           id: faker.string.uuid(),
           userId,
           weight: Number(currentWeight.toFixed(1)),
-          localDate,
           createdAt: date
         })
       }

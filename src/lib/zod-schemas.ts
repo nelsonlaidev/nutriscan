@@ -97,8 +97,7 @@ export const OnboardingActionSchema = z.object({
   calorieBudget: z.number().int().min(1),
   proteinTarget: z.number().int().min(1),
   carbTarget: z.number().int().min(1),
-  fatTarget: z.number().int().min(1),
-  timezone: z.string().min(1)
+  fatTarget: z.number().int().min(1)
 })
 
 export function createManualFoodEntrySchema(t: Translator) {

@@ -3,6 +3,8 @@ import { env } from '@/env'
 export const isProd = env.NODE_ENV === 'production'
 export const isDev = env.NODE_ENV === 'development'
 
+export const DEFAULT_TIMEZONE = 'Asia/Hong_Kong'
+
 export const DEFAULT_LOCALE = 'en'
 export const LOCALES = [DEFAULT_LOCALE, 'zh-TW'] as const
 export const LOCALE_ITEMS = [

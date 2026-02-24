@@ -11,3 +11,6 @@ export type ErrorResponse = {
   success: false
   error: TranslationKey
 }
+
+export type MealCategory = 'breakfast' | 'lunch' | 'dinner' | 'snacks'
+export type TimeRange = 'weekly' | 'monthly' | 'yearly'

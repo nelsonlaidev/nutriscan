@@ -7,14 +7,15 @@ import { useQueryState } from 'nuqs'
 
 import { dashboardParsers } from '@/app/(main)/dashboard/search-params'
 import { Button } from '@/components/ui/button'
+import { toZonedDate } from '@/lib/utils'
 
 export function DateNavigation() {
   const t = useTranslations()
   const [date, setDate] = useQueryState('date', { ...dashboardParsers.date, shallow: false })
-  const currentDate = parse(date, 'yyyy-MM-dd', new Date())
+  const currentDate = parse(date, 'yyyy-MM-dd', toZonedDate(new Date()))
 
   const isTodayDate = isToday(currentDate)
-  const isOldestDate = differenceInDays(startOfDay(new Date()), currentDate) >= 6
+  const isOldestDate = differenceInDays(startOfDay(toZonedDate(new Date())), currentDate) >= 6
 
   function getLabel(d: Date) {
     if (isToday(d)) return t('dashboard.today')

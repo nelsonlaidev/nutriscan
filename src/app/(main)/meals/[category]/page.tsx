@@ -1,5 +1,6 @@
+import type { MealCategory } from '@/types'
+
 import { CaretRightIcon } from '@phosphor-icons/react/ssr'
-import { format } from 'date-fns'
 import Image from 'next/image'
 import { notFound, redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
@@ -7,21 +8,19 @@ import { getTranslations } from 'next-intl/server'
 import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { Card, CardContent } from '@/components/ui/card'
-import { getFoodEntriesByDateAndCategory, type MealCategory } from '@/data/food-entries'
+import { getFoodEntriesByCategory } from '@/data/food'
 import { getSession } from '@/lib/auth'
 import { MEAL_EMOJI } from '@/lib/constants'
+import { getDayRange } from '@/lib/utils'
+
+import { categoryCache } from './search-params'
 
 const VALID_CATEGORIES = new Set<MealCategory>(['breakfast', 'lunch', 'dinner', 'snacks'])
 
-async function Page({
-  params,
-  searchParams
-}: {
-  params: Promise<{ category: string }>
-  searchParams: Promise<{ date?: string }>
-}) {
+async function Page(props: PageProps<'/meals/[category]'>) {
+  const { params, searchParams } = props
   const { category } = await params
-  const { date } = await searchParams
+  const { date } = await categoryCache.parse(searchParams)
 
   if (!VALID_CATEGORIES.has(category as MealCategory)) {
     notFound()
@@ -33,8 +32,8 @@ async function Page({
   if (!session) redirect('/')
 
   const t = await getTranslations()
-  const dateStr = date ?? format(new Date(), 'yyyy-MM-dd')
-  const entries = await getFoodEntriesByDateAndCategory(session.user.id, dateStr, mealCategory)
+  const dayRange = getDayRange(date)
+  const entries = await getFoodEntriesByCategory(session.user.id, dayRange, mealCategory)
   const totalCalories = Math.round(entries.reduce((sum, e) => sum + e.calories, 0))
 
   const mealName = t(`meals.${mealCategory}`)

@@ -23,7 +23,6 @@ export const completeOnboarding = authActionClient
         proteinTarget: parsedInput.proteinTarget,
         carbTarget: parsedInput.carbTarget,
         fatTarget: parsedInput.fatTarget,
-        timezone: parsedInput.timezone,
         onboarded: true
       })
       .where(eq(users.id, ctx.user.id))

@@ -1,9 +1,11 @@
 'use client'
 
-import type { WaterEntry } from '@/data/water-entries'
+import type { WaterEntry } from '@/data/water'
 
 import { format, isToday, isYesterday, parseISO } from 'date-fns'
 import { useTranslations } from 'next-intl'
+
+import { toZonedDate } from '@/lib/utils'
 
 import { WaterEntryItem } from './water-entry-item'
 
@@ -18,7 +20,7 @@ export function WaterHistory(props: WaterHistoryProps) {
   const t = useTranslations()
 
   function formatDateHeader(dateStr: string) {
-    const date = parseISO(dateStr)
+    const date = toZonedDate(parseISO(dateStr))
     const formatted = format(date, 'd MMM yyyy')
 
     if (isToday(date)) return t('water.today-date', { date: formatted })
@@ -28,14 +30,15 @@ export function WaterHistory(props: WaterHistoryProps) {
 
   if (entries.length === 0) return null
 
-  // Group entries by localDate
+  // Group entries by date
   const grouped = new Map<string, WaterEntry[]>()
   for (const entry of entries) {
-    const existing = grouped.get(entry.localDate)
+    const dateKey = format(toZonedDate(entry.createdAt), 'yyyy-MM-dd')
+    const existing = grouped.get(dateKey)
     if (existing) {
       existing.push(entry)
     } else {
-      grouped.set(entry.localDate, [entry])
+      grouped.set(dateKey, [entry])
     }
   }
 

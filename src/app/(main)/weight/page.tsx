@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { PageContainer } from '@/components/page-container'
 import { PageTitle } from '@/components/page-title'
 import { WeightTracker } from '@/components/weight/weight-tracker'
-import { getLatestWeight, getWeightEntries } from '@/data/weight-entries'
+import { getLatestWeight, getWeightEntries } from '@/data/weight'
 import { getSession } from '@/lib/auth'
 
 async function Page() {

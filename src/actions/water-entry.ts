@@ -6,21 +6,17 @@ import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { waterEntries } from '@/db/schemas/water-entry.schema'
-import { getCurrentLocalDate } from '@/lib/date-utils'
 import { authActionClient } from '@/lib/safe-action'
 import { AddWaterEntrySchema, DeleteWaterEntrySchema, UpdateWaterEntrySchema } from '@/lib/zod-schemas'
 
 export const addWaterEntry = authActionClient.inputSchema(AddWaterEntrySchema).action(async ({ parsedInput, ctx }) => {
-  const localDate = getCurrentLocalDate(ctx.user.timezone)
-
   const entry = await db
     .insert(waterEntries)
     .values({
       userId: ctx.user.id,
-      amount: parsedInput.amount,
-      localDate
+      amount: parsedInput.amount
     })
-    .returning({ id: waterEntries.id, localDate: waterEntries.localDate, createdAt: waterEntries.createdAt })
+    .returning({ id: waterEntries.id, createdAt: waterEntries.createdAt })
 
   return { success: true, entry: entry[0] }
 })

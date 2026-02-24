@@ -40,8 +40,7 @@ export const users = pgTable('users', {
   calorieBudget: integer('calorie_budget').notNull().default(DEFAULT_CALORIE_BUDGET),
   proteinTarget: integer('protein_target').notNull().default(DEFAULT_PROTEIN_TARGET),
   carbTarget: integer('carb_target').notNull().default(DEFAULT_CARB_TARGET),
-  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET),
-  timezone: text('timezone').default('UTC').notNull()
+  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET)
 })
 
 export const sessions = pgTable(

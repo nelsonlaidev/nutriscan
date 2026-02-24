@@ -1,6 +1,6 @@
 'use client'
 
-import type { WaterEntry } from '@/data/water-entries'
+import type { WaterEntry } from '@/data/water'
 
 import { DropIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
 import { format } from 'date-fns'

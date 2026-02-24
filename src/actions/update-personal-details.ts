@@ -5,15 +5,12 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { users } from '@/db/schemas/auth.schema'
 import { weightEntries } from '@/db/schemas/weight-entry.schema'
-import { getCurrentLocalDate } from '@/lib/date-utils'
 import { authActionClient } from '@/lib/safe-action'
 import { UpdatePersonalDetailsSchema } from '@/lib/zod-schemas'
 
 export const updatePersonalDetails = authActionClient
   .inputSchema(UpdatePersonalDetailsSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const localDate = getCurrentLocalDate(ctx.user.timezone)
-
     await Promise.all([
       db
         .update(users)
@@ -31,8 +28,7 @@ export const updatePersonalDetails = authActionClient
         .where(eq(users.id, ctx.user.id)),
       db.insert(weightEntries).values({
         userId: ctx.user.id,
-        weight: parsedInput.currentWeight,
-        localDate
+        weight: parsedInput.currentWeight
       })
     ])
 
