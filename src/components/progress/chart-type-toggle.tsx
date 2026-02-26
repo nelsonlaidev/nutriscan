@@ -1,6 +1,7 @@
 'use client'
 
 import { ChartBarIcon, ChartLineUpIcon } from '@phosphor-icons/react/ssr'
+import { useTranslations } from 'next-intl'
 
 type ChartType = 'bar' | 'area'
 
@@ -10,10 +11,13 @@ type ChartTypeToggleProps = {
 }
 
 export function ChartTypeToggle({ value, onChange }: ChartTypeToggleProps) {
+  const t = useTranslations()
+
   return (
     <div className='flex items-center gap-0.5 rounded-lg bg-muted p-0.5'>
       <button
         type='button'
+        aria-label={t('progress.bar-chart')}
         onClick={() => {
           onChange('bar')
         }}
@@ -25,6 +29,7 @@ export function ChartTypeToggle({ value, onChange }: ChartTypeToggleProps) {
       </button>
       <button
         type='button'
+        aria-label={t('progress.area-chart')}
         onClick={() => {
           onChange('area')
         }}

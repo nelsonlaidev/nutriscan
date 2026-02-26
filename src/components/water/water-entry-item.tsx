@@ -97,7 +97,7 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
         >
           <DialogTrigger
             render={
-              <Button variant='ghost' size='icon-sm'>
+              <Button variant='ghost' size='icon-sm' aria-label={t('water.edit-entry')}>
                 <PencilSimpleIcon size={16} />
               </Button>
             }

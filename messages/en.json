@@ -159,7 +159,9 @@
     "protein": "Protein",
     "carbs": "Carbs",
     "fat": "Fat",
-    "no-weight-data": "No weight entries yet"
+    "no-weight-data": "No weight entries yet",
+    "bar-chart": "Bar chart",
+    "area-chart": "Area chart"
   },
   "water": {
     "page-title": "Water Tracker",
@@ -188,7 +190,8 @@
     "edit-entry-description": "Update the amount or delete this entry.",
     "amount-ml": "Amount (mL)",
     "delete": "Delete",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "edit-entry": "Edit entry"
   },
   "weight": {
     "page-title": "Weight Tracker",

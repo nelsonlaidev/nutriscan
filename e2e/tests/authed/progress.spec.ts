@@ -90,16 +90,15 @@ test('chart type toggle switches between bar and area', async ({ page }) => {
   const calorieCard = page.locator('[class*="card"]').filter({ hasText: 'Calorie goal' })
   await expect(calorieCard.locator('.recharts-bar')).toBeVisible()
 
-  // Click area toggle (second button in the toggle group)
-  const toggleButtons = calorieCard.locator('button')
-  await toggleButtons.nth(1).click()
+  // Click area chart toggle
+  await calorieCard.getByRole('button', { name: 'Area chart' }).click()
 
   // Should now show area chart
   await expect(calorieCard.locator('.recharts-area')).toBeVisible()
   await expect(calorieCard.locator('.recharts-bar')).not.toBeVisible()
 
-  // Click bar toggle back
-  await toggleButtons.nth(0).click()
+  // Click bar chart toggle back
+  await calorieCard.getByRole('button', { name: 'Bar chart' }).click()
   await expect(calorieCard.locator('.recharts-bar')).toBeVisible()
 })
 
