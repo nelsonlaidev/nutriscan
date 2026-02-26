@@ -68,7 +68,7 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
 
   const weightData = dateRange.dates.map((d) => ({
     date: d.label,
-    weight: weightMap.get(d.value) ?? 0
+    weight: weightMap.get(d.value) ?? null
   }))
 
   const currentWeight = latestWeight?.weight ?? user.currentWeight

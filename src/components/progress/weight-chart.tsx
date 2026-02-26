@@ -10,7 +10,7 @@ import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } f
 import { ChartTypeToggle } from './chart-type-toggle'
 
 type WeightChartProps = {
-  data: Array<{ date: string; weight: number }>
+  data: Array<{ date: string; weight: number | null }>
   goal: number
 }
 
@@ -25,9 +25,9 @@ export function WeightChart({ data, goal }: WeightChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('area')
 
-  const weights = data.map((d) => d.weight)
-  const dataMin = Math.min(...weights, goal)
-  const dataMax = Math.max(...weights, goal)
+  const weights = data.map((d) => d.weight).filter((w): w is number => w !== null)
+  const dataMin = weights.length > 0 ? Math.min(...weights, goal) : goal
+  const dataMax = weights.length > 0 ? Math.max(...weights, goal) : goal
   const padding = Math.max((dataMax - dataMin) * 0.15, 2)
   const yMin = Math.floor(dataMin - padding)
   const yMax = Math.ceil(dataMax + padding)
@@ -64,6 +64,7 @@ export function WeightChart({ data, goal }: WeightChartProps) {
                 fill='var(--color-weight)'
                 stroke='var(--color-weight)'
                 fillOpacity={0.4}
+                connectNulls
               />
             </AreaChart>
           )}
