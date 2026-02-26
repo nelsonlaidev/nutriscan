@@ -39,7 +39,7 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: env.CI ? 'pnpm start' : 'pnpm dev',
+    command: env.CI ? 'NODE_ENV=test pnpm start' : 'NODE_ENV=test pnpm dev',
     url: baseURL,
     reuseExistingServer: !env.CI
   }
