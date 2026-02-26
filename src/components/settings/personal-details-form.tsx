@@ -279,6 +279,7 @@ export function PersonalDetailsForm() {
                         <RadioGroupItem
                           value={option.value}
                           id={`${field.name}-${option.value}`}
+                          aria-label={option.label}
                           aria-invalid={isInvalid}
                         />
                       </Field>

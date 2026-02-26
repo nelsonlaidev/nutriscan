@@ -26,6 +26,7 @@ export function ThemeToggle() {
       </div>
       <Switch
         id='theme-mode'
+        aria-label={t('settings.dark-mode')}
         checked={resolvedTheme === 'dark'}
         onCheckedChange={(checked) => {
           setTheme(checked ? 'dark' : 'light')
