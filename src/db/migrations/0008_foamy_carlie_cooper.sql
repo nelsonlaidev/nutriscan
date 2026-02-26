@@ -1,1 +1,0 @@
-DROP TABLE "water_intakes" CASCADE;

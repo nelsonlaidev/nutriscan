@@ -277,6 +277,22 @@
     "display-name-required": "請輸入顯示名稱",
     "passwords-no-match": "密碼不一致"
   },
+  "chat": {
+    "not-ready": "請稍候，聊天尚未準備好",
+    "empty-message": "請輸入訊息或附加圖片",
+    "image-too-large": "圖片必須小於 5 MB",
+    "upload-failed": "上傳圖片失敗",
+    "input-placeholder": "問我任何問題...",
+    "deleted": "聊天已刪除",
+    "delete-failed": "刪除聊天失敗",
+    "history": "聊天紀錄",
+    "no-chats": "尚無聊天紀錄",
+    "welcome-title": "NutriScan AI",
+    "welcome-subtitle": "你的個人營養助手",
+    "prompt-breakfast": "有什麼高蛋白早餐的建議？",
+    "prompt-meal-plan": "幫我規劃一頓均衡的晚餐",
+    "prompt-water": "我每天應該喝多少水？"
+  },
   "errors": {
     "ai-scan-failed": "分析圖片失敗",
     "product-not-found": "找不到產品",

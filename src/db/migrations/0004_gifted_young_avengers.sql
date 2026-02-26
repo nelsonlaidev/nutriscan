@@ -1,1 +1,0 @@
-ALTER TABLE "food_entries" ADD COLUMN "image_url" text;

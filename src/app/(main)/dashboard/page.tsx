@@ -7,6 +7,7 @@ import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
 import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
 import { WeightPanel } from '@/components/dashboard/weight-panel'
+import { MainLayout } from '@/components/main-layout'
 import { getFoodEntries } from '@/data/food'
 import { getWaterTotal } from '@/data/water'
 import { getLatestWeight } from '@/data/weight'
@@ -37,7 +38,7 @@ async function Page(props: PageProps<'/dashboard'>) {
   const macroGoals = { protein: proteinTarget, carbs: carbTarget, fat: fatTarget }
 
   return (
-    <div className='space-y-6'>
+    <MainLayout className='space-y-6'>
       <DashboardHeader />
       <DateNavigation />
       <CalorieSummary calories={totals.calories} goal={calorieBudget} />
@@ -49,7 +50,7 @@ async function Page(props: PageProps<'/dashboard'>) {
         goalWeight={session.user.goalWeight}
       />
       <MealList meals={meals} date={date} />
-    </div>
+    </MainLayout>
   )
 }
 

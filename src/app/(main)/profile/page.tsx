@@ -4,7 +4,7 @@ import { GearIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
-import { PageTitle } from '@/components/page-title'
+import { MainLayout } from '@/components/main-layout'
 import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
@@ -22,14 +22,15 @@ function Page() {
   })
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex items-center justify-between'>
-        <PageTitle title={t('profile.page-title')} />
-        <Link href='/settings' className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+    <MainLayout
+      title={t('profile.page-title')}
+      className='space-y-4'
+      rightTitleButton={
+        <Link href='/settings' className={buttonVariants({ variant: 'ghost', size: 'icon-lg' })}>
           <GearIcon size={28} />
         </Link>
-      </div>
-
+      }
+    >
       <div className='flex flex-col items-center gap-2 py-4'>
         <UserAvatar className='size-24' />
         <div className='text-center'>
@@ -67,7 +68,7 @@ function Page() {
           <p className='text-sm text-muted-foreground'>{memberSince}</p>
         </div>
       </div>
-    </div>
+    </MainLayout>
   )
 }
 

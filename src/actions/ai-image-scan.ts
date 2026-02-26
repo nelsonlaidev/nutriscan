@@ -2,13 +2,11 @@
 
 import type { ErrorResponse } from '@/types'
 
-import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { generateText, Output } from 'ai'
 import * as z from 'zod'
 
-import { env } from '@/env'
+import { defaultModel } from '@/lib/ai'
 import { logger } from '@/lib/logger'
-import { uploadImage } from '@/lib/r2'
 import { authActionClient } from '@/lib/safe-action'
 import { AiImageScanSchema } from '@/lib/zod-schemas'
 
@@ -21,24 +19,14 @@ const NutritionResponseSchema = z.object({
   fat: z.number().describe('Fat in grams')
 })
 
-export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).action(async ({ parsedInput, ctx }) => {
-  const openrouter = createOpenRouter({ apiKey: env.OPENROUTER_API_KEY })
+export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).action(async ({ parsedInput }) => {
+  const { imageUrl } = parsedInput
 
-  const imageSizeKB = Math.round((parsedInput.imageBase64.length * 3) / 4 / 1024)
-  logger.debug({ imageSizeKB }, 'AI scan: image size before sending to OpenRouter')
+  logger.debug({ imageUrl }, 'AI scan: analyzing image from R2')
 
   try {
-    // Upload image to R2
-    const base64Data = parsedInput.imageBase64.replace(/^data:image\/\w+;base64,/, '')
-    const contentType = /^data:(image\/\w+);base64,/.exec(parsedInput.imageBase64)?.[1] ?? 'image/jpeg'
-    const buffer = Buffer.from(base64Data, 'base64')
-    const key = `food-images/${ctx.user.id}/${Date.now()}.${contentType.split('/')[1]}`
-    const imageUrl = await uploadImage(key, buffer, contentType)
-
-    logger.debug({ imageUrl }, 'AI scan: image uploaded to R2')
-
     const { output } = await generateText({
-      model: openrouter('google/gemini-3-flash-preview'),
+      model: defaultModel,
       output: Output.object({ schema: NutritionResponseSchema }),
       messages: [
         {
@@ -46,7 +34,7 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
           content: [
             {
               type: 'image',
-              image: parsedInput.imageBase64
+              image: imageUrl
             },
             {
               type: 'text',

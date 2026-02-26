@@ -13,6 +13,7 @@ import {
   DEFAULT_WATER_GOAL
 } from '@/lib/constants'
 
+import { chats } from './chat.schema'
 import { foodEntries } from './food-entry.schema'
 import { weightEntries } from './weight-entry.schema'
 
@@ -105,6 +106,7 @@ export const verifications = pgTable(
 export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
+  chats: many(chats),
   foodEntries: many(foodEntries),
   weightEntries: many(weightEntries)
 }))

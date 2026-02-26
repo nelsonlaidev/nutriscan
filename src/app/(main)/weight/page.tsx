@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { PageContainer } from '@/components/page-container'
-import { PageTitle } from '@/components/page-title'
+import { BackButton } from '@/components/back-button'
+import { MainLayout } from '@/components/main-layout'
 import { WeightTracker } from '@/components/weight/weight-tracker'
 import { getLatestWeight, getWeightEntries } from '@/data/weight'
 import { getSession } from '@/lib/auth'
@@ -22,15 +22,14 @@ async function Page() {
   const { startingWeight, goalWeight } = session.user
 
   return (
-    <PageContainer>
-      <PageTitle title={t('weight.page-title')} withBackButton />
+    <MainLayout title={t('weight.page-title')} leftTitleButton={<BackButton />}>
       <WeightTracker
         currentWeight={currentWeight}
         startingWeight={startingWeight}
         goalWeight={goalWeight}
         initialEntries={entries}
       />
-    </PageContainer>
+    </MainLayout>
   )
 }
 

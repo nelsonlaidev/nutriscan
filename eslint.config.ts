@@ -5,7 +5,7 @@ export default defineConfig(
     tailwindcss: {
       entryPoint: './src/styles/globals.css',
       noUnknownClasses: {
-        ignore: ['toaster']
+        ignore: ['toaster', 'is-user', 'is-assistant']
       }
     },
     importX: {

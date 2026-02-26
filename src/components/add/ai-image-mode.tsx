@@ -5,12 +5,13 @@ import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useAction } from 'next-safe-action/hooks'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
 
 import { scanFoodImage } from '@/actions/ai-image-scan'
 import { Button } from '@/components/ui/button'
+import { uploadImage } from '@/lib/upload'
 
 import { Spinner } from '../ui/spinner'
 
@@ -22,6 +23,8 @@ export function AiImageMode(props: AiImageModeProps) {
   const { onResult } = props
   const t = useTranslations()
   const [preview, setPreview] = useState<string | null>(null)
+  const previewRef = useRef<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
 
@@ -38,6 +41,15 @@ export function AiImageMode(props: AiImageModeProps) {
     }
   })
 
+  useEffect(
+    () => () => {
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current)
+    },
+    []
+  )
+
+  const isProcessing = isUploading || isPending
+
   const handleFileSelected = useCallback(
     async (file: File) => {
       const compressed = await imageCompression(file, {
@@ -46,15 +58,22 @@ export function AiImageMode(props: AiImageModeProps) {
         useWebWorker: true
       })
 
-      const reader = new FileReader()
-      reader.addEventListener('load', () => {
-        const base64 = reader.result as string
-        setPreview(base64)
-        execute({ imageBase64: base64 })
-      })
-      reader.readAsDataURL(compressed)
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current)
+      const url = URL.createObjectURL(compressed)
+      previewRef.current = url
+      setPreview(url)
+      setIsUploading(true)
+
+      try {
+        const imageUrl = await uploadImage(compressed)
+        execute({ imageUrl })
+      } catch {
+        toast.error(t('errors.ai-scan-failed'))
+      } finally {
+        setIsUploading(false)
+      }
     },
-    [execute]
+    [execute, t]
   )
 
   const handleInputChange = useCallback(
@@ -90,7 +109,7 @@ export function AiImageMode(props: AiImageModeProps) {
           </div>
         )}
 
-        {isPending && (
+        {isProcessing && (
           <div className='absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40'>
             <Spinner size={40} className='text-white' />
             <span className='text-sm font-medium text-white'>{t('add-food.analyzing-image')}</span>
@@ -108,7 +127,7 @@ export function AiImageMode(props: AiImageModeProps) {
               toast.info(t('add-food.camera-unavailable'))
             }
           }}
-          disabled={isPending}
+          disabled={isProcessing}
         >
           <CameraIcon size={16} />
           {t('add-food.take-photo')}
@@ -117,7 +136,7 @@ export function AiImageMode(props: AiImageModeProps) {
           variant='outline'
           className='flex-1'
           onClick={() => uploadInputRef.current?.click()}
-          disabled={isPending}
+          disabled={isProcessing}
         >
           <ImageIcon size={16} />
           {t('add-food.upload-photo')}

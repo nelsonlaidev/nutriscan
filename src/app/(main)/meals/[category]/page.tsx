@@ -5,8 +5,8 @@ import Image from 'next/image'
 import { notFound, redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { PageContainer } from '@/components/page-container'
-import { PageTitle } from '@/components/page-title'
+import { BackButton } from '@/components/back-button'
+import { MainLayout } from '@/components/main-layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { getFoodEntriesByCategory } from '@/data/food'
 import { getSession } from '@/lib/auth'
@@ -39,9 +39,7 @@ async function Page(props: PageProps<'/meals/[category]'>) {
   const mealName = t(`meals.${mealCategory}`)
 
   return (
-    <PageContainer className='gap-8'>
-      <PageTitle title={mealName} withBackButton />
-
+    <MainLayout title={mealName} leftTitleButton={<BackButton />}>
       <div className='space-y-6'>
         <div className='flex items-center justify-between'>
           <div className='font-semibold'>{t('meals.total')}</div>
@@ -81,7 +79,7 @@ async function Page(props: PageProps<'/meals/[category]'>) {
           </div>
         )}
       </div>
-    </PageContainer>
+    </MainLayout>
   )
 }
 

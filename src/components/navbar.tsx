@@ -16,7 +16,7 @@ export function Navbar() {
   const navbarLinks = getNavbarLinks(t)
 
   return (
-    <nav className='fixed inset-x-0 bottom-0 flex items-center justify-around gap-1 border-t bg-background p-2'>
+    <nav className='fixed bottom-0 left-1/2 flex w-full max-w-240 -translate-x-1/2 items-center justify-around gap-1 border-x border-t bg-background p-2'>
       {navbarLinks.map((link: NavbarLink) => {
         const active = pathname === link.href
         const isPrimary = link.primary

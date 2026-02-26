@@ -9,8 +9,8 @@ import { addFoodEntry } from '@/actions/add-food-entry'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
 import { type Mode, ModeSelector } from '@/components/add/mode-selector'
 import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
-import { PageContainer } from '@/components/page-container'
-import { PageTitle } from '@/components/page-title'
+import { BackButton } from '@/components/back-button'
+import { MainLayout } from '@/components/main-layout'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { DEFAULT_MEAL, type Meal } from '@/lib/constants'
@@ -82,9 +82,10 @@ function Page() {
   }
 
   return (
-    <PageContainer>
-      <PageTitle title={t('add-food.page-title')} withBackButton={step !== 'input'} onClickBack={handleBack} />
-
+    <MainLayout
+      title={t('add-food.page-title')}
+      leftTitleButton={step !== 'input' && <BackButton onClick={handleBack} />}
+    >
       <div className='flex flex-col gap-5'>
         {step === 'input' && (
           <ModeSelector
@@ -120,7 +121,7 @@ function Page() {
           </>
         )}
       </div>
-    </PageContainer>
+    </MainLayout>
   )
 }
 

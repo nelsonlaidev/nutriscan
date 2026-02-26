@@ -3,7 +3,7 @@ import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 
 import { db } from './index'
-import { accounts, foodEntries, users, waterEntries, weightEntries } from './schemas'
+import { accounts, chatMessages, chats, foodEntries, users, waterEntries, weightEntries } from './schemas'
 
 async function main() {
   consola.info('Starting database seed...')
@@ -17,7 +17,7 @@ async function main() {
       name: 'Test',
       email: 'test@example.com',
       emailVerified: true,
-      onboarded: true,
+
       startingWeight: 80,
       currentWeight: 80,
       goalWeight: 70,
@@ -28,7 +28,8 @@ async function main() {
       calorieBudget: 2200,
       proteinTarget: 160,
       carbTarget: 220,
-      fatTarget: 70
+      fatTarget: 70,
+      onboarded: true
     })
 
     // Create an account for the user
@@ -117,6 +118,95 @@ async function main() {
 
     consola.info(`Inserting ${weightData.length} weight entries...`)
     await db.insert(weightEntries).values(weightData)
+
+    // Generate chat data
+    const chat1Id = faker.string.uuid()
+    const chat1Date = new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000)
+    const chat2Id = faker.string.uuid()
+    const chat2Date = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000)
+    const chat3Id = faker.string.uuid()
+    const chat3Date = new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000)
+
+    const chatData = [
+      { id: chat1Id, userId, title: 'Healthy breakfast ideas', createdAt: chat1Date },
+      { id: chat2Id, userId, title: 'Post-workout nutrition tips', createdAt: chat2Date },
+      { id: chat3Id, userId, title: 'Low carb dinner options', createdAt: chat3Date }
+    ]
+
+    const chatMessageData = [
+      // Chat 1: Healthy breakfast ideas
+      {
+        id: faker.string.uuid(),
+        chatId: chat1Id,
+        role: 'user' as const,
+        parts: [{ type: 'text', text: 'What are some healthy breakfast ideas under 400 calories?' }],
+        attachments: [],
+        createdAt: new Date(chat1Date)
+      },
+      {
+        id: faker.string.uuid(),
+        chatId: chat1Id,
+        role: 'assistant' as const,
+        parts: [
+          {
+            type: 'text',
+            text: 'Here are some great breakfast options under 400 calories:\n\n1. **Greek yogurt with berries** (~250 cal) — High in protein, add some granola for crunch.\n2. **Oatmeal with banana** (~350 cal) — Top with a drizzle of honey and cinnamon.\n3. **Scrambled eggs with toast** (~380 cal) — Two eggs with whole wheat toast.\n4. **Smoothie bowl** (~300 cal) — Blend spinach, banana, and protein powder.'
+          }
+        ],
+        attachments: [],
+        createdAt: new Date(chat1Date.getTime() + 5000)
+      },
+      // Chat 2: Post-workout nutrition tips
+      {
+        id: faker.string.uuid(),
+        chatId: chat2Id,
+        role: 'user' as const,
+        parts: [{ type: 'text', text: 'What should I eat after a workout?' }],
+        attachments: [],
+        createdAt: new Date(chat2Date)
+      },
+      {
+        id: faker.string.uuid(),
+        chatId: chat2Id,
+        role: 'assistant' as const,
+        parts: [
+          {
+            type: 'text',
+            text: 'After a workout, focus on protein and carbs to help recovery:\n\n- **Protein shake with a banana** — Quick and easy, provides both protein and fast carbs.\n- **Chicken breast with rice** — A classic post-workout meal.\n- **Cottage cheese with fruit** — Great source of casein protein.\n\nAim to eat within 30-60 minutes after your workout for optimal recovery.'
+          }
+        ],
+        attachments: [],
+        createdAt: new Date(chat2Date.getTime() + 5000)
+      },
+      // Chat 3: Low carb dinner options
+      {
+        id: faker.string.uuid(),
+        chatId: chat3Id,
+        role: 'user' as const,
+        parts: [{ type: 'text', text: 'Can you suggest some low carb dinners?' }],
+        attachments: [],
+        createdAt: new Date(chat3Date)
+      },
+      {
+        id: faker.string.uuid(),
+        chatId: chat3Id,
+        role: 'assistant' as const,
+        parts: [
+          {
+            type: 'text',
+            text: 'Here are some delicious low-carb dinner ideas:\n\n1. **Grilled salmon with asparagus** (~8g carbs) — Season with lemon and herbs.\n2. **Zucchini noodles with meat sauce** (~12g carbs) — Swap pasta for zoodles.\n3. **Stuffed bell peppers** (~15g carbs) — Fill with ground turkey and cheese.\n4. **Cauliflower fried rice** (~10g carbs) — Use riced cauliflower instead of rice.'
+          }
+        ],
+        attachments: [],
+        createdAt: new Date(chat3Date.getTime() + 5000)
+      }
+    ]
+
+    consola.info(`Inserting ${chatData.length} chats...`)
+    await db.insert(chats).values(chatData)
+
+    consola.info(`Inserting ${chatMessageData.length} chat messages...`)
+    await db.insert(chatMessages).values(chatMessageData)
 
     // Sync users.currentWeight to the latest weight entry
     const latestWeight = weightData.at(-1)

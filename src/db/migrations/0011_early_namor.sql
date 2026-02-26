@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "starting_weight" real DEFAULT 70 NOT NULL;

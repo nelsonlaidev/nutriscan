@@ -168,7 +168,7 @@ export const OpenFoodFactsResponseSchema = z.object({
 })
 
 export const AiImageScanSchema = z.object({
-  imageBase64: z.string().min(1)
+  imageUrl: z.url()
 })
 
 export function createSignInFormSchema(t: Translator) {

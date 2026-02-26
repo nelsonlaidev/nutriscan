@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { PageContainer } from '@/components/page-container'
-import { PageTitle } from '@/components/page-title'
+import { BackButton } from '@/components/back-button'
+import { MainLayout } from '@/components/main-layout'
 import { WaterTracker } from '@/components/water/water-tracker'
 import { getWaterChartData } from '@/data/progress'
 import { getWaterEntries } from '@/data/water'
@@ -25,10 +25,9 @@ async function Page() {
   ])
 
   return (
-    <PageContainer>
-      <PageTitle title={t('water.page-title')} withBackButton />
+    <MainLayout title={t('water.page-title')} leftTitleButton={<BackButton />}>
       <WaterTracker initialGoal={waterGoal} weekData={weekData} initialEntries={entries} />
-    </PageContainer>
+    </MainLayout>
   )
 }
 

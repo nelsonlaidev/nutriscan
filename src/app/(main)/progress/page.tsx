@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { PageTitle } from '@/components/page-title'
+import { MainLayout } from '@/components/main-layout'
 import { BmiCard } from '@/components/progress/bmi-card'
 import { CalorieChart } from '@/components/progress/calorie-chart'
 import { NutritionChart } from '@/components/progress/nutrition-chart'
@@ -74,9 +74,7 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
   const currentWeight = latestWeight?.weight ?? user.currentWeight
 
   return (
-    <div className='space-y-6'>
-      <PageTitle title={t('progress.page-title')} />
-
+    <MainLayout title={t('progress.page-title')} className='space-y-6'>
       <TimeRangeTabs>
         <div className='space-y-6'>
           <CalorieChart data={calorieData} goal={user.calorieBudget} />
@@ -87,6 +85,6 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
       </TimeRangeTabs>
 
       <BmiCard weight={currentWeight} height={user.height} />
-    </div>
+    </MainLayout>
   )
 }

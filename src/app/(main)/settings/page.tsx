@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
-import { PageContainer } from '@/components/page-container'
-import { PageTitle } from '@/components/page-title'
+import { MainLayout } from '@/components/main-layout'
 import { LanguageSelector } from '@/components/settings/language-selector'
 import { PersonalDetailsLink } from '@/components/settings/personal-details-link'
 import { PersonalInfo } from '@/components/settings/personal-info'
@@ -13,9 +12,7 @@ export default async function SettingsPage() {
   const t = await getTranslations()
 
   return (
-    <PageContainer className='pb-20'>
-      <PageTitle title={t('settings.title')} />
-
+    <MainLayout title={t('settings.title')}>
       <div className='space-y-6'>
         <PersonalInfo />
 
@@ -29,6 +26,6 @@ export default async function SettingsPage() {
 
         <SignOutButton />
       </div>
-    </PageContainer>
+    </MainLayout>
   )
 }

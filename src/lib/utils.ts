@@ -1,4 +1,5 @@
 import type { MealCategory, TimeRange } from '@/types'
+import type { UIMessage } from 'ai'
 
 import { TZDate } from '@date-fns/tz'
 import { type ClassValue, clsx } from 'clsx'
@@ -133,4 +134,11 @@ export function computeMealBreakdowns(entries: FoodEntry[]): MealBreakdown[] {
 
     return { category, items: items.length, calories: Math.round(calories) }
   })
+}
+
+export function getTextFromMessage(message: UIMessage): string {
+  return message.parts
+    .filter((part) => part.type === 'text')
+    .map((part) => (part as { type: 'text'; text: string }).text)
+    .join('')
 }

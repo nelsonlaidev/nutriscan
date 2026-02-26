@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import '../styles/globals.css'
+import 'streamdown/styles.css'
 
 import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
@@ -10,6 +11,7 @@ import { ThemeProvider } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const geistSans = Geist({
   subsets: ['latin']
@@ -32,16 +34,18 @@ async function Layout(props: LayoutProps) {
   return (
     <html lang={locale} className={geistSans.className} suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-          <JotaiProvider>
-            <NuqsAdapter>
-              <NextIntlClientProvider messages={messages}>
-                {children}
-                <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
-              </NextIntlClientProvider>
-            </NuqsAdapter>
-          </JotaiProvider>
-        </ThemeProvider>
+        <TooltipProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            <JotaiProvider>
+              <NuqsAdapter>
+                <NextIntlClientProvider messages={messages}>
+                  <div className='relative mx-auto h-full max-w-240 overflow-x-clip border-x'>{children}</div>
+                  <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+                </NextIntlClientProvider>
+              </NuqsAdapter>
+            </JotaiProvider>
+          </ThemeProvider>
+        </TooltipProvider>
       </body>
     </html>
   )

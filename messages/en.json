@@ -277,6 +277,22 @@
     "display-name-required": "Display name is required",
     "passwords-no-match": "Passwords do not match"
   },
+  "chat": {
+    "not-ready": "Please wait, the chat is not ready yet",
+    "empty-message": "Please enter a message or attach an image",
+    "image-too-large": "Image must be under 5 MB",
+    "upload-failed": "Failed to upload image",
+    "input-placeholder": "Ask me anything...",
+    "deleted": "Chat deleted",
+    "delete-failed": "Failed to delete chat",
+    "history": "Chat History",
+    "no-chats": "No chats yet",
+    "welcome-title": "NutriScan AI",
+    "welcome-subtitle": "Your personal nutrition assistant",
+    "prompt-breakfast": "What are some high-protein breakfast ideas?",
+    "prompt-meal-plan": "Help me plan a balanced meal for dinner",
+    "prompt-water": "How much water should I drink daily?"
+  },
   "errors": {
     "ai-scan-failed": "Failed to analyze image",
     "product-not-found": "Product not found",
