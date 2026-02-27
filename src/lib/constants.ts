@@ -1,3 +1,6 @@
+import type { users } from '@/db/schemas'
+import type { InferInsertModel } from 'drizzle-orm'
+
 import { env } from '@/env'
 
 export const isProd = env.NODE_ENV === 'production'
@@ -52,4 +55,4 @@ export const TEST_USER = {
   carbTarget: 220,
   fatTarget: 70,
   onboarded: true
-}
+} satisfies InferInsertModel<typeof users>
