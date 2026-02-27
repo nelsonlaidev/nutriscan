@@ -216,6 +216,7 @@
     "entry-update-error": "Failed to update weight entry",
     "entry-deleted": "Weight entry deleted",
     "entry-delete-error": "Failed to delete weight entry",
+    "entry-options": "Entry options",
     "history": "History",
     "no-entries": "No weight entries yet",
     "today-date": "Today, {date}",

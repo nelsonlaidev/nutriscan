@@ -60,44 +60,59 @@ test('water goal dialog opens, validates, and saves', async ({ page }) => {
 test('water entry can be edited via dialog', async ({ page }) => {
   await page.goto('/water')
 
-  // Add an entry first so we have something to edit
+  // Count existing entries, then add one and wait for it to appear
+  const entriesBefore = await page.getByRole('button', { name: 'Edit entry' }).count()
   await page.getByRole('button', { name: 'Drink Water (+250 mL)' }).click()
-  await expect(page.getByText('250 mL').first()).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore + 1)
 
-  // Click the edit button on the first entry
-  await page.getByRole('button', { name: 'Edit entry' }).first().click()
+  // Open edit dialog on the first (newest) entry
+  const editButton = page.getByRole('button', { name: 'Edit entry' }).first()
+  await editButton.waitFor({ state: 'visible' })
+  await editButton.click()
 
-  // Edit dialog should open
-  await expect(page.getByText('Edit Water Entry')).toBeVisible()
+  // Wait for dialog to be fully open and interactive
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByText('Edit Water Entry')).toBeVisible()
 
-  // Change amount
-  const amountInput = page.getByLabel('Amount (mL)')
+  // Change amount — scope inputs within dialog
+  const amountInput = dialog.getByLabel('Amount (mL)')
+  await amountInput.waitFor({ state: 'visible' })
   await amountInput.clear()
   await amountInput.fill('400')
-  await page.getByRole('button', { name: 'Save' }).click()
+
+  // Click Save within the dialog
+  await dialog.getByRole('button', { name: 'Save' }).click()
 
   // Dialog closes, entry now shows 400 mL
-  await expect(page.getByRole('dialog')).not.toBeVisible()
+  await expect(dialog).not.toBeVisible()
   await expect(page.getByText('400 mL').first()).toBeVisible()
 })
 
 test('water entry can be deleted via dialog', async ({ page }) => {
   await page.goto('/water')
 
-  // Add an entry to delete
+  // Count existing entries, then add one and wait for it to appear
+  const entriesBefore = await page.getByRole('button', { name: 'Edit entry' }).count()
   await page.getByRole('button', { name: 'Drink Water (+250 mL)' }).click()
-  const entriesAfterAdd = await page.getByText('Water', { exact: true }).count()
+  await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore + 1)
 
-  // Open edit dialog on the first entry
-  await page.getByRole('button', { name: 'Edit entry' }).first().click()
-  await expect(page.getByText('Edit Water Entry')).toBeVisible()
+  // Open edit dialog on the first (newest) entry
+  const editButton = page.getByRole('button', { name: 'Edit entry' }).first()
+  await editButton.waitFor({ state: 'visible' })
+  await editButton.click()
 
-  // Delete
-  await page.getByRole('button', { name: 'Delete' }).click()
+  // Wait for dialog to be fully open and interactive
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByText('Edit Water Entry')).toBeVisible()
 
-  // Dialog closes, entry count decreases
-  await expect(page.getByRole('dialog')).not.toBeVisible()
-  await expect(page.getByText('Water', { exact: true })).toHaveCount(entriesAfterAdd - 1)
+  // Delete — scope within dialog
+  await dialog.getByRole('button', { name: 'Delete' }).click()
+
+  // Dialog closes, entry count decreases back to original
+  await expect(dialog).not.toBeVisible()
+  await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore)
 })
 
 test('all quick add options are present', async ({ page }) => {

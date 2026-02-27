@@ -43,43 +43,6 @@ test('dark mode persists after navigation', async ({ page }) => {
   await page.getByRole('switch', { name: 'Dark Mode' }).click()
 })
 
-test('language switch changes UI to Chinese', async ({ page }) => {
-  await page.goto('/settings')
-
-  // Open language selector and switch to Chinese
-  await page.getByRole('combobox', { name: 'Language' }).click()
-  await page.getByRole('option', { name: '繁體中文' }).click()
-
-  // The page should now show Chinese text
-  await expect(page.getByRole('heading', { name: '設定' })).toBeVisible()
-  await expect(page.getByText('深色模式')).toBeVisible()
-  await expect(page.getByText('語言')).toBeVisible()
-
-  // Switch back to English to avoid polluting other tests
-  await page.getByRole('combobox', { name: '語言' }).click()
-  await page.getByRole('option', { name: 'English' }).click()
-  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
-})
-
-test('language switch persists after navigation', async ({ page }) => {
-  await page.goto('/settings')
-
-  await page.getByRole('combobox', { name: 'Language' }).click()
-  await page.getByRole('option', { name: '繁體中文' }).click()
-  await expect(page.getByRole('heading', { name: '設定' })).toBeVisible()
-
-  // Navigate away and back
-  await page.goto('/dashboard')
-  await page.goto('/settings')
-
-  // Should still be Chinese
-  await expect(page.getByRole('heading', { name: '設定' })).toBeVisible()
-
-  // Clean up
-  await page.getByRole('combobox', { name: '語言' }).click()
-  await page.getByRole('option', { name: 'English' }).click()
-})
-
 test('personal details link navigates to form', async ({ page }) => {
   await page.goto('/settings')
 
@@ -96,11 +59,4 @@ test('personal details form is pre-filled with seed data', async ({ page }) => {
   await expect(page.getByLabel('Height')).toHaveValue('175')
   await expect(page.getByLabel('Birthday')).toHaveValue('1990-06-15')
   await expect(page.getByRole('radio', { name: 'Male', exact: true })).toBeChecked()
-})
-
-test('sign out redirects to sign-in page', async ({ page }) => {
-  await page.goto('/settings')
-
-  await page.getByRole('button', { name: 'Sign Out' }).click()
-  await expect(page).toHaveURL(/\/auth\/sign-in/)
 })

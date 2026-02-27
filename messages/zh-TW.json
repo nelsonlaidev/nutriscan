@@ -216,6 +216,7 @@
     "entry-update-error": "更新體重記錄失敗",
     "entry-deleted": "體重記錄已刪除",
     "entry-delete-error": "刪除體重記錄失敗",
+    "entry-options": "記錄選項",
     "history": "歷史記錄",
     "no-entries": "尚無體重記錄",
     "today-date": "今天，{date}",

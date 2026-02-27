@@ -14,5 +14,19 @@ setup('authenticate as test user', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign In' }).click()
   await page.waitForURL('/dashboard')
 
+  // Ensure locale is English — a previous failed run may have left it as zh-TW
+  await page.goto('/settings')
+  await page.getByRole('heading').first().waitFor()
+  if (
+    await page
+      .getByRole('heading', { name: '設定' })
+      .isVisible()
+      .catch(() => false)
+  ) {
+    await page.getByRole('combobox').first().click()
+    await page.getByRole('option', { name: 'English' }).click()
+    await page.getByRole('heading', { name: 'Settings' }).waitFor()
+  }
+
   await page.context().storageState({ path: authFile })
 })

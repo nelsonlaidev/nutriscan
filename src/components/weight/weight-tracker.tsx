@@ -54,7 +54,9 @@ export function WeightTracker(props: WeightTrackerProps) {
               <ScalesIcon size={20} />
               {t('weight.current')}
             </div>
-            <span className='text-2xl font-bold text-emerald-500'>{currentWeight.toFixed(1)} kg</span>
+            <span data-testid='current-weight' className='text-2xl font-bold text-emerald-500'>
+              {currentWeight.toFixed(1)} kg
+            </span>
           </CardTitle>
         </CardHeader>
         <CardContent className='flex flex-col gap-3'>

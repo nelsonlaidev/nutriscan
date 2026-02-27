@@ -126,7 +126,7 @@ export function WeightHistory(props: WeightHistoryProps) {
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <Button variant='ghost' size='icon'>
+                  <Button variant='ghost' size='icon' aria-label={t('weight.entry-options')}>
                     <DotsThreeIcon size={20} weight='bold' />
                   </Button>
                 }

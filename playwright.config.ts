@@ -5,6 +5,7 @@ import { env } from './src/env'
 const baseURL = 'http://localhost:3000'
 
 export default defineConfig({
+  timeout: 10_000,
   fullyParallel: !env.CI,
   forbidOnly: env.CI,
   retries: env.CI ? 2 : 0,
@@ -28,6 +29,17 @@ export default defineConfig({
         storageState: 'e2e/.auth/user.json'
       },
       dependencies: ['setup']
+    },
+    {
+      name: 'destructive',
+      testDir: './e2e/tests/destructive',
+      fullyParallel: false,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 440, height: 900 },
+        storageState: 'e2e/.auth/user.json'
+      },
+      dependencies: ['authenticated']
     },
     {
       name: 'unauthenticated',
