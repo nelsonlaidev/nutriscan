@@ -2,6 +2,8 @@ import { faker } from '@faker-js/faker'
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 
+import { TEST_USER } from '@/lib/constants'
+
 import { db } from './index'
 import { accounts, chatMessages, chats, foodEntries, users, waterEntries, weightEntries } from './schemas'
 
@@ -9,42 +11,21 @@ async function main() {
   consola.info('Starting database seed...')
 
   try {
-    // Create a user
-    const userId = faker.string.uuid()
-
-    await db.insert(users).values({
-      id: userId,
-      name: 'Test',
-      email: 'test@example.com',
-      emailVerified: true,
-
-      startingWeight: 80,
-      currentWeight: 80,
-      goalWeight: 70,
-      height: 175,
-      birthday: '1990-06-15',
-      gender: 'male',
-      waterGoal: 2500,
-      calorieBudget: 2200,
-      proteinTarget: 160,
-      carbTarget: 220,
-      fatTarget: 70,
-      onboarded: true
-    })
+    await db.insert(users).values(TEST_USER)
 
     // Create an account for the user
     await db.insert(accounts).values({
       id: faker.string.uuid(),
       accountId: faker.string.uuid(),
       providerId: 'credential',
-      userId,
+      userId: TEST_USER.id,
       password:
         // Fixed password hash for "12341234"
         // eslint-disable-next-line sonarjs/no-hardcoded-passwords
         '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b'
     })
 
-    consola.success(`Created user: ${userId}`)
+    consola.success(`Created user: ${TEST_USER.id}`)
 
     // Generate past 30 days of data
     const today = new Date()
@@ -71,7 +52,7 @@ async function main() {
 
         foodData.push({
           id: faker.string.uuid(),
-          userId,
+          userId: TEST_USER.id,
           foodName: faker.food.dish(),
           servingSize: '1 serving',
           calories: faker.number.int({ min: 200, max: 800 }),
@@ -90,7 +71,7 @@ async function main() {
       for (let j = 0; j < waterCount; j++) {
         waterData.push({
           id: faker.string.uuid(),
-          userId,
+          userId: TEST_USER.id,
           amount: 250,
           createdAt: date
         })
@@ -103,7 +84,7 @@ async function main() {
       if (faker.number.int({ min: 1, max: 10 }) <= 7) {
         weightData.push({
           id: faker.string.uuid(),
-          userId,
+          userId: TEST_USER.id,
           weight: Number(currentWeight.toFixed(1)),
           createdAt: date
         })
@@ -128,9 +109,9 @@ async function main() {
     const chat3Date = new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000)
 
     const chatData = [
-      { id: chat1Id, userId, title: 'Healthy breakfast ideas', createdAt: chat1Date },
-      { id: chat2Id, userId, title: 'Post-workout nutrition tips', createdAt: chat2Date },
-      { id: chat3Id, userId, title: 'Low carb dinner options', createdAt: chat3Date }
+      { id: chat1Id, userId: TEST_USER.id, title: 'Healthy breakfast ideas', createdAt: chat1Date },
+      { id: chat2Id, userId: TEST_USER.id, title: 'Post-workout nutrition tips', createdAt: chat2Date },
+      { id: chat3Id, userId: TEST_USER.id, title: 'Low carb dinner options', createdAt: chat3Date }
     ]
 
     const chatMessageData = [
@@ -211,7 +192,7 @@ async function main() {
     // Sync users.currentWeight to the latest weight entry
     const latestWeight = weightData.at(-1)
     if (latestWeight) {
-      await db.update(users).set({ currentWeight: latestWeight.weight }).where(eq(users.id, userId))
+      await db.update(users).set({ currentWeight: latestWeight.weight }).where(eq(users.id, TEST_USER.id))
     }
 
     consola.success('Data seeded successfully!')

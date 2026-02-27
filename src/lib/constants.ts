@@ -34,3 +34,22 @@ export const MEAL_EMOJI: Record<Meal, string> = {
 export type Meal = (typeof MEALS)[number]
 export const MEALS = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
 export const DEFAULT_MEAL: Meal = 'breakfast'
+
+export const TEST_USER = {
+  id: '00000000-0000-0000-0000-000000000000',
+  name: 'Test',
+  email: 'test@example.com',
+  emailVerified: true,
+  startingWeight: 80,
+  currentWeight: 80,
+  goalWeight: 70,
+  height: 175,
+  birthday: '1990-06-15',
+  gender: 'male',
+  waterGoal: 2500,
+  calorieBudget: 2200,
+  proteinTarget: 160,
+  carbTarget: 220,
+  fatTarget: 70,
+  onboarded: true
+}
