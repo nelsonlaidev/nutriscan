@@ -1,16 +1,14 @@
-export async function uploadImage(file: File): Promise<string> {
+import { uploadImageAction } from '@/actions/upload-image'
+
+export async function uploadImage(file: File, type: 'chat' | 'meal'): Promise<string> {
   const formData = new FormData()
   formData.append('file', file)
 
-  const response = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData
-  })
+  const result = await uploadImageAction({ formData, type })
 
-  if (!response.ok) {
+  if (!result.data?.url) {
     throw new Error('Upload failed')
   }
 
-  const data = (await response.json()) as { url: string }
-  return data.url
+  return result.data.url
 }

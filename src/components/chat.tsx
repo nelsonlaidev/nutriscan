@@ -145,7 +145,7 @@ export function Chat(props: ChatProps) {
 
       setUploading(true)
       try {
-        const url = await uploadImage(file)
+        const url = await uploadImage(file, 'chat')
         setUploadedFiles((prev) => [
           ...prev,
           {

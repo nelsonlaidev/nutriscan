@@ -68,7 +68,7 @@ export function AiImageMode(props: AiImageModeProps) {
       setIsUploading(true)
 
       try {
-        const imageUrl = await uploadImage(compressed)
+        const imageUrl = await uploadImage(compressed, 'meal')
         execute({ imageUrl })
       } catch {
         toast.error(t('errors.ai-scan-failed'))
