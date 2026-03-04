@@ -227,6 +227,11 @@
     "dark-mode": "Dark Mode",
     "language": "Language",
     "english": "English",
+    "feedback": "Feedback",
+    "feedback-placeholder": "Share your thoughts, report a bug, or request a feature...",
+    "feedback-submit": "Submit",
+    "feedback-success": "Feedback sent. Thank you!",
+    "feedback-error": "Failed to send feedback",
     "personal-details": {
       "title": "Personal Details",
       "description": "Update your physical attributes.",

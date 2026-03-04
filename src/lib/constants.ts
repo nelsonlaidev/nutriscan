@@ -26,6 +26,7 @@ export const DEFAULT_CARB_TARGET = 200
 export const DEFAULT_FAT_TARGET = 67
 
 export const MAX_WATER_INTAKE = 10_000
+export const MAX_FEEDBACK_LENGTH = 1000
 
 export const MEAL_EMOJI: Record<Meal, string> = {
   breakfast: '🍞',

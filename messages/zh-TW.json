@@ -227,6 +227,11 @@
     "dark-mode": "深色模式",
     "language": "語言",
     "english": "英文",
+    "feedback": "意見回饋",
+    "feedback-placeholder": "分享您的想法、回報問題或提出功能建議...",
+    "feedback-submit": "送出",
+    "feedback-success": "回饋已送出，謝謝！",
+    "feedback-error": "送出回饋失敗",
     "personal-details": {
       "title": "個人資料",
       "description": "更新您的身體數值。",

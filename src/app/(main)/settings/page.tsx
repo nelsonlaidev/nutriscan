@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { MainLayout } from '@/components/main-layout'
+import { Feedback } from '@/components/settings/feedback'
 import { LanguageSelector } from '@/components/settings/language-selector'
 import { PersonalDetailsLink } from '@/components/settings/personal-details-link'
 import { PersonalInfo } from '@/components/settings/personal-info'
@@ -21,6 +22,7 @@ export default async function SettingsPage() {
             <PersonalDetailsLink />
             <ThemeToggle />
             <LanguageSelector />
+            <Feedback />
           </CardContent>
         </Card>
 

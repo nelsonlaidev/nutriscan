@@ -2,7 +2,7 @@ import type { Translator } from '@/types'
 
 import * as z from 'zod'
 
-import { LOCALES, MAX_WATER_INTAKE } from './constants'
+import { LOCALES, MAX_FEEDBACK_LENGTH, MAX_WATER_INTAKE } from './constants'
 
 const NumberOrEmpty = (field: z.ZodNumber, message: string) =>
   field.or(z.literal('')).refine((val) => val !== '', { message })
@@ -224,4 +224,8 @@ export const UpdateWeightEntrySchema = z.object({
 
 export const DeleteWeightEntrySchema = z.object({
   id: z.string().min(1)
+})
+
+export const SendFeedbackSchema = z.object({
+  message: z.string().min(1).max(MAX_FEEDBACK_LENGTH)
 })
