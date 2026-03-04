@@ -10,12 +10,14 @@ runs:
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
-        node-version-file: '.nvmrc'
+        node-version-file: 'package.json'
         cache: 'pnpm'
 
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
     - name: Generate Next.js route types
       shell: bash
