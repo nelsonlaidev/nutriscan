@@ -11,12 +11,13 @@ import { authActionClient } from '@/lib/safe-action'
 import { AiImageScanSchema } from '@/lib/zod-schemas'
 
 const NutritionResponseSchema = z.object({
-  foodName: z.string().describe('Name of the food item'),
-  servingSize: z.string().describe('Estimated serving size (e.g. "100g", "1 cup")'),
-  calories: z.number().describe('Calories in kcal'),
-  protein: z.number().describe('Protein in grams'),
-  carbs: z.number().describe('Carbohydrates in grams'),
-  fat: z.number().describe('Fat in grams')
+  isFood: z.boolean().describe('Whether the image contains identifiable food'),
+  foodName: z.string().describe('Name of the food item, or empty string if not food'),
+  servingSize: z.string().describe('Estimated serving size (e.g. "100g", "1 cup"), or empty string if not food'),
+  calories: z.number().describe('Calories in kcal, or 0 if not food'),
+  protein: z.number().describe('Protein in grams, or 0 if not food'),
+  carbs: z.number().describe('Carbohydrates in grams, or 0 if not food'),
+  fat: z.number().describe('Fat in grams, or 0 if not food')
 })
 
 export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).action(async ({ parsedInput }) => {
@@ -38,12 +39,16 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
             },
             {
               type: 'text',
-              text: 'Analyze this food image. Identify the food item and estimate its nutritional information per serving. Return the food name, estimated serving size, calories (kcal), protein (g), carbs (g), and fat (g). Round all numbers to the nearest whole number.'
+              text: 'Analyze this image. If it contains identifiable food, set isFood to true and estimate the nutritional information per serving: food name, serving size, calories (kcal), protein (g), carbs (g), and fat (g). Round all numbers to the nearest whole number. If the image does not contain food, set isFood to false.'
             }
           ]
         }
       ]
     })
+
+    if (!output.isFood) {
+      return { success: false, error: 'errors.no-food-detected' } satisfies ErrorResponse
+    }
 
     return {
       success: true,
@@ -58,7 +63,7 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
       }
     }
   } catch (error) {
-    console.error('AI scan error:', error)
+    logger.error({ error }, 'AI scan: failed to analyze image')
     return { success: false, error: 'errors.ai-scan-failed' } satisfies ErrorResponse
   }
 })

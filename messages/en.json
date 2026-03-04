@@ -304,6 +304,7 @@
   },
   "errors": {
     "ai-scan-failed": "Failed to analyze image",
+    "no-food-detected": "No food detected in the image. Please take a photo of a food item.",
     "product-not-found": "Product not found",
     "entry-not-found": "Entry not found"
   }

@@ -304,6 +304,7 @@
   },
   "errors": {
     "ai-scan-failed": "分析圖片失敗",
+    "no-food-detected": "未偵測到食物，請拍攝食物的照片。",
     "product-not-found": "找不到產品",
     "entry-not-found": "找不到記錄"
   }

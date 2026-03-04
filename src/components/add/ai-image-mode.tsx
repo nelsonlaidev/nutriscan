@@ -1,4 +1,5 @@
 import type { NutritionData } from './nutrition-result'
+import type { ErrorResponse } from '@/types'
 
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
 import imageCompression from 'browser-image-compression'
@@ -33,7 +34,9 @@ export function AiImageMode(props: AiImageModeProps) {
       if (data.success) {
         onResult(data.data)
       } else {
-        toast.error(data.error)
+        const errorKey = (data as ErrorResponse).error
+        toast.error(t(errorKey))
+        setPreview(null)
       }
     },
     onError: () => {
