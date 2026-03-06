@@ -170,7 +170,7 @@ export function Chat(props: ChatProps) {
   return (
     <MainLayout
       title={title}
-      className='h-full max-h-svh'
+      className='h-full max-h-dvh'
       leftTitleButton={
         <Button
           variant='ghost'

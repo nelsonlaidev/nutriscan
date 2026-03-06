@@ -39,7 +39,7 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
   }
 
   return (
-    <div className={cn('flex min-h-svh flex-col gap-8 p-6', !showBackButton && 'pt-23')}>
+    <div className={cn('flex min-h-dvh flex-col gap-8 p-6', !showBackButton && 'pt-23')}>
       {showBackButton && (
         <div>
           <Button variant='secondary' className='inline-flex' onClick={handleBack}>

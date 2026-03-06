@@ -7,7 +7,7 @@ async function Page() {
   const t = await getTranslations()
 
   return (
-    <div className='flex min-h-svh flex-col p-6'>
+    <div className='flex min-h-dvh flex-col p-6'>
       <div className='flex-1' />
       <div className='flex flex-col items-center gap-4'>
         <div className='flex size-18 items-center justify-center rounded-2xl bg-primary'>

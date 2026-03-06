@@ -39,7 +39,9 @@ async function Layout(props: LayoutProps) {
             <JotaiProvider>
               <NuqsAdapter>
                 <NextIntlClientProvider messages={messages}>
-                  <div className='relative mx-auto h-full max-w-240 overflow-x-clip border-x'>{children}</div>
+                  <div className='relative mx-auto h-full max-w-240 overflow-x-clip min-[60rem]:border-x'>
+                    {children}
+                  </div>
                   <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
                 </NextIntlClientProvider>
               </NuqsAdapter>
