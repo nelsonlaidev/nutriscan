@@ -9,10 +9,11 @@ export const isDev = env.NODE_ENV === 'development'
 export const DEFAULT_TIMEZONE = 'Asia/Hong_Kong'
 
 export const DEFAULT_LOCALE = 'en'
-export const LOCALES = [DEFAULT_LOCALE, 'zh-TW'] as const
-export const LOCALE_ITEMS = [
+export const LOCALES = [DEFAULT_LOCALE, 'zh-TW', 'zh-CN'] as const
+export const LOCALE_ITEMS: Array<{ label: string; value: (typeof LOCALES)[number] }> = [
   { label: 'English', value: 'en' },
-  { label: '繁體中文', value: 'zh-TW' }
+  { label: '繁體中文', value: 'zh-TW' },
+  { label: '简体中文', value: 'zh-CN' }
 ]
 
 export const DEFAULT_STARTING_WEIGHT = 70
