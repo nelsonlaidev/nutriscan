@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
 import { useSession } from '@/lib/session'
 
-function Page() {
+export default function Page() {
   const { user } = useSession()
   const t = useTranslations()
 
@@ -71,5 +71,3 @@ function Page() {
     </MainLayout>
   )
 }
-
-export default Page

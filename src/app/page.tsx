@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { LandingButtons } from '@/components/landing-buttons'
 
-async function Page() {
+export default async function Page() {
   const t = await getTranslations()
 
   return (
@@ -20,5 +20,3 @@ async function Page() {
     </div>
   )
 }
-
-export default Page

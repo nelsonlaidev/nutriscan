@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
@@ -9,7 +11,11 @@ import { getWaterEntries } from '@/data/water'
 import { getSession } from '@/lib/auth'
 import { getDateRange } from '@/lib/utils'
 
-async function Page() {
+export const metadata: Metadata = {
+  title: 'Water Tracker'
+}
+
+export default async function Page() {
   const session = await getSession()
   if (!session) redirect('/')
 
@@ -30,5 +36,3 @@ async function Page() {
     </MainLayout>
   )
 }
-
-export default Page

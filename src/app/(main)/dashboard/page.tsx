@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { redirect } from 'next/navigation'
 
 import { CalorieSummary } from '@/components/dashboard/calorie-summary'
@@ -16,7 +18,11 @@ import { computeMealBreakdowns, computeTotals, getDayRange } from '@/lib/utils'
 
 import { dashboardCache } from './search-params'
 
-async function Page(props: PageProps<'/dashboard'>) {
+export const metadata: Metadata = {
+  title: 'Dashboard'
+}
+
+export default async function Page(props: PageProps<'/dashboard'>) {
   const { searchParams } = props
   const { date } = await dashboardCache.parse(searchParams)
 
@@ -53,5 +59,3 @@ async function Page(props: PageProps<'/dashboard'>) {
     </MainLayout>
   )
 }
-
-export default Page

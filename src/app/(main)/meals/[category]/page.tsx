@@ -1,4 +1,5 @@
 import type { MealCategory } from '@/types'
+import type { Metadata } from 'next'
 
 import { CaretRightIcon } from '@phosphor-icons/react/ssr'
 import Image from 'next/image'
@@ -17,7 +18,21 @@ import { categoryCache } from './search-params'
 
 const VALID_CATEGORIES = new Set<MealCategory>(['breakfast', 'lunch', 'dinner', 'snacks'])
 
-async function Page(props: PageProps<'/meals/[category]'>) {
+const CATEGORY_TITLES: Record<string, string> = {
+  breakfast: 'Breakfast',
+  lunch: 'Lunch',
+  dinner: 'Dinner',
+  snacks: 'Snacks'
+}
+
+export async function generateMetadata(props: PageProps<'/meals/[category]'>): Promise<Metadata> {
+  const { category } = await props.params
+  return {
+    title: CATEGORY_TITLES[category] ?? 'Meal'
+  }
+}
+
+export default async function Page(props: PageProps<'/meals/[category]'>) {
   const { params, searchParams } = props
   const { category } = await params
   const { date } = await categoryCache.parse(searchParams)
@@ -82,5 +97,3 @@ async function Page(props: PageProps<'/meals/[category]'>) {
     </MainLayout>
   )
 }
-
-export default Page

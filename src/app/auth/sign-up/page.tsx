@@ -16,7 +16,7 @@ import { signUp } from '@/lib/auth-client'
 import { DEFAULT_CURRENT_WEIGHT, DEFAULT_GOAL_WEIGHT, DEFAULT_HEIGHT } from '@/lib/constants'
 import { createSignUpFormSchema } from '@/lib/zod-schemas'
 
-function Page() {
+export default function Page() {
   const t = useTranslations()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -210,5 +210,3 @@ function Page() {
     </div>
   )
 }
-
-export default Page

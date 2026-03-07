@@ -15,7 +15,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { signIn } from '@/lib/auth-client'
 import { createSignInFormSchema } from '@/lib/zod-schemas'
 
-function Page() {
+export default function Page() {
   const t = useTranslations()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -148,5 +148,3 @@ function Page() {
     </div>
   )
 }
-
-export default Page

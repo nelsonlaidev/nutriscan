@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
@@ -19,6 +21,10 @@ import { getSession } from '@/lib/auth'
 import { getDateRange } from '@/lib/utils'
 
 import { progressCache } from './search-params'
+
+export const metadata: Metadata = {
+  title: 'Progress'
+}
 
 export default async function ProgressPage(props: PageProps<'/progress'>) {
   const { searchParams } = props

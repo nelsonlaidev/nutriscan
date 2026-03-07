@@ -17,7 +17,7 @@ import { DEFAULT_MEAL, type Meal } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
 
-function Page() {
+export default function Page() {
   const t = useTranslations()
   const router = useRouter()
   const [mode, setMode] = useState<Mode>('ai-scan')
@@ -124,5 +124,3 @@ function Page() {
     </MainLayout>
   )
 }
-
-export default Page

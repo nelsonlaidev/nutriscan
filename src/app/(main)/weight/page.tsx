@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
@@ -7,7 +9,11 @@ import { WeightTracker } from '@/components/weight/weight-tracker'
 import { getLatestWeight, getWeightEntries } from '@/data/weight'
 import { getSession } from '@/lib/auth'
 
-async function Page() {
+export const metadata: Metadata = {
+  title: 'Weight Tracker'
+}
+
+export default async function Page() {
   const session = await getSession()
   if (!session) redirect('/')
 
@@ -32,5 +38,3 @@ async function Page() {
     </MainLayout>
   )
 }
-
-export default Page

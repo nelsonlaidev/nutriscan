@@ -4,7 +4,7 @@ import { Navbar } from '@/components/navbar'
 import { Providers } from '@/components/providers'
 import { getSession } from '@/lib/auth'
 
-async function Layout(props: LayoutProps<'/'>) {
+export default async function Layout(props: LayoutProps<'/'>) {
   const { children } = props
   const session = await getSession()
 
@@ -19,5 +19,3 @@ async function Layout(props: LayoutProps<'/'>) {
     </Providers>
   )
 }
-
-export default Layout
