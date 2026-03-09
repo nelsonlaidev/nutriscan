@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
     serverActions: {
-      allowedOrigins: ['*.asse.devtunnels.ms', 'localhost:3000'],
+      allowedOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
       bodySizeLimit: '10mb'
     }
   }
