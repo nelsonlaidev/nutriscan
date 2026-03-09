@@ -22,6 +22,8 @@ const nextConfig: NextConfig = {
     ]
   },
 
+  allowedDevOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
+
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
     serverActions: {
