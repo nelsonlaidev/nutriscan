@@ -64,3 +64,22 @@ test('personal details form is pre-filled with seed data', async ({ page }) => {
   await expect(page.getByLabel('Birthday')).toHaveValue(TEST_USER.birthday)
   await expect(page.getByRole('radio', { name: capitalize(TEST_USER.gender), exact: true })).toBeChecked()
 })
+
+test('feedback dialog opens and can be submitted', async ({ page }) => {
+  await page.goto('/settings')
+
+  await page.getByRole('button', { name: 'Feedback' }).click()
+
+  const dialog = page.getByRole('dialog', { name: 'Feedback' })
+  await expect(dialog).toBeVisible()
+
+  await page
+    .getByLabel('Share your thoughts, report a bug, or request a feature...')
+    .fill('This is a test feedback from Playwright')
+
+  await page.getByRole('button', { name: 'Submit' }).click()
+
+  await expect(page.getByText('Feedback sent. Thank you!')).toBeVisible()
+
+  await expect(dialog).not.toBeVisible()
+})
