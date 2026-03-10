@@ -21,7 +21,14 @@ export const env = createEnv({
     R2_SECRET_ACCESS_KEY: z.string().min(1),
     R2_ENDPOINT: z.url(),
     R2_BUCKET_NAME: z.string().min(1),
-    R2_PUBLIC_URL: z.url()
+    R2_PUBLIC_URL: z.url(),
+
+    BASIC_AUTH_USER: z.string().min(1),
+    BASIC_AUTH_PASS: z.string().min(1),
+    PROTECTED: z
+      .enum(['true', 'false', '1', '0'])
+      .default('false')
+      .transform((v) => v === 'true' || v === '1')
   },
 
   client: {},

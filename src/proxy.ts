@@ -1,10 +1,43 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
+import { env } from './env'
 import { getSession } from './lib/auth'
 
 const PUBLIC_ROUTES = new Set(['/', '/auth/sign-in', '/auth/sign-up'])
 
+const AUTH_REQUIRED_RES = new NextResponse('Authentication Required', {
+  status: 401,
+  headers: {
+    'WWW-Authenticate': 'Basic realm="Secure Area"'
+  }
+})
+
 export async function proxy(request: NextRequest) {
+  if (env.PROTECTED) {
+    const authHeader = request.headers.get('authorization')
+
+    if (!authHeader) {
+      return AUTH_REQUIRED_RES
+    }
+
+    const authValue = authHeader.split(' ')[1]
+
+    if (!authValue) {
+      return AUTH_REQUIRED_RES
+    }
+
+    const [user, pwd] = atob(authValue).split(':')
+
+    if (user !== env.BASIC_AUTH_USER || pwd !== env.BASIC_AUTH_PASS) {
+      return new NextResponse('Invalid Credentials', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Secure Area"'
+        }
+      })
+    }
+  }
+
   const session = await getSession()
 
   // Redirect authenticated users if they are not onboarded
