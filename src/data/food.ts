@@ -36,3 +36,13 @@ export async function getFoodEntriesByCategory(userId: string, dayRange: DayRang
 
   return rows
 }
+
+export async function getFoodEntryById(id: string, userId: string) {
+  const [entry] = await db
+    .select()
+    .from(foodEntries)
+    .where(and(eq(foodEntries.id, id), eq(foodEntries.userId, userId)))
+    .limit(1)
+
+  return entry ?? null
+}

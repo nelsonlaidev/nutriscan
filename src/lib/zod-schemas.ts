@@ -226,6 +226,10 @@ export const DeleteWeightEntrySchema = z.object({
   id: z.string().min(1)
 })
 
+export const DeleteFoodEntrySchema = z.object({
+  id: z.string().min(1)
+})
+
 export const SendFeedbackSchema = z.object({
   message: z.string().min(1).max(MAX_FEEDBACK_LENGTH)
 })

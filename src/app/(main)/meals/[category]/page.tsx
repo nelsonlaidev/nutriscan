@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 
 import { CaretRightIcon } from '@phosphor-icons/react/ssr'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
@@ -66,30 +67,32 @@ export default async function Page(props: PageProps<'/meals/[category]'>) {
         ) : (
           <div className='space-y-4'>
             {entries.map((entry) => (
-              <Card key={entry.id} size='sm'>
-                <CardContent className='flex items-center gap-3'>
-                  {entry.imageUrl ? (
-                    <Image
-                      src={entry.imageUrl}
-                      alt={entry.foodName}
-                      width={40}
-                      height={40}
-                      className='size-10 rounded-lg object-cover'
-                    />
-                  ) : (
-                    <div className='flex size-10 items-center justify-center rounded-lg bg-muted text-lg'>
-                      {MEAL_EMOJI[mealCategory]}
+              <Link key={entry.id} href={`/meals/${category}/${entry.id}`}>
+                <Card size='sm'>
+                  <CardContent className='flex items-center gap-3'>
+                    {entry.imageUrl ? (
+                      <Image
+                        src={entry.imageUrl}
+                        alt={entry.foodName}
+                        width={56}
+                        height={56}
+                        className='size-14 rounded-lg object-cover'
+                      />
+                    ) : (
+                      <div className='flex size-14 items-center justify-center rounded-lg bg-muted text-xl'>
+                        {MEAL_EMOJI[mealCategory]}
+                      </div>
+                    )}
+                    <div className='flex-1'>
+                      <p className='text-sm font-semibold'>{entry.foodName}</p>
+                      <p className='text-xs text-muted-foreground'>
+                        {entry.servingSize} &middot; {Math.round(entry.calories)} kcal
+                      </p>
                     </div>
-                  )}
-                  <div className='flex-1'>
-                    <p className='text-sm font-semibold'>{entry.foodName}</p>
-                    <p className='text-xs text-muted-foreground'>
-                      {entry.servingSize} &middot; {Math.round(entry.calories)} kcal
-                    </p>
-                  </div>
-                  <CaretRightIcon size={16} className='text-muted-foreground' />
-                </CardContent>
-              </Card>
+                    <CaretRightIcon size={16} className='text-muted-foreground' />
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
