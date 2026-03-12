@@ -3,7 +3,16 @@ import type { UIMessage } from 'ai'
 
 import { TZDate } from '@date-fns/tz'
 import { type ClassValue, clsx } from 'clsx'
-import { addDays, eachDayOfInterval, endOfDay, format, startOfDay, subDays, subYears } from 'date-fns'
+import {
+  addDays,
+  eachDayOfInterval,
+  eachMonthOfInterval,
+  endOfDay,
+  format,
+  startOfDay,
+  subDays,
+  subYears
+} from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 
 import { DEFAULT_TIMEZONE } from './constants'
@@ -42,8 +51,15 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
     }
     case 'yearly': {
       startDate = subYears(todayStart, 1)
-      formatStr = 'MMM' // e.g., "Jan"
-      break
+      const months = eachMonthOfInterval({ start: startDate, end: todayStart })
+      return {
+        dates: months.map((month) => ({
+          label: format(month, 'MMM'),
+          value: format(month, 'yyyy-MM')
+        })),
+        startOfDay: toZonedDate(startDate, timezone),
+        endOfDay: addDays(toZonedDate(todayStart, timezone), 1)
+      }
     }
     default: {
       throw new Error('Invalid time range')

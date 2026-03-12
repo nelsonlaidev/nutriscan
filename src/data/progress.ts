@@ -18,7 +18,7 @@ export async function getCalorieChartData(userId: string, dateRange: DateRange):
   const rows = await db
     .select({
       date,
-      calories: sql<number>`sum(${foodEntries.calories})`.as('calories')
+      calories: sql<number>`sum(${foodEntries.calories})::integer`.as('calories')
     })
     .from(foodEntries)
     .where(
@@ -49,9 +49,9 @@ export async function getNutritionChartData(userId: string, dateRange: DateRange
   const rows = await db
     .select({
       date,
-      protein: sql<number>`sum(${foodEntries.protein})`.as('protein'),
-      carbs: sql<number>`sum(${foodEntries.carbs})`.as('carbs'),
-      fat: sql<number>`sum(${foodEntries.fat})`.as('fat')
+      protein: sql<number>`sum(${foodEntries.protein})::integer`.as('protein'),
+      carbs: sql<number>`sum(${foodEntries.carbs})::integer`.as('carbs'),
+      fat: sql<number>`sum(${foodEntries.fat})::integer`.as('fat')
     })
     .from(foodEntries)
     .where(
@@ -80,7 +80,7 @@ export async function getWaterChartData(userId: string, dateRange: DateRange): P
   const rows = await db
     .select({
       date,
-      amount: sql<number>`SUM(${waterEntries.amount})`.as('amount')
+      amount: sql<number>`SUM(${waterEntries.amount})::integer`.as('amount')
     })
     .from(waterEntries)
     .where(
