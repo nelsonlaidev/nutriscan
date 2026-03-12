@@ -38,6 +38,9 @@ export const users = pgTable('users', {
   waterGoal: integer('water_goal').notNull().default(DEFAULT_WATER_GOAL),
   birthday: text('birthday').notNull(),
   gender: text('gender', { enum: ['male', 'female', 'other'] }).notNull(),
+  plan: text('plan', { enum: ['relaxed', 'steady', 'accelerated'] })
+    .notNull()
+    .default('steady'),
   calorieBudget: integer('calorie_budget').notNull().default(DEFAULT_CALORIE_BUDGET),
   proteinTarget: integer('protein_target').notNull().default(DEFAULT_PROTEIN_TARGET),
   carbTarget: integer('carb_target').notNull().default(DEFAULT_CARB_TARGET),

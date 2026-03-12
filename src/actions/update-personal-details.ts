@@ -20,6 +20,7 @@ export const updatePersonalDetails = authActionClient
           height: parsedInput.height,
           birthday: parsedInput.birthday,
           gender: parsedInput.gender,
+          plan: parsedInput.plan,
           calorieBudget: parsedInput.calorieBudget,
           proteinTarget: parsedInput.proteinTarget,
           carbTarget: parsedInput.carbTarget,

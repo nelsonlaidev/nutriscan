@@ -56,6 +56,7 @@ export function Step3() {
       height: data.height as number,
       birthday: data.birthday,
       gender: data.gender,
+      plan: data.plan,
       calorieBudget: computed.calories,
       proteinTarget: computed.macros.protein,
       carbTarget: computed.macros.carbs,

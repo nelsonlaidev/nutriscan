@@ -89,7 +89,7 @@ export function PersonalDetailsForm() {
       height: user.height as number | '',
       birthday: user.birthday,
       gender: user.gender as Gender,
-      plan: 'steady' as CaloriePlan // Default to steady as we don't store plan
+      plan: user.plan as CaloriePlan
     },
     validators: {
       onSubmit: createPersonalDetailsFormSchema(t)
@@ -107,6 +107,7 @@ export function PersonalDetailsForm() {
         height: value.height as number,
         birthday: value.birthday,
         gender: value.gender,
+        plan: value.plan,
         calorieBudget: calories,
         proteinTarget: macros.protein,
         carbTarget: macros.carbs,

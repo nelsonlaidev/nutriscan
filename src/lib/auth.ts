@@ -57,6 +57,11 @@ export const auth = betterAuth({
         type: 'string',
         required: true
       },
+      plan: {
+        type: 'string',
+        required: true,
+        defaultValue: 'steady'
+      },
       calorieBudget: {
         type: 'number',
         required: true,
