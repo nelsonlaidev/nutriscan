@@ -28,6 +28,7 @@
     "test:e2e:inspector": "NODE_ENV=test pnpm with-env playwright test $1 --debug",
     "test:e2e:install": "NODE_ENV=test playwright install",
     "test:e2e:ui": "NODE_ENV=test pnpm with-env playwright test --ui",
+    "tunnel": "cloudflared tunnel run --url http://localhost:3000 NutriScan",
     "typecheck": "tsc --noEmit",
     "typegen": "next typegen",
     "with-env": "dotenvx run -f .env.local --"
