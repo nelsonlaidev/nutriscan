@@ -47,7 +47,14 @@ export function WaterChart({ data, goal }: WaterChartProps) {
           {chartType === 'bar' ? (
             <BarChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis
                 domain={yDomain}
                 axisLine={false}
@@ -64,7 +71,14 @@ export function WaterChart({ data, goal }: WaterChartProps) {
           ) : (
             <AreaChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis
                 domain={yDomain}
                 axisLine={false}

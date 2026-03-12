@@ -45,7 +45,14 @@ export function WeightChart({ data, goal }: WeightChartProps) {
           {chartType === 'bar' ? (
             <BarChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis domain={[yMin, yMax]} axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ReferenceLine y={goal} stroke='var(--color-emerald-400)' strokeDasharray='6 4' strokeWidth={2} />
@@ -54,7 +61,14 @@ export function WeightChart({ data, goal }: WeightChartProps) {
           ) : (
             <AreaChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis domain={[yMin, yMax]} axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ReferenceLine y={goal} stroke='var(--color-emerald-400)' strokeDasharray='6 4' strokeWidth={2} />

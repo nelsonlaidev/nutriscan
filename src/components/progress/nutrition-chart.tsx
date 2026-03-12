@@ -45,7 +45,14 @@ export function NutritionChart({ data }: NutritionChartProps) {
           {chartType === 'bar' ? (
             <BarChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey='protein' fill='var(--color-protein)' stackId='1' radius={[0, 0, 0, 0]} />
@@ -55,7 +62,14 @@ export function NutritionChart({ data }: NutritionChartProps) {
           ) : (
             <AreaChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
-              <XAxis dataKey='date' axisLine={false} tickLine={false} tickMargin={8} fontSize={12} />
+              <XAxis
+                dataKey='date'
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
+              />
               <YAxis axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
