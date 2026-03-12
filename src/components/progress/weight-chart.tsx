@@ -29,8 +29,9 @@ export function WeightChart({ data, goal }: WeightChartProps) {
   const dataMin = weights.length > 0 ? Math.min(...weights, goal) : goal
   const dataMax = weights.length > 0 ? Math.max(...weights, goal) : goal
   const padding = Math.max((dataMax - dataMin) * 0.15, 2)
-  const yMin = Math.floor(dataMin - padding)
-  const yMax = Math.ceil(dataMax + padding)
+  const yMin = Math.floor((dataMin - padding) / 5) * 5
+  const yMax = Math.ceil((dataMax + padding) / 5) * 5
+  const yTicks = Array.from({ length: (yMax - yMin) / 5 + 1 }, (_, i) => yMin + i * 5)
 
   return (
     <Card size='sm'>
@@ -53,7 +54,15 @@ export function WeightChart({ data, goal }: WeightChartProps) {
                 fontSize={12}
                 interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
               />
-              <YAxis domain={[yMin, yMax]} axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
+              <YAxis
+                domain={[yMin, yMax]}
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                width={40}
+                ticks={yTicks}
+              />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ReferenceLine y={goal} stroke='var(--color-emerald-400)' strokeDasharray='6 4' strokeWidth={2} />
               <Bar dataKey='weight' fill='var(--color-weight)' radius={[4, 4, 0, 0]} />
@@ -69,7 +78,15 @@ export function WeightChart({ data, goal }: WeightChartProps) {
                 fontSize={12}
                 interval={data.length > 10 ? Math.floor(data.length / 10) : 0}
               />
-              <YAxis domain={[yMin, yMax]} axisLine={false} tickLine={false} tickMargin={8} fontSize={12} width={40} />
+              <YAxis
+                domain={[yMin, yMax]}
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                fontSize={12}
+                width={40}
+                ticks={yTicks}
+              />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ReferenceLine y={goal} stroke='var(--color-emerald-400)' strokeDasharray='6 4' strokeWidth={2} />
               <Area
