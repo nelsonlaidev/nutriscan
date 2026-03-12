@@ -1,9 +1,10 @@
 'use client'
 
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react/ssr'
-import { addDays, differenceInDays, format, isToday, isYesterday, parse, startOfDay, subDays } from 'date-fns'
+import { addDays, format, isToday, isYesterday, parse, subDays } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
+import { useRef } from 'react'
 
 import { dashboardParsers } from '@/app/(main)/dashboard/search-params'
 import { Button } from '@/components/ui/button'
@@ -13,9 +14,9 @@ export function DateNavigation() {
   const t = useTranslations()
   const [date, setDate] = useQueryState('date', { ...dashboardParsers.date, shallow: false })
   const currentDate = parse(date, 'yyyy-MM-dd', toZonedDate(new Date()))
+  const dateInputRef = useRef<HTMLInputElement>(null)
 
   const isTodayDate = isToday(currentDate)
-  const isOldestDate = differenceInDays(startOfDay(toZonedDate(new Date())), currentDate) >= 6
 
   function getLabel(d: Date) {
     if (isToday(d)) return t('dashboard.today')
@@ -24,7 +25,6 @@ export function DateNavigation() {
   }
 
   function goBack() {
-    if (isOldestDate) return
     void setDate(format(subDays(currentDate, 1), 'yyyy-MM-dd'))
   }
 
@@ -33,15 +33,34 @@ export function DateNavigation() {
     void setDate(format(addDays(currentDate, 1), 'yyyy-MM-dd'))
   }
 
+  function openDatePicker() {
+    dateInputRef.current?.showPicker()
+  }
+
+  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.value) {
+      void setDate(e.target.value)
+    }
+  }
+
   return (
     <div className='flex items-center justify-between px-1'>
-      <Button variant='ghost' size='icon-sm' onClick={goBack} disabled={isOldestDate}>
+      <Button variant='ghost' size='icon-sm' onClick={goBack}>
         <CaretLeftIcon size={20} weight='bold' />
       </Button>
-      <div className='text-center'>
+      <button type='button' className='cursor-pointer text-center' onClick={openDatePicker}>
         <p className='text-sm font-semibold'>{getLabel(currentDate)}</p>
         <p className='text-xs'>{format(currentDate, 'MMM d, yyyy')}</p>
-      </div>
+        <input
+          ref={dateInputRef}
+          type='date'
+          value={date}
+          max={format(toZonedDate(new Date()), 'yyyy-MM-dd')}
+          onChange={handleDateChange}
+          className='invisible absolute size-0'
+          tabIndex={-1}
+        />
+      </button>
       <Button variant='ghost' size='icon-sm' onClick={goForward} disabled={isTodayDate}>
         <CaretRightIcon size={20} weight='bold' />
       </Button>
