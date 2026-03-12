@@ -71,5 +71,13 @@ export function useBarcodeScanner(onResult: (data: NutritionData) => void) {
     setState({ status: 'idle' })
   }, [])
 
-  return { state, startScanning, stopScanning, active, handleScan, handleError }
+  const lookupManualBarcode = useCallback(
+    (barcode: string) => {
+      setState({ status: 'looking-up' })
+      execute({ barcode })
+    },
+    [execute]
+  )
+
+  return { state, startScanning, stopScanning, active, handleScan, handleError, lookupManualBarcode }
 }

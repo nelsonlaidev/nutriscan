@@ -1,10 +1,19 @@
 import type { NutritionData } from './nutrition-result'
 
-import { BarcodeIcon, CameraIcon, SpinnerGapIcon, WarningIcon, XIcon } from '@phosphor-icons/react/ssr'
+import {
+  BarcodeIcon,
+  CameraIcon,
+  MagnifyingGlassIcon,
+  SpinnerGapIcon,
+  WarningIcon,
+  XIcon
+} from '@phosphor-icons/react/ssr'
 import { Scanner } from '@yudiel/react-qr-scanner'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useBarcodeScanner } from '@/hooks/use-barcode-scanner'
 
 type BarcodeModeProps = {
@@ -14,7 +23,18 @@ type BarcodeModeProps = {
 export function BarcodeMode(props: BarcodeModeProps) {
   const { onResult } = props
   const t = useTranslations()
-  const { state, startScanning, stopScanning, active, handleScan, handleError } = useBarcodeScanner(onResult)
+  const { state, startScanning, stopScanning, active, handleScan, handleError, lookupManualBarcode } =
+    useBarcodeScanner(onResult)
+  const [manualBarcode, setManualBarcode] = useState('')
+
+  const isValidBarcode = /^\d{8,14}$/.test(manualBarcode)
+
+  function handleManualSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!isValidBarcode) return
+    lookupManualBarcode(manualBarcode)
+    setManualBarcode('')
+  }
 
   return (
     <div className='flex flex-col gap-4'>
@@ -63,6 +83,32 @@ export function BarcodeMode(props: BarcodeModeProps) {
           {t('add-food.start-scanning')}
         </Button>
       )}
+
+      <div className='relative'>
+        <div className='absolute inset-0 flex items-center'>
+          <div className='w-full border-t border-border' />
+        </div>
+        <div className='relative flex justify-center'>
+          <span className='bg-background px-2 text-xs text-muted-foreground'>{t('add-food.or-enter-manually')}</span>
+        </div>
+      </div>
+
+      <form onSubmit={handleManualSubmit} className='flex gap-2'>
+        <Input
+          type='text'
+          inputMode='numeric'
+          pattern='\d*'
+          placeholder={t('add-food.barcode-placeholder')}
+          value={manualBarcode}
+          onChange={(e) => {
+            setManualBarcode(e.target.value)
+          }}
+          disabled={state.status === 'looking-up'}
+        />
+        <Button type='submit' size='icon' disabled={!isValidBarcode || state.status === 'looking-up'}>
+          <MagnifyingGlassIcon size={16} />
+        </Button>
+      </form>
     </div>
   )
 }

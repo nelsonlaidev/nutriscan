@@ -112,6 +112,8 @@
     "looking-up": "Looking up product...",
     "stop": "Stop",
     "start-scanning": "Start Scanning",
+    "or-enter-manually": "or enter barcode manually",
+    "barcode-placeholder": "Enter barcode number",
     "food-name": "Food Name",
     "food-name-placeholder": "e.g. Grilled Chicken",
     "serving-size": "Serving Size",

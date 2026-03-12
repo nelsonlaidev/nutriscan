@@ -112,6 +112,8 @@
     "looking-up": "正在查詢產品...",
     "stop": "停止",
     "start-scanning": "開始掃描",
+    "or-enter-manually": "或手動輸入條碼",
+    "barcode-placeholder": "輸入條碼號碼",
     "food-name": "食物名稱",
     "food-name-placeholder": "例如：烤雞肉",
     "serving-size": "份量",
