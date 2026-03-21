@@ -14,7 +14,7 @@ export const addWaterEntry = authActionClient.inputSchema(AddWaterEntrySchema).a
     .insert(waterEntries)
     .values({
       userId: ctx.user.id,
-      amount: parsedInput.amount
+      amount: parsedInput.amount,
     })
     .returning({ id: waterEntries.id, createdAt: waterEntries.createdAt })
 

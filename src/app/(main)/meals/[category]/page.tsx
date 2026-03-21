@@ -1,5 +1,5 @@
-import type { MealCategory } from '@/types'
 import type { Metadata } from 'next'
+import type { MealCategory } from '@/types'
 
 import { CaretRightIcon } from '@phosphor-icons/react/ssr'
 import Image from 'next/image'
@@ -23,13 +23,13 @@ const CATEGORY_TITLES: Record<string, string> = {
   breakfast: 'Breakfast',
   lunch: 'Lunch',
   dinner: 'Dinner',
-  snacks: 'Snacks'
+  snacks: 'Snacks',
 }
 
 export async function generateMetadata(props: PageProps<'/meals/[category]'>): Promise<Metadata> {
   const { category } = await props.params
   return {
-    title: CATEGORY_TITLES[category] ?? 'Meal'
+    title: CATEGORY_TITLES[category] ?? 'Meal',
   }
 }
 

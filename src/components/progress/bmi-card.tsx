@@ -28,7 +28,7 @@ const categoryColors: Record<BmiCategory, { stroke: string; text: string }> = {
   underweight: { stroke: '#3b82f6', text: 'text-blue-600' },
   normal: { stroke: '#22c55e', text: 'text-green-600' },
   overweight: { stroke: '#f59e0b', text: 'text-amber-600' },
-  obese: { stroke: '#ef4444', text: 'text-red-600' }
+  obese: { stroke: '#ef4444', text: 'text-red-600' },
 }
 
 function BmiGauge({ bmi }: { bmi: number }) {

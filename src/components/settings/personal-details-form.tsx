@@ -17,7 +17,7 @@ import {
   calculateCalorieBudget,
   calculateMacros,
   calculateTDEE,
-  generatePlanOptions
+  generatePlanOptions,
 } from '@/lib/calculations'
 import { onActionError } from '@/lib/safe-action-utils'
 import { useSession } from '@/lib/session'
@@ -32,7 +32,7 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-  FieldTitle
+  FieldTitle,
 } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
@@ -44,7 +44,7 @@ function computePlanOptions(
   height: number | '',
   gender: Gender,
   currentWeight: number | '',
-  goalWeight: number | ''
+  goalWeight: number | '',
 ) {
   if (!birthday || typeof height !== 'number' || typeof currentWeight !== 'number') return null
   const age = calculateAge(birthday)
@@ -60,13 +60,13 @@ export function PersonalDetailsForm() {
   const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
     { value: 'male', label: t('onboarding.male') },
     { value: 'female', label: t('onboarding.female') },
-    { value: 'other', label: t('onboarding.other') }
+    { value: 'other', label: t('onboarding.other') },
   ]
 
   const PLAN_LABELS: Record<CaloriePlan, string> = {
     relaxed: t('onboarding.plan-relaxed'),
     steady: t('onboarding.plan-steady'),
-    accelerated: t('onboarding.plan-accelerated')
+    accelerated: t('onboarding.plan-accelerated'),
   }
 
   const { execute, isPending } = useAction(updatePersonalDetails, {
@@ -79,7 +79,7 @@ export function PersonalDetailsForm() {
     onError: (error) => {
       onActionError(error)
       toast.error(t('settings.personal-details.error'))
-    }
+    },
   })
 
   const form = useForm({
@@ -89,10 +89,10 @@ export function PersonalDetailsForm() {
       height: user.height as number | '',
       birthday: user.birthday,
       gender: user.gender as Gender,
-      plan: user.plan as CaloriePlan
+      plan: user.plan as CaloriePlan,
     },
     validators: {
-      onSubmit: createPersonalDetailsFormSchema(t)
+      onSubmit: createPersonalDetailsFormSchema(t),
     },
     onSubmit: ({ value }) => {
       const age = calculateAge(value.birthday)
@@ -111,9 +111,9 @@ export function PersonalDetailsForm() {
         calorieBudget: calories,
         proteinTarget: macros.protein,
         carbTarget: macros.carbs,
-        fatTarget: macros.fat
+        fatTarget: macros.fat,
       })
-    }
+    },
   })
 
   return (
@@ -305,7 +305,7 @@ export function PersonalDetailsForm() {
                   values.height,
                   values.gender,
                   values.currentWeight,
-                  values.goalWeight
+                  values.goalWeight,
                 )
 
                 if (!options) return null
@@ -322,7 +322,7 @@ export function PersonalDetailsForm() {
                               <FieldDescription>
                                 {t('onboarding.plan-details', {
                                   weeklyLoss: option.weeklyLoss,
-                                  weeks: option.weeksToGoal
+                                  weeks: option.weeksToGoal,
                                 })}
                               </FieldDescription>
                             </FieldContent>

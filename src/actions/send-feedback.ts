@@ -8,7 +8,7 @@ import { SendFeedbackSchema } from '@/lib/zod-schemas'
 export const sendFeedback = authActionClient.inputSchema(SendFeedbackSchema).action(async ({ parsedInput, ctx }) => {
   await db.insert(feedback).values({
     message: parsedInput.message,
-    userId: ctx.user.id
+    userId: ctx.user.id,
   })
 
   return { success: true }

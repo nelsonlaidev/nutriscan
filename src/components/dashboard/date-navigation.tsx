@@ -4,7 +4,7 @@ import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react/ssr'
 import { addDays, format, isToday, isYesterday, parse, subDays } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { dashboardParsers } from '@/app/(main)/dashboard/search-params'
 import { Button } from '@/components/ui/button'
@@ -13,7 +13,8 @@ import { toZonedDate } from '@/lib/utils'
 export function DateNavigation() {
   const t = useTranslations()
   const [date, setDate] = useQueryState('date', { ...dashboardParsers.date, shallow: false })
-  const currentDate = parse(date, 'yyyy-MM-dd', toZonedDate(new Date()))
+  const today = useMemo(() => toZonedDate(new Date()), [])
+  const currentDate = parse(date, 'yyyy-MM-dd', today)
   const dateInputRef = useRef<HTMLInputElement>(null)
 
   const isTodayDate = isToday(currentDate)
@@ -55,7 +56,7 @@ export function DateNavigation() {
           ref={dateInputRef}
           type='date'
           value={date}
-          max={format(toZonedDate(new Date()), 'yyyy-MM-dd')}
+          max={format(today, 'yyyy-MM-dd')}
           onChange={handleDateChange}
           className='invisible absolute size-0'
           tabIndex={-1}

@@ -19,11 +19,10 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-  FieldTitle
+  FieldTitle,
 } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-
 import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-2'
@@ -33,7 +32,7 @@ function computePlanOptions(
   height: number | '',
   gender: Gender,
   currentWeight: number | '',
-  goalWeight: number | ''
+  goalWeight: number | '',
 ) {
   if (!birthday || typeof height !== 'number' || typeof currentWeight !== 'number') return null
   const age = calculateAge(birthday)
@@ -49,13 +48,13 @@ export function Step2() {
   const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
     { value: 'male', label: t('onboarding.male') },
     { value: 'female', label: t('onboarding.female') },
-    { value: 'other', label: t('onboarding.other') }
+    { value: 'other', label: t('onboarding.other') },
   ]
 
   const PLAN_LABELS: Record<CaloriePlan, string> = {
     relaxed: t('onboarding.plan-relaxed'),
     steady: t('onboarding.plan-steady'),
-    accelerated: t('onboarding.plan-accelerated')
+    accelerated: t('onboarding.plan-accelerated'),
   }
 
   const form = useForm({
@@ -63,15 +62,15 @@ export function Step2() {
       birthday: data.birthday,
       height: data.height,
       gender: data.gender,
-      plan: data.plan
+      plan: data.plan,
     },
     validators: {
-      onSubmit: OnboardingStep2FormSchema
+      onSubmit: OnboardingStep2FormSchema,
     },
     onSubmit: ({ value }) => {
       updateForm(value)
       setStep(3)
-    }
+    },
   })
 
   return (
@@ -198,7 +197,7 @@ export function Step2() {
                     values.height,
                     values.gender,
                     data.currentWeight,
-                    data.goalWeight
+                    data.goalWeight,
                   )
 
                   if (!options) return null
@@ -215,7 +214,7 @@ export function Step2() {
                                 <FieldDescription>
                                   {t('onboarding.plan-details', {
                                     weeklyLoss: option.weeklyLoss,
-                                    weeks: option.weeksToGoal
+                                    weeks: option.weeksToGoal,
                                   })}
                                 </FieldDescription>
                               </FieldContent>

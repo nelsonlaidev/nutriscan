@@ -13,17 +13,17 @@ export const weightEntries = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     weight: real('weight').notNull(),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
     index('weight_entry_userId_idx').on(table.userId),
-    index('weight_entry_userId_createdAt_idx').on(table.userId, table.createdAt)
-  ]
+    index('weight_entry_userId_createdAt_idx').on(table.userId, table.createdAt),
+  ],
 )
 
 export const weightEntryRelations = relations(weightEntries, ({ one }) => ({
   user: one(users, {
     fields: [weightEntries.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))

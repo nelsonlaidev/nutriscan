@@ -1,5 +1,9 @@
 'use client'
 
+import type { Mode } from '@/components/add/mode-selector'
+import type { NutritionData } from '@/components/add/nutrition-result'
+import type { Meal } from '@/lib/constants'
+
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useCallback, useState, useTransition } from 'react'
@@ -7,13 +11,13 @@ import { toast } from 'sonner'
 
 import { addFoodEntry } from '@/actions/add-food-entry'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
-import { type Mode, ModeSelector } from '@/components/add/mode-selector'
-import { type NutritionData, NutritionResult } from '@/components/add/nutrition-result'
+import { ModeSelector } from '@/components/add/mode-selector'
+import { NutritionResult } from '@/components/add/nutrition-result'
 import { BackButton } from '@/components/back-button'
 import { MainLayout } from '@/components/main-layout'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { DEFAULT_MEAL, type Meal } from '@/lib/constants'
+import { DEFAULT_MEAL } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
 
@@ -56,7 +60,7 @@ export default function Page() {
         fat: nutritionData.fat,
         mealCategory: selectedMeal,
         source: mode,
-        imageUrl: nutritionData.imageUrl
+        imageUrl: nutritionData.imageUrl,
       })
 
       if (result.serverError) {

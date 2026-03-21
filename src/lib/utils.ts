@@ -1,8 +1,9 @@
-import type { MealCategory, TimeRange } from '@/types'
 import type { UIMessage } from 'ai'
+import type { ClassValue } from 'clsx'
+import type { MealCategory, TimeRange } from '@/types'
 
 import { TZDate } from '@date-fns/tz'
-import { type ClassValue, clsx } from 'clsx'
+import { clsx } from 'clsx'
 import {
   addDays,
   eachDayOfInterval,
@@ -11,7 +12,7 @@ import {
   format,
   startOfDay,
   subDays,
-  subYears
+  subYears,
 } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 
@@ -55,10 +56,10 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
       return {
         dates: months.map((month) => ({
           label: format(month, 'MMM'),
-          value: format(month, 'yyyy-MM')
+          value: format(month, 'yyyy-MM'),
         })),
         startOfDay: toZonedDate(startDate, timezone),
-        endOfDay: addDays(toZonedDate(todayStart, timezone), 1)
+        endOfDay: addDays(toZonedDate(todayStart, timezone), 1),
       }
     }
     default: {
@@ -68,7 +69,7 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
 
   const days = eachDayOfInterval({
     start: startDate,
-    end: todayStart
+    end: todayStart,
   })
 
   const firstDay = days[0]
@@ -81,10 +82,10 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
   return {
     dates: days.map((day) => ({
       label: format(day, formatStr),
-      value: format(day, 'yyyy-MM-dd')
+      value: format(day, 'yyyy-MM-dd'),
     })),
     startOfDay: toZonedDate(firstDay, timezone),
-    endOfDay: addDays(toZonedDate(lastDay, timezone), 1)
+    endOfDay: addDays(toZonedDate(lastDay, timezone), 1),
   }
 }
 
@@ -102,7 +103,7 @@ export function getDayRange(date: string, timezone = DEFAULT_TIMEZONE): DayRange
 
   return {
     startOfDay: startOfDay(day),
-    endOfDay: endOfDay(day)
+    endOfDay: endOfDay(day),
   }
 }
 

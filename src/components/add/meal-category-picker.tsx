@@ -1,6 +1,8 @@
+import type { Meal } from '@/lib/constants'
+
 import { useTranslations } from 'next-intl'
 
-import { type Meal, MEAL_EMOJI, MEALS } from '@/lib/constants'
+import { MEAL_EMOJI, MEALS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 type MealCategoryPickerProps = {
@@ -27,7 +29,9 @@ export function MealCategoryPicker(props: MealCategoryPickerProps) {
               }}
               className={cn(
                 'flex flex-col items-center gap-1.5 rounded-2xl border p-3 transition-colors',
-                selected ? 'border-primary bg-primary/5 text-foreground' : 'border-border bg-card text-muted-foreground'
+                selected
+                  ? 'border-primary bg-primary/5 text-foreground'
+                  : 'border-border bg-card text-muted-foreground',
               )}
             >
               <span className='text-xl'>{MEAL_EMOJI[meal]}</span>

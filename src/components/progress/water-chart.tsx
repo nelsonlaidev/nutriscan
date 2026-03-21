@@ -1,5 +1,6 @@
 'use client'
 
+import type { ChartConfig } from '@/components/ui/chart'
 import type { TimeRange } from '@/types'
 
 import { useTranslations } from 'next-intl'
@@ -14,11 +15,11 @@ import {
   Line,
   ReferenceLine,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts'
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
 import { ChartTypeToggle } from './chart-type-toggle'
 
@@ -31,12 +32,12 @@ type WaterChartProps = {
 const chartConfig = {
   amount: {
     label: 'Water (mL)',
-    color: 'var(--color-sky-500)'
+    color: 'var(--color-sky-500)',
   },
   goal: {
     label: 'Goal',
-    color: 'var(--color-sky-400)'
-  }
+    color: 'var(--color-sky-400)',
+  },
 } satisfies ChartConfig
 
 function formatYAxis(value: number, isYearly: boolean) {
@@ -55,11 +56,11 @@ export function WaterChart({ data, goal, range }: WaterChartProps) {
 
   const yDomain: [number, (dataMax: number) => number] = [
     0,
-    (dataMax: number) => Math.ceil(Math.max(dataMax, maxGoal) / step) * step
+    (dataMax: number) => Math.ceil(Math.max(dataMax, maxGoal) / step) * step,
   ]
   const yTicks = Array.from(
     { length: Math.ceil(Math.max(...data.map((d) => d.amount), maxGoal, 0) / step) + 1 },
-    (_, i) => i * step
+    (_, i) => i * step,
   )
 
   const sharedXAxis = (

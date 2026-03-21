@@ -1,5 +1,5 @@
-import type { Chats } from '@/actions/chat'
 import type { ChatStatus } from 'ai'
+import type { Chats } from '@/actions/chat'
 
 import { createContext, use, useMemo } from 'react'
 
@@ -31,9 +31,9 @@ export function ChatProvider(props: ChatProviderProps) {
   const value = useMemo<ChatContextValue>(
     () => ({
       status,
-      chats
+      chats,
     }),
-    [status, chats]
+    [status, chats],
   )
 
   return <ChatContext value={value}>{children}</ChatContext>

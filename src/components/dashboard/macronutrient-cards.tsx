@@ -23,10 +23,10 @@ export async function MacronutrientCards(props: MacronutrientCardsProps) {
     {
       key: 'protein',
       label: t('dashboard.protein'),
-      className: '**:data-[slot=progress-indicator]:bg-blue-500'
+      className: '**:data-[slot=progress-indicator]:bg-blue-500',
     },
     { key: 'carbs', label: t('dashboard.carbs'), className: '**:data-[slot=progress-indicator]:bg-amber-500' },
-    { key: 'fat', label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' }
+    { key: 'fat', label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' },
   ] as const
 
   return (

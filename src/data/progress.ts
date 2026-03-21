@@ -18,15 +18,15 @@ export async function getCalorieChartData(userId: string, dateRange: DateRange):
   const rows = await db
     .select({
       date,
-      calories: sql<number>`sum(${foodEntries.calories})::integer`.as('calories')
+      calories: sql<number>`sum(${foodEntries.calories})::integer`.as('calories'),
     })
     .from(foodEntries)
     .where(
       and(
         eq(foodEntries.userId, userId),
         gte(foodEntries.createdAt, dateRange.startOfDay),
-        lte(foodEntries.createdAt, dateRange.endOfDay)
-      )
+        lte(foodEntries.createdAt, dateRange.endOfDay),
+      ),
     )
     .groupBy(date)
     .orderBy(desc(date))
@@ -51,15 +51,15 @@ export async function getNutritionChartData(userId: string, dateRange: DateRange
       date,
       protein: sql<number>`sum(${foodEntries.protein})::integer`.as('protein'),
       carbs: sql<number>`sum(${foodEntries.carbs})::integer`.as('carbs'),
-      fat: sql<number>`sum(${foodEntries.fat})::integer`.as('fat')
+      fat: sql<number>`sum(${foodEntries.fat})::integer`.as('fat'),
     })
     .from(foodEntries)
     .where(
       and(
         eq(foodEntries.userId, userId),
         gte(foodEntries.createdAt, dateRange.startOfDay),
-        lte(foodEntries.createdAt, dateRange.endOfDay)
-      )
+        lte(foodEntries.createdAt, dateRange.endOfDay),
+      ),
     )
     .groupBy(date)
     .orderBy(desc(date))
@@ -80,15 +80,15 @@ export async function getWaterChartData(userId: string, dateRange: DateRange): P
   const rows = await db
     .select({
       date,
-      amount: sql<number>`SUM(${waterEntries.amount})::integer`.as('amount')
+      amount: sql<number>`SUM(${waterEntries.amount})::integer`.as('amount'),
     })
     .from(waterEntries)
     .where(
       and(
         eq(waterEntries.userId, userId),
         gte(waterEntries.createdAt, dateRange.startOfDay),
-        lte(waterEntries.createdAt, dateRange.endOfDay)
-      )
+        lte(waterEntries.createdAt, dateRange.endOfDay),
+      ),
     )
     .groupBy(date)
     .orderBy(desc(date))
@@ -104,15 +104,15 @@ export async function getWeightEntriesByDateRange(userId: string, dateRange: Dat
   const rows = await db
     .selectDistinctOn([date], {
       date,
-      weight: weightEntries.weight
+      weight: weightEntries.weight,
     })
     .from(weightEntries)
     .where(
       and(
         eq(weightEntries.userId, userId),
         gte(weightEntries.createdAt, dateRange.startOfDay),
-        lte(weightEntries.createdAt, dateRange.endOfDay)
-      )
+        lte(weightEntries.createdAt, dateRange.endOfDay),
+      ),
     )
     .orderBy(desc(date), desc(weightEntries.createdAt))
 

@@ -7,7 +7,7 @@ import { MainLayout } from '@/components/main-layout'
 import { PersonalDetailsForm } from '@/components/settings/personal-details-form'
 
 export const metadata: Metadata = {
-  title: 'Personal Details'
+  title: 'Personal Details',
 }
 
 export default async function PersonalDetailsPage() {

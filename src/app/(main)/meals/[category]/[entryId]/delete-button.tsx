@@ -16,7 +16,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog'
 
 type DeleteFoodEntryButtonProps = {
@@ -40,7 +40,7 @@ export function DeleteFoodEntryButton({ entryId, category }: DeleteFoodEntryButt
     },
     onError: () => {
       toast.error(t('meals.entry-delete-error'))
-    }
+    },
   })
 
   function handleDelete() {

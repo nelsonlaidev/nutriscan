@@ -14,7 +14,7 @@ const actionClient = createSafeActionClient({
 
     console.error('Action error:', e.message)
     return SERVER_ERROR_MESSAGE
-  }
+  },
 })
 
 export const authActionClient = actionClient.use(async ({ next }) => {

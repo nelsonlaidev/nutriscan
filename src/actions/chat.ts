@@ -1,8 +1,9 @@
 'use server'
 
 import type { UIMessage } from 'ai'
+import type { InferSelectModel } from 'drizzle-orm'
 
-import { and, asc, desc, eq, type InferSelectModel } from 'drizzle-orm'
+import { and, asc, desc, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import * as z from 'zod'
 
@@ -39,9 +40,9 @@ export async function getChatById(chatId: string): Promise<Chat | null> {
     with: {
       messages: {
         where: eq(chatMessages.chatId, chatId),
-        orderBy: asc(chatMessages.createdAt)
-      }
-    }
+        orderBy: asc(chatMessages.createdAt),
+      },
+    },
   })
 
   if (!chat) return null
@@ -53,7 +54,7 @@ export async function saveChat({
   chatId,
   userId,
   title,
-  messages
+  messages,
 }: {
   chatId: string
   userId: string
@@ -66,7 +67,7 @@ export async function saveChat({
     .onConflictDoUpdate({
       target: chats.id,
       set: { title, updatedAt: new Date() },
-      setWhere: eq(chats.userId, userId)
+      setWhere: eq(chats.userId, userId),
     })
 
   if (messages.length === 0) return
@@ -94,8 +95,8 @@ export async function saveChat({
         role: msg.role as 'user' | 'assistant',
         parts: msg.parts,
         attachments: [],
-        createdAt: new Date(now + index)
-      }))
+        createdAt: new Date(now + index),
+      })),
     )
   }
 }

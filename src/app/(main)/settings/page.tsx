@@ -12,7 +12,7 @@ import { ThemeToggle } from '@/components/settings/theme-toggle'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Settings'
+  title: 'Settings',
 }
 
 export default async function SettingsPage() {

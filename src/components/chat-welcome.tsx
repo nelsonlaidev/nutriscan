@@ -8,7 +8,7 @@ type ChatWelcomeProps = {
 const PROMPTS = [
   { icon: CarrotIcon, key: 'chat.prompt-breakfast' },
   { icon: BowlFoodIcon, key: 'chat.prompt-meal-plan' },
-  { icon: HeartbeatIcon, key: 'chat.prompt-water' }
+  { icon: HeartbeatIcon, key: 'chat.prompt-water' },
 ] as const
 
 export function ChatWelcome(props: ChatWelcomeProps) {

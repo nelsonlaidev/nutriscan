@@ -5,7 +5,7 @@ test('weight page loads with current weight and progress bar', async ({ page }) 
   await expect(page.getByRole('heading', { name: 'Weight Tracker' })).toBeVisible()
   // Current weight card should display a weight value
   await expect(page.getByTestId('current-weight')).toBeVisible()
-  // eslint-disable-next-line sonarjs/slow-regex
+  // oxlint-disable-next-line sonarjs/slow-regex
   await expect(page.getByTestId('current-weight')).toHaveText(/\d+\.\d kg/)
 })
 

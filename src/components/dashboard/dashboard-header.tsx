@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 import { UserAvatar } from '@/components/user-avatar'
 import { useSession } from '@/lib/session'
@@ -15,12 +15,9 @@ function getGreetingKey(hour: number) {
 export function DashboardHeader() {
   const { user } = useSession()
   const t = useTranslations()
-  const [greeting, setGreeting] = useState('')
-
-  useEffect(() => {
+  const greeting = useMemo(() => {
     const hour = new Date().getHours()
-    const greetingKey = getGreetingKey(hour)
-    setGreeting(t(greetingKey))
+    return t(getGreetingKey(hour))
   }, [t])
 
   return (

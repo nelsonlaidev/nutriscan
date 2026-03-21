@@ -1,5 +1,5 @@
-import type { users } from '@/db/schemas'
 import type { InferInsertModel } from 'drizzle-orm'
+import type { users } from '@/db/schemas'
 
 import { env } from '@/env'
 
@@ -13,7 +13,7 @@ export const LOCALES = [DEFAULT_LOCALE, 'zh-TW', 'zh-CN'] as const
 export const LOCALE_ITEMS: Array<{ label: string; value: (typeof LOCALES)[number] }> = [
   { label: 'English', value: 'en' },
   { label: '繁體中文', value: 'zh-TW' },
-  { label: '简体中文', value: 'zh-CN' }
+  { label: '简体中文', value: 'zh-CN' },
 ]
 
 export const DEFAULT_STARTING_WEIGHT = 70
@@ -33,7 +33,7 @@ export const MEAL_EMOJI: Record<Meal, string> = {
   breakfast: '🍞',
   lunch: '🌤️',
   dinner: '🌙',
-  snacks: '🍿'
+  snacks: '🍿',
 } as const
 
 export type Meal = (typeof MEALS)[number]
@@ -56,5 +56,5 @@ export const TEST_USER = {
   proteinTarget: 160,
   carbTarget: 220,
   fatTarget: 70,
-  onboarded: true
+  onboarded: true,
 } satisfies InferInsertModel<typeof users>

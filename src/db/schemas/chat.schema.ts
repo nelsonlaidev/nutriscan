@@ -17,9 +17,9 @@ export const chats = pgTable(
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
-      .notNull()
+      .notNull(),
   },
-  (table) => [index('chat_userId_idx').on(table.userId)]
+  (table) => [index('chat_userId_idx').on(table.userId)],
 )
 
 export const chatMessages = pgTable(
@@ -34,22 +34,22 @@ export const chatMessages = pgTable(
     role: text('role', { enum: ['user', 'assistant'] }).notNull(),
     parts: json('parts').notNull(),
     attachments: json('attachments').notNull(),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
-  (table) => [index('chatMessage_chatId_idx').on(table.chatId)]
+  (table) => [index('chatMessage_chatId_idx').on(table.chatId)],
 )
 
 export const chatRelations = relations(chats, ({ one, many }) => ({
   user: one(users, {
     fields: [chats.userId],
-    references: [users.id]
+    references: [users.id],
   }),
-  messages: many(chatMessages)
+  messages: many(chatMessages),
 }))
 
 export const chatMessageRelations = relations(chatMessages, ({ one }) => ({
   chat: one(chats, {
     fields: [chatMessages.chatId],
-    references: [chats.id]
-  })
+    references: [chats.id],
+  }),
 }))

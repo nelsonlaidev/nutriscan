@@ -14,12 +14,11 @@ import {
   calculateCalorieBudget,
   calculateMacros,
   calculateTDEE,
-  getWeeklyLoss
+  getWeeklyLoss,
 } from '@/lib/calculations'
 import { onActionError } from '@/lib/safe-action-utils'
 
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-
 import { OnboardingLayout } from './onboarding-layout'
 
 export function Step3() {
@@ -46,7 +45,7 @@ export function Step3() {
     onSuccess: () => {
       router.push('/')
     },
-    onError: onActionError
+    onError: onActionError,
   })
 
   function handleConfirm() {
@@ -60,7 +59,7 @@ export function Step3() {
       calorieBudget: computed.calories,
       proteinTarget: computed.macros.protein,
       carbTarget: computed.macros.carbs,
-      fatTarget: computed.macros.fat
+      fatTarget: computed.macros.fat,
     })
   }
 
@@ -82,7 +81,7 @@ export function Step3() {
             <p className='text-sm text-muted-foreground'>
               {t('onboarding.summary-goal-value', {
                 weight: computed.weightToLose.toFixed(1),
-                target: computed.goalWeight
+                target: computed.goalWeight,
               })}
             </p>
           </CardContent>

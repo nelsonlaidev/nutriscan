@@ -14,8 +14,8 @@ export async function getFoodEntries(userId: string, dayRange: DayRange) {
       and(
         eq(foodEntries.userId, userId),
         gte(foodEntries.createdAt, dayRange.startOfDay),
-        lte(foodEntries.createdAt, dayRange.endOfDay)
-      )
+        lte(foodEntries.createdAt, dayRange.endOfDay),
+      ),
     )
 
   return rows
@@ -30,8 +30,8 @@ export async function getFoodEntriesByCategory(userId: string, dayRange: DayRang
         eq(foodEntries.userId, userId),
         gte(foodEntries.createdAt, dayRange.startOfDay),
         lte(foodEntries.createdAt, dayRange.endOfDay),
-        eq(foodEntries.mealCategory, category)
-      )
+        eq(foodEntries.mealCategory, category),
+      ),
     )
 
   return rows

@@ -1,5 +1,5 @@
-import type { NutritionData } from './nutrition-result'
 import type { ErrorResponse } from '@/types'
+import type { NutritionData } from './nutrition-result'
 
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
 import imageCompression from 'browser-image-compression'
@@ -41,14 +41,14 @@ export function AiImageMode(props: AiImageModeProps) {
     },
     onError: () => {
       toast.error(t('errors.ai-scan-failed'))
-    }
+    },
   })
 
   useEffect(
     () => () => {
       if (previewRef.current) URL.revokeObjectURL(previewRef.current)
     },
-    []
+    [],
   )
 
   const isProcessing = isUploading || isPending
@@ -58,7 +58,7 @@ export function AiImageMode(props: AiImageModeProps) {
       const compressed = await imageCompression(file, {
         maxSizeMB: 1,
         maxWidthOrHeight: 1024,
-        useWebWorker: true
+        useWebWorker: true,
       })
 
       if (previewRef.current) URL.revokeObjectURL(previewRef.current)
@@ -76,7 +76,7 @@ export function AiImageMode(props: AiImageModeProps) {
         setIsUploading(false)
       }
     },
-    [execute, t]
+    [execute, t],
   )
 
   const handleInputChange = useCallback(
@@ -85,9 +85,11 @@ export function AiImageMode(props: AiImageModeProps) {
       if (file) {
         void handleFileSelected(file)
       }
+      // Resetting file input value is standard practice
+      // oxlint-disable-next-line react-x/immutability
       e.target.value = ''
     },
-    [handleFileSelected]
+    [handleFileSelected],
   )
 
   return (

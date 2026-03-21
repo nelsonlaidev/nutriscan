@@ -29,7 +29,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
     },
     onError: () => {
       toast.error(t('chat.delete-failed'))
-    }
+    },
   })
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
       <div
         className={cn(
           'absolute inset-0 z-40 bg-black/50 transition-opacity duration-200',
-          open ? 'opacity-100' : 'pointer-events-none opacity-0'
+          open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         onClick={() => {
           onOpenChange(false)
@@ -67,7 +67,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
         aria-label={t('chat.history')}
         className={cn(
           'absolute inset-y-0 left-0 z-50 flex w-3/4 max-w-sm flex-col border-r bg-background transition-transform duration-200 ease-in-out',
-          open ? 'translate-x-0' : '-translate-x-full'
+          open ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         <div className='flex items-center justify-between p-4'>

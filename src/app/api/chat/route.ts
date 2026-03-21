@@ -10,7 +10,7 @@ import { chatSystemPrompt } from '@/lib/prompts'
 
 const ChatSchema = z.object({
   chatId: z.uuid(),
-  messages: z.array(z.unknown())
+  messages: z.array(z.unknown()),
 })
 
 export const maxDuration = 30
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         const assistantMessage: UIMessage = {
           id: crypto.randomUUID(),
           role: 'assistant',
-          parts: [{ type: 'text', text }]
+          parts: [{ type: 'text', text }],
         }
 
         const allMessages = [...validatedMessages, assistantMessage]
@@ -72,12 +72,12 @@ export async function POST(request: Request) {
           chatId,
           userId: session.user.id,
           title,
-          messages: allMessages
+          messages: allMessages,
         })
       } catch (error) {
         console.error('Failed to save chat:', error)
       }
-    }
+    },
   })
 
   return result.toUIMessageStreamResponse()

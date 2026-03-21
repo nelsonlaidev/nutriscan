@@ -3,6 +3,7 @@
 import { GearIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { useMemo } from 'react'
 
 import { MainLayout } from '@/components/main-layout'
 import { buttonVariants } from '@/components/ui/button'
@@ -16,10 +17,14 @@ export default function Page() {
 
   const displayName = user.name
 
-  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric'
-  })
+  const memberSince = useMemo(
+    () =>
+      new Date(user.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      }),
+    [user.createdAt],
+  )
 
   return (
     <MainLayout

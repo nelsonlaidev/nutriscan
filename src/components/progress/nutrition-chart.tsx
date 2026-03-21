@@ -1,11 +1,13 @@
 'use client'
 
+import type { ChartConfig } from '@/components/ui/chart'
+
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
 import { ChartTypeToggle } from './chart-type-toggle'
 
@@ -16,16 +18,16 @@ type NutritionChartProps = {
 const chartConfig = {
   protein: {
     label: 'Protein',
-    color: 'var(--color-blue-500)'
+    color: 'var(--color-blue-500)',
   },
   carbs: {
     label: 'Carbs',
-    color: 'var(--color-amber-500)'
+    color: 'var(--color-amber-500)',
   },
   fat: {
     label: 'Fat',
-    color: 'var(--color-rose-500)'
-  }
+    color: 'var(--color-rose-500)',
+  },
 } satisfies ChartConfig
 
 export function NutritionChart({ data }: NutritionChartProps) {

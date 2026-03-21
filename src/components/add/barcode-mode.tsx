@@ -6,7 +6,7 @@ import {
   MagnifyingGlassIcon,
   SpinnerGapIcon,
   WarningIcon,
-  XIcon
+  XIcon,
 } from '@phosphor-icons/react/ssr'
 import { Scanner } from '@yudiel/react-qr-scanner'
 import { useTranslations } from 'next-intl'

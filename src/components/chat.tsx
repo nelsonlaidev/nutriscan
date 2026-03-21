@@ -1,9 +1,9 @@
 'use client'
 
-import type { Chats } from '@/actions/chat'
-import type { FileUIPart, UIMessage } from 'ai'
-
 import 'katex/dist/katex.min.css'
+
+import type { FileUIPart, UIMessage } from 'ai'
+import type { Chats } from '@/actions/chat'
 
 import { useChat } from '@ai-sdk/react'
 import {
@@ -13,7 +13,7 @@ import {
   ListIcon,
   PlusIcon,
   SpinnerGapIcon,
-  XIcon
+  XIcon,
 } from '@phosphor-icons/react/ssr'
 import { DefaultChatTransport } from 'ai'
 import { useRouter } from 'next/navigation'
@@ -62,7 +62,7 @@ export function Chat(props: ChatProps) {
   const { messages, sendMessage, status } = useChat({
     id,
     messages: initialMessages.length > 0 ? initialMessages : undefined,
-    transport
+    transport,
   })
 
   const isStreaming = status === 'streaming'
@@ -107,12 +107,11 @@ export function Chat(props: ChatProps) {
 
       persistChatUrl()
 
-      // eslint-disable-next-line sonarjs/void-use
       void scrollToBottom()
 
       void sendMessage({
         text: input,
-        files: uploadedFiles.length > 0 ? uploadedFiles : undefined
+        files: uploadedFiles.length > 0 ? uploadedFiles : undefined,
       })
 
       setInput('')
@@ -121,7 +120,7 @@ export function Chat(props: ChatProps) {
         fileInputRef.current.value = ''
       }
     },
-    [input, persistChatUrl, scrollToBottom, sendMessage, status, t, uploadedFiles]
+    [input, persistChatUrl, scrollToBottom, sendMessage, status, t, uploadedFiles],
   )
 
   const handleRemoveFile = useCallback((idx: number) => {
@@ -152,8 +151,8 @@ export function Chat(props: ChatProps) {
             type: 'file' as const,
             filename: file.name,
             mediaType: file.type,
-            url
-          }
+            url,
+          },
         ])
       } catch {
         toast.error(t('chat.upload-failed'))
@@ -164,7 +163,7 @@ export function Chat(props: ChatProps) {
         }
       }
     },
-    [t]
+    [t],
   )
 
   return (
@@ -209,7 +208,7 @@ export function Chat(props: ChatProps) {
                 {messages.map((message) =>
                   message.parts.map((part, partIdx) => (
                     <Response key={`${message.id}-${partIdx}`} part={part} role={message.role} />
-                  ))
+                  )),
                 )}
                 {isSubmitted && <div className='size-6 shrink-0 animate-pulse rounded-full bg-primary' />}
               </div>
@@ -221,7 +220,7 @@ export function Chat(props: ChatProps) {
               <div className='mb-2 flex gap-2'>
                 {uploadedFiles.map((file, idx) => (
                   <div key={idx} className='relative'>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {/* oxlint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={file.url}
                       alt={file.filename ?? 'Attachment'}
@@ -284,7 +283,6 @@ export function Chat(props: ChatProps) {
             type='button'
             className='fixed bottom-50 left-1/2 flex size-8 -translate-x-1/2 items-center justify-center rounded-full border bg-accent'
             onClick={() => {
-              // eslint-disable-next-line sonarjs/void-use
               void scrollToBottom()
             }}
           >

@@ -24,7 +24,7 @@ export const completeOnboarding = authActionClient
         proteinTarget: parsedInput.proteinTarget,
         carbTarget: parsedInput.carbTarget,
         fatTarget: parsedInput.fatTarget,
-        onboarded: true
+        onboarded: true,
       })
       .where(eq(users.id, ctx.user.id))
 

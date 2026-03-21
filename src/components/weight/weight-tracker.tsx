@@ -9,7 +9,6 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { Progress } from '../ui/progress'
-
 import { WeightEntryDialog } from './weight-entry-dialog'
 import { WeightHistory } from './weight-history'
 

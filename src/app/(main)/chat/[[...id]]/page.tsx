@@ -12,6 +12,8 @@ export default async function ChatPage(props: PageProps<'/chat/[[...id]]'>) {
   const { id } = await params
 
   const parsedId = ParamsSchema.parse(id?.join(''))
+  // Server component, not a hook/client render
+  // oxlint-disable-next-line react-x/purity
   const randomId = crypto.randomUUID()
 
   let initialMessages: UIMessage[] = []
@@ -24,7 +26,7 @@ export default async function ChatPage(props: PageProps<'/chat/[[...id]]'>) {
       initialMessages = chat.messages.map((msg) => ({
         id: msg.id,
         role: msg.role,
-        parts: msg.parts as UIMessage['parts']
+        parts: msg.parts as UIMessage['parts'],
       }))
 
       chatTitle = chat.title

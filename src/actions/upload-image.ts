@@ -10,7 +10,7 @@ const MAX_SIZE = 10 * 1024 * 1024 // 10 MB
 
 const schema = z.object({
   formData: z.instanceof(FormData),
-  type: z.enum(['chat', 'meal'])
+  type: z.enum(['chat', 'meal']),
 })
 
 export const uploadImageAction = authActionClient

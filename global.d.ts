@@ -1,7 +1,7 @@
-import type messages from './messages/en.json'
-import type { LOCALES } from '@/lib/constants'
-
 import '@total-typescript/ts-reset'
+
+import type { LOCALES } from '@/lib/constants'
+import type messages from './messages/en.json'
 
 declare module 'next-intl' {
   interface AppConfig {

@@ -24,13 +24,13 @@ export const updatePersonalDetails = authActionClient
           calorieBudget: parsedInput.calorieBudget,
           proteinTarget: parsedInput.proteinTarget,
           carbTarget: parsedInput.carbTarget,
-          fatTarget: parsedInput.fatTarget
+          fatTarget: parsedInput.fatTarget,
         })
         .where(eq(users.id, ctx.user.id)),
       db.insert(weightEntries).values({
         userId: ctx.user.id,
-        weight: parsedInput.currentWeight
-      })
+        weight: parsedInput.currentWeight,
+      }),
     ])
 
     return { success: true }

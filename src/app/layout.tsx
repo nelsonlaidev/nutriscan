@@ -1,7 +1,7 @@
-import type { Metadata, Viewport } from 'next'
-
 import '../styles/globals.css'
 import 'streamdown/styles.css'
+
+import type { Metadata, Viewport } from 'next'
 
 import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
@@ -14,27 +14,27 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
 const geistSans = Geist({
-  subsets: ['latin']
+  subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
   title: {
     default: 'NutriScan',
-    template: '%s | NutriScan'
+    template: '%s | NutriScan',
   },
   description: 'Track your nutrition, reach your goals',
   icons: {
-    icon: '/favicon.ico'
+    icon: '/favicon.ico',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'NutriScan'
-  }
+    title: 'NutriScan',
+  },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff'
+  themeColor: '#ffffff',
 }
 
 type LayoutProps = {

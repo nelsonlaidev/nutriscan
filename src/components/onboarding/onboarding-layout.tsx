@@ -28,7 +28,7 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
     stepIcon,
     continueDisabled = false,
     continueLabel,
-    onSubmit
+    onSubmit,
   } = props
   const { data, setStep } = useOnboardingForm()
   const t = useTranslations()

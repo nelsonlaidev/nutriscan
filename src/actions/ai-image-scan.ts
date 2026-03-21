@@ -17,7 +17,7 @@ const NutritionResponseSchema = z.object({
   calories: z.number().describe('Calories in kcal, or 0 if not food'),
   protein: z.number().describe('Protein in grams, or 0 if not food'),
   carbs: z.number().describe('Carbohydrates in grams, or 0 if not food'),
-  fat: z.number().describe('Fat in grams, or 0 if not food')
+  fat: z.number().describe('Fat in grams, or 0 if not food'),
 })
 
 export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).action(async ({ parsedInput }) => {
@@ -35,15 +35,15 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
           content: [
             {
               type: 'image',
-              image: imageUrl
+              image: imageUrl,
             },
             {
               type: 'text',
-              text: 'Analyze this image. If it contains identifiable food, set isFood to true and estimate the nutritional information per serving: food name, serving size, calories (kcal), protein (g), carbs (g), and fat (g). Round all numbers to the nearest whole number. If the image does not contain food, set isFood to false.'
-            }
-          ]
-        }
-      ]
+              text: 'Analyze this image. If it contains identifiable food, set isFood to true and estimate the nutritional information per serving: food name, serving size, calories (kcal), protein (g), carbs (g), and fat (g). Round all numbers to the nearest whole number. If the image does not contain food, set isFood to false.',
+            },
+          ],
+        },
+      ],
     })
 
     if (!output.isFood) {
@@ -59,8 +59,8 @@ export const scanFoodImage = authActionClient.inputSchema(AiImageScanSchema).act
         protein: Math.round(output.protein),
         carbs: Math.round(output.carbs),
         fat: Math.round(output.fat),
-        imageUrl
-      }
+        imageUrl,
+      },
     }
   } catch (error) {
     logger.error({ error }, 'AI scan: failed to analyze image')

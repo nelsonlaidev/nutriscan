@@ -14,28 +14,28 @@ export function getNavbarLinks(t: Translator): NavbarLink[] {
     {
       title: t('nav.home'),
       href: '/dashboard',
-      icon: HouseIcon
+      icon: HouseIcon,
     },
     {
       title: t('nav.progress'),
       href: '/progress',
-      icon: ChartBarIcon
+      icon: ChartBarIcon,
     },
     {
       title: t('nav.add'),
       href: '/add',
       icon: CameraIcon,
-      primary: true
+      primary: true,
     },
     {
       title: t('nav.chat'),
       href: '/chat',
-      icon: ChatsCircleIcon
+      icon: ChatsCircleIcon,
     },
     {
       title: t('nav.profile'),
       href: '/profile',
-      icon: null
-    }
+      icon: null,
+    },
   ]
 }

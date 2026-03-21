@@ -1,5 +1,5 @@
-import type { MealCategory } from '@/types'
 import type { Metadata } from 'next'
+import type { MealCategory } from '@/types'
 
 import { format } from 'date-fns'
 import Image from 'next/image'
@@ -44,7 +44,7 @@ export default async function Page(props: PageProps<'/meals/[category]/[entryId]
   const sourceLabels: Record<string, string> = {
     'ai-scan': t('meals.source-ai-scan'),
     manual: t('meals.source-manual'),
-    barcode: t('meals.source-barcode')
+    barcode: t('meals.source-barcode'),
   }
 
   return (

@@ -17,7 +17,7 @@ export function Response(props: ResponseProps) {
 
   if (part.type === 'file' && part.mediaType.startsWith('image/')) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
+      // oxlint-disable-next-line @next/next/no-img-element
       <img
         src={part.url}
         alt={part.filename ?? 'Image attachment'}

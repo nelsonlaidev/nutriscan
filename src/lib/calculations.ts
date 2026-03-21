@@ -5,13 +5,13 @@ export type CaloriePlan = 'relaxed' | 'steady' | 'accelerated'
 const PLAN_DEFICITS: Record<CaloriePlan, number> = {
   relaxed: 250,
   steady: 500,
-  accelerated: 750
+  accelerated: 750,
 }
 
 const WEEKLY_LOSS: Record<CaloriePlan, number> = {
   relaxed: 0.25,
   steady: 0.5,
-  accelerated: 0.75
+  accelerated: 0.75,
 }
 
 /**
@@ -63,7 +63,7 @@ export function calculateMacros(calories: number) {
   return {
     protein: Math.round((calories * 0.3) / 4),
     carbs: Math.round((calories * 0.4) / 4),
-    fat: Math.round((calories * 0.3) / 9)
+    fat: Math.round((calories * 0.3) / 9),
   }
 }
 
@@ -90,7 +90,7 @@ export function generatePlanOptions(
   heightCm: number,
   ageYears: number,
   gender: Gender,
-  goalWeight: number
+  goalWeight: number,
 ) {
   const bmr = calculateBMR(weightKg, heightCm, ageYears, gender)
   const tdee = calculateTDEE(bmr)
@@ -106,7 +106,7 @@ export function generatePlanOptions(
       plan,
       calories,
       weeklyLoss,
-      weeksToGoal
+      weeksToGoal,
     }
   })
 }

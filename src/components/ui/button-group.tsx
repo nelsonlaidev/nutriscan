@@ -1,6 +1,8 @@
+import type { VariantProps } from 'class-variance-authority'
+
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
@@ -13,13 +15,13 @@ const buttonGroupVariants = cva(
         horizontal:
           '*:data-slot:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-4xl! [&>[data-slot]~[data-slot]]:rounded-l-none [&>[data-slot]~[data-slot]]:border-l-0',
         vertical:
-          'flex-col *:data-slot:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-4xl! [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0'
-      }
+          'flex-col *:data-slot:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-4xl! [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0',
+      },
     },
     defaultVariants: {
-      orientation: 'horizontal'
-    }
-  }
+      orientation: 'horizontal',
+    },
+  },
 )
 
 type ButtonGroupProps = React.ComponentProps<'div'> & VariantProps<typeof buttonGroupVariants>
@@ -49,15 +51,15 @@ function ButtonGroupText(props: ButtonGroupTextProps) {
       {
         className: cn(
           "flex items-center gap-2 rounded-4xl border bg-muted px-2.5 text-sm font-medium [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-          className
-        )
+          className,
+        ),
       },
-      rest
+      rest,
     ),
     render,
     state: {
-      slot: 'button-group-text'
-    }
+      slot: 'button-group-text',
+    },
   })
 }
 
@@ -72,7 +74,7 @@ function ButtonGroupSeparator(props: ButtonGroupSeparatorProps) {
       orientation={orientation}
       className={cn(
         'relative self-stretch bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto',
-        className
+        className,
       )}
       {...rest}
     />

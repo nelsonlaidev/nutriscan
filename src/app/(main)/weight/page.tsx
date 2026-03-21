@@ -10,7 +10,7 @@ import { getLatestWeight, getWeightEntries } from '@/data/weight'
 import { getSession } from '@/lib/auth'
 
 export const metadata: Metadata = {
-  title: 'Weight Tracker'
+  title: 'Weight Tracker',
 }
 
 export default async function Page() {
@@ -21,7 +21,7 @@ export default async function Page() {
 
   const [latestWeight, entries] = await Promise.all([
     getLatestWeight(session.user.id),
-    getWeightEntries(session.user.id)
+    getWeightEntries(session.user.id),
   ])
 
   const currentWeight = latestWeight?.weight ?? session.user.currentWeight

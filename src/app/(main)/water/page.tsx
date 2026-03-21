@@ -12,7 +12,7 @@ import { getSession } from '@/lib/auth'
 import { getDateRange } from '@/lib/utils'
 
 export const metadata: Metadata = {
-  title: 'Water Tracker'
+  title: 'Water Tracker',
 }
 
 export default async function Page() {
@@ -27,7 +27,7 @@ export default async function Page() {
 
   const [entries, weekData] = await Promise.all([
     getWaterEntries(session.user.id),
-    getWaterChartData(session.user.id, dateRange)
+    getWaterChartData(session.user.id, dateRange),
   ])
 
   return (

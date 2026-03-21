@@ -14,7 +14,6 @@ import { MAX_WATER_INTAKE } from '@/lib/constants'
 import { formatMl, toZonedDate } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
-
 import { WaterDroplet } from './water-droplet'
 import { WaterGoalDialog } from './water-goal-dialog'
 import { WaterHistory } from './water-history'
@@ -45,7 +44,7 @@ export function WaterTracker(props: WaterTrackerProps) {
     const optimisticEntry: WaterEntry = {
       id: optimisticId,
       amount: Math.min(ml, MAX_WATER_INTAKE - amount),
-      createdAt: new Date()
+      createdAt: new Date(),
     }
 
     setEntries((prev) => [optimisticEntry, ...prev])
@@ -56,7 +55,7 @@ export function WaterTracker(props: WaterTrackerProps) {
     if (result.data?.success && entry) {
       // Replace optimistic entry with real one
       setEntries((prev) =>
-        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e))
+        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e)),
       )
     }
   }

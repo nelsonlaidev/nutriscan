@@ -15,7 +15,7 @@ import {
   getCalorieChartData,
   getNutritionChartData,
   getWaterChartData,
-  getWeightEntriesByDateRange
+  getWeightEntriesByDateRange,
 } from '@/data/progress'
 import { getLatestWeight } from '@/data/weight'
 import { getSession } from '@/lib/auth'
@@ -24,7 +24,7 @@ import { getDateRange } from '@/lib/utils'
 import { progressCache } from './search-params'
 
 export const metadata: Metadata = {
-  title: 'Progress'
+  title: 'Progress',
 }
 
 export default async function ProgressPage(props: PageProps<'/progress'>) {
@@ -44,7 +44,7 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
     getNutritionChartData(user.id, dateRange),
     getWaterChartData(user.id, dateRange),
     getWeightEntriesByDateRange(user.id, dateRange),
-    getLatestWeight(user.id)
+    getLatestWeight(user.id),
   ])
 
   // For yearly, aggregate daily rows by month (yyyy-MM); otherwise use daily keys
@@ -63,7 +63,7 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
     nutritionMap.set(key, {
       protein: prev.protein + r.protein,
       carbs: prev.carbs + r.carbs,
-      fat: prev.fat + r.fat
+      fat: prev.fat + r.fat,
     })
   }
 
@@ -84,8 +84,8 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
     date: d.label,
     calories: Math.round(calorieMap.get(d.value) ?? 0),
     ...(isYearly && {
-      goal: user.calorieBudget * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date()))
-    })
+      goal: user.calorieBudget * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date())),
+    }),
   }))
 
   const nutritionData = dateRange.dates.map((d) => {
@@ -94,7 +94,7 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
       date: d.label,
       protein: Math.round(row?.protein ?? 0),
       carbs: Math.round(row?.carbs ?? 0),
-      fat: Math.round(row?.fat ?? 0)
+      fat: Math.round(row?.fat ?? 0),
     }
   })
 
@@ -102,15 +102,15 @@ export default async function ProgressPage(props: PageProps<'/progress'>) {
     date: d.label,
     amount: waterMap.get(d.value) ?? 0,
     ...(isYearly && {
-      goal: user.waterGoal * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date()))
-    })
+      goal: user.waterGoal * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date())),
+    }),
   }))
 
   const weightData = dateRange.dates.map((d) => {
     const entry = weightMap.get(d.value)
     return {
       date: d.label,
-      weight: entry ? Math.round(entry.weight / entry.count) : null
+      weight: entry ? Math.round(entry.weight / entry.count) : null,
     }
   })
 

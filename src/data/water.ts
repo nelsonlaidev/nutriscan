@@ -1,8 +1,9 @@
 'use server'
 
+import type { InferSelectModel, SQL } from 'drizzle-orm'
 import type { DateRange, DayRange } from '@/lib/utils'
 
-import { and, desc, eq, gte, type InferSelectModel, lte, type SQL, sum } from 'drizzle-orm'
+import { and, desc, eq, gte, lte, sum } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { waterEntries } from '@/db/schemas'
@@ -20,7 +21,7 @@ export async function getWaterEntries(userId: string, dateRange?: DateRange): Pr
     .select({
       id: waterEntries.id,
       amount: waterEntries.amount,
-      createdAt: waterEntries.createdAt
+      createdAt: waterEntries.createdAt,
     })
     .from(waterEntries)
     .where(and(...filters))
@@ -37,8 +38,8 @@ export async function getWaterTotal(userId: string, dayRange: DayRange) {
       and(
         eq(waterEntries.userId, userId),
         gte(waterEntries.createdAt, dayRange.startOfDay),
-        lte(waterEntries.createdAt, dayRange.endOfDay)
-      )
+        lte(waterEntries.createdAt, dayRange.endOfDay),
+      ),
     )
 
   return Number(row?.total ?? 0)

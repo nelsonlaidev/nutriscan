@@ -13,17 +13,17 @@ export const waterEntries = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     amount: integer('amount').notNull(),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
     index('water_entry_userId_idx').on(table.userId),
-    index('water_entry_userId_createdAt_idx').on(table.userId, table.createdAt)
-  ]
+    index('water_entry_userId_createdAt_idx').on(table.userId, table.createdAt),
+  ],
 )
 
 export const waterEntryRelations = relations(waterEntries, ({ one }) => ({
   user: one(users, {
     fields: [waterEntries.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))

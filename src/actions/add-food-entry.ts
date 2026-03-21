@@ -10,7 +10,7 @@ import { AddFoodEntrySchema } from '@/lib/zod-schemas'
 export const addFoodEntry = authActionClient.inputSchema(AddFoodEntrySchema).action(async ({ parsedInput, ctx }) => {
   await db.insert(foodEntries).values({
     ...parsedInput,
-    userId: ctx.user.id
+    userId: ctx.user.id,
   })
 
   revalidatePath('/dashboard')

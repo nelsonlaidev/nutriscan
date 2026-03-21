@@ -72,14 +72,14 @@ test('BMI card shows computed value and category', async ({ page }) => {
 
   await expect(page.getByText('BMI')).toBeVisible()
   // Seed: weight ~80kg, height 175cm → BMI ~26.1 → "Overweight"
-  // eslint-disable-next-line sonarjs/slow-regex
+  // oxlint-disable-next-line sonarjs/slow-regex
   await expect(page.getByText(/\d+\.\d/)).toBeVisible()
   await expect(
     page
       .getByText('Normal')
       .or(page.getByText('Overweight'))
       .or(page.getByText('Underweight'))
-      .or(page.getByText('Obese'))
+      .or(page.getByText('Obese')),
   ).toBeVisible()
 })
 

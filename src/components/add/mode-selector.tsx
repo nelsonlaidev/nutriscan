@@ -1,11 +1,10 @@
-import type { NutritionData } from './nutrition-result'
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
+import type { NutritionData } from './nutrition-result'
 
 import { BarcodeIcon, CameraIcon, PencilSimpleIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
-
 import { AiImageMode } from './ai-image-mode'
 import { BarcodeMode } from './barcode-mode'
 import { ManualEntryMode } from './manual-entry-mode'
@@ -15,7 +14,7 @@ export type Mode = 'ai-scan' | 'manual' | 'barcode'
 const MODES = [
   { id: 'ai-scan', icon: CameraIcon },
   { id: 'manual', icon: PencilSimpleIcon },
-  { id: 'barcode', icon: BarcodeIcon }
+  { id: 'barcode', icon: BarcodeIcon },
 ] as const
 
 type ModeSelectorProps = {
@@ -32,7 +31,7 @@ export function ModeSelector(props: ModeSelectorProps) {
   const modeLabels: Record<Mode, string> = {
     'ai-scan': t('add-food.ai-scan'),
     manual: t('add-food.manual'),
-    barcode: t('add-food.barcode')
+    barcode: t('add-food.barcode'),
   }
 
   return (

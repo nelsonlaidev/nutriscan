@@ -7,7 +7,7 @@ export const env = createEnv({
     CI: z
       .enum(['true', 'false', '1', '0'])
       .default('false')
-      .transform((v) => v === 'true' || v === '1')
+      .transform((v) => v === 'true' || v === '1'),
   },
 
   server: {
@@ -28,15 +28,15 @@ export const env = createEnv({
     PROTECTED: z
       .enum(['true', 'false', '1', '0'])
       .default('false')
-      .transform((v) => v === 'true' || v === '1')
+      .transform((v) => v === 'true' || v === '1'),
   },
 
   client: {},
 
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    CI: process.env.CI
+    CI: process.env.CI,
   },
 
-  emptyStringAsUndefined: true
+  emptyStringAsUndefined: true,
 })

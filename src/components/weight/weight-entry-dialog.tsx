@@ -13,7 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -48,7 +48,7 @@ export function WeightEntryDialog(props: WeightEntryDialogProps) {
       onEntryAdded({
         id: result.data.entry.id,
         weight: value,
-        createdAt: result.data.entry.createdAt
+        createdAt: result.data.entry.createdAt,
       })
       toast.success(t('weight.entry-added'))
       setOpen(false)

@@ -17,7 +17,7 @@ export const addWeightEntry = authActionClient
       .insert(weightEntries)
       .values({
         userId: ctx.user.id,
-        weight: parsedInput.weight
+        weight: parsedInput.weight,
       })
       .returning({ id: weightEntries.id, createdAt: weightEntries.createdAt })
 

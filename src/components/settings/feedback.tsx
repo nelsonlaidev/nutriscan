@@ -36,7 +36,7 @@ export function Feedback() {
       } else {
         toast.error(t('settings.feedback-error'))
       }
-    }
+    },
   })
 
   return (

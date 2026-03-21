@@ -11,7 +11,7 @@ const PROTECTED_ROUTES = [
   '/water',
   '/weight',
   '/meals',
-  '/onboarding'
+  '/onboarding',
 ]
 
 for (const route of PROTECTED_ROUTES) {

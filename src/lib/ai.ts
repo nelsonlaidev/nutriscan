@@ -8,7 +8,7 @@ import { titlePrompt } from '@/lib/prompts'
 import { getTextFromMessage } from '@/lib/utils'
 
 const openrouter = createOpenRouter({
-  apiKey: env.OPENROUTER_API_KEY
+  apiKey: env.OPENROUTER_API_KEY,
 })
 
 export const defaultModel = openrouter('google/gemini-3-flash-preview')
@@ -19,12 +19,12 @@ export async function generateTitle(message: UIMessage) {
   const { text } = await generateText({
     model: titleModel,
     system: titlePrompt,
-    prompt: getTextFromMessage(message)
+    prompt: getTextFromMessage(message),
   })
   return (
     text
       .replace(/^[#*"\s]+/, '')
-      // eslint-disable-next-line sonarjs/slow-regex
+      // oxlint-disable-next-line sonarjs/slow-regex
       .replace(/"+$/, '')
       .trim()
   )

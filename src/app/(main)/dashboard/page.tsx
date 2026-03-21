@@ -19,7 +19,7 @@ import { computeMealBreakdowns, computeTotals, getDayRange } from '@/lib/utils'
 import { dashboardCache } from './search-params'
 
 export const metadata: Metadata = {
-  title: 'Dashboard'
+  title: 'Dashboard',
 }
 
 export default async function Page(props: PageProps<'/dashboard'>) {
@@ -34,7 +34,7 @@ export default async function Page(props: PageProps<'/dashboard'>) {
   const [entries, waterAmount, latestWeight] = await Promise.all([
     getFoodEntries(session.user.id, dayRange),
     getWaterTotal(session.user.id, dayRange),
-    getLatestWeight(session.user.id)
+    getLatestWeight(session.user.id),
   ])
 
   const totals = computeTotals(entries)

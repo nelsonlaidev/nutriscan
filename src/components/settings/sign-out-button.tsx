@@ -23,8 +23,8 @@ export function SignOutButton() {
         fetchOptions: {
           onSuccess: () => {
             router.push('/auth/sign-in')
-          }
-        }
+          },
+        },
       })
     } catch {
       toast.error(t('auth.error-sign-out'))

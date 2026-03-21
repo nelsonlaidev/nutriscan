@@ -1,10 +1,11 @@
 import type { UIMessage } from 'ai'
+import type { StreamdownProps } from 'streamdown'
 
 import { cjk } from '@streamdown/cjk'
 import { code } from '@streamdown/code'
 import { math } from '@streamdown/math'
 import { mermaid } from '@streamdown/mermaid'
-import { Streamdown, type StreamdownProps } from 'streamdown'
+import { Streamdown } from 'streamdown'
 
 import { cn } from '@/lib/utils'
 
@@ -25,7 +26,7 @@ export function Message(props: MessageProps) {
           mermaid: mermaid,
           math: math,
           cjk: cjk,
-          ...plugins
+          ...plugins,
         }}
         shikiTheme={['github-light-default', 'github-dark-default']}
         mermaid={{ config: { theme: 'neutral', ...mermaidConfig?.config }, ...mermaidConfig }}
