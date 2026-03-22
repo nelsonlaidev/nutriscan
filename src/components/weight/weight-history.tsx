@@ -1,14 +1,11 @@
 'use client'
 
-import type { WeightEntry } from '@/data/weight'
-
 import { DotsThreeIcon, PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { format, isToday, isYesterday } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { deleteWeightEntry, updateWeightEntry } from '@/actions/weight-entry'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,22 +18,35 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useDeleteWeightEntry, useUpdateWeightEntry } from '@/hooks/queries/weight.query'
 import { toZonedDate } from '@/lib/utils'
 
 import { Spinner } from '../ui/spinner'
 
+type WeightEntry = {
+  id: string
+  weight: number
+  createdAt: Date
+}
+
 type WeightHistoryProps = {
   entries: WeightEntry[]
-  onUpdate: (id: string, weight: number) => void
-  onDelete: (id: string) => void
 }
 
 export function WeightHistory(props: WeightHistoryProps) {
-  const { entries, onUpdate, onDelete } = props
+  const { entries } = props
   const t = useTranslations()
   const [editEntry, setEditEntry] = useState<WeightEntry | null>(null)
   const [editWeight, setEditWeight] = useState('')
-  const [saving, setSaving] = useState(false)
+
+  const { mutate: updateWeight, isPending: saving } = useUpdateWeightEntry(() => {
+    toast.success(t('weight.entry-updated'))
+    setEditEntry(null)
+  })
+
+  const { mutate: deleteWeight } = useDeleteWeightEntry(() => {
+    toast.success(t('weight.entry-deleted'))
+  })
 
   function formatDate(rawDate: Date) {
     const date = toZonedDate(rawDate)
@@ -72,7 +82,7 @@ export function WeightHistory(props: WeightHistoryProps) {
     setEditWeight(String(entry.weight))
   }
 
-  async function handleEditSave(e: React.FormEvent) {
+  function handleEditSave(e: React.FormEvent) {
     e.preventDefault()
     if (!editEntry) return
 
@@ -82,28 +92,7 @@ export function WeightHistory(props: WeightHistoryProps) {
       return
     }
 
-    setSaving(true)
-    const result = await updateWeightEntry({ id: editEntry.id, weight: value })
-
-    if (result.data?.success) {
-      onUpdate(editEntry.id, value)
-      toast.success(t('weight.entry-updated'))
-      setEditEntry(null)
-    } else {
-      toast.error(t('weight.entry-update-error'))
-    }
-    setSaving(false)
-  }
-
-  async function handleDelete(id: string) {
-    onDelete(id)
-    const result = await deleteWeightEntry({ id })
-
-    if (result.data?.success) {
-      toast.success(t('weight.entry-deleted'))
-    } else {
-      toast.error(t('weight.entry-delete-error'))
-    }
+    updateWeight({ id: editEntry.id, weight: value }, { onError: () => toast.error(t('weight.entry-update-error')) })
   }
 
   if (entries.length === 0) {
@@ -115,7 +104,7 @@ export function WeightHistory(props: WeightHistoryProps) {
       <h3 className='font-semibold'>{t('weight.history')}</h3>
       <div className='divide-y'>
         {entries.map((entry, index) => (
-          <div key={entry.id} className='flex items-center justify-between py-3'>
+          <div key={entry.id} data-testid='weight-entry' className='flex items-center justify-between py-3'>
             <div className='flex flex-col gap-1'>
               <div className='flex items-center gap-3'>
                 <span className='text-sm font-medium'>{entry.weight.toFixed(1)} kg</span>
@@ -142,7 +131,7 @@ export function WeightHistory(props: WeightHistoryProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    void handleDelete(entry.id)
+                    deleteWeight({ id: entry.id }, { onError: () => toast.error(t('weight.entry-delete-error')) })
                   }}
                   variant='destructive'
                 >

@@ -6,10 +6,9 @@ import type { Meal } from '@/lib/constants'
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useCallback, useState, useTransition } from 'react'
+import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 
-import { addFoodEntry } from '@/actions/add-food-entry'
 import { MealCategoryPicker } from '@/components/add/meal-category-picker'
 import { ModeSelector } from '@/components/add/mode-selector'
 import { NutritionResult } from '@/components/add/nutrition-result'
@@ -17,6 +16,7 @@ import { BackButton } from '@/components/back-button'
 import { MainLayout } from '@/components/main-layout'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import { useCreateFoodEntry } from '@/hooks/queries/food.query'
 import { DEFAULT_MEAL } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
@@ -28,7 +28,11 @@ export default function Page() {
   const [step, setStep] = useState<Step>('input')
   const [nutritionData, setNutritionData] = useState<NutritionData | null>(null)
   const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
-  const [isPending, startTransition] = useTransition()
+
+  const { mutate: addToMeal, isPending } = useCreateFoodEntry(() => {
+    toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
+    router.push('/dashboard')
+  })
 
   const handleScanResult = useCallback((data: NutritionData) => {
     setNutritionData(data)
@@ -50,8 +54,8 @@ export default function Page() {
       return
     }
 
-    startTransition(async () => {
-      const result = await addFoodEntry({
+    addToMeal(
+      {
         foodName: nutritionData.foodName,
         servingSize: nutritionData.servingSize,
         calories: nutritionData.calories,
@@ -61,16 +65,11 @@ export default function Page() {
         mealCategory: selectedMeal,
         source: mode,
         imageUrl: nutritionData.imageUrl,
-      })
-
-      if (result.serverError) {
-        toast.error(t('add-food.save-error'))
-        return
-      }
-
-      toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
-      router.push('/dashboard')
-    })
+      },
+      {
+        onError: () => toast.error(t('add-food.save-error')),
+      },
+    )
   }
 
   function handleBack() {

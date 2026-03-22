@@ -3,7 +3,6 @@
 import 'katex/dist/katex.min.css'
 
 import type { FileUIPart, UIMessage } from 'ai'
-import type { Chats } from '@/actions/chat'
 
 import { useChat } from '@ai-sdk/react'
 import {
@@ -22,9 +21,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useStickToBottom } from 'use-stick-to-bottom'
 
-import { getChatTitle } from '@/actions/chat'
 import { ChatProvider } from '@/contexts/chat'
+import { useChatById } from '@/hooks/queries/chat.query'
 import { uploadImage } from '@/lib/upload'
+import { client } from '@/orpc/client'
 
 import { ChatSidebar } from './chat-sidebar'
 import { ChatWelcome } from './chat-welcome'
@@ -36,15 +36,23 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '
 type ChatProps = {
   id: string
   isNewChat: boolean
-  chats: Chats
-  chatTitle?: string
-  initialMessages?: UIMessage[]
 }
 
 const EMPTY_MESSAGES: UIMessage[] = []
 
 export function Chat(props: ChatProps) {
-  const { id, isNewChat, chats, chatTitle, initialMessages = EMPTY_MESSAGES } = props
+  const { id, isNewChat } = props
+
+  const { data: chatData } = useChatById({ chatId: isNewChat ? '' : id })
+
+  const initialMessages = useMemo(() => {
+    if (!chatData?.messages) return EMPTY_MESSAGES
+    return chatData.messages.map((msg) => ({
+      id: msg.id,
+      role: msg.role,
+      parts: msg.parts as UIMessage['parts'],
+    }))
+  }, [chatData])
 
   const t = useTranslations()
   const [input, setInput] = useState('')
@@ -55,7 +63,7 @@ export function Chat(props: ChatProps) {
   const router = useRouter()
   const { contentRef, scrollRef, scrollToBottom, isAtBottom } = useStickToBottom({ resize: 'smooth' })
 
-  const [title, setTitle] = useState(() => chatTitle ?? t('nav.chat'))
+  const [title, setTitle] = useState(() => chatData?.title ?? t('nav.chat'))
 
   const transport = useMemo(() => new DefaultChatTransport({ body: { chatId: id } }), [id])
 
@@ -72,7 +80,7 @@ export function Chat(props: ChatProps) {
   const prevStatusRef = useRef(status)
   useEffect(() => {
     const fetchTitle = async () => {
-      const newTitle = await getChatTitle(id)
+      const newTitle = await client.chat.getTitle({ chatId: id })
       if (newTitle) setTitle(newTitle)
     }
 
@@ -81,6 +89,11 @@ export function Chat(props: ChatProps) {
     }
     prevStatusRef.current = status
   }, [status, id])
+
+  useEffect(() => {
+    // oxlint-disable-next-line react-x/set-state-in-effect
+    if (chatData?.title) setTitle(chatData.title)
+  }, [chatData?.title])
 
   const handleNewChat = useCallback(() => {
     setSidebarOpen(false)
@@ -187,7 +200,7 @@ export function Chat(props: ChatProps) {
         </Button>
       }
     >
-      <ChatProvider status={status} chats={chats}>
+      <ChatProvider status={status}>
         <div className='-mt-4 flex h-full flex-col'>
           <div
             ref={scrollRef}

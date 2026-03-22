@@ -3,10 +3,10 @@ import type { UIMessage } from 'ai'
 import { convertToModelMessages, streamText, validateUIMessages } from 'ai'
 import * as z from 'zod'
 
-import { getChatById, saveChat } from '@/actions/chat'
 import { defaultModel, generateTitle } from '@/lib/ai'
 import { getSession } from '@/lib/auth'
 import { chatSystemPrompt } from '@/lib/prompts'
+import { client } from '@/orpc/client'
 
 const ChatSchema = z.object({
   chatId: z.uuid(),
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
         const allMessages = [...validatedMessages, assistantMessage]
 
-        const existingChat = await getChatById(chatId)
+        const existingChat = await client.chat.getById({ chatId })
 
         if (existingChat && existingChat.userId !== session.user.id) {
           return
@@ -68,11 +68,14 @@ export async function POST(request: Request) {
           }
         }
 
-        await saveChat({
+        await client.chat.save({
           chatId,
-          userId: session.user.id,
           title,
-          messages: allMessages,
+          messages: allMessages.map((msg) => ({
+            id: msg.id,
+            role: msg.role,
+            parts: msg.parts as unknown[],
+          })),
         })
       } catch (error) {
         console.error('Failed to save chat:', error)

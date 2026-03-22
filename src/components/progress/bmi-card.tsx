@@ -3,11 +3,12 @@
 import { useTranslations } from 'next-intl'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLatestWeight } from '@/hooks/queries/weight.query'
 import { cn } from '@/lib/utils'
 
 type BmiCardProps = {
-  weight: number
   height: number
+  fallbackWeight: number
 }
 
 function computeBmi(weightKg: number, heightCm: number) {
@@ -72,9 +73,12 @@ function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   return { x: round(cx + r * Math.cos(rad)), y: round(cy - r * Math.sin(rad)) }
 }
 
-export function BmiCard({ weight, height }: BmiCardProps) {
+export function BmiCard({ height, fallbackWeight }: BmiCardProps) {
   const t = useTranslations()
-  const bmi = computeBmi(weight, height)
+  const { data: latestWeight } = useLatestWeight()
+
+  const currentWeight = latestWeight?.weight ?? fallbackWeight
+  const bmi = computeBmi(currentWeight, height)
   const category = getBmiCategory(bmi)
   const colors = categoryColors[category]
 

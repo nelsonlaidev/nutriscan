@@ -1,21 +1,19 @@
 import type { ChatStatus } from 'ai'
-import type { Chats } from '@/actions/chat'
 
 import { createContext, use, useMemo } from 'react'
 
 type ChatContextValue = {
   status: ChatStatus
-  chats: Chats
 }
 
 const ChatContext = createContext<ChatContextValue | null>(null)
 ChatContext.displayName = 'ChatContext'
 
-export function useChat() {
+export function useChatContext() {
   const context = use(ChatContext)
 
   if (!context) {
-    throw new Error('useChat must be used within a ChatProvider')
+    throw new Error('useChatContext must be used within a ChatProvider')
   }
 
   return context
@@ -26,14 +24,13 @@ type ChatProviderProps = {
 } & ChatContextValue
 
 export function ChatProvider(props: ChatProviderProps) {
-  const { children, status, chats } = props
+  const { children, status } = props
 
   const value = useMemo<ChatContextValue>(
     () => ({
       status,
-      chats,
     }),
-    [status, chats],
+    [status],
   )
 
   return <ChatContext value={value}>{children}</ChatContext>

@@ -3,10 +3,9 @@
 import { CheckCircleIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useMemo } from 'react'
 
-import { completeOnboarding } from '@/actions/onboarding'
+import { useCompleteOnboarding } from '@/hooks/queries/onboarding.query'
 import { useOnboardingForm } from '@/hooks/use-onboarding-form'
 import {
   calculateAge,
@@ -16,7 +15,6 @@ import {
   calculateTDEE,
   getWeeklyLoss,
 } from '@/lib/calculations'
-import { onActionError } from '@/lib/safe-action-utils'
 
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { OnboardingLayout } from './onboarding-layout'
@@ -41,15 +39,14 @@ export function Step3() {
     return { currentWeight, goalWeight, calories, macros, weeklyLoss, weightToLose }
   }, [data])
 
-  const { execute, isPending } = useAction(completeOnboarding, {
-    onSuccess: () => {
-      router.push('/')
-    },
-    onError: onActionError,
+  const { mutate, isPending } = useCompleteOnboarding(() => {
+    router.push('/')
   })
 
   function handleConfirm() {
-    execute({
+    if (isPending) return
+
+    mutate({
       currentWeight: computed.currentWeight,
       goalWeight: computed.goalWeight,
       height: data.height as number,

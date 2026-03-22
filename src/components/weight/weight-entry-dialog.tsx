@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { addWeightEntry } from '@/actions/weight-entry'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,21 +16,22 @@ import {
 } from '@/components/ui/dialog'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useAddWeightEntry } from '@/hooks/queries/weight.query'
 
 import { Spinner } from '../ui/spinner'
 
-type WeightEntryDialogProps = {
-  onEntryAdded: (entry: { id: string; weight: number; createdAt: Date }) => void
-}
-
-export function WeightEntryDialog(props: WeightEntryDialogProps) {
-  const { onEntryAdded } = props
+export function WeightEntryDialog() {
   const t = useTranslations()
   const [open, setOpen] = useState(false)
   const [weight, setWeight] = useState('')
-  const [saving, setSaving] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent) {
+  const { mutate: addWeight, isPending: saving } = useAddWeightEntry(() => {
+    toast.success(t('weight.entry-added'))
+    setOpen(false)
+    setWeight('')
+  })
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     const value = Number.parseFloat(weight)
@@ -40,24 +40,7 @@ export function WeightEntryDialog(props: WeightEntryDialogProps) {
       return
     }
 
-    setSaving(true)
-
-    const result = await addWeightEntry({ weight: value })
-
-    if (result.data?.success && result.data.entry) {
-      onEntryAdded({
-        id: result.data.entry.id,
-        weight: value,
-        createdAt: result.data.entry.createdAt,
-      })
-      toast.success(t('weight.entry-added'))
-      setOpen(false)
-      setWeight('')
-    } else {
-      toast.error(t('weight.entry-add-error'))
-    }
-
-    setSaving(false)
+    addWeight({ weight: value }, { onError: () => toast.error(t('weight.entry-add-error')) })
   }
 
   return (

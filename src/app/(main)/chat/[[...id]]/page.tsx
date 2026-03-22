@@ -1,9 +1,8 @@
-import type { UIMessage } from 'ai'
-
 import * as z from 'zod'
 
-import { getChatById, getChats } from '@/actions/chat'
 import { Chat } from '@/components/chat'
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
+import { orpc } from '@/orpc/client'
 
 const ParamsSchema = z.uuid().optional()
 
@@ -16,32 +15,19 @@ export default async function ChatPage(props: PageProps<'/chat/[[...id]]'>) {
   // oxlint-disable-next-line react-x/purity
   const randomId = crypto.randomUUID()
 
-  let initialMessages: UIMessage[] = []
-  let chatTitle: string | undefined
+  const queryClient = getQueryClient()
+
+  const prefetches = [queryClient.prefetchQuery(orpc.chat.list.queryOptions())]
 
   if (parsedId) {
-    const chat = await getChatById(parsedId)
-
-    if (chat) {
-      initialMessages = chat.messages.map((msg) => ({
-        id: msg.id,
-        role: msg.role,
-        parts: msg.parts as UIMessage['parts'],
-      }))
-
-      chatTitle = chat.title
-    }
+    prefetches.push(queryClient.prefetchQuery(orpc.chat.getById.queryOptions({ input: { chatId: parsedId } })))
   }
 
-  const chats = await getChats()
+  await Promise.all(prefetches)
 
   return (
-    <Chat
-      isNewChat={parsedId === undefined}
-      id={parsedId ?? randomId}
-      chatTitle={chatTitle}
-      initialMessages={initialMessages}
-      chats={chats}
-    />
+    <HydrateClient client={queryClient}>
+      <Chat isNewChat={parsedId === undefined} id={parsedId ?? randomId} />
+    </HydrateClient>
   )
 }

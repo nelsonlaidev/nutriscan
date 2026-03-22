@@ -1,15 +1,18 @@
-import type { MealBreakdown } from '@/lib/utils'
+'use client'
+
+import type { DayRange } from '@/lib/utils'
 
 import { CaretRightIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { useFoodMeals } from '@/hooks/queries/food.query'
 import { MEAL_EMOJI } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 type MealListProps = {
-  meals: MealBreakdown[]
+  dayRange: DayRange
   date: string
 }
 
@@ -20,9 +23,10 @@ const EMOJI_BG: Record<string, string> = {
   snacks: 'bg-red-100 dark:bg-red-950',
 }
 
-export async function MealList(props: MealListProps) {
-  const { meals, date } = props
-  const t = await getTranslations()
+export function MealList(props: MealListProps) {
+  const { dayRange, date } = props
+  const { data: meals } = useFoodMeals(dayRange)
+  const t = useTranslations()
 
   return (
     <div className='space-y-3'>

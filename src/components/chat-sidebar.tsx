@@ -2,12 +2,10 @@ import { PlusIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-import { deleteChat } from '@/actions/chat'
-import { useChat } from '@/contexts/chat'
+import { useChats, useDeleteChat } from '@/hooks/queries/chat.query'
 import { cn } from '@/lib/utils'
 
 import { Button } from './ui/button'
@@ -20,16 +18,11 @@ type ChatSidebarProps = {
 
 export function ChatSidebar(props: ChatSidebarProps) {
   const { open, onOpenChange, onNewChat } = props
-  const { chats } = useChat()
+  const { data: chats } = useChats()
   const t = useTranslations()
 
-  const { execute: executeDelete } = useAction(deleteChat, {
-    onSuccess: () => {
-      toast.success(t('chat.deleted'))
-    },
-    onError: () => {
-      toast.error(t('chat.delete-failed'))
-    },
+  const { mutate: executeDelete } = useDeleteChat(() => {
+    toast.success(t('chat.deleted'))
   })
 
   useEffect(() => {

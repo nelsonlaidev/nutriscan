@@ -1,18 +1,17 @@
-import type { ErrorResponse } from '@/types'
 import type { NutritionData } from './nutrition-result'
 
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
+import { useMutation } from '@tanstack/react-query'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
 
-import { scanFoodImage } from '@/actions/ai-image-scan'
 import { Button } from '@/components/ui/button'
 import { uploadImage } from '@/lib/upload'
+import { orpc } from '@/orpc/client'
 
 import { Spinner } from '../ui/spinner'
 
@@ -29,20 +28,17 @@ export function AiImageMode(props: AiImageModeProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
 
-  const { execute, isPending } = useAction(scanFoodImage, {
-    onSuccess: ({ data }) => {
-      if (data.success) {
-        onResult(data.data)
-      } else {
-        const errorKey = (data as ErrorResponse).error
-        toast.error(t(errorKey))
+  const { mutate: execute, isPending } = useMutation(
+    orpc.scanning.aiImageScan.mutationOptions({
+      onSuccess: (data) => {
+        onResult(data)
+      },
+      onError: () => {
+        toast.error(t('errors.ai-scan-failed'))
         setPreview(null)
-      }
-    },
-    onError: () => {
-      toast.error(t('errors.ai-scan-failed'))
-    },
-  })
+      },
+    }),
+  )
 
   useEffect(
     () => () => {

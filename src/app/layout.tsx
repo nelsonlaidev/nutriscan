@@ -1,17 +1,15 @@
+import '../orpc/server'
 import '../styles/globals.css'
 import 'streamdown/styles.css'
 
 import type { Metadata, Viewport } from 'next'
 
-import { Provider as JotaiProvider } from 'jotai'
 import { Geist } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
-import { ThemeProvider } from 'next-themes'
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
+import { Providers } from '@/components/providers'
 import { Toaster } from '@/components/ui/sonner'
-import { TooltipProvider } from '@/components/ui/tooltip'
 
 const geistSans = Geist({
   subsets: ['latin'],
@@ -47,22 +45,14 @@ export default async function Layout(props: LayoutProps) {
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={geistSans.className} suppressHydrationWarning>
+    <html lang={locale} className={geistSans.className} data-scroll-behavior='smooth' suppressHydrationWarning>
       <body>
-        <TooltipProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-            <JotaiProvider>
-              <NuqsAdapter>
-                <NextIntlClientProvider messages={messages}>
-                  <div className='relative mx-auto h-full max-w-240 overflow-x-clip min-[60rem]:border-x'>
-                    {children}
-                  </div>
-                  <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
-                </NextIntlClientProvider>
-              </NuqsAdapter>
-            </JotaiProvider>
-          </ThemeProvider>
-        </TooltipProvider>
+        <Providers>
+          <NextIntlClientProvider messages={messages}>
+            <div className='relative mx-auto h-full max-w-240 overflow-x-clip min-[60rem]:border-x'>{children}</div>
+            <Toaster toastOptions={{ duration: 2500 }} position='top-center' visibleToasts={5} expand />
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   )

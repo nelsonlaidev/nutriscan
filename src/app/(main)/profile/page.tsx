@@ -1,45 +1,38 @@
-'use client'
+import type { Metadata } from 'next'
 
-import { GearIcon } from '@phosphor-icons/react/ssr'
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
-import { useMemo } from 'react'
+import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { MainLayout } from '@/components/main-layout'
-import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
-import { useSession } from '@/lib/session'
+import { getSession } from '@/lib/auth'
 
-export default function Page() {
-  const { user } = useSession()
-  const t = useTranslations()
+import { SettingsLink } from './settings-link'
 
-  const displayName = user.name
+export const metadata: Metadata = {
+  title: 'Profile',
+}
 
-  const memberSince = useMemo(
-    () =>
-      new Date(user.createdAt).toLocaleDateString('en-US', {
-        month: 'long',
-        year: 'numeric',
-      }),
-    [user.createdAt],
-  )
+export default async function Page() {
+  const [session, t] = await Promise.all([getSession(), getTranslations()])
+  if (!session) redirect('/')
+
+  const { user } = session
+
+  // Server component
+  // oxlint-disable-next-line react-x/purity
+  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  })
 
   return (
-    <MainLayout
-      title={t('profile.page-title')}
-      className='space-y-4'
-      rightTitleButton={
-        <Link href='/settings' className={buttonVariants({ variant: 'ghost', size: 'icon-lg' })}>
-          <GearIcon size={28} />
-        </Link>
-      }
-    >
+    <MainLayout title={t('profile.page-title')} className='space-y-4' rightTitleButton={<SettingsLink />}>
       <div className='flex flex-col items-center gap-2 py-4'>
-        <UserAvatar className='size-24' />
+        <UserAvatar user={user} className='size-24' />
         <div className='text-center'>
-          <p className='text-xl font-semibold'>{displayName}</p>
+          <p className='text-xl font-semibold'>{user.name}</p>
           <p className='text-sm text-muted-foreground'>{user.email}</p>
         </div>
       </div>

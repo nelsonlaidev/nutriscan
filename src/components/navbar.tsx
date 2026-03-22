@@ -10,7 +10,11 @@ import { getNavbarLinks } from '@/lib/links'
 
 import { UserAvatar } from './user-avatar'
 
-export function Navbar() {
+type NavbarProps = {
+  user: { id: string; name: string; image?: string | null }
+}
+
+export function Navbar({ user }: NavbarProps) {
   const pathname = usePathname()
   const t = useTranslations()
   const navbarLinks = getNavbarLinks(t)
@@ -33,7 +37,7 @@ export function Navbar() {
             {link.icon ? (
               <link.icon size={24} weight={active && !isPrimary ? 'fill' : 'regular'} />
             ) : (
-              <UserAvatar className='size-6' />
+              <UserAvatar user={user} className='size-6' />
             )}
           </Link>
         )

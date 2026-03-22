@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { updateWaterGoal } from '@/actions/update-water-goal'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,6 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { useUpdateWaterGoal } from '@/hooks/queries/water.query'
 import { formatMl } from '@/lib/utils'
 
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '../ui/field'
@@ -32,26 +32,21 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
   const t = useTranslations()
   const [open, setOpen] = useState(false)
   const [goal, setGoal] = useState(String(currentGoal))
-  const [saving, setSaving] = useState(false)
 
-  async function handleSave() {
+  const { mutate: updateGoal, isPending: saving } = useUpdateWaterGoal(() => {
+    setOpen(false)
+    toast.success(t('water.goal-updated'))
+  })
+
+  function handleSave() {
     const parsed = Number.parseInt(goal, 10)
     if (Number.isNaN(parsed) || parsed < 500 || parsed > 10_000) {
       toast.error(t('water.goal-range-error'))
       return
     }
 
-    setSaving(true)
-    const result = await updateWaterGoal({ goal: parsed })
-    setSaving(false)
-
-    if (result.data?.success) {
-      onGoalChange(parsed)
-      setOpen(false)
-      toast.success(t('water.goal-updated'))
-    } else {
-      toast.error(t('water.goal-update-error'))
-    }
+    onGoalChange(parsed)
+    updateGoal({ goal: parsed })
   }
 
   return (

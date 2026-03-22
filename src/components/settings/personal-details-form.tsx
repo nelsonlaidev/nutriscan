@@ -6,11 +6,10 @@ import { BarbellIcon, CalendarBlankIcon, RulerIcon, TargetIcon } from '@phosphor
 import { useForm } from '@tanstack/react-form'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 
-import { updatePersonalDetails } from '@/actions/update-personal-details'
 import { Button } from '@/components/ui/button'
+import { useUpdatePersonalDetails } from '@/hooks/queries/settings.query'
 import {
   calculateAge,
   calculateBMR,
@@ -19,8 +18,6 @@ import {
   calculateTDEE,
   generatePlanOptions,
 } from '@/lib/calculations'
-import { onActionError } from '@/lib/safe-action-utils'
-import { useSession } from '@/lib/session'
 import { createPersonalDetailsFormSchema } from '@/lib/zod-schemas'
 
 import {
@@ -52,8 +49,18 @@ function computePlanOptions(
   return generatePlanOptions(currentWeight, height, age, gender, goalWeight as number)
 }
 
-export function PersonalDetailsForm() {
-  const { user } = useSession()
+type PersonalDetailsFormProps = {
+  user: {
+    currentWeight: number
+    goalWeight: number
+    height: number
+    birthday: string
+    gender: string
+    plan: string
+  }
+}
+
+export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
   const router = useRouter()
   const t = useTranslations()
 
@@ -69,17 +76,10 @@ export function PersonalDetailsForm() {
     accelerated: t('onboarding.plan-accelerated'),
   }
 
-  const { execute, isPending } = useAction(updatePersonalDetails, {
-    onSuccess: () => {
-      toast.success(t('settings.personal-details.success'))
-      // Refresh to get updated session
-      router.refresh()
-      router.back()
-    },
-    onError: (error) => {
-      onActionError(error)
-      toast.error(t('settings.personal-details.error'))
-    },
+  const { mutate: execute, isPending } = useUpdatePersonalDetails(() => {
+    toast.success(t('settings.personal-details.success'))
+    router.refresh()
+    router.back()
   })
 
   const form = useForm({

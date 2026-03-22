@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import { UserAvatar } from '@/components/user-avatar'
-import { useSession } from '@/lib/session'
 
 function getGreetingKey(hour: number) {
   if (hour >= 5 && hour < 12) return 'greeting.morning'
@@ -12,8 +11,11 @@ function getGreetingKey(hour: number) {
   return 'greeting.evening'
 }
 
-export function DashboardHeader() {
-  const { user } = useSession()
+type DashboardHeaderProps = {
+  user: { id: string; name: string; image?: string | null }
+}
+
+export function DashboardHeader({ user }: DashboardHeaderProps) {
   const t = useTranslations()
   const greeting = useMemo(() => {
     const hour = new Date().getHours()
@@ -22,7 +24,7 @@ export function DashboardHeader() {
 
   return (
     <div className='flex items-center gap-3'>
-      <UserAvatar className='size-10' />
+      <UserAvatar user={user} className='size-10' />
       <div>
         <p className='text-sm text-muted-foreground'>{greeting},</p>
         <h1 className='text-lg font-semibold'>{user.name}</h1>

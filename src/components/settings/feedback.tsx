@@ -6,9 +6,9 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { sendFeedback } from '@/actions/send-feedback'
 import { MAX_FEEDBACK_LENGTH } from '@/lib/constants'
-import { SendFeedbackSchema } from '@/lib/zod-schemas'
+import { client } from '@/orpc/client'
+import { SendFeedbackInputSchema } from '@/orpc/schemas/settings.schema'
 
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
@@ -23,18 +23,18 @@ export function Feedback() {
 
   const form = useForm({
     defaultValues: { message: '' },
-    validators: { onSubmit: SendFeedbackSchema },
+    validators: { onSubmit: SendFeedbackInputSchema },
     onSubmit: async ({ value }) => {
       setIsSubmitting(true)
-      const result = await sendFeedback({ message: value.message.trim() })
-      setIsSubmitting(false)
-
-      if (result.data?.success) {
+      try {
+        await client.settings.sendFeedback({ message: value.message.trim() })
         toast.success(t('settings.feedback-success'))
         form.reset()
         setOpen(false)
-      } else {
+      } catch {
         toast.error(t('settings.feedback-error'))
+      } finally {
+        setIsSubmitting(false)
       }
     },
   })

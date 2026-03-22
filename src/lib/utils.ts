@@ -1,6 +1,6 @@
 import type { UIMessage } from 'ai'
 import type { ClassValue } from 'clsx'
-import type { MealCategory, TimeRange } from '@/types'
+import type { TimeRange } from '@/types'
 
 import { TZDate } from '@date-fns/tz'
 import { clsx } from 'clsx'
@@ -28,8 +28,8 @@ export function formatMl(ml: number) {
 
 export type DateRange = {
   dates: Array<{ label: string; value: string }>
-  startOfDay: Date
-  endOfDay: Date
+  startOfDay: string
+  endOfDay: string
 }
 
 export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): DateRange {
@@ -58,8 +58,8 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
           label: format(month, 'MMM'),
           value: format(month, 'yyyy-MM'),
         })),
-        startOfDay: toZonedDate(startDate, timezone),
-        endOfDay: addDays(toZonedDate(todayStart, timezone), 1),
+        startOfDay: toZonedDate(startDate, timezone).toISOString(),
+        endOfDay: addDays(toZonedDate(todayStart, timezone), 1).toISOString(),
       }
     }
     default: {
@@ -84,8 +84,8 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
       label: format(day, formatStr),
       value: format(day, 'yyyy-MM-dd'),
     })),
-    startOfDay: toZonedDate(firstDay, timezone),
-    endOfDay: addDays(toZonedDate(lastDay, timezone), 1),
+    startOfDay: toZonedDate(firstDay, timezone).toISOString(),
+    endOfDay: addDays(toZonedDate(lastDay, timezone), 1).toISOString(),
   }
 }
 
@@ -94,63 +94,17 @@ export function toZonedDate(date: Date | string, timezone = DEFAULT_TIMEZONE) {
 }
 
 export type DayRange = {
-  startOfDay: Date
-  endOfDay: Date
+  startOfDay: string
+  endOfDay: string
 }
 
-export function getDayRange(date: string, timezone = DEFAULT_TIMEZONE): DayRange {
+export function getDayRange(date: string = new Date().toISOString(), timezone = DEFAULT_TIMEZONE): DayRange {
   const day = toZonedDate(date, timezone)
 
   return {
-    startOfDay: startOfDay(day),
-    endOfDay: endOfDay(day),
+    startOfDay: startOfDay(day).toISOString(),
+    endOfDay: endOfDay(day).toISOString(),
   }
-}
-
-type FoodEntry = {
-  calories: number
-  protein: number
-  carbs: number
-  fat: number
-  mealCategory: MealCategory
-}
-
-export function computeTotals(entries: FoodEntry[]) {
-  let calories = 0
-  let protein = 0
-  let carbs = 0
-  let fat = 0
-
-  for (const entry of entries) {
-    calories += entry.calories
-    protein += entry.protein
-    carbs += entry.carbs
-    fat += entry.fat
-  }
-
-  return { calories, protein, carbs, fat }
-}
-
-export type MealBreakdown = {
-  category: MealCategory
-  items: number
-  calories: number
-}
-
-export function computeMealBreakdowns(entries: FoodEntry[]): MealBreakdown[] {
-  const categories: MealCategory[] = ['breakfast', 'lunch', 'dinner', 'snacks']
-
-  return categories.map((category) => {
-    const items = entries.filter((e) => e.mealCategory === category)
-
-    let calories = 0
-
-    for (const item of items) {
-      calories += item.calories
-    }
-
-    return { category, items: items.length, calories: Math.round(calories) }
-  })
 }
 
 export function getTextFromMessage(message: UIMessage): string {

@@ -3,6 +3,10 @@ import type { users } from '@/db/schemas'
 
 import { env } from '@/env'
 
+// window is not always defined
+// oxlint-disable-next-line unicorn/no-typeof-undefined
+export const IS_SERVER = typeof globalThis.window === 'undefined'
+
 export const isProd = env.NODE_ENV === 'production'
 export const isDev = env.NODE_ENV === 'development'
 
@@ -38,6 +42,7 @@ export const MEAL_EMOJI: Record<Meal, string> = {
 
 export type Meal = (typeof MEALS)[number]
 export const MEALS = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
+export const MEALS_SET = new Set(MEALS)
 export const DEFAULT_MEAL: Meal = 'breakfast'
 
 export const TEST_USER = {

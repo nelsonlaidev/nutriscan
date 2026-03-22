@@ -1,18 +1,21 @@
 'use client'
 
 import type { ChartConfig } from '@/components/ui/chart'
+import type { TimeRange } from '@/types'
 
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { useNutritionChartData } from '@/hooks/queries/progress.query'
+import { getDateRange } from '@/lib/utils'
 
 import { ChartTypeToggle } from './chart-type-toggle'
 
 type NutritionChartProps = {
-  data: Array<{ date: string; protein: number; carbs: number; fat: number }>
+  range: TimeRange
 }
 
 const chartConfig = {
@@ -30,9 +33,39 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function NutritionChart({ data }: NutritionChartProps) {
+export function NutritionChart({ range }: NutritionChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('area')
+
+  const isYearly = range === 'yearly'
+  const dateRange = getDateRange(range)
+  const hasDates = dateRange.dates.length > 0
+  const dateInput = { startOfDay: dateRange.startOfDay, endOfDay: dateRange.endOfDay, hasDates }
+
+  const { data: rows } = useNutritionChartData(dateInput)
+
+  const data = useMemo(() => {
+    const map = new Map<string, { protein: number; carbs: number; fat: number }>()
+    for (const r of rows) {
+      const key = isYearly ? r.date.slice(0, 7) : r.date
+      const prev = map.get(key) ?? { protein: 0, carbs: 0, fat: 0 }
+      map.set(key, {
+        protein: prev.protein + r.protein,
+        carbs: prev.carbs + r.carbs,
+        fat: prev.fat + r.fat,
+      })
+    }
+
+    return dateRange.dates.map((d) => {
+      const row = map.get(d.value)
+      return {
+        date: d.label,
+        protein: Math.round(row?.protein ?? 0),
+        carbs: Math.round(row?.carbs ?? 0),
+        fat: Math.round(row?.fat ?? 0),
+      }
+    })
+  }, [rows, dateRange.dates, isYearly])
 
   return (
     <Card size='sm'>

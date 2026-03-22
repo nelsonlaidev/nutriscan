@@ -4,10 +4,10 @@ import { GlobeIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { updateLocale } from '@/actions/update-locale'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { LOCALE_ITEMS } from '@/lib/constants'
+import { client } from '@/orpc/client'
 
 export function LanguageSelector() {
   const locale = useLocale()
@@ -27,7 +27,7 @@ export function LanguageSelector() {
         value={locale}
         onValueChange={(value) => {
           if (value !== null) {
-            void updateLocale({ locale: value })
+            void client.settings.updateLocale({ locale: value })
             router.refresh()
           }
         }}

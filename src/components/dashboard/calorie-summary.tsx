@@ -1,18 +1,25 @@
-import { getTranslations } from 'next-intl/server'
+'use client'
+
+import type { DayRange } from '@/lib/utils'
+
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { useFoodTotals } from '@/hooks/queries/food.query'
 
 import { CircularProgress } from '../circular-progress'
 
 type CalorieSummaryProps = {
-  calories: number
+  dayRange: DayRange
   goal: number
 }
 
-export async function CalorieSummary(props: CalorieSummaryProps) {
-  const { calories, goal } = props
+export function CalorieSummary(props: CalorieSummaryProps) {
+  const { dayRange, goal } = props
+  const { data: totals } = useFoodTotals(dayRange)
+  const { calories } = totals
   const remaining = goal - calories
-  const t = await getTranslations()
+  const t = useTranslations()
 
   return (
     <Card size='sm'>

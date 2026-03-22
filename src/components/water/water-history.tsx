@@ -1,7 +1,5 @@
 'use client'
 
-import type { WaterEntry } from '@/data/water'
-
 import { format, isToday, isYesterday, parseISO } from 'date-fns'
 import { useTranslations } from 'next-intl'
 
@@ -9,14 +7,18 @@ import { toZonedDate } from '@/lib/utils'
 
 import { WaterEntryItem } from './water-entry-item'
 
+type WaterEntry = {
+  id: string
+  amount: number
+  createdAt: Date
+}
+
 type WaterHistoryProps = {
   entries: WaterEntry[]
-  onUpdate: (id: string, amount: number) => void
-  onDelete: (id: string) => void
 }
 
 export function WaterHistory(props: WaterHistoryProps) {
-  const { entries, onUpdate, onDelete } = props
+  const { entries } = props
   const t = useTranslations()
 
   function formatDateHeader(dateStr: string) {
@@ -51,7 +53,7 @@ export function WaterHistory(props: WaterHistoryProps) {
           </h3>
           <div className='divide-y'>
             {dateEntries.map((entry) => (
-              <WaterEntryItem key={entry.id} entry={entry} onUpdate={onUpdate} onDelete={onDelete} />
+              <WaterEntryItem key={entry.id} entry={entry} />
             ))}
           </div>
         </div>

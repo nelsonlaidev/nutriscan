@@ -1,6 +1,8 @@
 import { relations } from 'drizzle-orm'
 import { index, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
 
+import { MEALS } from '@/lib/constants'
+
 import { users } from './auth.schema'
 
 export const foodEntries = pgTable(
@@ -19,7 +21,7 @@ export const foodEntries = pgTable(
     carbs: real('carbs').notNull(),
     fat: real('fat').notNull(),
     mealCategory: text('meal_category', {
-      enum: ['breakfast', 'lunch', 'dinner', 'snacks'],
+      enum: [...MEALS],
     }).notNull(),
     source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
     imageUrl: text('image_url'),

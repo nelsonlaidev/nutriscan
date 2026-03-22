@@ -2,8 +2,6 @@ import type { Translator } from '@/types'
 
 import * as z from 'zod'
 
-import { LOCALES, MAX_FEEDBACK_LENGTH, MAX_WATER_INTAKE } from './constants'
-
 const NumberOrEmpty = (field: z.ZodNumber, message: string) =>
   field.or(z.literal('')).refine((val) => val !== '', { message })
 
@@ -76,32 +74,6 @@ export function createPersonalDetailsFormSchema(t: Translator) {
   })
 }
 
-export const UpdatePersonalDetailsSchema = z.object({
-  currentWeight: z.number().min(20).max(300).positive(),
-  goalWeight: z.number().min(20).max(300).positive(),
-  height: z.number().min(50).max(250).positive(),
-  birthday: z.string().min(1),
-  gender: z.enum(['male', 'female', 'other']),
-  plan: z.enum(['relaxed', 'steady', 'accelerated']),
-  calorieBudget: z.number().int().min(1),
-  proteinTarget: z.number().int().min(1),
-  carbTarget: z.number().int().min(1),
-  fatTarget: z.number().int().min(1),
-})
-
-export const OnboardingActionSchema = z.object({
-  currentWeight: z.number().min(20).max(300).positive(),
-  goalWeight: z.number().min(20).max(300).positive(),
-  height: z.number().min(50).max(250).positive(),
-  birthday: z.string().min(1),
-  gender: z.enum(['male', 'female', 'other']),
-  plan: z.enum(['relaxed', 'steady', 'accelerated']),
-  calorieBudget: z.number().int().min(1),
-  proteinTarget: z.number().int().min(1),
-  carbTarget: z.number().int().min(1),
-  fatTarget: z.number().int().min(1),
-})
-
 export function createManualFoodEntrySchema(t: Translator) {
   return z.object({
     foodName: z.string().min(1, t('validation.food-name-required')),
@@ -129,50 +101,6 @@ export function createManualFoodEntryFormSchema(t: Translator) {
   })
 }
 
-export const AddFoodEntrySchema = z.object({
-  foodName: z.string().min(1),
-  servingSize: z.string().min(1),
-  calories: z.number().min(0),
-  protein: z.number().min(0),
-  carbs: z.number().min(0),
-  fat: z.number().min(0),
-  mealCategory: z.enum(['breakfast', 'lunch', 'dinner', 'snacks']),
-  source: z.enum(['ai-scan', 'manual', 'barcode']),
-  imageUrl: z.url().optional(),
-})
-
-export const BarcodeLookupSchema = z.object({
-  barcode: z.string().regex(/^\d{8,14}$/, 'Barcode must be 8-14 digits'),
-})
-
-export const OpenFoodFactsResponseSchema = z.object({
-  status: z.number(),
-  product: z
-    .object({
-      product_name: z.string().optional().default(''),
-      serving_size: z.string().optional().default(''),
-      nutriments: z
-        .object({
-          'energy-kcal_100g': z.number().optional().default(0),
-          proteins_100g: z.number().optional().default(0),
-          carbohydrates_100g: z.number().optional().default(0),
-          fat_100g: z.number().optional().default(0),
-        })
-        .optional()
-        .default({
-          'energy-kcal_100g': 0,
-          proteins_100g: 0,
-          carbohydrates_100g: 0,
-          fat_100g: 0,
-        }),
-    })
-    .optional(),
-})
-
-export const AiImageScanSchema = z.object({
-  imageUrl: z.url(),
-})
-
 export function createSignInFormSchema(t: Translator) {
   return z.object({
     email: z.email(t('validation.invalid-email')),
@@ -193,45 +121,3 @@ export function createSignUpFormSchema(t: Translator) {
       path: ['confirmPassword'],
     })
 }
-
-export const UpdateLocaleSchema = z.object({
-  locale: z.enum(LOCALES),
-})
-
-export const UpdateWaterGoalSchema = z.object({
-  goal: z.number().int().min(500).max(MAX_WATER_INTAKE),
-})
-
-export const AddWaterEntrySchema = z.object({
-  amount: z.number().int().min(1).max(MAX_WATER_INTAKE),
-})
-
-export const UpdateWaterEntrySchema = z.object({
-  id: z.string().min(1),
-  amount: z.number().int().min(1).max(MAX_WATER_INTAKE),
-})
-
-export const DeleteWaterEntrySchema = z.object({
-  id: z.string().min(1),
-})
-
-export const AddWeightEntrySchema = z.object({
-  weight: z.number().min(20).max(300).positive(),
-})
-
-export const UpdateWeightEntrySchema = z.object({
-  id: z.string().min(1),
-  weight: z.number().min(20).max(300).positive(),
-})
-
-export const DeleteWeightEntrySchema = z.object({
-  id: z.string().min(1),
-})
-
-export const DeleteFoodEntrySchema = z.object({
-  id: z.string().min(1),
-})
-
-export const SendFeedbackSchema = z.object({
-  message: z.string().min(1).max(MAX_FEEDBACK_LENGTH),
-})

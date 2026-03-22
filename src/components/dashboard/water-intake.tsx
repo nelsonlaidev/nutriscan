@@ -1,20 +1,26 @@
+'use client'
+
+import type { DayRange } from '@/lib/utils'
+
 import { DropIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useWaterTotal } from '@/hooks/queries/water.query'
 import { formatMl } from '@/lib/utils'
 
 import { Progress } from '../ui/progress'
 
 type WaterIntakeProps = {
-  amount: number
+  dayRange: DayRange
   goal: number
 }
 
-export async function WaterIntake(props: WaterIntakeProps) {
-  const { amount, goal } = props
-  const t = await getTranslations()
+export function WaterIntake(props: WaterIntakeProps) {
+  const { dayRange, goal } = props
+  const { data: amount } = useWaterTotal(dayRange)
+  const t = useTranslations()
 
   const percentage = goal > 0 ? Math.min((amount / goal) * 100, 100) : 0
 

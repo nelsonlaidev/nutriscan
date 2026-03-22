@@ -2,11 +2,10 @@
 
 import type { NutritionData } from '@/components/add/nutrition-result'
 
-import { useAction } from 'next-safe-action/hooks'
+import { useMutation } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 
-import { lookupBarcode } from '@/actions/barcode-lookup'
-import { onActionError } from '@/lib/safe-action-utils'
+import { orpc } from '@/orpc/client'
 
 type ScannerState =
   | { status: 'idle' }
@@ -19,29 +18,22 @@ export function useBarcodeScanner(onResult: (data: NutritionData) => void) {
   const lastBarcodeRef = useRef<string | null>(null)
   const active = state.status === 'scanning' || state.status === 'looking-up'
 
-  const { execute } = useAction(lookupBarcode, {
-    onSuccess: ({ data }) => {
-      if (data.success) {
+  const { mutate: execute } = useMutation(
+    orpc.scanning.barcodeLookup.mutationOptions({
+      onSuccess: (data) => {
         setState({ status: 'idle' })
         lastBarcodeRef.current = null
-        onResult(data.data)
-      } else {
-        setState({ status: 'error', message: 'Product not found in database' })
+        onResult(data)
+      },
+      onError: () => {
+        setState({ status: 'error', message: 'Failed to look up product' })
         setTimeout(() => {
           lastBarcodeRef.current = null
           setState({ status: 'scanning' })
         }, 3000)
-      }
-    },
-    onError: (args) => {
-      onActionError(args)
-      setState({ status: 'error', message: 'Failed to look up product' })
-      setTimeout(() => {
-        lastBarcodeRef.current = null
-        setState({ status: 'scanning' })
-      }, 3000)
-    },
-  })
+      },
+    }),
+  )
 
   const handleScan = useCallback(
     (detectedCodes: Array<{ rawValue: string }>) => {
