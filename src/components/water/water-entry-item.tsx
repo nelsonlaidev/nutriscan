@@ -63,13 +63,13 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
       return
     }
 
-    updateWater({ id: entry.id, amount: parsed })
+    updateWater({ id: entry.id, amount: parsed }, { onError: () => toast.error(t('water.entry-update-error')) })
   }
 
   function handleDelete() {
     if (submitting) return
 
-    deleteWater({ id: entry.id })
+    deleteWater({ id: entry.id }, { onError: () => toast.error(t('water.entry-delete-error')) })
   }
 
   return (

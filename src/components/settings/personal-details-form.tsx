@@ -76,7 +76,7 @@ export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
     accelerated: t('onboarding.plan-accelerated'),
   }
 
-  const { mutate: execute, isPending } = useUpdatePersonalDetails(() => {
+  const { mutate: updateDetails, isPending } = useUpdatePersonalDetails(() => {
     toast.success(t('settings.personal-details.success'))
     router.refresh()
     router.back()
@@ -101,18 +101,23 @@ export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
       const calories = calculateCalorieBudget(tdee, value.plan)
       const macros = calculateMacros(calories)
 
-      execute({
-        currentWeight: value.currentWeight as number,
-        goalWeight: value.goalWeight as number,
-        height: value.height as number,
-        birthday: value.birthday,
-        gender: value.gender,
-        plan: value.plan,
-        calorieBudget: calories,
-        proteinTarget: macros.protein,
-        carbTarget: macros.carbs,
-        fatTarget: macros.fat,
-      })
+      updateDetails(
+        {
+          currentWeight: value.currentWeight as number,
+          goalWeight: value.goalWeight as number,
+          height: value.height as number,
+          birthday: value.birthday,
+          gender: value.gender,
+          plan: value.plan,
+          calorieBudget: calories,
+          proteinTarget: macros.protein,
+          carbTarget: macros.carbs,
+          fatTarget: macros.fat,
+        },
+        {
+          onError: () => toast.error(t('settings.personal-details.error')),
+        },
+      )
     },
   })
 

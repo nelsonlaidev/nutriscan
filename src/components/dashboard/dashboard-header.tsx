@@ -5,6 +5,9 @@ import { useMemo } from 'react'
 
 import { UserAvatar } from '@/components/user-avatar'
 
+// i18n-check t('greeting.morning')
+// i18n-check t('greeting.afternoon')
+// i18n-check t('greeting.evening')
 function getGreetingKey(hour: number) {
   if (hour >= 5 && hour < 12) return 'greeting.morning'
   if (hour >= 12 && hour < 18) return 'greeting.afternoon'

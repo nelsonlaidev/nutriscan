@@ -51,7 +51,6 @@
     "grams-of-goal": "{value}g / {goal}g",
     "today": "今天",
     "yesterday": "昨天",
-    "date-format": "yyyy年M月d日",
     "water-intake": "饮水量",
     "water-amount-of-goal": "{amount} / {goal}",
     "weight": "体重",
@@ -94,7 +93,6 @@
   "add-food": {
     "page-title": "新增食物",
     "confirm": "确认",
-    "saving": "储存中...",
     "add-to-meal": "加入餐点",
     "select-meal-error": "请选择餐点类别",
     "save-error": "储存食物记录失败，请再试一次。",
@@ -181,7 +179,6 @@
     "protein": "蛋白质",
     "carbs": "碳水化合物",
     "fat": "脂肪",
-    "no-weight-data": "尚无体重记录",
     "bar-chart": "长条图",
     "area-chart": "面积图"
   },
@@ -248,7 +245,6 @@
     "title": "设定",
     "dark-mode": "深色模式",
     "language": "语言",
-    "english": "英文",
     "feedback": "意见回馈",
     "feedback-placeholder": "分享您的想法、回报问题或提出功能建议...",
     "feedback-submit": "送出",
@@ -256,7 +252,6 @@
     "feedback-error": "送出回馈失败",
     "personal-details": {
       "title": "个人资料",
-      "description": "更新您的身体数值。",
       "save": "储存变更",
       "saving": "储存中...",
       "success": "个人资料已更新",
@@ -265,7 +260,6 @@
   },
   "profile": {
     "page-title": "个人资料",
-    "not-set": "未设定",
     "health-metrics": "健康指标",
     "current-weight": "目前体重",
     "goal-weight": "目标体重",
@@ -327,7 +321,6 @@
   "errors": {
     "ai-scan-failed": "分析图片失败",
     "no-food-detected": "未侦测到食物，请拍摄食物的照片。",
-    "product-not-found": "找不到产品",
-    "entry-not-found": "找不到记录"
+    "product-not-found": "找不到产品"
   }
 }

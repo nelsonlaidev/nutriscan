@@ -46,7 +46,7 @@ export function WaterGoalDialog(props: WaterGoalDialogProps) {
     }
 
     onGoalChange(parsed)
-    updateGoal({ goal: parsed })
+    updateGoal({ goal: parsed }, { onError: () => toast.error(t('water.goal-update-error')) })
   }
 
   return (

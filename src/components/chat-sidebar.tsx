@@ -99,7 +99,14 @@ export function ChatSidebar(props: ChatSidebarProps) {
                     size='icon'
                     className='shrink-0'
                     onClick={() => {
-                      deleteChat({ chatId: chat.id })
+                      deleteChat(
+                        { chatId: chat.id },
+                        {
+                          onError: () => {
+                            toast.error(t('chat.delete-failed'))
+                          },
+                        },
+                      )
                     }}
                   >
                     <TrashIcon />

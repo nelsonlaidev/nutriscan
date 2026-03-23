@@ -51,7 +51,6 @@
     "grams-of-goal": "{value}g / {goal}g",
     "today": "今天",
     "yesterday": "昨天",
-    "date-format": "yyyy年M月d日",
     "water-intake": "飲水量",
     "water-amount-of-goal": "{amount} / {goal}",
     "weight": "體重",
@@ -60,7 +59,6 @@
     "weight-goal": "目標：{weight} 公斤"
   },
   "meals": {
-    "title": "餐點詳情",
     "total": "總計",
     "breakfast": "早餐",
     "lunch": "午餐",
@@ -72,7 +70,6 @@
     "protein": "蛋白質",
     "carbs": "碳水化合物",
     "fat": "脂肪",
-    "serving-size": "份量",
     "source": "來源",
     "source-ai-scan": "AI 掃描",
     "source-manual": "手動輸入",
@@ -86,15 +83,11 @@
     "delete-cancel": "取消",
     "deleting": "刪除中...",
     "entry-deleted": "食物記錄已刪除",
-    "entry-delete-error": "刪除食物記錄失敗",
-    "items": "{count} 項食物",
-    "add-food": "新增食物",
-    "serving-calories": "{serving} · {calories} 大卡"
+    "entry-delete-error": "刪除食物記錄失敗"
   },
   "add-food": {
     "page-title": "新增食物",
     "confirm": "確認",
-    "saving": "儲存中...",
     "add-to-meal": "加入餐點",
     "select-meal-error": "請選擇餐點類別",
     "save-error": "儲存食物記錄失敗，請再試一次。",
@@ -181,7 +174,6 @@
     "protein": "蛋白質",
     "carbs": "碳水化合物",
     "fat": "脂肪",
-    "no-weight-data": "尚無體重記錄",
     "bar-chart": "長條圖",
     "area-chart": "面積圖"
   },
@@ -248,7 +240,6 @@
     "title": "設定",
     "dark-mode": "深色模式",
     "language": "語言",
-    "english": "英文",
     "feedback": "意見回饋",
     "feedback-placeholder": "分享您的想法、回報問題或提出功能建議...",
     "feedback-submit": "送出",
@@ -256,7 +247,6 @@
     "feedback-error": "送出回饋失敗",
     "personal-details": {
       "title": "個人資料",
-      "description": "更新您的身體數值。",
       "save": "儲存變更",
       "saving": "儲存中...",
       "success": "個人資料已更新",
@@ -265,7 +255,6 @@
   },
   "profile": {
     "page-title": "個人資料",
-    "not-set": "未設定",
     "health-metrics": "健康指標",
     "current-weight": "目前體重",
     "goal-weight": "目標體重",
@@ -327,7 +316,6 @@
   "errors": {
     "ai-scan-failed": "分析圖片失敗",
     "no-food-detected": "未偵測到食物，請拍攝食物的照片。",
-    "product-not-found": "找不到產品",
-    "entry-not-found": "找不到記錄"
+    "product-not-found": "找不到產品"
   }
 }
