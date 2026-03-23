@@ -24,7 +24,7 @@ import { useStickToBottom } from 'use-stick-to-bottom'
 
 import { ChatProvider } from '@/contexts/chat'
 import { useChatById } from '@/hooks/queries/chat.query'
-import { uploadImage } from '@/lib/upload'
+import { useUploadImage } from '@/hooks/queries/r2.query'
 import { client, orpc } from '@/orpc/client'
 
 import { ChatSidebar } from './chat-sidebar'
@@ -46,12 +46,12 @@ export function Chat(props: ChatProps) {
   const t = useTranslations()
   const [input, setInput] = useState('')
   const [uploadedFiles, setUploadedFiles] = useState<FileUIPart[]>([])
-  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
   const { contentRef, scrollRef, scrollToBottom, isAtBottom } = useStickToBottom({ resize: 'smooth' })
   const queryClient = useQueryClient()
+  const { mutateAsync: uploadImage, isPending: uploading } = useUploadImage()
 
   const initialMessages = chatData?.messages.map((m) => ({
     id: m.id,
@@ -152,9 +152,15 @@ export function Chat(props: ChatProps) {
         return
       }
 
-      setUploading(true)
       try {
-        const url = await uploadImage(file, 'chat')
+        const buffer = await file.arrayBuffer()
+        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+
+        const { url } = await uploadImage({
+          base64,
+          mimeType: file.type as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
+          type: 'chat',
+        })
         setUploadedFiles((prev) => [
           ...prev,
           {
@@ -167,13 +173,12 @@ export function Chat(props: ChatProps) {
       } catch {
         toast.error(t('chat.upload-failed'))
       } finally {
-        setUploading(false)
         if (fileInputRef.current) {
           fileInputRef.current.value = ''
         }
       }
     },
-    [t],
+    [t, uploadImage],
   )
 
   return (

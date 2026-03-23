@@ -1,5 +1,4 @@
 import type { UIMessage } from 'ai'
-import type { InferSelectModel } from 'drizzle-orm'
 
 import { ORPCError, streamToEventIterator } from '@orpc/server'
 import { convertToModelMessages, smoothStream, streamText } from 'ai'
@@ -11,18 +10,7 @@ import { defaultModel, generateTitle } from '@/lib/ai'
 import { chatSystemPrompt } from '@/lib/prompts'
 
 import { protectedProcedure } from '../procedures'
-import {
-  DeleteChatInputSchema,
-  GetChatByIdInputSchema,
-  GetChatTitleInputSchema,
-  SaveChatInputSchema,
-  SendMessageInputSchema,
-} from '../schemas/chat.schema'
-
-export type Chats = Array<InferSelectModel<typeof chats>>
-export type Chat = InferSelectModel<typeof chats> & {
-  messages: Array<InferSelectModel<typeof chatMessages>>
-}
+import { DeleteChatInputSchema, GetChatByIdInputSchema, SendMessageInputSchema } from '../schemas/chat.schema'
 
 const send = protectedProcedure.input(SendMessageInputSchema).handler(async ({ input, context, signal }) => {
   const chat = await context.db.query.chats.findFirst({
@@ -101,61 +89,6 @@ const getById = protectedProcedure.input(GetChatByIdInputSchema).handler(async (
   return chat ?? null
 })
 
-const getTitle = protectedProcedure.input(GetChatTitleInputSchema).handler(async ({ input, context }) => {
-  const [chat] = await context.db
-    .select({ title: chats.title })
-    .from(chats)
-    .where(and(eq(chats.id, input.chatId), eq(chats.userId, context.session.user.id)))
-
-  return chat?.title ?? null
-})
-
-const save = protectedProcedure.input(SaveChatInputSchema).handler(async ({ input, context }) => {
-  const userId = context.session.user.id
-
-  await context.db
-    .insert(chats)
-    .values({ id: input.chatId, userId, title: input.title })
-    .onConflictDoUpdate({
-      target: chats.id,
-      set: { title: input.title, updatedAt: new Date() },
-      setWhere: eq(chats.userId, userId),
-    })
-
-  if (input.messages.length === 0) return
-
-  // Only insert messages for chats owned by this user
-  const [chat] = await context.db
-    .select({ id: chats.id })
-    .from(chats)
-    .where(and(eq(chats.id, input.chatId), eq(chats.userId, userId)))
-
-  if (!chat) return
-
-  // Deduplicate by message ID
-  const existing = await context.db
-    .select({ id: chatMessages.id })
-    .from(chatMessages)
-    .where(eq(chatMessages.chatId, input.chatId))
-  const existingIds = new Set(existing.map((m) => m.id))
-
-  const newMessages = input.messages.filter((m) => !existingIds.has(m.id))
-
-  if (newMessages.length > 0) {
-    const now = Date.now()
-    await context.db.insert(chatMessages).values(
-      newMessages.map((msg, index) => ({
-        id: msg.id,
-        chatId: input.chatId,
-        role: msg.role as 'user' | 'assistant',
-        parts: msg.parts,
-        attachments: [],
-        createdAt: new Date(now + index),
-      })),
-    )
-  }
-})
-
 const deleteChat = protectedProcedure.input(DeleteChatInputSchema).handler(async ({ input, context }) => {
   const [chat] = await context.db.select().from(chats).where(eq(chats.id, input.chatId))
 
@@ -170,7 +103,5 @@ export const chatRouter = {
   send,
   list,
   getById,
-  getTitle,
-  save,
   delete: deleteChat,
 }

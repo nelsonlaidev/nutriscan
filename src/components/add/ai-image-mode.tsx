@@ -9,8 +9,8 @@ import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { useUploadImage } from '@/hooks/queries/r2.query'
 import { useAiImageScan } from '@/hooks/queries/scanning.query'
-import { uploadImage } from '@/lib/upload'
 
 import { Spinner } from '../ui/spinner'
 
@@ -23,13 +23,14 @@ export function AiImageMode(props: AiImageModeProps) {
   const t = useTranslations()
   const [preview, setPreview] = useState<string | null>(null)
   const previewRef = useRef<string | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
 
   const { mutate: scanImage, isPending } = useAiImageScan((data) => {
     onResult(data)
   })
+
+  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadImage()
 
   useEffect(
     () => () => {
@@ -49,13 +50,19 @@ export function AiImageMode(props: AiImageModeProps) {
       })
 
       if (previewRef.current) URL.revokeObjectURL(previewRef.current)
-      const url = URL.createObjectURL(compressed)
-      previewRef.current = url
-      setPreview(url)
-      setIsUploading(true)
+      const previewUrl = URL.createObjectURL(compressed)
+      previewRef.current = previewUrl
+      setPreview(previewUrl)
 
       try {
-        const imageUrl = await uploadImage(compressed, 'meal')
+        const buffer = await compressed.arrayBuffer()
+        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+
+        const { url: imageUrl } = await uploadImage({
+          base64,
+          mimeType: compressed.type as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
+          type: 'meal',
+        })
         scanImage(
           { imageUrl },
           {
@@ -67,11 +74,9 @@ export function AiImageMode(props: AiImageModeProps) {
         )
       } catch {
         toast.error(t('errors.ai-scan-failed'))
-      } finally {
-        setIsUploading(false)
       }
     },
-    [scanImage, t],
+    [scanImage, t, uploadImage],
   )
 
   const handleInputChange = useCallback(

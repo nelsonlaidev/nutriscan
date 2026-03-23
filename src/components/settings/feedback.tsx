@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useSendFeedback } from '@/hooks/queries/settings.query'
 import { MAX_FEEDBACK_LENGTH } from '@/lib/constants'
-import { client } from '@/orpc/client'
 import { SendFeedbackInputSchema } from '@/orpc/schemas/settings.schema'
 
 import { Button } from '../ui/button'
@@ -19,23 +19,18 @@ import { Textarea } from '../ui/textarea'
 export function Feedback() {
   const t = useTranslations()
   const [open, setOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { mutate: sendFeedback, isPending } = useSendFeedback(() => {
+    toast.success(t('settings.feedback-success'))
+    form.reset()
+    setOpen(false)
+  })
 
   const form = useForm({
     defaultValues: { message: '' },
     validators: { onSubmit: SendFeedbackInputSchema },
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true)
-      try {
-        await client.settings.sendFeedback({ message: value.message.trim() })
-        toast.success(t('settings.feedback-success'))
-        form.reset()
-        setOpen(false)
-      } catch {
-        toast.error(t('settings.feedback-error'))
-      } finally {
-        setIsSubmitting(false)
-      }
+    onSubmit: ({ value }) => {
+      sendFeedback({ message: value.message.trim() }, { onError: () => toast.error(t('settings.feedback-error')) })
     },
   })
 
@@ -96,8 +91,8 @@ export function Feedback() {
               </form.Field>
             </FieldGroup>
             <DialogFooter className='mt-4'>
-              <Button type='submit' disabled={isSubmitting}>
-                {isSubmitting && <Spinner data-icon='inline-start' />}
+              <Button type='submit' disabled={isPending}>
+                {isPending && <Spinner data-icon='inline-start' />}
                 {t('settings.feedback-submit')}
               </Button>
             </DialogFooter>

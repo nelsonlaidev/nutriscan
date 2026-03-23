@@ -28,7 +28,3 @@ export function useBarcodeLookup(
 ) {
   return useMutation(orpc.scanning.barcodeLookup.mutationOptions({ onSuccess }))
 }
-
-export function useUploadImage(onSuccess?: (data: { url: string }) => void) {
-  return useMutation(orpc.scanning.uploadImage.mutationOptions({ onSuccess }))
-}

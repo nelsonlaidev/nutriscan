@@ -16,5 +16,5 @@ const authMiddleware = base.middleware(async ({ context, next }) => {
   })
 })
 
-export const publicProcedure = base
+const publicProcedure = base
 export const protectedProcedure = publicProcedure.use(authMiddleware)

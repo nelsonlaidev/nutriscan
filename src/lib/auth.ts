@@ -91,5 +91,3 @@ export async function getSession() {
     headers: await headers(),
   })
 }
-
-export type Session = typeof auth.$Infer.Session

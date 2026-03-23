@@ -1,4 +1,4 @@
-import type { InferRouterInputs, InferRouterOutputs, RouterClient } from '@orpc/server'
+import type { InferRouterInputs, RouterClient } from '@orpc/server'
 import type { router } from './routers'
 
 import { createORPCClient } from '@orpc/client'
@@ -25,7 +25,7 @@ export const client: RouterClient<typeof router> = globalThis.$client ?? createO
 export const orpc = createTanstackQueryUtils(client)
 
 type Inputs = InferRouterInputs<typeof router>
-type Outputs = InferRouterOutputs<typeof router>
+// type Outputs = InferRouterOutputs<typeof router>
 
 export type ListFoodByCategoryInput = Inputs['food']['listByCategory']
 export type GetFoodByIdInput = Inputs['food']['getById']
@@ -35,14 +35,8 @@ export type NutritionChartInput = Inputs['progress']['nutritionChart']
 export type WaterChartInput = Inputs['progress']['waterChart']
 export type WeightByDateRangeInput = Inputs['progress']['weightByDateRange']
 
-export type GetChatByIdInput = Inputs['chat']['getById']
-export type GetChatTitleInput = Inputs['chat']['getTitle']
-
 export type GetTotalWaterInput = Inputs['water']['total']
 export type GetWaterEntriesInput = Inputs['water']['list']
 
 export type GetFoodTotalsInput = Inputs['food']['totals']
 export type GetFoodMealsInput = Inputs['food']['meals']
-
-export type FoodTotals = Outputs['food']['totals']
-export type FoodMealBreakdown = Outputs['food']['meals'][number]

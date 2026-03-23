@@ -6,13 +6,16 @@ import { useLocale, useTranslations } from 'next-intl'
 
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useUpdateLocale } from '@/hooks/queries/settings.query'
 import { LOCALE_ITEMS } from '@/lib/constants'
-import { client } from '@/orpc/client'
 
 export function LanguageSelector() {
   const locale = useLocale()
   const t = useTranslations()
   const router = useRouter()
+  const { mutate: updateLocale } = useUpdateLocale(() => {
+    router.refresh()
+  })
 
   return (
     <div className='flex h-9 items-center justify-between'>
@@ -27,8 +30,7 @@ export function LanguageSelector() {
         value={locale}
         onValueChange={(value) => {
           if (value !== null) {
-            void client.settings.updateLocale({ locale: value })
-            router.refresh()
+            updateLocale({ locale: value })
           }
         }}
       >

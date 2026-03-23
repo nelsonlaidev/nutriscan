@@ -1,5 +1,3 @@
-import type { GetChatTitleInput } from '@/orpc/client'
-
 import { skipToken, useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 
 import { orpc } from '@/orpc/client'
@@ -16,10 +14,6 @@ export function useChatById(input: { chatId?: string }) {
   )
 }
 
-export function useChatTitle(input: GetChatTitleInput) {
-  return useSuspenseQuery(orpc.chat.getTitle.queryOptions({ input }))
-}
-
 export function useDeleteChat(onSuccess?: (id: string) => void) {
   const queryClient = useQueryClient()
 
@@ -31,8 +25,4 @@ export function useDeleteChat(onSuccess?: (id: string) => void) {
       },
     }),
   )
-}
-
-export function useSaveChat(onSuccess?: () => void) {
-  return useMutation(orpc.chat.save.mutationOptions({ onSuccess }))
 }

@@ -8,12 +8,6 @@ export const BarcodeLookupInputSchema = z.object({
   barcode: z.string().regex(/^\d{8,14}$/, 'Barcode must be 8-14 digits'),
 })
 
-export const UploadImageInputSchema = z.object({
-  type: z.enum(['chat', 'meal']),
-  base64: z.string().min(1),
-  mimeType: z.enum(['image/jpeg', 'image/png', 'image/webp', 'image/gif']),
-})
-
 // Internal schema for parsing OpenFoodFacts response
 export const OpenFoodFactsResponseSchema = z.object({
   status: z.number(),
