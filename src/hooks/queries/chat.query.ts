@@ -20,14 +20,14 @@ export function useChatTitle(input: GetChatTitleInput) {
   return useSuspenseQuery(orpc.chat.getTitle.queryOptions({ input }))
 }
 
-export function useDeleteChat(onSuccess?: () => void) {
+export function useDeleteChat(onSuccess?: (id: string) => void) {
   const queryClient = useQueryClient()
 
   return useMutation(
     orpc.chat.delete.mutationOptions({
-      onSuccess: () => {
+      onSuccess: (_data, variables) => {
         void queryClient.invalidateQueries({ queryKey: orpc.chat.list.key() })
-        onSuccess?.()
+        onSuccess?.(variables.chatId)
       },
     }),
   )

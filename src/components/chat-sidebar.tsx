@@ -1,6 +1,7 @@
 import { PlusIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
@@ -11,18 +12,23 @@ import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 
 type ChatSidebarProps = {
+  chatId: string
   open: boolean
   onOpenChange: (open: boolean) => void
   onNewChat: () => void
 }
 
 export function ChatSidebar(props: ChatSidebarProps) {
-  const { open, onOpenChange, onNewChat } = props
+  const { chatId, open, onOpenChange, onNewChat } = props
   const { data: chats } = useChats()
   const t = useTranslations()
+  const router = useRouter()
 
-  const { mutate: executeDelete } = useDeleteChat(() => {
+  const { mutate: deleteChat } = useDeleteChat((id) => {
     toast.success(t('chat.deleted'))
+    if (chatId === id) {
+      router.push('/chat')
+    }
   })
 
   useEffect(() => {
@@ -93,7 +99,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
                     size='icon'
                     className='shrink-0'
                     onClick={() => {
-                      executeDelete({ chatId: chat.id })
+                      deleteChat({ chatId: chat.id })
                     }}
                   >
                     <TrashIcon />

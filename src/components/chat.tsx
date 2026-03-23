@@ -298,7 +298,7 @@ export function Chat(props: ChatProps) {
             <ArrowDownIcon />
           </button>
         )}
-        <ChatSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
+        <ChatSidebar chatId={id} open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
       </ChatProvider>
     </MainLayout>
   )
