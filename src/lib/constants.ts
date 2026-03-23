@@ -7,8 +7,8 @@ import { env } from '@/env'
 // oxlint-disable-next-line unicorn/no-typeof-undefined
 export const IS_SERVER = typeof globalThis.window === 'undefined'
 
-export const isProd = env.NODE_ENV === 'production'
-export const isDev = env.NODE_ENV === 'development'
+export const IS_PROD = env.NODE_ENV === 'production'
+export const IS_DEV = env.NODE_ENV === 'development'
 
 export const DEFAULT_TIMEZONE = 'Asia/Hong_Kong'
 

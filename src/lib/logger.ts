@@ -1,10 +1,10 @@
 import pino from 'pino'
 
-import { isDev } from './constants'
+import { IS_DEV } from './constants'
 
 export const logger = pino({
-  level: isDev ? 'debug' : 'silent',
-  ...(isDev && {
+  level: IS_DEV ? 'debug' : 'silent',
+  ...(IS_DEV && {
     transport: {
       target: 'pino-pretty',
       options: {
