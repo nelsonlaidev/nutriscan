@@ -1,12 +1,15 @@
 'use client'
 
-import type { WaterChartData } from '@/data/progress'
-
 import { format, isToday } from 'date-fns'
 
 import { getDateRange, toZonedDate } from '@/lib/utils'
 
 import { CircularProgress } from '../circular-progress'
+
+type WaterChartData = Array<{
+  date: string
+  amount: number
+}>
 
 type WeeklyWaterTrackerProps = {
   weekData: WaterChartData

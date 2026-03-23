@@ -10,16 +10,15 @@ import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
 import { WeightPanel } from '@/components/dashboard/weight-panel'
 import { MainLayout } from '@/components/main-layout'
-import { getFoodEntries } from '@/data/food'
-import { getWaterTotal } from '@/data/water'
-import { getLatestWeight } from '@/data/weight'
 import { getSession } from '@/lib/auth'
-import { computeMealBreakdowns, computeTotals, getDayRange } from '@/lib/utils'
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
+import { getDayRange } from '@/lib/utils'
+import { orpc } from '@/orpc/client'
 
 import { dashboardCache } from './search-params'
 
 export const metadata: Metadata = {
-  title: 'Dashboard'
+  title: 'Dashboard',
 }
 
 export default async function Page(props: PageProps<'/dashboard'>) {
@@ -31,31 +30,33 @@ export default async function Page(props: PageProps<'/dashboard'>) {
 
   const dayRange = getDayRange(date)
 
-  const [entries, waterAmount, latestWeight] = await Promise.all([
-    getFoodEntries(session.user.id, dayRange),
-    getWaterTotal(session.user.id, dayRange),
-    getLatestWeight(session.user.id)
-  ])
+  const queryClient = getQueryClient()
 
-  const totals = computeTotals(entries)
-  const meals = computeMealBreakdowns(entries)
+  await Promise.all([
+    queryClient.prefetchQuery(orpc.food.totals.queryOptions({ input: dayRange })),
+    queryClient.prefetchQuery(orpc.food.meals.queryOptions({ input: dayRange })),
+    queryClient.prefetchQuery(orpc.water.total.queryOptions({ input: dayRange })),
+    queryClient.prefetchQuery(orpc.weight.latest.queryOptions()),
+  ])
 
   const { waterGoal, calorieBudget, proteinTarget, carbTarget, fatTarget } = session.user
   const macroGoals = { protein: proteinTarget, carbs: carbTarget, fat: fatTarget }
 
   return (
     <MainLayout className='space-y-6'>
-      <DashboardHeader />
-      <DateNavigation />
-      <CalorieSummary calories={totals.calories} goal={calorieBudget} />
-      <MacronutrientCards values={totals} goals={macroGoals} />
-      <WaterIntake amount={waterAmount} goal={waterGoal} />
-      <WeightPanel
-        currentWeight={latestWeight?.weight ?? session.user.currentWeight}
-        startingWeight={session.user.startingWeight}
-        goalWeight={session.user.goalWeight}
-      />
-      <MealList meals={meals} date={date} />
+      <HydrateClient client={queryClient}>
+        <DashboardHeader user={session.user} />
+        <DateNavigation />
+        <CalorieSummary dayRange={dayRange} goal={calorieBudget} />
+        <MacronutrientCards dayRange={dayRange} goals={macroGoals} />
+        <WaterIntake dayRange={dayRange} goal={waterGoal} />
+        <WeightPanel
+          fallbackWeight={session.user.currentWeight}
+          startingWeight={session.user.startingWeight}
+          goalWeight={session.user.goalWeight}
+        />
+        <MealList dayRange={dayRange} date={date} />
+      </HydrateClient>
     </MainLayout>
   )
 }

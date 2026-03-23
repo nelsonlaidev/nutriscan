@@ -123,7 +123,7 @@
     @apply border-border outline-ring/50;
   }
   html {
-    @apply h-full;
+    @apply h-full scroll-smooth;
   }
   body {
     @apply bg-background text-foreground antialiased h-full;

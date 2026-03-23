@@ -6,14 +6,14 @@ import { useTheme } from 'next-themes'
 
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { useIsMounted } from '@/hooks/use-is-mounted'
+import { useIsHydrated } from '@/hooks/use-is-hydrated'
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
-  const isMounted = useIsMounted()
+  const isHydrated = useIsHydrated()
   const t = useTranslations()
 
-  if (!isMounted) return null
+  if (!isHydrated) return null
 
   return (
     <div className='flex h-9 items-center justify-between'>

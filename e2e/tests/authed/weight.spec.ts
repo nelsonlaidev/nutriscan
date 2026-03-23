@@ -5,7 +5,7 @@ test('weight page loads with current weight and progress bar', async ({ page }) 
   await expect(page.getByRole('heading', { name: 'Weight Tracker' })).toBeVisible()
   // Current weight card should display a weight value
   await expect(page.getByTestId('current-weight')).toBeVisible()
-  // eslint-disable-next-line sonarjs/slow-regex
+  // oxlint-disable-next-line sonarjs/slow-regex
   await expect(page.getByTestId('current-weight')).toHaveText(/\d+\.\d kg/)
 })
 
@@ -44,9 +44,13 @@ test('add weight entry and clean up', async ({ page }) => {
   await expect(page.getByTestId('current-weight')).toHaveText(`${testWeight} kg`)
 
   // Clean up: delete the entry we just added
-  await page.getByRole('button', { name: 'Entry options' }).first().click()
+  const entryRow = page
+    .getByTestId('weight-entry')
+    .filter({ hasText: `${testWeight} kg` })
+    .first()
+  await entryRow.getByRole('button', { name: 'Entry options' }).click()
   await page.getByRole('menuitem', { name: 'Delete' }).click()
-  await expect(page.getByText(`${testWeight} kg`)).not.toBeVisible()
+  await expect(page.getByTestId('weight-entry').filter({ hasText: `${testWeight} kg` })).toHaveCount(0)
 })
 
 test('edit weight entry and restore original value', async ({ page }) => {
@@ -99,11 +103,15 @@ test('delete weight entry via dropdown menu', async ({ page }) => {
   await expect(page.getByText(`${testWeight} kg`).first()).toBeVisible()
 
   // Delete it via the dropdown
-  await page.getByRole('button', { name: 'Entry options' }).first().click()
+  const entryRow = page
+    .getByTestId('weight-entry')
+    .filter({ hasText: `${testWeight} kg` })
+    .first()
+  await entryRow.getByRole('button', { name: 'Entry options' }).click()
   await page.getByRole('menuitem', { name: 'Delete' }).click()
 
-  // Entry should be gone
-  await expect(page.getByText(`${testWeight} kg`)).not.toBeVisible()
+  // Entry should be gone from history
+  await expect(page.getByTestId('weight-entry').filter({ hasText: `${testWeight} kg` })).toHaveCount(0)
 })
 
 test('weight history shows change badges', async ({ page }) => {

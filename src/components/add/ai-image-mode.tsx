@@ -1,18 +1,16 @@
 import type { NutritionData } from './nutrition-result'
-import type { ErrorResponse } from '@/types'
 
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
 
-import { scanFoodImage } from '@/actions/ai-image-scan'
 import { Button } from '@/components/ui/button'
-import { uploadImage } from '@/lib/upload'
+import { useUploadImage } from '@/hooks/queries/r2.query'
+import { useAiImageScan } from '@/hooks/queries/scanning.query'
 
 import { Spinner } from '../ui/spinner'
 
@@ -25,30 +23,20 @@ export function AiImageMode(props: AiImageModeProps) {
   const t = useTranslations()
   const [preview, setPreview] = useState<string | null>(null)
   const previewRef = useRef<string | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
 
-  const { execute, isPending } = useAction(scanFoodImage, {
-    onSuccess: ({ data }) => {
-      if (data.success) {
-        onResult(data.data)
-      } else {
-        const errorKey = (data as ErrorResponse).error
-        toast.error(t(errorKey))
-        setPreview(null)
-      }
-    },
-    onError: () => {
-      toast.error(t('errors.ai-scan-failed'))
-    }
+  const { mutate: scanImage, isPending } = useAiImageScan((data) => {
+    onResult(data)
   })
+
+  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadImage()
 
   useEffect(
     () => () => {
       if (previewRef.current) URL.revokeObjectURL(previewRef.current)
     },
-    []
+    [],
   )
 
   const isProcessing = isUploading || isPending
@@ -58,25 +46,37 @@ export function AiImageMode(props: AiImageModeProps) {
       const compressed = await imageCompression(file, {
         maxSizeMB: 1,
         maxWidthOrHeight: 1024,
-        useWebWorker: true
+        useWebWorker: true,
       })
 
       if (previewRef.current) URL.revokeObjectURL(previewRef.current)
-      const url = URL.createObjectURL(compressed)
-      previewRef.current = url
-      setPreview(url)
-      setIsUploading(true)
+      const previewUrl = URL.createObjectURL(compressed)
+      previewRef.current = previewUrl
+      setPreview(previewUrl)
 
       try {
-        const imageUrl = await uploadImage(compressed, 'meal')
-        execute({ imageUrl })
+        const buffer = await compressed.arrayBuffer()
+        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+
+        const { url: imageUrl } = await uploadImage({
+          base64,
+          mimeType: compressed.type as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
+          type: 'meal',
+        })
+        scanImage(
+          { imageUrl },
+          {
+            onError: () => {
+              toast.error(t('errors.ai-scan-failed'))
+              setPreview(null)
+            },
+          },
+        )
       } catch {
         toast.error(t('errors.ai-scan-failed'))
-      } finally {
-        setIsUploading(false)
       }
     },
-    [execute, t]
+    [scanImage, t, uploadImage],
   )
 
   const handleInputChange = useCallback(
@@ -85,9 +85,11 @@ export function AiImageMode(props: AiImageModeProps) {
       if (file) {
         void handleFileSelected(file)
       }
+      // Resetting file input value is standard practice
+      // oxlint-disable-next-line react-x/immutability
       e.target.value = ''
     },
-    [handleFileSelected]
+    [handleFileSelected],
   )
 
   return (

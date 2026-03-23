@@ -92,9 +92,11 @@ test('water entry can be edited via dialog', async ({ page }) => {
 test('water entry can be deleted via dialog', async ({ page }) => {
   await page.goto('/water')
 
-  // Count existing entries, then add one and wait for it to appear
+  // Count existing entries, then add one and wait for the API response to settle
   const entriesBefore = await page.getByRole('button', { name: 'Edit entry' }).count()
+  const responsePromise = page.waitForResponse((resp) => resp.url().includes('/rpc') && resp.status() === 200)
   await page.getByRole('button', { name: 'Drink Water (+250 mL)' }).click()
+  await responsePromise
   await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore + 1)
 
   // Open edit dialog on the first (newest) entry

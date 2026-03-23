@@ -1,29 +1,58 @@
 'use client'
 
+import type { ChartConfig } from '@/components/ui/chart'
+import type { TimeRange } from '@/types'
+
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from 'recharts'
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { useWeightByDateRange } from '@/hooks/queries/progress.query'
+import { getDateRange } from '@/lib/utils'
 
 import { ChartTypeToggle } from './chart-type-toggle'
 
 type WeightChartProps = {
-  data: Array<{ date: string; weight: number | null }>
+  range: TimeRange
   goal: number
 }
 
 const chartConfig = {
   weight: {
     label: 'Weight',
-    color: 'var(--color-emerald-500)'
-  }
+    color: 'var(--color-emerald-500)',
+  },
 } satisfies ChartConfig
 
-export function WeightChart({ data, goal }: WeightChartProps) {
+export function WeightChart({ range, goal }: WeightChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('area')
+
+  const isYearly = range === 'yearly'
+  const dateRange = getDateRange(range)
+  const hasDates = dateRange.dates.length > 0
+  const dateInput = { startOfDay: dateRange.startOfDay, endOfDay: dateRange.endOfDay, hasDates }
+
+  const { data: rows } = useWeightByDateRange(dateInput)
+
+  const data = useMemo(() => {
+    const map = new Map<string, { weight: number; count: number }>()
+    for (const r of rows) {
+      const key = isYearly ? r.date.slice(0, 7) : r.date
+      const prev = map.get(key) ?? { weight: 0, count: 0 }
+      map.set(key, { weight: prev.weight + r.weight, count: prev.count + 1 })
+    }
+
+    return dateRange.dates.map((d) => {
+      const entry = map.get(d.value)
+      return {
+        date: d.label,
+        weight: entry ? Math.round(entry.weight / entry.count) : null,
+      }
+    })
+  }, [rows, dateRange.dates, isYearly])
 
   const weights = data.map((d) => d.weight).filter((w): w is number => w !== null)
   const dataMin = weights.length > 0 ? Math.min(...weights, goal) : goal

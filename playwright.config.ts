@@ -13,12 +13,12 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL,
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
   },
   projects: [
     {
       name: 'setup',
-      testMatch: /global-setup\.ts/
+      testMatch: /global-setup\.ts/,
     },
     {
       name: 'authenticated',
@@ -26,9 +26,9 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 440, height: 900 },
-        storageState: 'e2e/.auth/user.json'
+        storageState: 'e2e/.auth/user.json',
       },
-      dependencies: ['setup']
+      dependencies: ['setup'],
     },
     {
       name: 'destructive',
@@ -37,22 +37,22 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 440, height: 900 },
-        storageState: 'e2e/.auth/user.json'
+        storageState: 'e2e/.auth/user.json',
       },
-      dependencies: ['authenticated']
+      dependencies: ['authenticated'],
     },
     {
       name: 'unauthenticated',
       testDir: './e2e/tests/unauthed',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 440, height: 956 }
-      }
-    }
+        viewport: { width: 440, height: 956 },
+      },
+    },
   ],
   webServer: {
     command: env.CI ? 'NODE_ENV=test pnpm start' : 'NODE_ENV=test pnpm dev',
     url: baseURL,
-    reuseExistingServer: !env.CI
-  }
+    reuseExistingServer: !env.CI,
+  },
 })

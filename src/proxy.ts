@@ -1,4 +1,6 @@
-import { type NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+import { NextResponse } from 'next/server'
 
 import { env } from './env'
 import { getSession } from './lib/auth'
@@ -8,8 +10,8 @@ const PUBLIC_ROUTES = new Set(['/', '/auth/sign-in', '/auth/sign-up'])
 const AUTH_REQUIRED_RES = new NextResponse('Authentication Required', {
   status: 401,
   headers: {
-    'WWW-Authenticate': 'Basic realm="Secure Area"'
-  }
+    'WWW-Authenticate': 'Basic realm="Secure Area"',
+  },
 })
 
 export async function proxy(request: NextRequest) {
@@ -32,8 +34,8 @@ export async function proxy(request: NextRequest) {
       return new NextResponse('Invalid Credentials', {
         status: 401,
         headers: {
-          'WWW-Authenticate': 'Basic realm="Secure Area"'
-        }
+          'WWW-Authenticate': 'Basic realm="Secure Area"',
+        },
       })
     }
   }
@@ -45,7 +47,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/onboarding', request.url))
   }
 
-  if (session && session.user.onboarded && request.nextUrl.pathname.startsWith('/onboarding')) {
+  if (session?.user.onboarded && request.nextUrl.pathname.startsWith('/onboarding')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
@@ -72,8 +74,9 @@ export const config = {
   matcher: [
     // Match all request paths except for the ones starting with:
     // - api (API routes)
+    // - rpc (oRPC routes)
     // - _next/static (static files)
     // - _next/image (image optimization files)
-    '/((?!api|_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest|json)$).*)'
-  ]
+    '/((?!api|rpc|_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest|json)$).*)',
+  ],
 }

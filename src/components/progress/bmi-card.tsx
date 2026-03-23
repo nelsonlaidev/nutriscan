@@ -3,11 +3,12 @@
 import { useTranslations } from 'next-intl'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLatestWeight } from '@/hooks/queries/weight.query'
 import { cn } from '@/lib/utils'
 
 type BmiCardProps = {
-  weight: number
   height: number
+  fallbackWeight: number
 }
 
 function computeBmi(weightKg: number, heightCm: number) {
@@ -28,7 +29,7 @@ const categoryColors: Record<BmiCategory, { stroke: string; text: string }> = {
   underweight: { stroke: '#3b82f6', text: 'text-blue-600' },
   normal: { stroke: '#22c55e', text: 'text-green-600' },
   overweight: { stroke: '#f59e0b', text: 'text-amber-600' },
-  obese: { stroke: '#ef4444', text: 'text-red-600' }
+  obese: { stroke: '#ef4444', text: 'text-red-600' },
 }
 
 function BmiGauge({ bmi }: { bmi: number }) {
@@ -72,12 +73,19 @@ function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   return { x: round(cx + r * Math.cos(rad)), y: round(cy - r * Math.sin(rad)) }
 }
 
-export function BmiCard({ weight, height }: BmiCardProps) {
+export function BmiCard({ height, fallbackWeight }: BmiCardProps) {
   const t = useTranslations()
-  const bmi = computeBmi(weight, height)
+  const { data: latestWeight } = useLatestWeight()
+
+  const currentWeight = latestWeight?.weight ?? fallbackWeight
+  const bmi = computeBmi(currentWeight, height)
   const category = getBmiCategory(bmi)
   const colors = categoryColors[category]
 
+  // i18n-check t('progress.underweight')
+  // i18n-check t('progress.normal')
+  // i18n-check t('progress.overweight')
+  // i18n-check t('progress.obese')
   return (
     <Card size='sm'>
       <CardHeader>

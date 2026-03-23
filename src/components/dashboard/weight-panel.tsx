@@ -1,20 +1,25 @@
+'use client'
+
 import { ScalesIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLatestWeight } from '@/hooks/queries/weight.query'
 
 import { Progress } from '../ui/progress'
 
 type WeightPanelProps = {
-  currentWeight: number
+  fallbackWeight: number
   startingWeight: number
   goalWeight: number
 }
 
-export async function WeightPanel(props: WeightPanelProps) {
-  const { currentWeight, startingWeight, goalWeight } = props
-  const t = await getTranslations()
+export function WeightPanel(props: WeightPanelProps) {
+  const { fallbackWeight, startingWeight, goalWeight } = props
+  const { data: latestEntry } = useLatestWeight()
+  const currentWeight = latestEntry?.weight ?? fallbackWeight
+  const t = useTranslations()
 
   const totalChange = Math.abs(startingWeight - goalWeight)
   const currentProgress = Math.abs(startingWeight - currentWeight)

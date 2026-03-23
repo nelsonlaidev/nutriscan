@@ -13,14 +13,14 @@ export const feedback = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     message: text('message').notNull(),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
-  (table) => [index('feedback_userId_idx').on(table.userId)]
+  (table) => [index('feedback_userId_idx').on(table.userId)],
 )
 
 export const feedbackRelations = relations(feedback, ({ one }) => ({
   user: one(users, {
     fields: [feedback.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))

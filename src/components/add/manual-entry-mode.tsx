@@ -23,10 +23,10 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
       calories: '' as '' | number,
       protein: '' as '' | number,
       carbs: '' as '' | number,
-      fat: '' as '' | number
+      fat: '' as '' | number,
     },
     validators: {
-      onSubmit: createManualFoodEntryFormSchema(t)
+      onSubmit: createManualFoodEntryFormSchema(t),
     },
     onSubmit: ({ value }) => {
       onSubmit({
@@ -35,9 +35,9 @@ export function ManualEntryMode(props: ManualEntryModeProps) {
         calories: value.calories as number,
         protein: value.protein as number,
         carbs: value.carbs as number,
-        fat: value.fat as number
+        fat: value.fat as number,
       })
-    }
+    },
   })
 
   return (

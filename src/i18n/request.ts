@@ -1,5 +1,5 @@
-import type { DeepObject } from '@/types'
 import type { Locale } from 'next-intl'
+import type { DeepObject } from '@/types'
 
 import { getRequestConfig } from 'next-intl/server'
 
@@ -23,6 +23,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages
+    messages,
   }
 })

@@ -1,8 +1,13 @@
+'use client'
+
+import type { DayRange } from '@/lib/utils'
+
 import { BowlFoodIcon } from '@phosphor-icons/react/ssr'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { useFoodTotals } from '@/hooks/queries/food.query'
 
 type MacroGoals = {
   protein: number
@@ -11,22 +16,23 @@ type MacroGoals = {
 }
 
 type MacronutrientCardsProps = {
-  values: MacroGoals
+  dayRange: DayRange
   goals: MacroGoals
 }
 
-export async function MacronutrientCards(props: MacronutrientCardsProps) {
-  const { values, goals } = props
-  const t = await getTranslations()
+export function MacronutrientCards(props: MacronutrientCardsProps) {
+  const { dayRange, goals } = props
+  const { data: values } = useFoodTotals(dayRange)
+  const t = useTranslations()
 
   const MACROS = [
     {
       key: 'protein',
       label: t('dashboard.protein'),
-      className: '**:data-[slot=progress-indicator]:bg-blue-500'
+      className: '**:data-[slot=progress-indicator]:bg-blue-500',
     },
     { key: 'carbs', label: t('dashboard.carbs'), className: '**:data-[slot=progress-indicator]:bg-amber-500' },
-    { key: 'fat', label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' }
+    { key: 'fat', label: t('dashboard.fat'), className: '**:data-[slot=progress-indicator]:bg-rose-500' },
   ] as const
 
   return (

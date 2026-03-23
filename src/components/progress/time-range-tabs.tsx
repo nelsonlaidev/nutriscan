@@ -10,6 +10,9 @@ export function TimeRangeTabs({ children }: { children: React.ReactNode }) {
   const t = useTranslations()
   const [range, setRange] = useQueryState('range', { ...progressParsers.range, shallow: false })
 
+  // i18n-check t('progress.weekly')
+  // i18n-check t('progress.monthly')
+  // i18n-check t('progress.yearly')
   return (
     <Tabs
       value={range}

@@ -6,11 +6,12 @@ import { getTranslations } from 'next-intl/server'
 import { BackButton } from '@/components/back-button'
 import { MainLayout } from '@/components/main-layout'
 import { WeightTracker } from '@/components/weight/weight-tracker'
-import { getLatestWeight, getWeightEntries } from '@/data/weight'
 import { getSession } from '@/lib/auth'
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
+import { orpc } from '@/orpc/client'
 
 export const metadata: Metadata = {
-  title: 'Weight Tracker'
+  title: 'Weight Tracker',
 }
 
 export default async function Page() {
@@ -19,22 +20,22 @@ export default async function Page() {
 
   const t = await getTranslations()
 
-  const [latestWeight, entries] = await Promise.all([
-    getLatestWeight(session.user.id),
-    getWeightEntries(session.user.id)
-  ])
+  const queryClient = getQueryClient()
 
-  const currentWeight = latestWeight?.weight ?? session.user.currentWeight
-  const { startingWeight, goalWeight } = session.user
+  await Promise.all([
+    queryClient.prefetchQuery(orpc.weight.latest.queryOptions()),
+    queryClient.prefetchQuery(orpc.weight.list.queryOptions()),
+  ])
 
   return (
     <MainLayout title={t('weight.page-title')} leftTitleButton={<BackButton />}>
-      <WeightTracker
-        currentWeight={currentWeight}
-        startingWeight={startingWeight}
-        goalWeight={goalWeight}
-        initialEntries={entries}
-      />
+      <HydrateClient client={queryClient}>
+        <WeightTracker
+          startingWeight={session.user.startingWeight}
+          goalWeight={session.user.goalWeight}
+          fallbackWeight={session.user.currentWeight}
+        />
+      </HydrateClient>
     </MainLayout>
   )
 }

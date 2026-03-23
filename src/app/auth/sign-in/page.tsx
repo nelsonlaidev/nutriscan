@@ -23,16 +23,16 @@ export default function Page() {
   const form = useForm({
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
     },
     validators: {
-      onSubmit: createSignInFormSchema(t)
+      onSubmit: createSignInFormSchema(t),
     },
     onSubmit: ({ value }) => {
       void signIn.email(
         {
           email: value.email,
-          password: value.password
+          password: value.password,
         },
         {
           onRequest: () => {
@@ -46,10 +46,10 @@ export default function Page() {
           onError: (ctx) => {
             toast.error(ctx.error.message || t('auth.error-sign-in'))
             setIsSubmitting(false)
-          }
-        }
+          },
+        },
       )
-    }
+    },
   })
 
   return (

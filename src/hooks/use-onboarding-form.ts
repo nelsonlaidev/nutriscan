@@ -21,7 +21,7 @@ const onboardingFormAtom = atom<OnboardingForm>({
   birthday: '',
   gender: 'male',
   plan: 'steady',
-  currentStep: 1
+  currentStep: 1,
 })
 
 export function useOnboardingForm() {
@@ -38,6 +38,6 @@ export function useOnboardingForm() {
   return {
     data,
     updateForm,
-    setStep
+    setStep,
   }
 }

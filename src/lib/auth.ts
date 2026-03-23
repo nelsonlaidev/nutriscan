@@ -8,10 +8,10 @@ export const auth = betterAuth({
   trustedOrigins: ['https://nutriscan.nelsonlai.dev', 'http://localhost:3000'],
   database: drizzleAdapter(db, {
     provider: 'pg',
-    usePlural: true
+    usePlural: true,
   }),
   emailAndPassword: {
-    enabled: true
+    enabled: true,
   },
   user: {
     additionalFields: {
@@ -19,77 +19,75 @@ export const auth = betterAuth({
         type: 'boolean',
         input: false,
         defaultValue: false,
-        required: true
+        required: true,
       },
       startingWeight: {
         type: 'number',
-        required: true
+        required: true,
       },
       currentWeight: {
         type: 'number',
-        required: true
+        required: true,
       },
       goalWeight: {
         type: 'number',
-        required: true
+        required: true,
       },
       height: {
         type: 'number',
-        required: true
+        required: true,
       },
       locale: {
         type: 'string',
         required: true,
         defaultValue: 'en',
-        input: false
+        input: false,
       },
       waterGoal: {
         type: 'number',
         required: true,
         defaultValue: 2500,
-        input: false
+        input: false,
       },
       birthday: {
         type: 'string',
-        required: true
+        required: true,
       },
       gender: {
         type: 'string',
-        required: true
+        required: true,
       },
       plan: {
         type: 'string',
         required: true,
-        defaultValue: 'steady'
+        defaultValue: 'steady',
       },
       calorieBudget: {
         type: 'number',
         required: true,
-        defaultValue: 2000
+        defaultValue: 2000,
       },
       proteinTarget: {
         type: 'number',
         required: true,
-        defaultValue: 150
+        defaultValue: 150,
       },
       carbTarget: {
         type: 'number',
         required: true,
-        defaultValue: 200
+        defaultValue: 200,
       },
       fatTarget: {
         type: 'number',
         required: true,
-        defaultValue: 67
-      }
-    }
-  }
+        defaultValue: 67,
+      },
+    },
+  },
 })
 
 export async function getSession() {
   return auth.api.getSession({
-    headers: await headers()
+    headers: await headers(),
   })
 }
-
-export type Session = typeof auth.$Infer.Session

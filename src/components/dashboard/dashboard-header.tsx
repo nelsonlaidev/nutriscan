@@ -1,31 +1,33 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 import { UserAvatar } from '@/components/user-avatar'
-import { useSession } from '@/lib/session'
 
+// i18n-check t('greeting.morning')
+// i18n-check t('greeting.afternoon')
+// i18n-check t('greeting.evening')
 function getGreetingKey(hour: number) {
   if (hour >= 5 && hour < 12) return 'greeting.morning'
   if (hour >= 12 && hour < 18) return 'greeting.afternoon'
   return 'greeting.evening'
 }
 
-export function DashboardHeader() {
-  const { user } = useSession()
-  const t = useTranslations()
-  const [greeting, setGreeting] = useState('')
+type DashboardHeaderProps = {
+  user: { id: string; name: string; image?: string | null }
+}
 
-  useEffect(() => {
+export function DashboardHeader({ user }: DashboardHeaderProps) {
+  const t = useTranslations()
+  const greeting = useMemo(() => {
     const hour = new Date().getHours()
-    const greetingKey = getGreetingKey(hour)
-    setGreeting(t(greetingKey))
+    return t(getGreetingKey(hour))
   }, [t])
 
   return (
     <div className='flex items-center gap-3'>
-      <UserAvatar className='size-10' />
+      <UserAvatar user={user} className='size-10' />
       <div>
         <p className='text-sm text-muted-foreground'>{greeting},</p>
         <h1 className='text-lg font-semibold'>{user.name}</h1>

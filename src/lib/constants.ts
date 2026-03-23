@@ -1,7 +1,11 @@
-import type { users } from '@/db/schemas'
 import type { InferInsertModel } from 'drizzle-orm'
+import type { users } from '@/db/schemas'
 
 import { env } from '@/env'
+
+// window is not always defined
+// oxlint-disable-next-line unicorn/no-typeof-undefined
+export const IS_SERVER = typeof globalThis.window === 'undefined'
 
 export const isProd = env.NODE_ENV === 'production'
 export const isDev = env.NODE_ENV === 'development'
@@ -13,7 +17,7 @@ export const LOCALES = [DEFAULT_LOCALE, 'zh-TW', 'zh-CN'] as const
 export const LOCALE_ITEMS: Array<{ label: string; value: (typeof LOCALES)[number] }> = [
   { label: 'English', value: 'en' },
   { label: '繁體中文', value: 'zh-TW' },
-  { label: '简体中文', value: 'zh-CN' }
+  { label: '简体中文', value: 'zh-CN' },
 ]
 
 export const DEFAULT_STARTING_WEIGHT = 70
@@ -33,15 +37,16 @@ export const MEAL_EMOJI: Record<Meal, string> = {
   breakfast: '🍞',
   lunch: '🌤️',
   dinner: '🌙',
-  snacks: '🍿'
+  snacks: '🍿',
 } as const
 
 export type Meal = (typeof MEALS)[number]
 export const MEALS = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
+export const MEALS_SET = new Set(MEALS)
 export const DEFAULT_MEAL: Meal = 'breakfast'
 
-export const TEST_USER = {
-  id: '00000000-0000-0000-0000-000000000000',
+export const TEST_USER: InferInsertModel<typeof users> = {
+  id: '00000000000000000000000000000000',
   name: 'Test',
   email: 'test@example.com',
   emailVerified: true,
@@ -56,5 +61,5 @@ export const TEST_USER = {
   proteinTarget: 160,
   carbTarget: 220,
   fatTarget: 70,
-  onboarded: true
-} satisfies InferInsertModel<typeof users>
+  onboarded: true,
+}

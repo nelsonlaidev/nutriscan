@@ -26,10 +26,10 @@ export default function Page() {
       name: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     },
     validators: {
-      onSubmit: createSignUpFormSchema(t)
+      onSubmit: createSignUpFormSchema(t),
     },
     onSubmit: ({ value }) => {
       void signUp.email(
@@ -42,7 +42,7 @@ export default function Page() {
           goalWeight: DEFAULT_GOAL_WEIGHT,
           height: DEFAULT_HEIGHT,
           birthday: '',
-          gender: ''
+          gender: '',
         },
         {
           onRequest: () => {
@@ -56,10 +56,10 @@ export default function Page() {
           onError: (ctx) => {
             toast.error(ctx.error.message || t('auth.error-create-account'))
             setIsSubmitting(false)
-          }
-        }
+          },
+        },
       )
-    }
+    },
   })
 
   return (

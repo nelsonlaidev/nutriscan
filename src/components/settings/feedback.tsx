@@ -6,9 +6,9 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { sendFeedback } from '@/actions/send-feedback'
+import { useSendFeedback } from '@/hooks/queries/settings.query'
 import { MAX_FEEDBACK_LENGTH } from '@/lib/constants'
-import { SendFeedbackSchema } from '@/lib/zod-schemas'
+import { SendFeedbackInputSchema } from '@/orpc/schemas/settings.schema'
 
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
@@ -19,24 +19,19 @@ import { Textarea } from '../ui/textarea'
 export function Feedback() {
   const t = useTranslations()
   const [open, setOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { mutate: sendFeedback, isPending } = useSendFeedback(() => {
+    toast.success(t('settings.feedback-success'))
+    form.reset()
+    setOpen(false)
+  })
 
   const form = useForm({
     defaultValues: { message: '' },
-    validators: { onSubmit: SendFeedbackSchema },
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true)
-      const result = await sendFeedback({ message: value.message.trim() })
-      setIsSubmitting(false)
-
-      if (result.data?.success) {
-        toast.success(t('settings.feedback-success'))
-        form.reset()
-        setOpen(false)
-      } else {
-        toast.error(t('settings.feedback-error'))
-      }
-    }
+    validators: { onSubmit: SendFeedbackInputSchema },
+    onSubmit: ({ value }) => {
+      sendFeedback({ message: value.message.trim() }, { onError: () => toast.error(t('settings.feedback-error')) })
+    },
   })
 
   return (
@@ -96,8 +91,8 @@ export function Feedback() {
               </form.Field>
             </FieldGroup>
             <DialogFooter className='mt-4'>
-              <Button type='submit' disabled={isSubmitting}>
-                {isSubmitting && <Spinner data-icon='inline-start' />}
+              <Button type='submit' disabled={isPending}>
+                {isPending && <Spinner data-icon='inline-start' />}
                 {t('settings.feedback-submit')}
               </Button>
             </DialogFooter>

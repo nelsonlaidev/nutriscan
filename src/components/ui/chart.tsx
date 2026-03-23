@@ -55,7 +55,7 @@ function ChartContainer({
         data-chart={chartId}
         className={cn(
           "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
-          className
+          className,
         )}
         {...props}
       >
@@ -76,7 +76,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       // This is necessary
-      // eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
+      // oxlint-disable-next-line react-dom/no-dangerously-set-innerhtml
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
@@ -89,9 +89,9 @@ ${colorConfig
   })
   .join('\n')}
 }
-`
+`,
           )
-          .join('\n')
+          .join('\n'),
       }}
     />
   )
@@ -112,7 +112,7 @@ function ChartTooltipContent({
   formatter,
   color,
   nameKey,
-  labelKey
+  labelKey,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
@@ -154,7 +154,7 @@ function ChartTooltipContent({
     <div
       className={cn(
         'grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl',
-        className
+        className,
       )}
     >
       {nestLabel ? null : tooltipLabel}
@@ -171,7 +171,7 @@ function ChartTooltipContent({
                 key={item.dataKey}
                 className={cn(
                   'flex w-full flex-wrap items-stretch gap-2 [&>svg]:size-2.5 [&>svg]:text-muted-foreground',
-                  indicator === 'dot' && 'items-center'
+                  indicator === 'dot' && 'items-center',
                 )}
               >
                 {formatter && item.value !== undefined && item.name ? (
@@ -187,11 +187,11 @@ function ChartTooltipContent({
                             'size-2.5': indicator === 'dot',
                             'w-1': indicator === 'line',
                             'w-0 border-[1.5px] border-dashed bg-transparent': indicator === 'dashed',
-                            'my-0.5': nestLabel && indicator === 'dashed'
+                            'my-0.5': nestLabel && indicator === 'dashed',
                           })}
                           style={{
                             '--color-bg': indicatorColor,
-                            '--color-border': indicatorColor
+                            '--color-border': indicatorColor,
                           }}
                         />
                       )
@@ -199,7 +199,7 @@ function ChartTooltipContent({
                     <div
                       className={cn(
                         'flex flex-1 justify-between leading-none',
-                        nestLabel ? 'items-end' : 'items-center'
+                        nestLabel ? 'items-end' : 'items-center',
                       )}
                     >
                       <div className='grid gap-1.5'>
@@ -229,7 +229,7 @@ function ChartLegendContent({
   hideIcon = false,
   payload,
   verticalAlign = 'bottom',
-  nameKey
+  nameKey,
 }: React.ComponentProps<'div'> &
   Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
     hideIcon?: boolean
@@ -260,7 +260,7 @@ function ChartLegendContent({
                 <div
                   className='size-2 shrink-0 rounded-[2px]'
                   style={{
-                    backgroundColor: item.color
+                    backgroundColor: item.color,
                   }}
                 />
               )}

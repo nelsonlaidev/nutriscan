@@ -1,8 +1,11 @@
+import type { InferSelectModel } from 'drizzle-orm'
+
 import { faker } from '@faker-js/faker'
+import { generateId } from 'better-auth'
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 
-import { TEST_USER } from '@/lib/constants'
+import { MEALS, TEST_USER } from '@/lib/constants'
 
 import { db } from './index'
 import { accounts, chatMessages, chats, foodEntries, users, waterEntries, weightEntries } from './schemas'
@@ -15,14 +18,14 @@ async function main() {
 
     // Create an account for the user
     await db.insert(accounts).values({
-      id: faker.string.uuid(),
-      accountId: faker.string.uuid(),
+      id: generateId(),
+      accountId: generateId(),
       providerId: 'credential',
       userId: TEST_USER.id,
       password:
         // Fixed password hash for "12341234"
-        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
-        '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b'
+        // oxlint-disable-next-line sonarjs/no-hardcoded-passwords
+        '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b',
     })
 
     consola.success(`Created user: ${TEST_USER.id}`)
@@ -41,13 +44,11 @@ async function main() {
       const date = new Date(today)
       date.setDate(date.getDate() - i)
 
-      const mealCategories = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
-
       // 3-5 meals a day
       const mealsCount = faker.number.int({ min: 3, max: 5 })
 
       for (let j = 0; j < mealsCount; j++) {
-        const mealCategory = mealCategories[j % mealCategories.length]
+        const mealCategory = MEALS[j % MEALS.length]
         if (!mealCategory) continue
 
         foodData.push({
@@ -61,7 +62,7 @@ async function main() {
           fat: faker.number.int({ min: 5, max: 40 }),
           mealCategory,
           source: faker.helpers.arrayElement(['ai-scan', 'manual', 'barcode']),
-          createdAt: date
+          createdAt: date,
         })
       }
 
@@ -73,7 +74,7 @@ async function main() {
           id: faker.string.uuid(),
           userId: TEST_USER.id,
           amount: 250,
-          createdAt: date
+          createdAt: date,
         })
       }
 
@@ -86,7 +87,7 @@ async function main() {
           id: faker.string.uuid(),
           userId: TEST_USER.id,
           weight: Number(currentWeight.toFixed(1)),
-          createdAt: date
+          createdAt: date,
         })
       }
     }
@@ -111,18 +112,17 @@ async function main() {
     const chatData = [
       { id: chat1Id, userId: TEST_USER.id, title: 'Healthy breakfast ideas', createdAt: chat1Date },
       { id: chat2Id, userId: TEST_USER.id, title: 'Post-workout nutrition tips', createdAt: chat2Date },
-      { id: chat3Id, userId: TEST_USER.id, title: 'Low carb dinner options', createdAt: chat3Date }
+      { id: chat3Id, userId: TEST_USER.id, title: 'Low carb dinner options', createdAt: chat3Date },
     ]
 
-    const chatMessageData = [
+    const chatMessageData: Array<InferSelectModel<typeof chatMessages>> = [
       // Chat 1: Healthy breakfast ideas
       {
         id: faker.string.uuid(),
         chatId: chat1Id,
         role: 'user' as const,
         parts: [{ type: 'text', text: 'What are some healthy breakfast ideas under 400 calories?' }],
-        attachments: [],
-        createdAt: new Date(chat1Date)
+        createdAt: new Date(chat1Date),
       },
       {
         id: faker.string.uuid(),
@@ -131,11 +131,10 @@ async function main() {
         parts: [
           {
             type: 'text',
-            text: 'Here are some great breakfast options under 400 calories:\n\n1. **Greek yogurt with berries** (~250 cal) — High in protein, add some granola for crunch.\n2. **Oatmeal with banana** (~350 cal) — Top with a drizzle of honey and cinnamon.\n3. **Scrambled eggs with toast** (~380 cal) — Two eggs with whole wheat toast.\n4. **Smoothie bowl** (~300 cal) — Blend spinach, banana, and protein powder.'
-          }
+            text: 'Here are some great breakfast options under 400 calories:\n\n1. **Greek yogurt with berries** (~250 cal) — High in protein, add some granola for crunch.\n2. **Oatmeal with banana** (~350 cal) — Top with a drizzle of honey and cinnamon.\n3. **Scrambled eggs with toast** (~380 cal) — Two eggs with whole wheat toast.\n4. **Smoothie bowl** (~300 cal) — Blend spinach, banana, and protein powder.',
+          },
         ],
-        attachments: [],
-        createdAt: new Date(chat1Date.getTime() + 5000)
+        createdAt: new Date(chat1Date.getTime() + 5000),
       },
       // Chat 2: Post-workout nutrition tips
       {
@@ -143,8 +142,7 @@ async function main() {
         chatId: chat2Id,
         role: 'user' as const,
         parts: [{ type: 'text', text: 'What should I eat after a workout?' }],
-        attachments: [],
-        createdAt: new Date(chat2Date)
+        createdAt: new Date(chat2Date),
       },
       {
         id: faker.string.uuid(),
@@ -153,11 +151,10 @@ async function main() {
         parts: [
           {
             type: 'text',
-            text: 'After a workout, focus on protein and carbs to help recovery:\n\n- **Protein shake with a banana** — Quick and easy, provides both protein and fast carbs.\n- **Chicken breast with rice** — A classic post-workout meal.\n- **Cottage cheese with fruit** — Great source of casein protein.\n\nAim to eat within 30-60 minutes after your workout for optimal recovery.'
-          }
+            text: 'After a workout, focus on protein and carbs to help recovery:\n\n- **Protein shake with a banana** — Quick and easy, provides both protein and fast carbs.\n- **Chicken breast with rice** — A classic post-workout meal.\n- **Cottage cheese with fruit** — Great source of casein protein.\n\nAim to eat within 30-60 minutes after your workout for optimal recovery.',
+          },
         ],
-        attachments: [],
-        createdAt: new Date(chat2Date.getTime() + 5000)
+        createdAt: new Date(chat2Date.getTime() + 5000),
       },
       // Chat 3: Low carb dinner options
       {
@@ -165,8 +162,7 @@ async function main() {
         chatId: chat3Id,
         role: 'user' as const,
         parts: [{ type: 'text', text: 'Can you suggest some low carb dinners?' }],
-        attachments: [],
-        createdAt: new Date(chat3Date)
+        createdAt: new Date(chat3Date),
       },
       {
         id: faker.string.uuid(),
@@ -175,12 +171,11 @@ async function main() {
         parts: [
           {
             type: 'text',
-            text: 'Here are some delicious low-carb dinner ideas:\n\n1. **Grilled salmon with asparagus** (~8g carbs) — Season with lemon and herbs.\n2. **Zucchini noodles with meat sauce** (~12g carbs) — Swap pasta for zoodles.\n3. **Stuffed bell peppers** (~15g carbs) — Fill with ground turkey and cheese.\n4. **Cauliflower fried rice** (~10g carbs) — Use riced cauliflower instead of rice.'
-          }
+            text: 'Here are some delicious low-carb dinner ideas:\n\n1. **Grilled salmon with asparagus** (~8g carbs) — Season with lemon and herbs.\n2. **Zucchini noodles with meat sauce** (~12g carbs) — Swap pasta for zoodles.\n3. **Stuffed bell peppers** (~15g carbs) — Fill with ground turkey and cheese.\n4. **Cauliflower fried rice** (~10g carbs) — Use riced cauliflower instead of rice.',
+          },
         ],
-        attachments: [],
-        createdAt: new Date(chat3Date.getTime() + 5000)
-      }
+        createdAt: new Date(chat3Date.getTime() + 5000),
+      },
     ]
 
     consola.info(`Inserting ${chatData.length} chats...`)

@@ -1,13 +1,18 @@
+'use client'
+
+import type { DayRange } from '@/lib/utils'
+
 import { CaretRightIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { useFoodMeals } from '@/hooks/queries/food.query'
 import { MEAL_EMOJI } from '@/lib/constants'
-import { cn, type MealBreakdown } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 type MealListProps = {
-  meals: MealBreakdown[]
+  dayRange: DayRange
   date: string
 }
 
@@ -15,12 +20,13 @@ const EMOJI_BG: Record<string, string> = {
   breakfast: 'bg-amber-100 dark:bg-amber-950',
   lunch: 'bg-orange-100 dark:bg-orange-950',
   dinner: 'bg-violet-100 dark:bg-violet-950',
-  snacks: 'bg-red-100 dark:bg-red-950'
+  snacks: 'bg-red-100 dark:bg-red-950',
 }
 
-export async function MealList(props: MealListProps) {
-  const { meals, date } = props
-  const t = await getTranslations()
+export function MealList(props: MealListProps) {
+  const { dayRange, date } = props
+  const { data: meals } = useFoodMeals(dayRange)
+  const t = useTranslations()
 
   return (
     <div className='space-y-3'>
@@ -40,7 +46,7 @@ export async function MealList(props: MealListProps) {
                   <div
                     className={cn(
                       'flex size-10 items-center justify-center rounded-xl text-lg',
-                      EMOJI_BG[meal.category]
+                      EMOJI_BG[meal.category],
                     )}
                   >
                     {MEAL_EMOJI[meal.category]}

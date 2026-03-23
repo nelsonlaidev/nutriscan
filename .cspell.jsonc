@@ -3,7 +3,7 @@
   "useGitignore": true,
   "enableGlobDot": true,
   "enabledFileTypes": {
-    "*": true
+    "*": true,
   },
   "ignoreRandomStrings": true,
   "allowCompoundWords": true,
@@ -26,11 +26,17 @@
     "nums",
     "nuqs",
     "nutriscan",
+    "orpc",
+    "oxfmt",
+    "oxlint",
     "shiki",
     "sonarjs",
     "tdee",
+    "tsgolint",
     "unifiedjs",
+    "Unproxied",
+    "uuidv4",
     "yudiel",
-    "zoodles"
-  ]
+    "zoodles",
+  ],
 }

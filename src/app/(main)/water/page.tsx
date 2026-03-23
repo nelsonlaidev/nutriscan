@@ -6,33 +6,43 @@ import { getTranslations } from 'next-intl/server'
 import { BackButton } from '@/components/back-button'
 import { MainLayout } from '@/components/main-layout'
 import { WaterTracker } from '@/components/water/water-tracker'
-import { getWaterChartData } from '@/data/progress'
-import { getWaterEntries } from '@/data/water'
 import { getSession } from '@/lib/auth'
-import { getDateRange } from '@/lib/utils'
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
+import { getDateRange, getDayRange } from '@/lib/utils'
+import { orpc } from '@/orpc/client'
 
 export const metadata: Metadata = {
-  title: 'Water Tracker'
+  title: 'Water Tracker',
 }
 
 export default async function Page() {
   const session = await getSession()
   if (!session) redirect('/')
 
-  const { waterGoal } = session.user
-
   const t = await getTranslations()
 
+  const queryClient = getQueryClient()
   const dateRange = getDateRange('weekly')
+  const dayRange = getDayRange()
 
-  const [entries, weekData] = await Promise.all([
-    getWaterEntries(session.user.id),
-    getWaterChartData(session.user.id, dateRange)
+  await Promise.all([
+    queryClient.prefetchQuery(orpc.water.list.queryOptions({ input: dayRange })),
+    queryClient.prefetchQuery(
+      orpc.progress.waterChart.queryOptions({
+        input: {
+          startOfDay: dateRange.startOfDay,
+          endOfDay: dateRange.endOfDay,
+          hasDates: dateRange.dates.length > 0,
+        },
+      }),
+    ),
   ])
 
   return (
     <MainLayout title={t('water.page-title')} leftTitleButton={<BackButton />}>
-      <WaterTracker initialGoal={waterGoal} weekData={weekData} initialEntries={entries} />
+      <HydrateClient client={queryClient}>
+        <WaterTracker initialGoal={session.user.waterGoal} />
+      </HydrateClient>
     </MainLayout>
   )
 }

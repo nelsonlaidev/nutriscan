@@ -1,6 +1,6 @@
 import type { UIDataTypes, UIMessage, UIMessagePart, UITools } from 'ai'
 
-import { useChat } from '@/contexts/chat'
+import { useChatContext } from '@/contexts/chat'
 import { cn } from '@/lib/utils'
 
 import { Message } from './message'
@@ -12,12 +12,12 @@ type ResponseProps = {
 
 export function Response(props: ResponseProps) {
   const { part, role } = props
-  const { status } = useChat()
+  const { status } = useChatContext()
   const isStreaming = status === 'streaming'
 
   if (part.type === 'file' && part.mediaType.startsWith('image/')) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
+      // oxlint-disable-next-line @next/next/no-img-element
       <img
         src={part.url}
         alt={part.filename ?? 'Image attachment'}

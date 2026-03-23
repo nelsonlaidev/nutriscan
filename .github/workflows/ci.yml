@@ -24,7 +24,7 @@ env:
 
 jobs:
   lint:
-    name: ESLint
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
@@ -33,7 +33,7 @@ jobs:
       - name: Configure environment
         uses: ./.github/actions/setup
 
-      - name: Run ESLint
+      - name: Run Oxlint
         run: pnpm lint
 
   spellcheck:
@@ -72,7 +72,7 @@ jobs:
       - name: Configure environment
         uses: ./.github/actions/setup
 
-      - name: Run Prettier format check
+      - name: Run Oxfmt format check
         run: pnpm format:check
 
   knip:

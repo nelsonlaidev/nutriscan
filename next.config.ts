@@ -10,16 +10,16 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 
   typescript: {
-    ignoreBuildErrors: env.CI
+    ignoreBuildErrors: env.CI,
   },
 
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: R2_URL.hostname
-      }
-    ]
+        hostname: R2_URL.hostname,
+      },
+    ],
   },
 
   allowedDevOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
@@ -28,9 +28,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@phosphor-icons/react'],
     serverActions: {
       allowedOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
-      bodySizeLimit: '10mb'
-    }
-  }
+      bodySizeLimit: '10mb',
+    },
+  },
 }
 
 if (env.NODE_ENV === 'test') {

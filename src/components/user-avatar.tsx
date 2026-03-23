@@ -1,15 +1,14 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useSession } from '@/lib/session'
 
 import { Skeleton } from './ui/skeleton'
 
-type UserAvatarProps = React.ComponentProps<typeof Avatar>
+type UserAvatarProps = React.ComponentProps<typeof Avatar> & {
+  user: { id: string; name: string; image?: string | null }
+}
 
-export function UserAvatar(props: UserAvatarProps) {
-  const { user } = useSession()
-
+export function UserAvatar({ user, ...props }: UserAvatarProps) {
   const imageSrc = user.image ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${user.id}`
 
   return (

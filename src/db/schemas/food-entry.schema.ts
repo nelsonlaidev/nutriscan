@@ -1,6 +1,8 @@
 import { relations } from 'drizzle-orm'
 import { index, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
 
+import { MEALS } from '@/lib/constants'
+
 import { users } from './auth.schema'
 
 export const foodEntries = pgTable(
@@ -19,21 +21,21 @@ export const foodEntries = pgTable(
     carbs: real('carbs').notNull(),
     fat: real('fat').notNull(),
     mealCategory: text('meal_category', {
-      enum: ['breakfast', 'lunch', 'dinner', 'snacks']
+      enum: [...MEALS],
     }).notNull(),
     source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
     imageUrl: text('image_url'),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
     index('food_entry_userId_idx').on(table.userId),
-    index('food_entry_userId_createdAt_idx').on(table.userId, table.createdAt)
-  ]
+    index('food_entry_userId_createdAt_idx').on(table.userId, table.createdAt),
+  ],
 )
 
 export const foodEntryRelations = relations(foodEntries, ({ one }) => ({
   user: one(users, {
     fields: [foodEntries.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))

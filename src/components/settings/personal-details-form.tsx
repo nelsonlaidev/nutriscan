@@ -6,21 +6,18 @@ import { BarbellIcon, CalendarBlankIcon, RulerIcon, TargetIcon } from '@phosphor
 import { useForm } from '@tanstack/react-form'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 
-import { updatePersonalDetails } from '@/actions/update-personal-details'
 import { Button } from '@/components/ui/button'
+import { useUpdatePersonalDetails } from '@/hooks/queries/settings.query'
 import {
   calculateAge,
   calculateBMR,
   calculateCalorieBudget,
   calculateMacros,
   calculateTDEE,
-  generatePlanOptions
+  generatePlanOptions,
 } from '@/lib/calculations'
-import { onActionError } from '@/lib/safe-action-utils'
-import { useSession } from '@/lib/session'
 import { createPersonalDetailsFormSchema } from '@/lib/zod-schemas'
 
 import {
@@ -32,7 +29,7 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-  FieldTitle
+  FieldTitle,
 } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
@@ -44,7 +41,7 @@ function computePlanOptions(
   height: number | '',
   gender: Gender,
   currentWeight: number | '',
-  goalWeight: number | ''
+  goalWeight: number | '',
 ) {
   if (!birthday || typeof height !== 'number' || typeof currentWeight !== 'number') return null
   const age = calculateAge(birthday)
@@ -52,34 +49,37 @@ function computePlanOptions(
   return generatePlanOptions(currentWeight, height, age, gender, goalWeight as number)
 }
 
-export function PersonalDetailsForm() {
-  const { user } = useSession()
+type PersonalDetailsFormProps = {
+  user: {
+    currentWeight: number
+    goalWeight: number
+    height: number
+    birthday: string
+    gender: string
+    plan: string
+  }
+}
+
+export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
   const router = useRouter()
   const t = useTranslations()
 
   const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
     { value: 'male', label: t('onboarding.male') },
     { value: 'female', label: t('onboarding.female') },
-    { value: 'other', label: t('onboarding.other') }
+    { value: 'other', label: t('onboarding.other') },
   ]
 
   const PLAN_LABELS: Record<CaloriePlan, string> = {
     relaxed: t('onboarding.plan-relaxed'),
     steady: t('onboarding.plan-steady'),
-    accelerated: t('onboarding.plan-accelerated')
+    accelerated: t('onboarding.plan-accelerated'),
   }
 
-  const { execute, isPending } = useAction(updatePersonalDetails, {
-    onSuccess: () => {
-      toast.success(t('settings.personal-details.success'))
-      // Refresh to get updated session
-      router.refresh()
-      router.back()
-    },
-    onError: (error) => {
-      onActionError(error)
-      toast.error(t('settings.personal-details.error'))
-    }
+  const { mutate: updateDetails, isPending } = useUpdatePersonalDetails(() => {
+    toast.success(t('settings.personal-details.success'))
+    router.refresh()
+    router.back()
   })
 
   const form = useForm({
@@ -89,10 +89,10 @@ export function PersonalDetailsForm() {
       height: user.height as number | '',
       birthday: user.birthday,
       gender: user.gender as Gender,
-      plan: user.plan as CaloriePlan
+      plan: user.plan as CaloriePlan,
     },
     validators: {
-      onSubmit: createPersonalDetailsFormSchema(t)
+      onSubmit: createPersonalDetailsFormSchema(t),
     },
     onSubmit: ({ value }) => {
       const age = calculateAge(value.birthday)
@@ -101,19 +101,24 @@ export function PersonalDetailsForm() {
       const calories = calculateCalorieBudget(tdee, value.plan)
       const macros = calculateMacros(calories)
 
-      execute({
-        currentWeight: value.currentWeight as number,
-        goalWeight: value.goalWeight as number,
-        height: value.height as number,
-        birthday: value.birthday,
-        gender: value.gender,
-        plan: value.plan,
-        calorieBudget: calories,
-        proteinTarget: macros.protein,
-        carbTarget: macros.carbs,
-        fatTarget: macros.fat
-      })
-    }
+      updateDetails(
+        {
+          currentWeight: value.currentWeight as number,
+          goalWeight: value.goalWeight as number,
+          height: value.height as number,
+          birthday: value.birthday,
+          gender: value.gender,
+          plan: value.plan,
+          calorieBudget: calories,
+          proteinTarget: macros.protein,
+          carbTarget: macros.carbs,
+          fatTarget: macros.fat,
+        },
+        {
+          onError: () => toast.error(t('settings.personal-details.error')),
+        },
+      )
+    },
   })
 
   return (
@@ -305,7 +310,7 @@ export function PersonalDetailsForm() {
                   values.height,
                   values.gender,
                   values.currentWeight,
-                  values.goalWeight
+                  values.goalWeight,
                 )
 
                 if (!options) return null
@@ -322,7 +327,7 @@ export function PersonalDetailsForm() {
                               <FieldDescription>
                                 {t('onboarding.plan-details', {
                                   weeklyLoss: option.weeklyLoss,
-                                  weeks: option.weeksToGoal
+                                  weeks: option.weeksToGoal,
                                 })}
                               </FieldDescription>
                             </FieldContent>

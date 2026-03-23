@@ -1,20 +1,15 @@
 'use client'
 
-import type { WaterChartData } from '@/data/progress'
-import type { WaterEntry } from '@/data/water'
-
 import { PlusIcon } from '@phosphor-icons/react/ssr'
-import { isToday } from 'date-fns'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import { addWaterEntry } from '@/actions/water-entry'
 import { Button } from '@/components/ui/button'
-import { MAX_WATER_INTAKE } from '@/lib/constants'
-import { formatMl, toZonedDate } from '@/lib/utils'
+import { useWaterChartData } from '@/hooks/queries/progress.query'
+import { useAddWaterEntry, useWaterEntries } from '@/hooks/queries/water.query'
+import { formatMl, getDateRange, getDayRange } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
-
 import { WaterDroplet } from './water-droplet'
 import { WaterGoalDialog } from './water-goal-dialog'
 import { WaterHistory } from './water-history'
@@ -24,50 +19,28 @@ const QUICK_ADD_OPTIONS = [100, 200, 300, 500]
 
 type WaterTrackerProps = {
   initialGoal: number
-  weekData: WaterChartData
-  initialEntries: WaterEntry[]
 }
 
 export function WaterTracker(props: WaterTrackerProps) {
-  const { initialGoal, weekData, initialEntries } = props
+  const { initialGoal } = props
   const t = useTranslations()
-  const [entries, setEntries] = useState(initialEntries)
+
+  const dayRange = getDayRange()
+  const dateRange = getDateRange('weekly')
+
+  const { data: entries } = useWaterEntries(dayRange)
+  const { mutate: addWater, isPending } = useAddWaterEntry(dayRange)
+
+  const { data: weekData } = useWaterChartData({
+    startOfDay: dateRange.startOfDay,
+    endOfDay: dateRange.endOfDay,
+    hasDates: dateRange.dates.length > 0,
+  })
+
   const [goal, setGoal] = useState(initialGoal)
 
-  const todayEntries = entries.filter((e) => isToday(toZonedDate(e.createdAt)))
-  const amount = todayEntries.reduce((sum, e) => sum + e.amount, 0)
-
+  const amount = entries.reduce((sum, e) => sum + e.amount, 0)
   const percentage = goal > 0 ? (amount / goal) * 100 : 0
-
-  async function addWater(ml: number) {
-    // Optimistically add entry
-    const optimisticId = crypto.randomUUID()
-    const optimisticEntry: WaterEntry = {
-      id: optimisticId,
-      amount: Math.min(ml, MAX_WATER_INTAKE - amount),
-      createdAt: new Date()
-    }
-
-    setEntries((prev) => [optimisticEntry, ...prev])
-
-    const result = await addWaterEntry({ amount: optimisticEntry.amount })
-
-    const entry = result.data?.entry
-    if (result.data?.success && entry) {
-      // Replace optimistic entry with real one
-      setEntries((prev) =>
-        prev.map((e) => (e.id === optimisticId ? { ...e, id: entry.id, createdAt: entry.createdAt } : e))
-      )
-    }
-  }
-
-  function handleEntryUpdate(id: string, newAmount: number) {
-    setEntries((prev) => prev.map((e) => (e.id === id ? { ...e, amount: newAmount } : e)))
-  }
-
-  function handleEntryDelete(id: string) {
-    setEntries((prev) => prev.filter((e) => e.id !== id))
-  }
 
   return (
     <div className='flex flex-col items-center gap-8'>
@@ -87,7 +60,8 @@ export function WaterTracker(props: WaterTrackerProps) {
             variant='outline'
             size='sm'
             onClick={() => {
-              void addWater(ml)
+              if (isPending) return
+              addWater({ amount: ml })
             }}
           >
             <PlusIcon size={14} data-icon='inline-start' />
@@ -100,14 +74,15 @@ export function WaterTracker(props: WaterTrackerProps) {
         size='lg'
         className='w-full max-w-xs bg-blue-500 hover:bg-blue-600'
         onClick={() => {
-          void addWater(250)
+          if (isPending) return
+          addWater({ amount: 250 })
         }}
       >
         <PlusIcon size={18} data-icon='inline-start' />
         {t('water.drink-water')}
       </Button>
 
-      <WaterHistory entries={entries} onUpdate={handleEntryUpdate} onDelete={handleEntryDelete} />
+      <WaterHistory entries={entries} />
     </div>
   )
 }

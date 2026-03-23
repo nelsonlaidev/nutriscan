@@ -10,7 +10,7 @@ import {
   DEFAULT_HEIGHT,
   DEFAULT_PROTEIN_TARGET,
   DEFAULT_STARTING_WEIGHT,
-  DEFAULT_WATER_GOAL
+  DEFAULT_WATER_GOAL,
 } from '@/lib/constants'
 
 import { chats } from './chat.schema'
@@ -44,7 +44,7 @@ export const users = pgTable('users', {
   calorieBudget: integer('calorie_budget').notNull().default(DEFAULT_CALORIE_BUDGET),
   proteinTarget: integer('protein_target').notNull().default(DEFAULT_PROTEIN_TARGET),
   carbTarget: integer('carb_target').notNull().default(DEFAULT_CARB_TARGET),
-  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET)
+  fatTarget: integer('fat_target').notNull().default(DEFAULT_FAT_TARGET),
 })
 
 export const sessions = pgTable(
@@ -61,9 +61,9 @@ export const sessions = pgTable(
     userAgent: text('user_agent'),
     userId: text('user_id')
       .notNull()
-      .references(() => users.id, { onDelete: 'cascade' })
+      .references(() => users.id, { onDelete: 'cascade' }),
   },
-  (table) => [index('session_userId_idx').on(table.userId)]
+  (table) => [index('session_userId_idx').on(table.userId)],
 )
 
 export const accounts = pgTable(
@@ -85,9 +85,9 @@ export const accounts = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .$onUpdate(() => new Date())
-      .notNull()
+      .notNull(),
   },
-  (table) => [index('account_userId_idx').on(table.userId)]
+  (table) => [index('account_userId_idx').on(table.userId)],
 )
 
 export const verifications = pgTable(
@@ -101,9 +101,9 @@ export const verifications = pgTable(
     updatedAt: timestamp('updated_at')
       .defaultNow()
       .$onUpdate(() => new Date())
-      .notNull()
+      .notNull(),
   },
-  (table) => [index('verification_identifier_idx').on(table.identifier)]
+  (table) => [index('verification_identifier_idx').on(table.identifier)],
 )
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -111,19 +111,19 @@ export const userRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   chats: many(chats),
   foodEntries: many(foodEntries),
-  weightEntries: many(weightEntries)
+  weightEntries: many(weightEntries),
 }))
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
     fields: [sessions.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))
 
 export const accountRelations = relations(accounts, ({ one }) => ({
   user: one(users, {
     fields: [accounts.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))

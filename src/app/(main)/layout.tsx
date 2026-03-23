@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 
 import { Navbar } from '@/components/navbar'
-import { Providers } from '@/components/providers'
 import { getSession } from '@/lib/auth'
 
 export default async function Layout(props: LayoutProps<'/'>) {
@@ -13,9 +12,9 @@ export default async function Layout(props: LayoutProps<'/'>) {
   }
 
   return (
-    <Providers session={session}>
+    <>
       {children}
-      <Navbar />
-    </Providers>
+      <Navbar user={session.user} />
+    </>
   )
 }

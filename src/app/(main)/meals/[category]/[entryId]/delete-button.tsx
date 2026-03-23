@@ -3,11 +3,9 @@
 import { TrashIcon } from '@phosphor-icons/react/ssr'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { deleteFoodEntry } from '@/actions/delete-food-entry'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,8 +14,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog'
+import { useDeleteFoodEntry } from '@/hooks/queries/food.query'
 
 type DeleteFoodEntryButtonProps = {
   entryId: string
@@ -29,22 +28,22 @@ export function DeleteFoodEntryButton({ entryId, category }: DeleteFoodEntryButt
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
-  const { execute, isPending } = useAction(deleteFoodEntry, {
-    onSuccess: ({ data }) => {
-      if (data.success) {
-        toast.success(t('meals.entry-deleted'))
-        router.push(`/meals/${category}`)
-      } else {
-        toast.error(t('meals.entry-delete-error'))
-      }
-    },
-    onError: () => {
-      toast.error(t('meals.entry-delete-error'))
-    }
+  const { mutate, isPending } = useDeleteFoodEntry(() => {
+    toast.success(t('meals.entry-deleted'))
+    router.push(`/meals/${category}`)
   })
 
   function handleDelete() {
-    execute({ id: entryId })
+    if (isPending) return
+
+    mutate(
+      { id: entryId },
+      {
+        onError: () => {
+          toast.error(t('meals.entry-delete-error'))
+        },
+      },
+    )
   }
 
   return (

@@ -1,9 +1,11 @@
 'use client'
 
+import type { ChartConfig } from '@/components/ui/chart'
 import type { TimeRange } from '@/types'
 
+import { getDaysInMonth, parse } from 'date-fns'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Area,
   AreaChart,
@@ -14,29 +16,30 @@ import {
   Line,
   ReferenceLine,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts'
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { useWaterChartData } from '@/hooks/queries/progress.query'
+import { getDateRange } from '@/lib/utils'
 
 import { ChartTypeToggle } from './chart-type-toggle'
 
 type WaterChartProps = {
-  data: Array<{ date: string; amount: number; goal?: number }>
-  goal: number
   range: TimeRange
+  goal: number
 }
 
 const chartConfig = {
   amount: {
     label: 'Water (mL)',
-    color: 'var(--color-sky-500)'
+    color: 'var(--color-sky-500)',
   },
   goal: {
     label: 'Goal',
-    color: 'var(--color-sky-400)'
-  }
+    color: 'var(--color-sky-400)',
+  },
 } satisfies ChartConfig
 
 function formatYAxis(value: number, isYearly: boolean) {
@@ -45,21 +48,43 @@ function formatYAxis(value: number, isYearly: boolean) {
   return String(value)
 }
 
-export function WaterChart({ data, goal, range }: WaterChartProps) {
+export function WaterChart({ range, goal }: WaterChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('bar')
 
   const isYearly = range === 'yearly'
+  const dateRange = getDateRange(range)
+  const hasDates = dateRange.dates.length > 0
+  const dateInput = { startOfDay: dateRange.startOfDay, endOfDay: dateRange.endOfDay, hasDates }
+
+  const { data: rows } = useWaterChartData(dateInput)
+
+  const data = useMemo(() => {
+    const map = new Map<string, number>()
+    for (const r of rows) {
+      const key = isYearly ? r.date.slice(0, 7) : r.date
+      map.set(key, (map.get(key) ?? 0) + r.amount)
+    }
+
+    return dateRange.dates.map((d) => ({
+      date: d.label,
+      amount: map.get(d.value) ?? 0,
+      ...(isYearly && {
+        goal: goal * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date())),
+      }),
+    }))
+  }, [rows, dateRange.dates, isYearly, goal])
+
   const maxGoal = isYearly ? Math.max(...data.map((d) => d.goal ?? 0), 0) : goal
   const step = isYearly ? 10_000 : 500
 
   const yDomain: [number, (dataMax: number) => number] = [
     0,
-    (dataMax: number) => Math.ceil(Math.max(dataMax, maxGoal) / step) * step
+    (dataMax: number) => Math.ceil(Math.max(dataMax, maxGoal) / step) * step,
   ]
   const yTicks = Array.from(
     { length: Math.ceil(Math.max(...data.map((d) => d.amount), maxGoal, 0) / step) + 1 },
-    (_, i) => i * step
+    (_, i) => i * step,
   )
 
   const sharedXAxis = (

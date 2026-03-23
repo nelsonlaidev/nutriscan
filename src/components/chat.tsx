@@ -1,11 +1,11 @@
 'use client'
 
-import type { Chats } from '@/actions/chat'
-import type { FileUIPart, UIMessage } from 'ai'
-
 import 'katex/dist/katex.min.css'
 
+import type { FileUIPart } from 'ai'
+
 import { useChat } from '@ai-sdk/react'
+import { eventIteratorToUnproxiedDataStream } from '@orpc/client'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -13,18 +13,19 @@ import {
   ListIcon,
   PlusIcon,
   SpinnerGapIcon,
-  XIcon
+  XIcon,
 } from '@phosphor-icons/react/ssr'
-import { DefaultChatTransport } from 'ai'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useStickToBottom } from 'use-stick-to-bottom'
 
-import { getChatTitle } from '@/actions/chat'
 import { ChatProvider } from '@/contexts/chat'
-import { uploadImage } from '@/lib/upload'
+import { useChatById } from '@/hooks/queries/chat.query'
+import { useUploadImage } from '@/hooks/queries/r2.query'
+import { client, orpc } from '@/orpc/client'
 
 import { ChatSidebar } from './chat-sidebar'
 import { ChatWelcome } from './chat-welcome'
@@ -35,61 +36,72 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '
 
 type ChatProps = {
   id: string
-  isNewChat: boolean
-  chats: Chats
-  chatTitle?: string
-  initialMessages?: UIMessage[]
 }
 
-const EMPTY_MESSAGES: UIMessage[] = []
-
 export function Chat(props: ChatProps) {
-  const { id, isNewChat, chats, chatTitle, initialMessages = EMPTY_MESSAGES } = props
+  const { id } = props
+
+  const { data: chatData } = useChatById({ chatId: id })
 
   const t = useTranslations()
   const [input, setInput] = useState('')
   const [uploadedFiles, setUploadedFiles] = useState<FileUIPart[]>([])
-  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
   const { contentRef, scrollRef, scrollToBottom, isAtBottom } = useStickToBottom({ resize: 'smooth' })
+  const queryClient = useQueryClient()
+  const { mutateAsync: uploadImage, isPending: uploading } = useUploadImage()
 
-  const [title, setTitle] = useState(() => chatTitle ?? t('nav.chat'))
-
-  const transport = useMemo(() => new DefaultChatTransport({ body: { chatId: id } }), [id])
+  const initialMessages = chatData?.messages.map((m) => ({
+    id: m.id,
+    role: m.role,
+    parts: m.parts,
+  }))
 
   const { messages, sendMessage, status } = useChat({
     id,
-    messages: initialMessages.length > 0 ? initialMessages : undefined,
-    transport
+    messages: initialMessages,
+    transport: {
+      sendMessages: async (options) =>
+        eventIteratorToUnproxiedDataStream(
+          await client.chat.send(
+            {
+              chatId: options.chatId,
+              // oxlint-disable-next-line typescript/no-non-null-assertion
+              message: options.messages.at(-1)!,
+            },
+            { signal: options.abortSignal },
+          ),
+        ),
+      reconnectToStream: () => {
+        throw new Error('Unsupported')
+      },
+    },
+    onFinish: () => {
+      void queryClient.invalidateQueries({ queryKey: orpc.chat.getById.key({ input: { chatId: id } }) })
+      void queryClient.invalidateQueries({ queryKey: orpc.chat.list.key() })
+    },
   })
 
   const isStreaming = status === 'streaming'
   const isSubmitted = status === 'submitted'
   const isLoading = isSubmitted || isStreaming
 
-  const prevStatusRef = useRef(status)
-  useEffect(() => {
-    const fetchTitle = async () => {
-      const newTitle = await getChatTitle(id)
-      if (newTitle) setTitle(newTitle)
-    }
+  const lastMessage = messages.at(-1)
+  const hasContent = lastMessage?.parts.some(
+    (part) =>
+      (part.type === 'text' && part.text.trim().length > 0) ||
+      (part.type === 'reasoning' && 'text' in part && part.text.trim().length > 0) ||
+      part.type.startsWith('tool-'),
+  )
 
-    if (prevStatusRef.current === 'streaming' && status === 'ready') {
-      void fetchTitle()
-    }
-    prevStatusRef.current = status
-  }, [status, id])
+  const isThinking = isLoading && lastMessage?.role === 'assistant' && !hasContent
 
   const handleNewChat = useCallback(() => {
     setSidebarOpen(false)
     router.push('/chat')
   }, [router])
-
-  const persistChatUrl = useCallback(() => {
-    if (isNewChat) globalThis.history.pushState({}, '', `/chat/${id}`)
-  }, [id, isNewChat])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -105,14 +117,11 @@ export function Chat(props: ChatProps) {
         return
       }
 
-      persistChatUrl()
-
-      // eslint-disable-next-line sonarjs/void-use
       void scrollToBottom()
 
       void sendMessage({
         text: input,
-        files: uploadedFiles.length > 0 ? uploadedFiles : undefined
+        files: uploadedFiles.length > 0 ? uploadedFiles : undefined,
       })
 
       setInput('')
@@ -121,7 +130,7 @@ export function Chat(props: ChatProps) {
         fileInputRef.current.value = ''
       }
     },
-    [input, persistChatUrl, scrollToBottom, sendMessage, status, t, uploadedFiles]
+    [input, scrollToBottom, sendMessage, status, t, uploadedFiles],
   )
 
   const handleRemoveFile = useCallback((idx: number) => {
@@ -143,33 +152,38 @@ export function Chat(props: ChatProps) {
         return
       }
 
-      setUploading(true)
       try {
-        const url = await uploadImage(file, 'chat')
+        const buffer = await file.arrayBuffer()
+        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+
+        const { url } = await uploadImage({
+          base64,
+          mimeType: file.type as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
+          type: 'chat',
+        })
         setUploadedFiles((prev) => [
           ...prev,
           {
             type: 'file' as const,
             filename: file.name,
             mediaType: file.type,
-            url
-          }
+            url,
+          },
         ])
       } catch {
         toast.error(t('chat.upload-failed'))
       } finally {
-        setUploading(false)
         if (fileInputRef.current) {
           fileInputRef.current.value = ''
         }
       }
     },
-    [t]
+    [t, uploadImage],
   )
 
   return (
     <MainLayout
-      title={title}
+      title={chatData?.title ?? t('nav.chat')}
       className='h-full max-h-dvh'
       leftTitleButton={
         <Button
@@ -188,7 +202,7 @@ export function Chat(props: ChatProps) {
         </Button>
       }
     >
-      <ChatProvider status={status} chats={chats}>
+      <ChatProvider status={status}>
         <div className='-mt-4 flex h-full flex-col'>
           <div
             ref={scrollRef}
@@ -199,7 +213,6 @@ export function Chat(props: ChatProps) {
               <ChatWelcome
                 onSelectPrompt={(prompt) => {
                   void sendMessage({ text: prompt })
-                  persistChatUrl()
                 }}
               />
             )}
@@ -209,9 +222,9 @@ export function Chat(props: ChatProps) {
                 {messages.map((message) =>
                   message.parts.map((part, partIdx) => (
                     <Response key={`${message.id}-${partIdx}`} part={part} role={message.role} />
-                  ))
+                  )),
                 )}
-                {isSubmitted && <div className='size-6 shrink-0 animate-pulse rounded-full bg-primary' />}
+                {isThinking && <div className='size-6 shrink-0 animate-pulse rounded-full bg-primary' />}
               </div>
             )}
           </div>
@@ -221,7 +234,7 @@ export function Chat(props: ChatProps) {
               <div className='mb-2 flex gap-2'>
                 {uploadedFiles.map((file, idx) => (
                   <div key={idx} className='relative'>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {/* oxlint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={file.url}
                       alt={file.filename ?? 'Attachment'}
@@ -284,14 +297,13 @@ export function Chat(props: ChatProps) {
             type='button'
             className='fixed bottom-50 left-1/2 flex size-8 -translate-x-1/2 items-center justify-center rounded-full border bg-accent'
             onClick={() => {
-              // eslint-disable-next-line sonarjs/void-use
               void scrollToBottom()
             }}
           >
             <ArrowDownIcon />
           </button>
         )}
-        <ChatSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
+        <ChatSidebar chatId={id} open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
       </ChatProvider>
     </MainLayout>
   )

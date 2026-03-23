@@ -9,7 +9,6 @@ import { createOnboardingStep1FormSchema } from '@/lib/zod-schemas'
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
-
 import { OnboardingLayout } from './onboarding-layout'
 
 const FORM_ID = 'onboarding-step-1'
@@ -22,15 +21,15 @@ export function Step1() {
   const form = useForm({
     defaultValues: {
       currentWeight: data.currentWeight,
-      goalWeight: data.goalWeight
+      goalWeight: data.goalWeight,
     },
     validators: {
-      onSubmit: OnboardingStep1FormSchema
+      onSubmit: OnboardingStep1FormSchema,
     },
     onSubmit: ({ value }) => {
       updateForm(value)
       setStep(2)
-    }
+    },
   })
 
   return (

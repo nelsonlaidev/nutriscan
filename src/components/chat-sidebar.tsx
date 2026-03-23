@@ -1,34 +1,33 @@
 import { PlusIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-import { deleteChat } from '@/actions/chat'
-import { useChat } from '@/contexts/chat'
+import { useChats, useDeleteChat } from '@/hooks/queries/chat.query'
 import { cn } from '@/lib/utils'
 
 import { Button } from './ui/button'
 
 type ChatSidebarProps = {
+  chatId: string
   open: boolean
   onOpenChange: (open: boolean) => void
   onNewChat: () => void
 }
 
 export function ChatSidebar(props: ChatSidebarProps) {
-  const { open, onOpenChange, onNewChat } = props
-  const { chats } = useChat()
+  const { chatId, open, onOpenChange, onNewChat } = props
+  const { data: chats } = useChats()
   const t = useTranslations()
+  const router = useRouter()
 
-  const { execute: executeDelete } = useAction(deleteChat, {
-    onSuccess: () => {
-      toast.success(t('chat.deleted'))
-    },
-    onError: () => {
-      toast.error(t('chat.delete-failed'))
+  const { mutate: deleteChat } = useDeleteChat((id) => {
+    toast.success(t('chat.deleted'))
+    if (chatId === id) {
+      router.push('/chat')
     }
   })
 
@@ -53,7 +52,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
       <div
         className={cn(
           'absolute inset-0 z-40 bg-black/50 transition-opacity duration-200',
-          open ? 'opacity-100' : 'pointer-events-none opacity-0'
+          open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         onClick={() => {
           onOpenChange(false)
@@ -67,7 +66,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
         aria-label={t('chat.history')}
         className={cn(
           'absolute inset-y-0 left-0 z-50 flex w-3/4 max-w-sm flex-col border-r bg-background transition-transform duration-200 ease-in-out',
-          open ? 'translate-x-0' : '-translate-x-full'
+          open ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         <div className='flex items-center justify-between p-4'>
@@ -100,7 +99,14 @@ export function ChatSidebar(props: ChatSidebarProps) {
                     size='icon'
                     className='shrink-0'
                     onClick={() => {
-                      executeDelete({ chatId: chat.id })
+                      deleteChat(
+                        { chatId: chat.id },
+                        {
+                          onError: () => {
+                            toast.error(t('chat.delete-failed'))
+                          },
+                        },
+                      )
                     }}
                   >
                     <TrashIcon />
