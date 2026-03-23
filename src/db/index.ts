@@ -2,7 +2,7 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
 import { env } from '@/env'
-import { isProd } from '@/lib/constants'
+import { IS_PROD } from '@/lib/constants'
 
 import * as schema from './schemas'
 
@@ -12,7 +12,7 @@ declare global {
 
 let client: ReturnType<typeof postgres>
 
-if (isProd) {
+if (IS_PROD) {
   client = postgres(env.DATABASE_URL)
 } else {
   globalThis.pgClient ??= postgres(env.DATABASE_URL)
