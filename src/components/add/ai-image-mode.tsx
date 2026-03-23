@@ -1,7 +1,6 @@
 import type { NutritionData } from './nutrition-result'
 
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react/ssr'
-import { useMutation } from '@tanstack/react-query'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
@@ -10,8 +9,8 @@ import { isMobile } from 'react-device-detect'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { useAiImageScan } from '@/hooks/queries/scanning.query'
 import { uploadImage } from '@/lib/upload'
-import { orpc } from '@/orpc/client'
 
 import { Spinner } from '../ui/spinner'
 
@@ -28,17 +27,9 @@ export function AiImageMode(props: AiImageModeProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const uploadInputRef = useRef<HTMLInputElement>(null)
 
-  const { mutate: execute, isPending } = useMutation(
-    orpc.scanning.aiImageScan.mutationOptions({
-      onSuccess: (data) => {
-        onResult(data)
-      },
-      onError: () => {
-        toast.error(t('errors.ai-scan-failed'))
-        setPreview(null)
-      },
-    }),
-  )
+  const { mutate: scanImage, isPending } = useAiImageScan((data) => {
+    onResult(data)
+  })
 
   useEffect(
     () => () => {
@@ -65,14 +56,22 @@ export function AiImageMode(props: AiImageModeProps) {
 
       try {
         const imageUrl = await uploadImage(compressed, 'meal')
-        execute({ imageUrl })
+        scanImage(
+          { imageUrl },
+          {
+            onError: () => {
+              toast.error(t('errors.ai-scan-failed'))
+              setPreview(null)
+            },
+          },
+        )
       } catch {
         toast.error(t('errors.ai-scan-failed'))
       } finally {
         setIsUploading(false)
       }
     },
-    [execute, t],
+    [scanImage, t],
   )
 
   const handleInputChange = useCallback(

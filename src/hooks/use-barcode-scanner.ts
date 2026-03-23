@@ -2,10 +2,9 @@
 
 import type { NutritionData } from '@/components/add/nutrition-result'
 
-import { useMutation } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 
-import { orpc } from '@/orpc/client'
+import { useBarcodeLookup } from '@/hooks/queries/scanning.query'
 
 type ScannerState =
   | { status: 'idle' }
@@ -18,22 +17,19 @@ export function useBarcodeScanner(onResult: (data: NutritionData) => void) {
   const lastBarcodeRef = useRef<string | null>(null)
   const active = state.status === 'scanning' || state.status === 'looking-up'
 
-  const { mutate: execute } = useMutation(
-    orpc.scanning.barcodeLookup.mutationOptions({
-      onSuccess: (data) => {
-        setState({ status: 'idle' })
-        lastBarcodeRef.current = null
-        onResult(data)
-      },
-      onError: () => {
-        setState({ status: 'error', message: 'Failed to look up product' })
-        setTimeout(() => {
-          lastBarcodeRef.current = null
-          setState({ status: 'scanning' })
-        }, 3000)
-      },
-    }),
-  )
+  const { mutate: lookupBarcode } = useBarcodeLookup((data) => {
+    setState({ status: 'idle' })
+    lastBarcodeRef.current = null
+    onResult(data)
+  })
+
+  const handleMutationError = useCallback(() => {
+    setState({ status: 'error', message: 'Failed to look up product' })
+    setTimeout(() => {
+      lastBarcodeRef.current = null
+      setState({ status: 'scanning' })
+    }, 3000)
+  }, [])
 
   const handleScan = useCallback(
     (detectedCodes: Array<{ rawValue: string }>) => {
@@ -42,9 +38,9 @@ export function useBarcodeScanner(onResult: (data: NutritionData) => void) {
 
       lastBarcodeRef.current = barcode
       setState({ status: 'looking-up' })
-      execute({ barcode })
+      lookupBarcode({ barcode }, { onError: handleMutationError })
     },
-    [execute],
+    [lookupBarcode, handleMutationError],
   )
 
   const handleError = useCallback((error: unknown) => {
@@ -66,9 +62,9 @@ export function useBarcodeScanner(onResult: (data: NutritionData) => void) {
   const lookupManualBarcode = useCallback(
     (barcode: string) => {
       setState({ status: 'looking-up' })
-      execute({ barcode })
+      lookupBarcode({ barcode }, { onError: handleMutationError })
     },
-    [execute],
+    [lookupBarcode, handleMutationError],
   )
 
   return { state, startScanning, stopScanning, active, handleScan, handleError, lookupManualBarcode }
