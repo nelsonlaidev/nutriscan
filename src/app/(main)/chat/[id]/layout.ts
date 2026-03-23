@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Chat',
 }
 
-export default async function Layout(props: LayoutProps<'/chat/[[...id]]'>) {
+export default async function Layout(props: LayoutProps<'/chat/[id]'>) {
   const { children } = props
 
   return children

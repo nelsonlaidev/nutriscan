@@ -45,8 +45,8 @@ export const MEALS = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
 export const MEALS_SET = new Set(MEALS)
 export const DEFAULT_MEAL: Meal = 'breakfast'
 
-export const TEST_USER = {
-  id: '00000000-0000-0000-0000-000000000000',
+export const TEST_USER: InferInsertModel<typeof users> = {
+  id: '00000000000000000000000000000000',
   name: 'Test',
   email: 'test@example.com',
   emailVerified: true,
@@ -62,4 +62,4 @@ export const TEST_USER = {
   carbTarget: 220,
   fatTarget: 70,
   onboarded: true,
-} satisfies InferInsertModel<typeof users>
+}
