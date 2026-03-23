@@ -110,6 +110,6 @@ export function getDayRange(date: string = new Date().toISOString(), timezone = 
 export function getTextFromMessage(message: UIMessage): string {
   return message.parts
     .filter((part) => part.type === 'text')
-    .map((part) => (part as { type: 'text'; text: string }).text)
+    .map((part) => part.text)
     .join('')
 }

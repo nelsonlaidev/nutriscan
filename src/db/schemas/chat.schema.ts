@@ -1,3 +1,5 @@
+import type { UIMessage } from 'ai'
+
 import { relations } from 'drizzle-orm'
 import { index, json, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
@@ -32,8 +34,7 @@ export const chatMessages = pgTable(
       .notNull()
       .references(() => chats.id, { onDelete: 'cascade' }),
     role: text('role', { enum: ['user', 'assistant'] }).notNull(),
-    parts: json('parts').notNull(),
-    attachments: json('attachments').notNull(),
+    parts: json('parts').notNull().$type<UIMessage['parts']>(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [index('chatMessage_chatId_idx').on(table.chatId)],

@@ -2,9 +2,10 @@
 
 import 'katex/dist/katex.min.css'
 
-import type { FileUIPart, UIMessage } from 'ai'
+import type { FileUIPart } from 'ai'
 
 import { useChat } from '@ai-sdk/react'
+import { eventIteratorToUnproxiedDataStream } from '@orpc/client'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -14,17 +15,17 @@ import {
   SpinnerGapIcon,
   XIcon,
 } from '@phosphor-icons/react/ssr'
-import { DefaultChatTransport } from 'ai'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useStickToBottom } from 'use-stick-to-bottom'
 
 import { ChatProvider } from '@/contexts/chat'
 import { useChatById } from '@/hooks/queries/chat.query'
 import { uploadImage } from '@/lib/upload'
-import { client } from '@/orpc/client'
+import { client, orpc } from '@/orpc/client'
 
 import { ChatSidebar } from './chat-sidebar'
 import { ChatWelcome } from './chat-welcome'
@@ -35,24 +36,12 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '
 
 type ChatProps = {
   id: string
-  isNewChat: boolean
 }
 
-const EMPTY_MESSAGES: UIMessage[] = []
-
 export function Chat(props: ChatProps) {
-  const { id, isNewChat } = props
+  const { id } = props
 
-  const { data: chatData } = useChatById({ chatId: isNewChat ? '' : id })
-
-  const initialMessages = useMemo(() => {
-    if (!chatData?.messages) return EMPTY_MESSAGES
-    return chatData.messages.map((msg) => ({
-      id: msg.id,
-      role: msg.role,
-      parts: msg.parts as UIMessage['parts'],
-    }))
-  }, [chatData])
+  const { data: chatData } = useChatById({ chatId: id })
 
   const t = useTranslations()
   const [input, setInput] = useState('')
@@ -62,47 +51,57 @@ export function Chat(props: ChatProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
   const { contentRef, scrollRef, scrollToBottom, isAtBottom } = useStickToBottom({ resize: 'smooth' })
+  const queryClient = useQueryClient()
 
-  const [title, setTitle] = useState(() => chatData?.title ?? t('nav.chat'))
-
-  const transport = useMemo(() => new DefaultChatTransport({ body: { chatId: id } }), [id])
+  const initialMessages = chatData?.messages.map((m) => ({
+    id: m.id,
+    role: m.role,
+    parts: m.parts,
+  }))
 
   const { messages, sendMessage, status } = useChat({
     id,
-    messages: initialMessages.length > 0 ? initialMessages : undefined,
-    transport,
+    messages: initialMessages,
+    transport: {
+      sendMessages: async (options) =>
+        eventIteratorToUnproxiedDataStream(
+          await client.chat.send(
+            {
+              chatId: options.chatId,
+              // oxlint-disable-next-line typescript/no-non-null-assertion
+              message: options.messages.at(-1)!,
+            },
+            { signal: options.abortSignal },
+          ),
+        ),
+      reconnectToStream: () => {
+        throw new Error('Unsupported')
+      },
+    },
+    onFinish: () => {
+      void queryClient.invalidateQueries({ queryKey: orpc.chat.getById.key({ input: { chatId: id } }) })
+      void queryClient.invalidateQueries({ queryKey: orpc.chat.list.key() })
+    },
   })
 
   const isStreaming = status === 'streaming'
   const isSubmitted = status === 'submitted'
   const isLoading = isSubmitted || isStreaming
 
-  const prevStatusRef = useRef(status)
-  useEffect(() => {
-    const fetchTitle = async () => {
-      const newTitle = await client.chat.getTitle({ chatId: id })
-      if (newTitle) setTitle(newTitle)
-    }
+  const lastMessage = messages.at(-1)
+  const hasContent = lastMessage?.parts.some(
+    (part) =>
+      (part.type === 'text' && part.text.trim().length > 0) ||
+      (part.type === 'reasoning' && 'text' in part && part.text.trim().length > 0) ||
+      part.type.startsWith('tool-'),
+  )
 
-    if (prevStatusRef.current === 'streaming' && status === 'ready') {
-      void fetchTitle()
-    }
-    prevStatusRef.current = status
-  }, [status, id])
-
-  useEffect(() => {
-    // oxlint-disable-next-line react-x/set-state-in-effect
-    if (chatData?.title) setTitle(chatData.title)
-  }, [chatData?.title])
+  const isThinking = isLoading && lastMessage?.role === 'assistant' && !hasContent
 
   const handleNewChat = useCallback(() => {
     setSidebarOpen(false)
     router.push('/chat')
   }, [router])
-
-  const persistChatUrl = useCallback(() => {
-    if (isNewChat) globalThis.history.pushState({}, '', `/chat/${id}`)
-  }, [id, isNewChat])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -118,8 +117,6 @@ export function Chat(props: ChatProps) {
         return
       }
 
-      persistChatUrl()
-
       void scrollToBottom()
 
       void sendMessage({
@@ -133,7 +130,7 @@ export function Chat(props: ChatProps) {
         fileInputRef.current.value = ''
       }
     },
-    [input, persistChatUrl, scrollToBottom, sendMessage, status, t, uploadedFiles],
+    [input, scrollToBottom, sendMessage, status, t, uploadedFiles],
   )
 
   const handleRemoveFile = useCallback((idx: number) => {
@@ -181,7 +178,7 @@ export function Chat(props: ChatProps) {
 
   return (
     <MainLayout
-      title={title}
+      title={chatData?.title ?? t('nav.chat')}
       className='h-full max-h-dvh'
       leftTitleButton={
         <Button
@@ -211,7 +208,6 @@ export function Chat(props: ChatProps) {
               <ChatWelcome
                 onSelectPrompt={(prompt) => {
                   void sendMessage({ text: prompt })
-                  persistChatUrl()
                 }}
               />
             )}
@@ -223,7 +219,7 @@ export function Chat(props: ChatProps) {
                     <Response key={`${message.id}-${partIdx}`} part={part} role={message.role} />
                   )),
                 )}
-                {isSubmitted && <div className='size-6 shrink-0 animate-pulse rounded-full bg-primary' />}
+                {isThinking && <div className='size-6 shrink-0 animate-pulse rounded-full bg-primary' />}
               </div>
             )}
           </div>
