@@ -26,3 +26,17 @@ export function useDeleteChat(onSuccess?: (id: string) => void) {
     }),
   )
 }
+
+export function useUpdateChatTitle(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.chat.updateTitle.mutationOptions({
+      onSuccess: (_data, variables) => {
+        void queryClient.invalidateQueries({ queryKey: orpc.chat.list.key() })
+        void queryClient.invalidateQueries({ queryKey: orpc.chat.getById.key({ input: { chatId: variables.chatId } }) })
+        onSuccess?.()
+      },
+    }),
+  )
+}

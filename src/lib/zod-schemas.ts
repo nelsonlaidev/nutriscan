@@ -121,3 +121,9 @@ export function createSignUpFormSchema(t: Translator) {
       path: ['confirmPassword'],
     })
 }
+
+export function createChatTitleFormSchema(t: Translator) {
+  return z.object({
+    title: z.string().trim().min(1, t('validation.chat-title-required')).max(100, t('validation.chat-title-max')),
+  })
+}

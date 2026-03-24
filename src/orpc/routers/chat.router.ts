@@ -10,7 +10,12 @@ import { defaultModel, generateTitle } from '@/lib/ai'
 import { chatSystemPrompt } from '@/lib/prompts'
 
 import { protectedProcedure } from '../procedures'
-import { DeleteChatInputSchema, GetChatByIdInputSchema, SendMessageInputSchema } from '../schemas/chat.schema'
+import {
+  DeleteChatInputSchema,
+  GetChatByIdInputSchema,
+  SendMessageInputSchema,
+  UpdateChatTitleInputSchema,
+} from '../schemas/chat.schema'
 
 const send = protectedProcedure.input(SendMessageInputSchema).handler(async ({ input, context, signal }) => {
   const chat = await context.db.query.chats.findFirst({
@@ -99,9 +104,20 @@ const deleteChat = protectedProcedure.input(DeleteChatInputSchema).handler(async
   await context.db.delete(chats).where(eq(chats.id, input.chatId))
 })
 
+const updateTitle = protectedProcedure.input(UpdateChatTitleInputSchema).handler(async ({ input, context }) => {
+  const [chat] = await context.db.select().from(chats).where(eq(chats.id, input.chatId))
+
+  if (chat?.userId !== context.session.user.id) {
+    throw new ORPCError('NOT_FOUND')
+  }
+
+  await context.db.update(chats).set({ title: input.title }).where(eq(chats.id, input.chatId))
+})
+
 export const chatRouter = {
   send,
   list,
   getById,
   delete: deleteChat,
+  updateTitle,
 }
