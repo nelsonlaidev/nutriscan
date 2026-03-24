@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Oxlint
-        run: pnpm lint
+        run: bun lint
 
   spellcheck:
     name: Spell Check
@@ -47,7 +47,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run cspell
-        run: pnpm lint:spell
+        run: bun lint:spell
 
   types:
     name: TypeScript
@@ -60,7 +60,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run typecheck
-        run: pnpm typecheck
+        run: bun typecheck
 
   format:
     name: Format
@@ -73,7 +73,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Oxfmt format check
-        run: pnpm format:check
+        run: bun format:check
 
   knip:
     name: Knip
@@ -86,7 +86,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Knip
-        run: pnpm knip
+        run: bun knip
 
   e2e:
     name: End-to-end Tests
@@ -100,22 +100,29 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Install Playwright with dependencies
-        run: pnpm playwright install --with-deps chromium --only-shell
+        run: bun playwright install --with-deps chromium --only-shell
 
       - name: Build apps
-        run: pnpm build
+        run: bun run build
 
       - name: Run services
         run: docker compose up -d
 
+      - name: Verify Postgres is ready
+        run: |
+          until docker exec $(docker ps -qf "name=nutriscan-postgres") pg_isready; do
+            echo "Waiting for database..."
+            sleep 2
+          done
+
       - name: Migrate database
-        run: pnpm db:migrate
+        run: bun db:migrate
 
       - name: Seed database
-        run: pnpm db:seed
+        run: bun db:seed
 
       - name: Run Playwright tests
-        run: pnpm test:e2e
+        run: bun test:e2e
 
       - name: Upload Playwright report
         if: always()

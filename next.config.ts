@@ -33,10 +33,6 @@ const nextConfig: NextConfig = {
   },
 }
 
-if (env.NODE_ENV === 'test') {
-  nextConfig.devIndicators = false
-}
-
 const withNextIntl = createNextIntlPlugin()
 
 export default withNextIntl(nextConfig)

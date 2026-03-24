@@ -6,32 +6,32 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "check": "pnpm lint && pnpm typecheck && pnpm format:check && pnpm knip && pnpm lint:spell",
+    "check": "bun lint && bun typecheck && bun format:check && bun knip && bun lint:spell",
     "clean": "rm -rf .next",
-    "db:check": "pnpm with-env drizzle-kit check",
-    "db:generate": "pnpm with-env drizzle-kit generate",
-    "db:migrate": "pnpm with-env drizzle-kit migrate",
-    "db:push": "pnpm with-env drizzle-kit push",
-    "db:reset": "pnpm with-env tsx src/db/reset.ts",
-    "db:seed": "pnpm with-env tsx src/db/seed.ts",
-    "db:studio": "pnpm with-env drizzle-kit studio",
+    "db:check": "bun with-env drizzle-kit check",
+    "db:generate": "bun with-env drizzle-kit generate",
+    "db:migrate": "bun with-env drizzle-kit migrate",
+    "db:push": "bun with-env drizzle-kit push",
+    "db:reset": "bun with-env tsx src/db/reset.ts",
+    "db:seed": "bun with-env tsx src/db/seed.ts",
+    "db:studio": "bun with-env drizzle-kit studio",
     "dev": "next dev",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "knip": "pnpm with-env knip",
+    "knip": "knip-bun",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:spell": "cspell .",
     "prepare": "if [ -d .git ]; then lefthook install; fi",
     "start": "next start",
-    "test:e2e": "NODE_ENV=test pnpm with-env playwright test",
-    "test:e2e:inspector": "NODE_ENV=test pnpm with-env playwright test $1 --debug",
-    "test:e2e:install": "NODE_ENV=test playwright install",
-    "test:e2e:ui": "NODE_ENV=test pnpm with-env playwright test --ui",
+    "test:e2e": "bun with-env playwright test",
+    "test:e2e:inspector": "bun with-env playwright test $1 --debug",
+    "test:e2e:install": "playwright install",
+    "test:e2e:ui": "bun with-env playwright test --ui",
     "tunnel": "cloudflared tunnel run --url http://localhost:3000 NutriScan",
     "typecheck": "tsc --noEmit",
     "typegen": "next typegen",
-    "with-env": "dotenvx run -f .env.local --"
+    "with-env": "bun --env-file=.env.local"
   },
   "dependencies": {
     "@ai-sdk/react": "3.0.99",
@@ -82,7 +82,6 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "1.52.0",
     "@faker-js/faker": "10.3.0",
     "@nelsonlaidev/oxfmt-config": "0.1.0",
     "@nelsonlaidev/oxlint-config": "0.1.0",
@@ -112,5 +111,5 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "bun@1.3.11"
 }
