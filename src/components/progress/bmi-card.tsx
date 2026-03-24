@@ -82,10 +82,6 @@ export function BmiCard({ height, fallbackWeight }: BmiCardProps) {
   const category = getBmiCategory(bmi)
   const colors = categoryColors[category]
 
-  // i18n-check t('progress.underweight')
-  // i18n-check t('progress.normal')
-  // i18n-check t('progress.overweight')
-  // i18n-check t('progress.obese')
   return (
     <Card size='sm'>
       <CardHeader>

@@ -45,7 +45,6 @@ const aiImageScan = protectedProcedure.input(AiImageScanInputSchema).handler(asy
     })
 
     if (!output.isFood) {
-      // i18n-check t('errors.no-food-detected')
       throw new ORPCError('BAD_REQUEST', { message: 'errors.no-food-detected' })
     }
 
@@ -69,7 +68,6 @@ const barcodeLookup = protectedProcedure.input(BarcodeLookupInputSchema).handler
   const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${input.barcode}.json`)
 
   if (!response.ok) {
-    // i18n-check t('errors.product-not-found')
     throw new ORPCError('NOT_FOUND', { message: 'errors.product-not-found' })
   }
 
@@ -77,7 +75,6 @@ const barcodeLookup = protectedProcedure.input(BarcodeLookupInputSchema).handler
   const parsed = OpenFoodFactsResponseSchema.safeParse(json)
 
   if (!parsed.success || parsed.data.status !== 1 || !parsed.data.product) {
-    // i18n-check t('errors.product-not-found')
     throw new ORPCError('NOT_FOUND', { message: 'errors.product-not-found' })
   }
 

@@ -30,10 +30,6 @@ export default function Page() {
   const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
 
   const { mutate: addToMeal, isPending } = useCreateFoodEntry(() => {
-    // i18n-check t('meals.breakfast')
-    // i18n-check t('meals.lunch')
-    // i18n-check t('meals.dinner')
-    // i18n-check t('meals.snacks')
     toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
     router.push('/dashboard')
   })

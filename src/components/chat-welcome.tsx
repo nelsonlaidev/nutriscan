@@ -6,11 +6,8 @@ type ChatWelcomeProps = {
 }
 
 const PROMPTS = [
-  // i18n-check t('chat.prompt-breakfast')
   { icon: CarrotIcon, key: 'chat.prompt-breakfast' },
-  // i18n-check t('chat.prompt-meal-plan')
   { icon: BowlFoodIcon, key: 'chat.prompt-meal-plan' },
-  // i18n-check t('chat.prompt-water')
   { icon: HeartbeatIcon, key: 'chat.prompt-water' },
 ] as const
 
