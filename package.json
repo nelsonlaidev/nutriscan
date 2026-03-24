@@ -22,7 +22,7 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:spell": "cspell .",
-    "prepare": "lefthook install",
+    "prepare": "if [ -d .git ]; then lefthook install; fi",
     "start": "next start",
     "test:e2e": "NODE_ENV=test pnpm with-env playwright test",
     "test:e2e:inspector": "NODE_ENV=test pnpm with-env playwright test $1 --debug",
