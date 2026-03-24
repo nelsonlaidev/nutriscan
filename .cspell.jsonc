@@ -8,7 +8,7 @@
   "ignoreRandomStrings": true,
   "allowCompoundWords": true,
   "dictionaries": ["npm", "fullstack", "html", "sql"],
-  "ignorePaths": ["pnpm-lock.yaml", ".git", "src/db/migrations/meta/*.json"],
+  "ignorePaths": [".git", "src/db/migrations/meta/*.json"],
   "words": [
     "asse",
     "bradlc",
