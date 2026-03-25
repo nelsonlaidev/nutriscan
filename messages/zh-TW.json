@@ -262,6 +262,77 @@
     "account": "帳號",
     "member-since": "加入日期"
   },
+  "achievements": {
+    "title": "成就",
+    "dashboard-subtitle": "透過核心習慣持續累積動能",
+    "profile-subtitle": "已解鎖的徽章會永久保留，連續紀錄會依你的活動即時更新。",
+    "view-all": "查看全部",
+    "recent-unlocks": "最近解鎖",
+    "no-unlocks": "尚未解鎖任何成就",
+    "status-unlocked": "已解鎖",
+    "unlocked-on": "於 {date} 解鎖",
+    "streak-days": "{count} 天",
+    "summary": {
+      "badges": "徽章",
+      "unlocked": "已解鎖",
+      "meal-streak": "飲食連續天數",
+      "water-streak": "喝水連續天數"
+    },
+    "categories": {
+      "meals": "飲食",
+      "water": "喝水",
+      "weight": "體重"
+    },
+    "progress": {
+      "check-ins": "{current} / {target} 次記錄",
+      "days": "{current} / {target} 天",
+      "entries": "{current} / {target} 次紀錄",
+      "meal-categories": "單日 {current} / {target} 個餐別",
+      "streak-days": "連續 {current} / {target} 天"
+    },
+    "toast": {
+      "single": "已解鎖成就：{title}",
+      "multiple": "已解鎖成就：{title}，另外還有 {count} 個"
+    },
+    "items": {
+      "first-meal-logged": {
+        "title": "第一口",
+        "description": "記錄第一筆餐點。"
+      },
+      "all-meals-in-a-day": {
+        "title": "完整餐盤",
+        "description": "在同一天記錄早餐、午餐、晚餐與點心。"
+      },
+      "meal-logging-streak-7": {
+        "title": "飲食節奏",
+        "description": "連續 7 天至少記錄一餐。"
+      },
+      "first-water-logged": {
+        "title": "第一口水",
+        "description": "記錄第一筆喝水紀錄。"
+      },
+      "water-logging-days-7": {
+        "title": "補水習慣",
+        "description": "在 7 天內留下喝水紀錄。"
+      },
+      "water-logging-streak-7": {
+        "title": "補水連勝",
+        "description": "連續 7 天記錄喝水。"
+      },
+      "first-weigh-in": {
+        "title": "踏上體重計",
+        "description": "完成第一次體重記錄。"
+      },
+      "weight-checkins-7": {
+        "title": "每週回報",
+        "description": "完成 7 次體重記錄。"
+      },
+      "weight-checkins-30": {
+        "title": "體重鬥士",
+        "description": "完成 30 次體重記錄。"
+      }
+    }
+  },
   "greeting": {
     "morning": "早安",
     "afternoon": "午安",
@@ -295,6 +366,8 @@
     "password-min": "密碼必須至少 8 個字元",
     "password-max": "密碼必須最多 128 個字元",
     "display-name-required": "請輸入顯示名稱",
+    "chat-title-required": "請輸入聊天標題",
+    "chat-title-max": "聊天標題必須最多 100 個字元",
     "passwords-no-match": "密碼不一致"
   },
   "chat": {
@@ -305,6 +378,16 @@
     "input-placeholder": "問我任何問題...",
     "deleted": "聊天已刪除",
     "delete-failed": "刪除聊天失敗",
+    "title-updated": "聊天標題已更新",
+    "title-update-failed": "更新聊天標題失敗",
+    "edit-title": "編輯聊天標題",
+    "edit-description": "設定一個更清楚的名稱，之後會更容易找到這段對話。",
+    "title-label": "標題",
+    "title-placeholder": "輸入聊天標題",
+    "title-description": "長度需介於 1 到 100 個字元之間。",
+    "save": "儲存",
+    "saving": "儲存中...",
+    "cancel": "取消",
     "history": "聊天紀錄",
     "no-chats": "尚無聊天紀錄",
     "welcome-title": "NutriScan AI",

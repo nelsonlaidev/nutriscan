@@ -3,6 +3,7 @@ import { and, desc, eq } from 'drizzle-orm'
 
 import { users } from '@/db/schemas/auth.schema'
 import { weightEntries } from '@/db/schemas/weight-entry.schema'
+import { evaluateAndUnlockAchievementGroup } from '@/lib/achievements/server'
 
 import { protectedProcedure } from '../procedures'
 import {
@@ -38,44 +39,54 @@ const latest = protectedProcedure.handler(async ({ context }) => {
   return row ?? null
 })
 
-const create = protectedProcedure.input(AddWeightEntryInputSchema).handler(async ({ input, context }) => {
-  await context.db.insert(weightEntries).values({
-    userId: context.session.user.id,
-    weight: input.weight,
-  })
+const create = protectedProcedure.input(AddWeightEntryInputSchema).handler(async ({ input, context }) =>
+  context.db.transaction(async (tx) => {
+    await tx.insert(weightEntries).values({
+      userId: context.session.user.id,
+      weight: input.weight,
+    })
 
-  // Update user's current weight
-  await context.db.update(users).set({ currentWeight: input.weight }).where(eq(users.id, context.session.user.id))
-})
+    await tx.update(users).set({ currentWeight: input.weight }).where(eq(users.id, context.session.user.id))
 
-const update = protectedProcedure.input(UpdateWeightEntryInputSchema).handler(async ({ input, context }) => {
-  const [existing] = await context.db
-    .select({ id: weightEntries.id })
-    .from(weightEntries)
-    .where(and(eq(weightEntries.id, input.id), eq(weightEntries.userId, context.session.user.id)))
-    .limit(1)
+    const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'weight')
 
-  if (!existing) {
-    throw new ORPCError('NOT_FOUND')
-  }
+    return { newUnlocks }
+  }),
+)
 
-  await context.db
-    .update(weightEntries)
-    .set({ weight: input.weight })
-    .where(and(eq(weightEntries.id, input.id), eq(weightEntries.userId, context.session.user.id)))
+const update = protectedProcedure.input(UpdateWeightEntryInputSchema).handler(async ({ input, context }) =>
+  context.db.transaction(async (tx) => {
+    const [existing] = await tx
+      .select({ id: weightEntries.id })
+      .from(weightEntries)
+      .where(and(eq(weightEntries.id, input.id), eq(weightEntries.userId, context.session.user.id)))
+      .limit(1)
 
-  // Update user's current weight if this is the latest entry
-  const [latestWeight] = await context.db
-    .select({ id: weightEntries.id })
-    .from(weightEntries)
-    .where(eq(weightEntries.userId, context.session.user.id))
-    .orderBy(desc(weightEntries.createdAt))
-    .limit(1)
+    if (!existing) {
+      throw new ORPCError('NOT_FOUND')
+    }
 
-  if (latestWeight?.id === input.id) {
-    await context.db.update(users).set({ currentWeight: input.weight }).where(eq(users.id, context.session.user.id))
-  }
-})
+    await tx
+      .update(weightEntries)
+      .set({ weight: input.weight })
+      .where(and(eq(weightEntries.id, input.id), eq(weightEntries.userId, context.session.user.id)))
+
+    const [latestWeight] = await tx
+      .select({ id: weightEntries.id })
+      .from(weightEntries)
+      .where(eq(weightEntries.userId, context.session.user.id))
+      .orderBy(desc(weightEntries.createdAt))
+      .limit(1)
+
+    if (latestWeight?.id === input.id) {
+      await tx.update(users).set({ currentWeight: input.weight }).where(eq(users.id, context.session.user.id))
+    }
+
+    const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'weight')
+
+    return { newUnlocks }
+  }),
+)
 
 const remove = protectedProcedure.input(DeleteWeightEntryInputSchema).handler(async ({ input, context }) => {
   const [entry] = await context.db

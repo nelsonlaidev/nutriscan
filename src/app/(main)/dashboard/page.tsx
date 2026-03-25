@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { redirect } from 'next/navigation'
 
+import { AchievementHighlights } from '@/components/achievements/achievement-highlights'
 import { CalorieSummary } from '@/components/dashboard/calorie-summary'
 import { DashboardHeader } from '@/components/dashboard/dashboard-header'
 import { DateNavigation } from '@/components/dashboard/date-navigation'
@@ -35,6 +36,7 @@ export default async function Page(props: PageProps<'/dashboard'>) {
   await Promise.all([
     queryClient.prefetchQuery(orpc.food.totals.queryOptions({ input: dayRange })),
     queryClient.prefetchQuery(orpc.food.meals.queryOptions({ input: dayRange })),
+    queryClient.prefetchQuery(orpc.achievements.overview.queryOptions()),
     queryClient.prefetchQuery(orpc.water.total.queryOptions({ input: dayRange })),
     queryClient.prefetchQuery(orpc.weight.latest.queryOptions()),
   ])
@@ -49,6 +51,7 @@ export default async function Page(props: PageProps<'/dashboard'>) {
         <DateNavigation />
         <CalorieSummary dayRange={dayRange} goal={calorieBudget} />
         <MacronutrientCards dayRange={dayRange} goals={macroGoals} />
+        <AchievementHighlights />
         <WaterIntake dayRange={dayRange} goal={waterGoal} />
         <WeightPanel
           fallbackWeight={session.user.currentWeight}

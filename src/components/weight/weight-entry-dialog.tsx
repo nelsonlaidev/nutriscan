@@ -17,6 +17,7 @@ import {
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { useAddWeightEntry } from '@/hooks/queries/weight.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 
 import { Spinner } from '../ui/spinner'
 
@@ -40,7 +41,15 @@ export function WeightEntryDialog() {
       return
     }
 
-    addWeight({ weight: value }, { onError: () => toast.error(t('weight.entry-add-error')) })
+    addWeight(
+      { weight: value },
+      {
+        onSuccess: (data) => {
+          showAchievementUnlockToast(data.newUnlocks, t)
+        },
+        onError: () => toast.error(t('weight.entry-add-error')),
+      },
+    )
   }
 
   return (

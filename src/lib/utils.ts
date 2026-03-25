@@ -16,7 +16,7 @@ import {
 } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 
-import { DEFAULT_TIMEZONE } from './constants'
+import { DEFAULT_TIMEZONE } from './time'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,6 +24,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatMl(ml: number) {
   return ml >= 1000 ? `${(ml / 1000).toFixed(1).replace(/\.0$/, '')} L` : `${ml} mL`
+}
+
+export function getDateBucket(date: Date | string, timezone = DEFAULT_TIMEZONE) {
+  return format(toZonedDate(date, timezone), 'yyyy-MM-dd')
 }
 
 export type DateRange = {

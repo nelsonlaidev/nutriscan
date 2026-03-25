@@ -3,6 +3,7 @@ import { and, desc, eq, gte, lte, sum } from 'drizzle-orm'
 
 import { users } from '@/db/schemas/auth.schema'
 import { waterEntries } from '@/db/schemas/water-entry.schema'
+import { evaluateAndUnlockAchievementGroup } from '@/lib/achievements/server'
 
 import { protectedProcedure } from '../procedures'
 import {
@@ -49,34 +50,47 @@ const total = protectedProcedure.input(GetWaterTotalInputSchema).handler(async (
   return Number(row?.total ?? 0)
 })
 
-const create = protectedProcedure.input(AddWaterEntryInputSchema).handler(async ({ input, context }) => {
-  const entry = await context.db
-    .insert(waterEntries)
-    .values({
-      userId: context.session.user.id,
-      amount: input.amount,
-    })
-    .returning({ id: waterEntries.id, createdAt: waterEntries.createdAt })
+const create = protectedProcedure.input(AddWaterEntryInputSchema).handler(async ({ input, context }) =>
+  context.db.transaction(async (tx) => {
+    const entry = await tx
+      .insert(waterEntries)
+      .values({
+        userId: context.session.user.id,
+        amount: input.amount,
+      })
+      .returning({ id: waterEntries.id, createdAt: waterEntries.createdAt })
 
-  return entry[0]
-})
+    const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'water')
 
-const update = protectedProcedure.input(UpdateWaterEntryInputSchema).handler(async ({ input, context }) => {
-  const [existing] = await context.db
-    .select({ id: waterEntries.id })
-    .from(waterEntries)
-    .where(and(eq(waterEntries.id, input.id), eq(waterEntries.userId, context.session.user.id)))
-    .limit(1)
+    return {
+      ...entry[0],
+      newUnlocks,
+    }
+  }),
+)
 
-  if (!existing) {
-    throw new ORPCError('NOT_FOUND')
-  }
+const update = protectedProcedure.input(UpdateWaterEntryInputSchema).handler(async ({ input, context }) =>
+  context.db.transaction(async (tx) => {
+    const [existing] = await tx
+      .select({ id: waterEntries.id })
+      .from(waterEntries)
+      .where(and(eq(waterEntries.id, input.id), eq(waterEntries.userId, context.session.user.id)))
+      .limit(1)
 
-  await context.db
-    .update(waterEntries)
-    .set({ amount: input.amount })
-    .where(and(eq(waterEntries.id, input.id), eq(waterEntries.userId, context.session.user.id)))
-})
+    if (!existing) {
+      throw new ORPCError('NOT_FOUND')
+    }
+
+    await tx
+      .update(waterEntries)
+      .set({ amount: input.amount })
+      .where(and(eq(waterEntries.id, input.id), eq(waterEntries.userId, context.session.user.id)))
+
+    const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'water')
+
+    return { newUnlocks }
+  }),
+)
 
 const del = protectedProcedure.input(DeleteWaterEntryInputSchema).handler(async ({ input, context }) => {
   const [entry] = await context.db

@@ -192,6 +192,7 @@ export function Chat(props: ChatProps) {
           onClick={() => {
             setSidebarOpen(true)
           }}
+          data-testid='open-chat-history'
         >
           <ListIcon className='size-5' />
         </Button>
@@ -303,7 +304,7 @@ export function Chat(props: ChatProps) {
             <ArrowDownIcon />
           </button>
         )}
-        <ChatSidebar chatId={id} open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
+        <ChatSidebar currentChatId={id} open={sidebarOpen} onOpenChange={setSidebarOpen} onNewChat={handleNewChat} />
       </ChatProvider>
     </MainLayout>
   )

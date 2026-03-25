@@ -41,10 +41,11 @@ export function useAddWaterEntry(input: GetWaterEntriesInput, onSuccess?: () => 
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.water.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )
@@ -75,10 +76,11 @@ export function useUpdateWaterEntry(input: GetWaterEntriesInput, onSuccess?: () 
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.water.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )
@@ -109,10 +111,11 @@ export function useDeleteWaterEntry(input: GetWaterEntriesInput, onSuccess?: () 
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.water.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )

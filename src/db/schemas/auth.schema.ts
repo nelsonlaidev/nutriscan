@@ -13,6 +13,7 @@ import {
   DEFAULT_WATER_GOAL,
 } from '@/lib/constants'
 
+import { achievementUnlocks } from './achievement.schema'
 import { chats } from './chat.schema'
 import { foodEntries } from './food-entry.schema'
 import { weightEntries } from './weight-entry.schema'
@@ -107,6 +108,7 @@ export const verifications = pgTable(
 )
 
 export const userRelations = relations(users, ({ many }) => ({
+  achievementUnlocks: many(achievementUnlocks),
   sessions: many(sessions),
   accounts: many(accounts),
   chats: many(chats),

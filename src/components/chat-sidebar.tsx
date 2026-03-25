@@ -1,35 +1,24 @@
-import { PlusIcon, TrashIcon } from '@phosphor-icons/react/ssr'
-import { formatDistanceToNow } from 'date-fns'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { PlusIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
-import { toast } from 'sonner'
 
-import { useChats, useDeleteChat } from '@/hooks/queries/chat.query'
+import { useChats } from '@/hooks/queries/chat.query'
 import { cn } from '@/lib/utils'
 
+import { ChatSidebarItem } from './chat-sidebar-item'
 import { Button } from './ui/button'
 
 type ChatSidebarProps = {
-  chatId: string
+  currentChatId: string
   open: boolean
   onOpenChange: (open: boolean) => void
   onNewChat: () => void
 }
 
 export function ChatSidebar(props: ChatSidebarProps) {
-  const { chatId, open, onOpenChange, onNewChat } = props
+  const { currentChatId, open, onOpenChange, onNewChat } = props
   const { data: chats } = useChats()
   const t = useTranslations()
-  const router = useRouter()
-
-  const { mutate: deleteChat } = useDeleteChat((id) => {
-    toast.success(t('chat.deleted'))
-    if (chatId === id) {
-      router.push('/chat')
-    }
-  })
 
   useEffect(() => {
     if (!open) return
@@ -81,37 +70,7 @@ export function ChatSidebar(props: ChatSidebarProps) {
           ) : (
             <ul className='space-y-1'>
               {chats.map((chat) => (
-                <li key={chat.id} className='flex items-center gap-2'>
-                  <Link
-                    href={`/chat/${chat.id}`}
-                    onClick={() => {
-                      onOpenChange(false)
-                    }}
-                    className='flex min-w-0 flex-1 flex-col rounded-lg px-3 py-2 hover:bg-muted'
-                  >
-                    <span className='truncate text-sm font-medium'>{chat.title}</span>
-                    <span className='text-xs text-muted-foreground'>
-                      {formatDistanceToNow(chat.updatedAt, { addSuffix: true })}
-                    </span>
-                  </Link>
-                  <Button
-                    variant='ghost'
-                    size='icon'
-                    className='shrink-0'
-                    onClick={() => {
-                      deleteChat(
-                        { chatId: chat.id },
-                        {
-                          onError: () => {
-                            toast.error(t('chat.delete-failed'))
-                          },
-                        },
-                      )
-                    }}
-                  >
-                    <TrashIcon />
-                  </Button>
-                </li>
+                <ChatSidebarItem key={chat.id} currentChatId={currentChatId} chat={chat} onOpenChange={onOpenChange} />
               ))}
             </ul>
           )}

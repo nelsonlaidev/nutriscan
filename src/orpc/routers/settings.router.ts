@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { users } from '@/db/schemas/auth.schema'
 import { feedback } from '@/db/schemas/feedback.schema'
 import { weightEntries } from '@/db/schemas/weight-entry.schema'
+import { evaluateAndUnlockAchievementGroup } from '@/lib/achievements/server'
 
 import { protectedProcedure } from '../procedures'
 import {
@@ -14,29 +15,35 @@ import {
 
 const updatePersonalDetails = protectedProcedure
   .input(UpdatePersonalDetailsInputSchema)
-  .handler(async ({ input, context }) => {
-    await Promise.all([
-      context.db
-        .update(users)
-        .set({
-          currentWeight: input.currentWeight,
-          goalWeight: input.goalWeight,
-          height: input.height,
-          birthday: input.birthday,
-          gender: input.gender,
-          plan: input.plan,
-          calorieBudget: input.calorieBudget,
-          proteinTarget: input.proteinTarget,
-          carbTarget: input.carbTarget,
-          fatTarget: input.fatTarget,
-        })
-        .where(eq(users.id, context.session.user.id)),
-      context.db.insert(weightEntries).values({
-        userId: context.session.user.id,
-        weight: input.currentWeight,
-      }),
-    ])
-  })
+  .handler(async ({ input, context }) =>
+    context.db.transaction(async (tx) => {
+      await Promise.all([
+        tx
+          .update(users)
+          .set({
+            currentWeight: input.currentWeight,
+            goalWeight: input.goalWeight,
+            height: input.height,
+            birthday: input.birthday,
+            gender: input.gender,
+            plan: input.plan,
+            calorieBudget: input.calorieBudget,
+            proteinTarget: input.proteinTarget,
+            carbTarget: input.carbTarget,
+            fatTarget: input.fatTarget,
+          })
+          .where(eq(users.id, context.session.user.id)),
+        tx.insert(weightEntries).values({
+          userId: context.session.user.id,
+          weight: input.currentWeight,
+        }),
+      ])
+
+      const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'weight')
+
+      return { newUnlocks }
+    }),
+  )
 
 const updateLocale = protectedProcedure.input(UpdateLocaleInputSchema).handler(async ({ input, context }) => {
   const cookieStore = await cookies()

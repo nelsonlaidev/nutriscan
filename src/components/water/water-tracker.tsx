@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useWaterChartData } from '@/hooks/queries/progress.query'
 import { useAddWaterEntry, useWaterEntries } from '@/hooks/queries/water.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 import { formatMl, getDateRange, getDayRange } from '@/lib/utils'
 
 import { Card, CardContent } from '../ui/card'
@@ -61,7 +62,14 @@ export function WaterTracker(props: WaterTrackerProps) {
             size='sm'
             onClick={() => {
               if (isPending) return
-              addWater({ amount: ml })
+              addWater(
+                { amount: ml },
+                {
+                  onSuccess: (data) => {
+                    showAchievementUnlockToast(data.newUnlocks, t)
+                  },
+                },
+              )
             }}
           >
             <PlusIcon size={14} data-icon='inline-start' />
@@ -75,7 +83,14 @@ export function WaterTracker(props: WaterTrackerProps) {
         className='w-full max-w-xs bg-blue-500 hover:bg-blue-600'
         onClick={() => {
           if (isPending) return
-          addWater({ amount: 250 })
+          addWater(
+            { amount: 250 },
+            {
+              onSuccess: (data) => {
+                showAchievementUnlockToast(data.newUnlocks, t)
+              },
+            },
+          )
         }}
       >
         <PlusIcon size={18} data-icon='inline-start' />

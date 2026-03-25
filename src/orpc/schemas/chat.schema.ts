@@ -24,6 +24,11 @@ export const DeleteChatInputSchema = z.object({
   chatId: z.uuid(),
 })
 
+export const UpdateChatTitleInputSchema = z.object({
+  chatId: z.uuid(),
+  title: z.string().trim().min(1).max(100),
+})
+
 export const GetChatByIdInputSchema = z.object({
   chatId: z.string().min(1),
 })

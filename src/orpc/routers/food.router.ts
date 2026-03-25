@@ -2,6 +2,7 @@ import { ORPCError } from '@orpc/server'
 import { and, eq, gte, lte } from 'drizzle-orm'
 
 import { foodEntries } from '@/db/schemas'
+import { evaluateAndUnlockAchievementGroup } from '@/lib/achievements/server'
 import { MEALS } from '@/lib/constants'
 
 import { protectedProcedure } from '../procedures'
@@ -60,12 +61,18 @@ const getById = protectedProcedure.input(GetFoodEntryByIdInputSchema).handler(as
   return entry
 })
 
-const create = protectedProcedure.input(AddFoodEntryInputSchema).handler(async ({ input, context }) => {
-  await context.db.insert(foodEntries).values({
-    ...input,
-    userId: context.session.user.id,
-  })
-})
+const create = protectedProcedure.input(AddFoodEntryInputSchema).handler(async ({ input, context }) =>
+  context.db.transaction(async (tx) => {
+    await tx.insert(foodEntries).values({
+      ...input,
+      userId: context.session.user.id,
+    })
+
+    const newUnlocks = await evaluateAndUnlockAchievementGroup(tx, context.session.user.id, 'meals')
+
+    return { newUnlocks }
+  }),
+)
 
 const remove = protectedProcedure.input(DeleteFoodEntryInputSchema).handler(async ({ input, context }) => {
   const [entry] = await context.db
