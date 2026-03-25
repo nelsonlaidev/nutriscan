@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { useUpdatePersonalDetails } from '@/hooks/queries/settings.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 import {
   calculateAge,
   calculateBMR,
@@ -115,6 +116,9 @@ export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
           fatTarget: macros.fat,
         },
         {
+          onSuccess: (data) => {
+            showAchievementUnlockToast(data.newUnlocks, t)
+          },
           onError: () => toast.error(t('settings.personal-details.error')),
         },
       )

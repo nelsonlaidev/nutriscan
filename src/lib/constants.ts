@@ -10,8 +10,6 @@ export const IS_SERVER = typeof globalThis.window === 'undefined'
 export const IS_PROD = env.NODE_ENV === 'production'
 export const IS_DEV = env.NODE_ENV === 'development'
 
-export const DEFAULT_TIMEZONE = 'Asia/Hong_Kong'
-
 export const DEFAULT_LOCALE = 'en'
 export const LOCALES = [DEFAULT_LOCALE, 'zh-TW', 'zh-CN'] as const
 export const LOCALE_ITEMS: Array<{ label: string; value: (typeof LOCALES)[number] }> = [
@@ -61,5 +59,24 @@ export const TEST_USER: InferInsertModel<typeof users> = {
   proteinTarget: 160,
   carbTarget: 220,
   fatTarget: 70,
+  onboarded: true,
+}
+
+export const TEST_USER_CLEAN: InferInsertModel<typeof users> = {
+  id: '11111111111111111111111111111111',
+  name: 'Fresh',
+  email: 'fresh@example.com',
+  emailVerified: true,
+  startingWeight: 72,
+  currentWeight: 72,
+  goalWeight: 68,
+  height: 170,
+  birthday: '1994-03-20',
+  gender: 'female',
+  waterGoal: 2200,
+  calorieBudget: 1900,
+  proteinTarget: 140,
+  carbTarget: 180,
+  fatTarget: 63,
   onboarded: true,
 }

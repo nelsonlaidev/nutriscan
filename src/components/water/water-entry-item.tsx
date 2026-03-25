@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useDeleteWaterEntry, useUpdateWaterEntry } from '@/hooks/queries/water.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 import { MAX_WATER_INTAKE } from '@/lib/constants'
 import { formatMl, getDayRange } from '@/lib/utils'
 
@@ -63,7 +64,15 @@ export function WaterEntryItem(props: WaterEntryItemProps) {
       return
     }
 
-    updateWater({ id: entry.id, amount: parsed }, { onError: () => toast.error(t('water.entry-update-error')) })
+    updateWater(
+      { id: entry.id, amount: parsed },
+      {
+        onSuccess: (data) => {
+          showAchievementUnlockToast(data.newUnlocks, t)
+        },
+        onError: () => toast.error(t('water.entry-update-error')),
+      },
+    )
   }
 
   function handleDelete() {

@@ -22,6 +22,8 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:spell": "cspell .",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
     "prepare": "if [ -d .git ]; then lefthook install; fi",
     "start": "next start",
     "test:e2e": "bun with-env playwright test",
@@ -106,7 +108,8 @@
     "postcss-load-config": "6.0.1",
     "tailwindcss": "4.1.18",
     "tsx": "4.21.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.1.1"
   },
   "engines": {
     "node": ">=24"

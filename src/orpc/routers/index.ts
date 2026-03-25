@@ -1,3 +1,4 @@
+import { achievementsRouter } from './achievements.router'
 import { chatRouter } from './chat.router'
 import { foodRouter } from './food.router'
 import { onboardingRouter } from './onboarding.router'
@@ -9,6 +10,7 @@ import { waterRouter } from './water.router'
 import { weightRouter } from './weight.router'
 
 export const router = {
+  achievements: achievementsRouter,
   chat: chatRouter,
   food: foodRouter,
   onboarding: onboardingRouter,

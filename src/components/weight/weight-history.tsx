@@ -19,6 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { useDeleteWeightEntry, useUpdateWeightEntry } from '@/hooks/queries/weight.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 import { toZonedDate } from '@/lib/utils'
 
 import { Spinner } from '../ui/spinner'
@@ -92,7 +93,15 @@ export function WeightHistory(props: WeightHistoryProps) {
       return
     }
 
-    updateWeight({ id: editEntry.id, weight: value }, { onError: () => toast.error(t('weight.entry-update-error')) })
+    updateWeight(
+      { id: editEntry.id, weight: value },
+      {
+        onSuccess: (data) => {
+          showAchievementUnlockToast(data.newUnlocks, t)
+        },
+        onError: () => toast.error(t('weight.entry-update-error')),
+      },
+    )
   }
 
   if (entries.length === 0) {

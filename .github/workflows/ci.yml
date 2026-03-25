@@ -23,6 +23,19 @@ env:
   BASIC_AUTH_PASS: ${{ secrets.BASIC_AUTH_PASS }}
 
 jobs:
+  tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Configure environment
+        uses: ./.github/actions/setup
+
+      - name: Run unit tests
+        run: bun test:unit
+
   lint:
     name: Lint
     runs-on: ubuntu-latest

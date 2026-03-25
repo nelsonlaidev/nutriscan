@@ -262,6 +262,77 @@
     "account": "Account",
     "member-since": "Member since"
   },
+  "achievements": {
+    "title": "Achievements",
+    "dashboard-subtitle": "Build momentum with your core habits",
+    "profile-subtitle": "Unlocked badges stay forever. Streaks update live with your activity.",
+    "view-all": "View all",
+    "recent-unlocks": "Recent unlocks",
+    "no-unlocks": "No achievements unlocked yet",
+    "status-unlocked": "Unlocked",
+    "unlocked-on": "Unlocked {date}",
+    "streak-days": "{count} days",
+    "summary": {
+      "badges": "Badges",
+      "unlocked": "Unlocked",
+      "meal-streak": "Meal streak",
+      "water-streak": "Water streak"
+    },
+    "categories": {
+      "meals": "Meals",
+      "water": "Water",
+      "weight": "Weight"
+    },
+    "progress": {
+      "check-ins": "{current} of {target} check-ins",
+      "days": "{current} of {target} days",
+      "entries": "{current} of {target} logs",
+      "meal-categories": "{current} of {target} meal categories in a day",
+      "streak-days": "{current} of {target} streak days"
+    },
+    "toast": {
+      "single": "Achievement unlocked: {title}",
+      "multiple": "Achievement unlocked: {title} +{count} more"
+    },
+    "items": {
+      "first-meal-logged": {
+        "title": "First Bite",
+        "description": "Log your first meal."
+      },
+      "all-meals-in-a-day": {
+        "title": "Full Plate",
+        "description": "Log breakfast, lunch, dinner, and snacks on the same day."
+      },
+      "meal-logging-streak-7": {
+        "title": "Meal Momentum",
+        "description": "Log at least one meal for 7 days in a row."
+      },
+      "first-water-logged": {
+        "title": "First Sip",
+        "description": "Log your first water entry."
+      },
+      "water-logging-days-7": {
+        "title": "Hydration Habit",
+        "description": "Log water on 7 different days."
+      },
+      "water-logging-streak-7": {
+        "title": "Hydration Streak",
+        "description": "Log water for 7 days in a row."
+      },
+      "first-weigh-in": {
+        "title": "On The Scale",
+        "description": "Record your first weight check-in."
+      },
+      "weight-checkins-7": {
+        "title": "Weekly Check-In",
+        "description": "Log 7 weight entries."
+      },
+      "weight-checkins-30": {
+        "title": "Weight Warrior",
+        "description": "Log 30 weight entries."
+      }
+    }
+  },
   "greeting": {
     "morning": "Good morning",
     "afternoon": "Good afternoon",

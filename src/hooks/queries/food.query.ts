@@ -1,6 +1,6 @@
 import type { GetFoodByIdInput, GetFoodMealsInput, GetFoodTotalsInput, ListFoodByCategoryInput } from '@/orpc/client'
 
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 
 import { orpc } from '@/orpc/client'
 
@@ -13,11 +13,33 @@ export function useFoodEntryById(input: GetFoodByIdInput) {
 }
 
 export function useCreateFoodEntry(onSuccess?: () => void) {
-  return useMutation(orpc.food.create.mutationOptions({ onSuccess }))
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.create.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
+        onSuccess?.()
+      },
+    }),
+  )
 }
 
 export function useDeleteFoodEntry(onSuccess?: () => void) {
-  return useMutation(orpc.food.delete.mutationOptions({ onSuccess }))
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.delete.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
+        onSuccess?.()
+      },
+    }),
+  )
 }
 
 export function useFoodTotals(input: GetFoodTotalsInput) {

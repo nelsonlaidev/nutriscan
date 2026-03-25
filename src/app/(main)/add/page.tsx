@@ -17,6 +17,7 @@ import { MainLayout } from '@/components/main-layout'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { useCreateFoodEntry } from '@/hooks/queries/food.query'
+import { showAchievementUnlockToast } from '@/lib/achievements/toast'
 import { DEFAULT_MEAL } from '@/lib/constants'
 
 type Step = 'input' | 'review' | 'meal-pick'
@@ -29,10 +30,7 @@ export default function Page() {
   const [nutritionData, setNutritionData] = useState<NutritionData | null>(null)
   const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
 
-  const { mutate: addToMeal, isPending } = useCreateFoodEntry(() => {
-    toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
-    router.push('/dashboard')
-  })
+  const { mutate: addToMeal, isPending } = useCreateFoodEntry()
 
   const handleScanResult = useCallback((data: NutritionData) => {
     setNutritionData(data)
@@ -67,6 +65,11 @@ export default function Page() {
         imageUrl: nutritionData.imageUrl,
       },
       {
+        onSuccess: (data) => {
+          toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
+          showAchievementUnlockToast(data.newUnlocks, t)
+          router.push('/dashboard')
+        },
         onError: () => toast.error(t('add-food.save-error')),
       },
     )

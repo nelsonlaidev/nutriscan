@@ -267,6 +267,77 @@
     "account": "账号",
     "member-since": "加入日期"
   },
+  "achievements": {
+    "title": "成就",
+    "dashboard-subtitle": "用核心习惯持续累积动力",
+    "profile-subtitle": "已解锁的徽章会永久保留，连续记录会随着你的活动即时更新。",
+    "view-all": "查看全部",
+    "recent-unlocks": "最近解锁",
+    "no-unlocks": "还没有解锁任何成就",
+    "status-unlocked": "已解锁",
+    "unlocked-on": "于 {date} 解锁",
+    "streak-days": "{count} 天",
+    "summary": {
+      "badges": "徽章",
+      "unlocked": "已解锁",
+      "meal-streak": "饮食连续天数",
+      "water-streak": "喝水连续天数"
+    },
+    "categories": {
+      "meals": "饮食",
+      "water": "喝水",
+      "weight": "体重"
+    },
+    "progress": {
+      "check-ins": "{current} / {target} 次记录",
+      "days": "{current} / {target} 天",
+      "entries": "{current} / {target} 次纪录",
+      "meal-categories": "单日 {current} / {target} 个餐别",
+      "streak-days": "连续 {current} / {target} 天"
+    },
+    "toast": {
+      "single": "已解锁成就：{title}",
+      "multiple": "已解锁成就：{title}，另外还有 {count} 个"
+    },
+    "items": {
+      "first-meal-logged": {
+        "title": "第一口",
+        "description": "记录第一笔餐点。"
+      },
+      "all-meals-in-a-day": {
+        "title": "完整餐盘",
+        "description": "在同一天记录早餐、午餐、晚餐和点心。"
+      },
+      "meal-logging-streak-7": {
+        "title": "饮食节奏",
+        "description": "连续 7 天至少记录一餐。"
+      },
+      "first-water-logged": {
+        "title": "第一口水",
+        "description": "记录第一笔喝水纪录。"
+      },
+      "water-logging-days-7": {
+        "title": "补水习惯",
+        "description": "在 7 天内留下喝水记录。"
+      },
+      "water-logging-streak-7": {
+        "title": "补水连胜",
+        "description": "连续 7 天记录喝水。"
+      },
+      "first-weigh-in": {
+        "title": "踏上体重计",
+        "description": "完成第一次体重记录。"
+      },
+      "weight-checkins-7": {
+        "title": "每周回报",
+        "description": "完成 7 次体重记录。"
+      },
+      "weight-checkins-30": {
+        "title": "体重斗士",
+        "description": "完成 30 次体重记录。"
+      }
+    }
+  },
   "greeting": {
     "morning": "早安",
     "afternoon": "午安",

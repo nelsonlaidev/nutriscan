@@ -34,6 +34,8 @@ export type CalorieChartInput = Inputs['progress']['calorieChart']
 export type NutritionChartInput = Inputs['progress']['nutritionChart']
 export type WaterChartInput = Inputs['progress']['waterChart']
 export type WeightByDateRangeInput = Inputs['progress']['weightByDateRange']
+export type AchievementOverviewOutput = Outputs['achievements']['overview']
+export type AchievementListOutput = Outputs['achievements']['list']
 
 export type GetTotalWaterInput = Inputs['water']['total']
 export type GetWaterEntriesInput = Inputs['water']['list']

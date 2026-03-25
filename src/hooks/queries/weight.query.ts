@@ -39,10 +39,11 @@ export function useAddWeightEntry(onSuccess?: () => void) {
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.weight.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )
@@ -73,10 +74,11 @@ export function useUpdateWeightEntry(onSuccess?: () => void) {
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.weight.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )
@@ -107,10 +109,11 @@ export function useDeleteWeightEntry(onSuccess?: () => void) {
           queryClient.setQueryData(queryKey, context.previousData)
         }
       },
+      onSuccess,
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: orpc.weight.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
-        onSuccess?.()
+        void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
       },
     }),
   )

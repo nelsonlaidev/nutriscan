@@ -5,7 +5,7 @@ import { generateId } from 'better-auth'
 import { consola } from 'consola'
 import { eq } from 'drizzle-orm'
 
-import { MEALS, TEST_USER } from '@/lib/constants'
+import { MEALS, TEST_USER, TEST_USER_CLEAN } from '@/lib/constants'
 
 import { db } from './index'
 import { accounts, chatMessages, chats, foodEntries, users, waterEntries, weightEntries } from './schemas'
@@ -14,21 +14,22 @@ async function main() {
   consola.info('Starting database seed...')
 
   try {
-    await db.insert(users).values(TEST_USER)
+    await db.insert(users).values([TEST_USER, TEST_USER_CLEAN])
 
-    // Create an account for the user
-    await db.insert(accounts).values({
-      id: generateId(),
-      accountId: generateId(),
-      providerId: 'credential',
-      userId: TEST_USER.id,
-      password:
-        // Fixed password hash for "12341234"
-        // oxlint-disable-next-line sonarjs/no-hardcoded-passwords
-        '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b',
-    })
+    await db.insert(accounts).values(
+      [TEST_USER, TEST_USER_CLEAN].map((user) => ({
+        id: generateId(),
+        accountId: generateId(),
+        providerId: 'credential',
+        userId: user.id,
+        password:
+          // Fixed password hash for "12341234"
+          // oxlint-disable-next-line sonarjs/no-hardcoded-passwords
+          '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b',
+      })),
+    )
 
-    consola.success(`Created user: ${TEST_USER.id}`)
+    consola.success(`Created users: ${TEST_USER.id}, ${TEST_USER_CLEAN.id}`)
 
     // Generate past 30 days of data
     const today = new Date()
