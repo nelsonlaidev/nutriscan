@@ -29,8 +29,6 @@ export type AchievementIcon = (typeof ACHIEVEMENT_ICONS)[number]
 
 export type AchievementProgressKind = 'check-ins' | 'days' | 'entries' | 'meal-categories' | 'streak-days'
 
-export type AchievementStatus = 'locked' | 'unlocked'
-
 export type AchievementId = (typeof ACHIEVEMENT_IDS)[number]
 
 export type AchievementDefinition = {

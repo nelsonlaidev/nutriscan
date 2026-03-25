@@ -91,17 +91,17 @@ export const ACHIEVEMENT_CATALOG_BY_ID = Object.fromEntries(
   ACHIEVEMENT_CATALOG.map((achievement) => [achievement.id, achievement]),
 ) as Record<AchievementId, AchievementDefinition>
 
-export const MEAL_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter((achievement) => achievement.category === 'meals').map(
+const MEAL_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter((achievement) => achievement.category === 'meals').map(
   (achievement) => achievement.id,
 )
 
-export const WATER_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter((achievement) => achievement.category === 'water').map(
+const WATER_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter((achievement) => achievement.category === 'water').map(
   (achievement) => achievement.id,
 )
 
-export const WEIGHT_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter(
-  (achievement) => achievement.category === 'weight',
-).map((achievement) => achievement.id)
+const WEIGHT_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.filter((achievement) => achievement.category === 'weight').map(
+  (achievement) => achievement.id,
+)
 
 export const ACHIEVEMENT_IDS_BY_GROUP = {
   meals: MEAL_ACHIEVEMENT_IDS,
