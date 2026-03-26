@@ -39,10 +39,6 @@ export function CalorieSummary(props: CalorieSummaryProps) {
             <p className='text-lg font-semibold text-primary'>{Math.round(remaining)}</p>
           </div>
           <div>
-            <p className='text-xs text-muted-foreground'>{t('dashboard.burned')}</p>
-            <p className='text-lg font-semibold text-primary'>0</p>
-          </div>
-          <div>
             <p className='text-xs text-muted-foreground'>{t('dashboard.goal')}</p>
             <p className='text-lg font-semibold'>{goal}</p>
           </div>
