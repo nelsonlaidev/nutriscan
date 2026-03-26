@@ -7,6 +7,8 @@ import { env } from './src/env'
 const R2_URL = new URL(env.R2_PUBLIC_URL)
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
+
   reactCompiler: true,
 
   typescript: {
