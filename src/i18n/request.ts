@@ -8,7 +8,7 @@ import { getSession } from '@/lib/auth'
 import { DEFAULT_LOCALE } from '@/lib/constants'
 
 export default getRequestConfig(async () => {
-  let locale: Locale
+  let locale: Locale | undefined
 
   try {
     const session = await getSession()
@@ -16,22 +16,20 @@ export default getRequestConfig(async () => {
       locale = session.user.locale as Locale
     }
   } catch {
-    // Not authenticated or headers unavailable — use cookie value
+    // Not authenticated or headers unavailable
   }
 
-  const cookieStore = await cookies()
+  if (!locale) {
+    const cookieStore = await cookies()
+    locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale | undefined) ?? DEFAULT_LOCALE
+  }
 
-  // Logic here should mirror your middleware priority
-  // 1. Check DB (if possible in this context)
-  // 2. Check Cookie
-
-  locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale | undefined) ?? DEFAULT_LOCALE
-
-  const mod = (await import(`../../messages/${locale}.json`)) as { default: DeepObject }
-  const messages = mod.default
+  const mod = (await import(`../../messages/${locale}.json`)) as {
+    default: DeepObject
+  }
 
   return {
     locale,
-    messages,
+    messages: mod.default,
   }
 })
