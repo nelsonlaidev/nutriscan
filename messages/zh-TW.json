@@ -99,6 +99,7 @@
     "take-upload-photo": "拍攝或上傳食物照片",
     "analyzing-image": "正在分析圖片...",
     "camera-unavailable": "相機僅在行動裝置上可用。請改為上傳圖片。",
+    "unsupported-image-format": "不支援此圖片格式。請上傳 JPG、PNG、WebP 或 GIF。",
     "take-photo": "拍照",
     "upload-photo": "上傳照片",
     "point-camera": "將相機對準條碼",

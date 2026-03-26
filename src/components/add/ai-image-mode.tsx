@@ -18,6 +18,21 @@ type AiImageModeProps = {
   onResult: (data: NutritionData) => void
 }
 
+const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
+
+async function fileToBase64(file: Blob) {
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  const chunkSize = 32_768
+  let binary = ''
+
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    const chunk = bytes.subarray(index, index + chunkSize)
+    binary += String.fromCodePoint(...chunk)
+  }
+
+  return btoa(binary)
+}
+
 export function AiImageMode(props: AiImageModeProps) {
   const { onResult } = props
   const t = useTranslations()
@@ -43,6 +58,11 @@ export function AiImageMode(props: AiImageModeProps) {
 
   const handleFileSelected = useCallback(
     async (file: File) => {
+      if (!SUPPORTED_IMAGE_TYPES.includes(file.type as (typeof SUPPORTED_IMAGE_TYPES)[number])) {
+        toast.error(t('add-food.unsupported-image-format'))
+        return
+      }
+
       const compressed = await imageCompression(file, {
         maxSizeMB: 1,
         maxWidthOrHeight: 1024,
@@ -55,8 +75,7 @@ export function AiImageMode(props: AiImageModeProps) {
       setPreview(previewUrl)
 
       try {
-        const buffer = await compressed.arrayBuffer()
-        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+        const base64 = await fileToBase64(compressed)
 
         const { url: imageUrl } = await uploadImage({
           base64,
@@ -66,8 +85,12 @@ export function AiImageMode(props: AiImageModeProps) {
         scanImage(
           { imageUrl },
           {
-            onError: () => {
-              toast.error(t('errors.ai-scan-failed'))
+            onError: (error) => {
+              if (error.message === 'errors.no-food-detected') {
+                toast.error(t(error.message))
+              } else {
+                toast.error(t('errors.ai-scan-failed'))
+              }
               setPreview(null)
             },
           },

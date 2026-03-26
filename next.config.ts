@@ -22,14 +22,10 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  allowedDevOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
+  allowedDevOrigins: ['nutriscan.nelsonlai.dev', 'nutriscan-dev.nelsonlai.dev', 'localhost:3000'],
 
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
-    serverActions: {
-      allowedOrigins: ['nutriscan.nelsonlai.dev', 'localhost:3000'],
-      bodySizeLimit: '10mb',
-    },
   },
 }
 

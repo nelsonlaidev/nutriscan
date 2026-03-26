@@ -99,6 +99,7 @@
     "take-upload-photo": "Take or upload a photo of food",
     "analyzing-image": "Analyzing image...",
     "camera-unavailable": "Camera is only available on mobile devices. Please upload an image instead.",
+    "unsupported-image-format": "This image format is not supported. Please upload a JPG, PNG, WebP, or GIF image.",
     "take-photo": "Take Photo",
     "upload-photo": "Upload Photo",
     "point-camera": "Point camera at barcode",

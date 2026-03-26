@@ -5,7 +5,7 @@ import { headers } from 'next/headers'
 import { db } from '@/db'
 
 export const auth = betterAuth({
-  trustedOrigins: ['https://nutriscan.nelsonlai.dev', 'http://localhost:3000'],
+  trustedOrigins: ['https://nutriscan.nelsonlai.dev', 'https://nutriscan-dev.nelsonlai.dev', 'http://localhost:3000'],
   database: drizzleAdapter(db, {
     provider: 'pg',
     usePlural: true,
