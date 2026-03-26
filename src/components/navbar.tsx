@@ -17,7 +17,7 @@ export function Navbar({ user }: NavbarProps) {
   const t = useTranslations()
 
   return (
-    <nav className='fixed bottom-0 left-1/2 flex w-full max-w-240 -translate-x-1/2 items-center justify-around gap-1 border-x border-t bg-background p-2'>
+    <nav className='fixed bottom-0 left-1/2 flex w-full max-w-240 -translate-x-1/2 items-center justify-around gap-1 border-t bg-background p-2'>
       {NAVBAR_LINKS.map((link) => {
         const active = pathname === link.href
         const isPrimary = link.href === '/add'
