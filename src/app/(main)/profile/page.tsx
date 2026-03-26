@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AchievementSection } from '@/components/achievements/achievement-section'
 import { MainLayout } from '@/components/main-layout'
-import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
 import { getSession } from '@/lib/auth'
 import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
@@ -17,8 +16,26 @@ export const metadata: Metadata = {
   title: 'Profile',
 }
 
+type ProfileMetricCardProps = {
+  label: string
+  value: string
+  unit: string
+}
+
+function ProfileMetricCard({ label, value, unit }: ProfileMetricCardProps) {
+  return (
+    <div className='rounded-2xl border border-border/60 bg-background/80 p-4 shadow-xs backdrop-blur-sm'>
+      <p className='text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase'>{label}</p>
+      <div className='mt-3 flex items-end gap-1.5'>
+        <p className='text-2xl font-semibold tracking-tight tabular-nums'>{value}</p>
+        <p className='pb-1 text-sm font-medium text-muted-foreground'>{unit}</p>
+      </div>
+    </div>
+  )
+}
+
 export default async function Page() {
-  const [session, t] = await Promise.all([getSession(), getTranslations()])
+  const [session, t, locale] = await Promise.all([getSession(), getTranslations(), getLocale()])
   if (!session) redirect('/')
 
   const { user } = session
@@ -29,57 +46,52 @@ export default async function Page() {
     queryClient.prefetchQuery(orpc.achievements.list.queryOptions()),
   ])
 
-  // Server component
-  // oxlint-disable-next-line react-x/purity
-  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
+  const memberSince = new Intl.DateTimeFormat(locale, {
     month: 'long',
     year: 'numeric',
+  }).format(Date.parse(String(user.createdAt)))
+  const formatMetric = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 1,
   })
 
   return (
-    <MainLayout title={t('profile.page-title')} className='space-y-4' rightTitleButton={<SettingsLink />}>
+    <MainLayout title={t('profile.page-title')} className='space-y-6' rightTitleButton={<SettingsLink />}>
       <HydrateClient client={queryClient}>
-        <div className='flex flex-col items-center gap-2 py-4'>
-          <UserAvatar user={user} className='size-24' />
-          <div className='text-center'>
-            <p className='text-xl font-semibold'>{user.name}</p>
-            <p className='text-sm text-muted-foreground'>{user.email}</p>
+        <section className='overflow-hidden rounded-[2rem] border border-border/60 bg-linear-to-br from-background via-background to-primary/5 shadow-xs'>
+          <div className='space-y-6 px-5 py-6'>
+            <div className='flex items-center gap-4'>
+              <div className='rounded-[1.75rem] bg-primary/8 p-1.5 ring-1 ring-primary/10'>
+                <UserAvatar user={user} className='size-20 rounded-4xl' />
+              </div>
+              <div className='min-w-0 space-y-1'>
+                <p className='truncate text-2xl font-semibold tracking-tight'>{user.name}</p>
+                <p className='truncate text-sm text-muted-foreground'>{user.email}</p>
+                <p className='inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary'>
+                  {t('profile.member-since')} {memberSince}
+                </p>
+              </div>
+            </div>
+
+            <div className='space-y-3'>
+              <h2 className='text-sm font-medium text-muted-foreground'>{t('profile.health-metrics')}</h2>
+              <div className='grid grid-cols-1 gap-3 min-[420px]:grid-cols-3'>
+                <ProfileMetricCard
+                  label={t('profile.current-weight')}
+                  value={formatMetric.format(user.currentWeight)}
+                  unit='kg'
+                />
+                <ProfileMetricCard
+                  label={t('profile.goal-weight')}
+                  value={formatMetric.format(user.goalWeight)}
+                  unit='kg'
+                />
+                <ProfileMetricCard label={t('profile.height')} value={formatMetric.format(user.height)} unit='cm' />
+              </div>
+            </div>
           </div>
-        </div>
-
-        <Separator />
-
-        <div className='flex flex-col gap-2'>
-          <h2 className='text-sm font-medium text-muted-foreground'>{t('profile.health-metrics')}</h2>
-          <div className='grid grid-cols-3 gap-3'>
-            <div className='rounded-lg bg-muted/50 p-3 text-center'>
-              <p className='text-xs text-muted-foreground'>{t('profile.current-weight')}</p>
-              <p className='text-lg font-semibold'>{user.currentWeight} kg</p>
-            </div>
-            <div className='rounded-lg bg-muted/50 p-3 text-center'>
-              <p className='text-xs text-muted-foreground'>{t('profile.goal-weight')}</p>
-              <p className='text-lg font-semibold'>{user.goalWeight} kg</p>
-            </div>
-            <div className='rounded-lg bg-muted/50 p-3 text-center'>
-              <p className='text-xs text-muted-foreground'>{t('profile.height')}</p>
-              <p className='text-lg font-semibold'>{user.height} cm</p>
-            </div>
-          </div>
-        </div>
-
-        <Separator />
+        </section>
 
         <AchievementSection />
-
-        <Separator />
-
-        <div className='flex flex-col gap-3'>
-          <h2 className='text-sm font-medium text-muted-foreground'>{t('profile.account')}</h2>
-          <div className='flex items-center justify-between'>
-            <p className='text-sm'>{t('profile.member-since')}</p>
-            <p className='text-sm text-muted-foreground'>{memberSince}</p>
-          </div>
-        </div>
       </HydrateClient>
     </MainLayout>
   )

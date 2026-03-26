@@ -27,7 +27,7 @@ export function AchievementSection() {
   return (
     <section id='achievements' data-testid='achievement-section' className='scroll-mt-6 space-y-4'>
       <div className='space-y-1'>
-        <h2 className='text-sm font-medium text-muted-foreground'>{t('achievements.title')}</h2>
+        <h2 className='text-base font-semibold tracking-tight text-foreground'>{t('achievements.title')}</h2>
         <p className='text-sm text-muted-foreground'>{t('achievements.profile-subtitle')}</p>
       </div>
 
@@ -57,7 +57,7 @@ export function AchievementSection() {
 
         return (
           <div key={category} className='space-y-3'>
-            <h3 className='text-sm font-medium text-muted-foreground'>{t(`achievements.categories.${category}`)}</h3>
+            <h3 className='text-sm font-semibold text-foreground/85'>{t(`achievements.categories.${category}`)}</h3>
             <div className='grid gap-3'>
               {categoryCards.map((card) => {
                 const percentage = Math.min((card.current / card.target) * 100, 100)
