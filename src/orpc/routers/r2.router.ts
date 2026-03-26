@@ -14,7 +14,24 @@ const uploadImageProcedure = protectedProcedure.input(UploadImageInputSchema).ha
   }
 
   const ext = input.mimeType.split('/')[1]
-  const prefix = input.type === 'chat' ? 'chat-images' : 'meal-images'
+  let prefix: 'avatars' | 'chat-images' | 'meal-images'
+  switch (input.type) {
+    case 'avatar': {
+      prefix = 'avatars'
+      break
+    }
+    case 'chat': {
+      prefix = 'chat-images'
+      break
+    }
+    case 'meal': {
+      prefix = 'meal-images'
+      break
+    }
+    default: {
+      throw new ORPCError('BAD_REQUEST', { message: 'Invalid image type' })
+    }
+  }
   const key = `${prefix}/${context.session.user.id}/${Date.now()}.${ext}`
   const url = await uploadImage(key, buffer, input.mimeType)
 

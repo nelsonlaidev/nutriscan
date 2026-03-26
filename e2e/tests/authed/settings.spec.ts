@@ -15,6 +15,14 @@ test('settings displays user name and email', async ({ page }) => {
   await expect(page.getByText('test@example.com')).toBeVisible()
 })
 
+test('profile card navigates to profile editor', async ({ page }) => {
+  await page.goto('/settings')
+
+  await page.locator('a[href="/settings/profile"]').click()
+  await expect(page).toHaveURL(/\/settings\/profile/)
+  await expect(page.getByRole('heading', { name: 'Edit Profile' })).toBeVisible()
+})
+
 test('dark mode toggle switches theme', async ({ page }) => {
   await page.goto('/settings')
 

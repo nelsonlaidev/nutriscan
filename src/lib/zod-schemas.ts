@@ -74,6 +74,12 @@ export function createPersonalDetailsFormSchema(t: Translator) {
   })
 }
 
+export function createProfileFormSchema(t: Translator) {
+  return z.object({
+    name: z.string().trim().min(1, t('validation.display-name-required')),
+  })
+}
+
 export function createManualFoodEntrySchema(t: Translator) {
   return z.object({
     foodName: z.string().min(1, t('validation.food-name-required')),

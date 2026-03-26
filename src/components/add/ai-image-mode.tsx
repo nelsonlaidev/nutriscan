@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useUploadImage } from '@/hooks/queries/r2.query'
 import { useAiImageScan } from '@/hooks/queries/scanning.query'
+import { blobToBase64 } from '@/lib/blob'
 
 import { Spinner } from '../ui/spinner'
 
@@ -19,19 +20,6 @@ type AiImageModeProps = {
 }
 
 const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
-
-async function fileToBase64(file: Blob) {
-  const bytes = new Uint8Array(await file.arrayBuffer())
-  const chunkSize = 32_768
-  let binary = ''
-
-  for (let index = 0; index < bytes.length; index += chunkSize) {
-    const chunk = bytes.subarray(index, index + chunkSize)
-    binary += String.fromCodePoint(...chunk)
-  }
-
-  return btoa(binary)
-}
 
 export function AiImageMode(props: AiImageModeProps) {
   const { onResult } = props
@@ -75,7 +63,7 @@ export function AiImageMode(props: AiImageModeProps) {
       setPreview(previewUrl)
 
       try {
-        const base64 = await fileToBase64(compressed)
+        const base64 = await blobToBase64(compressed)
 
         const { url: imageUrl } = await uploadImage({
           base64,

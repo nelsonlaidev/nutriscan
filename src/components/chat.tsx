@@ -25,6 +25,7 @@ import { useStickToBottom } from 'use-stick-to-bottom'
 import { ChatProvider } from '@/contexts/chat'
 import { useChatById } from '@/hooks/queries/chat.query'
 import { useUploadImage } from '@/hooks/queries/r2.query'
+import { blobToBase64 } from '@/lib/blob'
 import { client, orpc } from '@/orpc/client'
 
 import { ChatSidebar } from './chat-sidebar'
@@ -153,8 +154,7 @@ export function Chat(props: ChatProps) {
       }
 
       try {
-        const buffer = await file.arrayBuffer()
-        const base64 = btoa(String.fromCodePoint(...new Uint8Array(buffer)))
+        const base64 = await blobToBase64(file)
 
         const { url } = await uploadImage({
           base64,
