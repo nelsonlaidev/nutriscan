@@ -1,37 +1,37 @@
 import { expect, test } from '@playwright/test'
 
-test('progress page loads with weekly view by default', async ({ page }) => {
+test('progress page loads with "Last 7 Days" view by default', async ({ page }) => {
   await page.goto('/progress')
   await expect(page.getByRole('heading', { name: 'Progress' })).toBeVisible()
-  await expect(page.getByRole('tab', { name: 'Weekly' })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByRole('tab', { name: 'Last 7 Days' })).toHaveAttribute('aria-selected', 'true')
 })
 
 test('time range tabs update URL and re-render charts', async ({ page }) => {
   await page.goto('/progress')
 
-  // Switch to monthly
-  await page.getByRole('tab', { name: 'Monthly' }).click()
-  await expect(page).toHaveURL(/range=monthly/)
-  await expect(page.getByRole('tab', { name: 'Monthly' })).toHaveAttribute('aria-selected', 'true')
+  // Switch to Last 30 Days
+  await page.getByRole('tab', { name: 'Last 30 Days' }).click()
+  await expect(page).toHaveURL(/range=30d/)
+  await expect(page.getByRole('tab', { name: 'Last 30 Days' })).toHaveAttribute('aria-selected', 'true')
 
-  // Switch to yearly
-  await page.getByRole('tab', { name: 'Yearly' }).click()
-  await expect(page).toHaveURL(/range=yearly/)
-  await expect(page.getByRole('tab', { name: 'Yearly' })).toHaveAttribute('aria-selected', 'true')
+  // Switch to Last 12 Months
+  await page.getByRole('tab', { name: 'Last 12 Months' }).click()
+  await expect(page).toHaveURL(/range=12m/)
+  await expect(page.getByRole('tab', { name: 'Last 12 Months' })).toHaveAttribute('aria-selected', 'true')
 
-  // Switch back to weekly
-  await page.getByRole('tab', { name: 'Weekly' }).click()
-  await expect(page.getByRole('tab', { name: 'Weekly' })).toHaveAttribute('aria-selected', 'true')
+  // Switch back to Last 7 Days
+  await page.getByRole('tab', { name: 'Last 7 Days' }).click()
+  await expect(page.getByRole('tab', { name: 'Last 7 Days' })).toHaveAttribute('aria-selected', 'true')
 })
 
 test('time range persists on page reload', async ({ page }) => {
   await page.goto('/progress')
 
-  await page.getByRole('tab', { name: 'Monthly' }).click()
-  await expect(page).toHaveURL(/range=monthly/)
+  await page.getByRole('tab', { name: 'Last 30 Days' }).click()
+  await expect(page).toHaveURL(/range=30d/)
 
   await page.reload()
-  await expect(page.getByRole('tab', { name: 'Monthly' })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByRole('tab', { name: 'Last 30 Days' })).toHaveAttribute('aria-selected', 'true')
 })
 
 test('all four charts are rendered', async ({ page }) => {
@@ -103,6 +103,6 @@ test('chart type toggle switches between bar and area', async ({ page }) => {
 })
 
 test('direct URL with range param loads correct tab', async ({ page }) => {
-  await page.goto('/progress?range=yearly')
-  await expect(page.getByRole('tab', { name: 'Yearly' })).toHaveAttribute('aria-selected', 'true')
+  await page.goto('/progress?range=12m')
+  await expect(page.getByRole('tab', { name: 'Last 12 Months' })).toHaveAttribute('aria-selected', 'true')
 })

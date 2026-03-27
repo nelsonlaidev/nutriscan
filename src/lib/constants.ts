@@ -43,6 +43,9 @@ export const MEALS = ['breakfast', 'lunch', 'dinner', 'snacks'] as const
 export const MEALS_SET = new Set(MEALS)
 export const DEFAULT_MEAL: Meal = 'breakfast'
 
+export const TIME_RANGES = ['7d', '30d', '12m'] as const
+export type TimeRange = (typeof TIME_RANGES)[number]
+
 export const TEST_USER: InferInsertModel<typeof users> = {
   id: '00000000000000000000000000000000',
   name: 'Test',

@@ -27,7 +27,7 @@ export function WaterTracker(props: WaterTrackerProps) {
   const t = useTranslations()
 
   const dayRange = getDayRange()
-  const dateRange = getDateRange('weekly')
+  const dateRange = getDateRange('7d')
 
   const { data: entries } = useWaterEntries(dayRange)
   const { mutate: addWater, isPending } = useAddWaterEntry(dayRange)

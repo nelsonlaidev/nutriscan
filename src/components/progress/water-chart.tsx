@@ -1,7 +1,7 @@
 'use client'
 
 import type { ChartConfig } from '@/components/ui/chart'
-import type { TimeRange } from '@/types'
+import type { TimeRange } from '@/lib/constants'
 
 import { getDaysInMonth, parse } from 'date-fns'
 import { useTranslations } from 'next-intl'
@@ -42,8 +42,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-function formatYAxis(value: number, isYearly: boolean) {
-  if (!isYearly) return value.toLocaleString()
+function formatYAxis(value: number, isYear: boolean) {
+  if (!isYear) return value.toLocaleString()
   if (value >= 1000) return `${Math.round(value / 1000)}K`
   return String(value)
 }
@@ -52,7 +52,7 @@ export function WaterChart({ range, goal }: WaterChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('bar')
 
-  const isYearly = range === 'yearly'
+  const isYear = range === '12m'
   const dateRange = getDateRange(range)
   const hasDates = dateRange.dates.length > 0
   const dateInput = { startOfDay: dateRange.startOfDay, endOfDay: dateRange.endOfDay, hasDates }
@@ -62,21 +62,21 @@ export function WaterChart({ range, goal }: WaterChartProps) {
   const data = useMemo(() => {
     const map = new Map<string, number>()
     for (const r of rows) {
-      const key = isYearly ? r.date.slice(0, 7) : r.date
+      const key = isYear ? r.date.slice(0, 7) : r.date
       map.set(key, (map.get(key) ?? 0) + r.amount)
     }
 
     return dateRange.dates.map((d) => ({
       date: d.label,
       amount: map.get(d.value) ?? 0,
-      ...(isYearly && {
+      ...(isYear && {
         goal: goal * getDaysInMonth(parse(d.value, 'yyyy-MM', new Date())),
       }),
     }))
-  }, [rows, dateRange.dates, isYearly, goal])
+  }, [rows, dateRange.dates, isYear, goal])
 
-  const maxGoal = isYearly ? Math.max(...data.map((d) => d.goal ?? 0), 0) : goal
-  const step = isYearly ? 10_000 : 500
+  const maxGoal = isYear ? Math.max(...data.map((d) => d.goal ?? 0), 0) : goal
+  const step = isYear ? 10_000 : 500
 
   const yDomain: [number, (dataMax: number) => number] = [
     0,
@@ -107,7 +107,7 @@ export function WaterChart({ range, goal }: WaterChartProps) {
       fontSize={12}
       width={50}
       ticks={yTicks}
-      tickFormatter={(v: number) => formatYAxis(v, isYearly)}
+      tickFormatter={(v: number) => formatYAxis(v, isYear)}
     />
   )
 
@@ -148,7 +148,7 @@ export function WaterChart({ range, goal }: WaterChartProps) {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className='aspect-video w-full'>
-          {isYearly ? (
+          {isYear ? (
             <ComposedChart data={data} accessibilityLayer>
               <CartesianGrid vertical={false} strokeDasharray='3 3' />
               {sharedXAxis}
@@ -181,7 +181,7 @@ export function WaterChart({ range, goal }: WaterChartProps) {
         </ChartContainer>
         <div className='mt-2 flex items-center gap-2 text-xs text-muted-foreground'>
           <span className='inline-block h-0 w-4 border-t-2 border-dashed border-sky-400' />
-          {t('progress.water-goal')}: {isYearly ? `${goal} mL × days/mo` : `${goal} mL`}
+          {t('progress.water-goal')}: {isYear ? `${goal} mL × days/mo` : `${goal} mL`}
         </div>
       </CardContent>
     </Card>

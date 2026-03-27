@@ -20,7 +20,7 @@ type WeeklyWaterTrackerProps = {
 export function WeeklyWaterTracker(props: WeeklyWaterTrackerProps) {
   const { weekData, goal, todayAmount } = props
 
-  const dateRange = getDateRange('weekly')
+  const dateRange = getDateRange('7d')
 
   return (
     <div className='flex w-full max-w-md items-center justify-between'>

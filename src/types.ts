@@ -10,8 +10,6 @@ export type DeepObject = {
 
 export type Translator = ReturnType<typeof useTranslations<never>>
 
-export type TimeRange = 'weekly' | 'monthly' | 'yearly'
-
 export type Transaction = PgTransaction<
   PostgresJsQueryResultHKT,
   typeof schemas,

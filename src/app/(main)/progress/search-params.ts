@@ -1,8 +1,9 @@
 import { createSearchParamsCache, parseAsStringLiteral } from 'nuqs/server'
 
-export const timeRanges = ['weekly', 'monthly', 'yearly'] as const
+import { TIME_RANGES } from '@/lib/constants'
+
 export const progressParsers = {
-  range: parseAsStringLiteral(timeRanges).withDefault('weekly'),
+  range: parseAsStringLiteral(TIME_RANGES).withDefault('7d'),
 }
 
 export const progressCache = createSearchParamsCache(progressParsers)

@@ -1,6 +1,6 @@
 import type { UIMessage } from 'ai'
 import type { ClassValue } from 'clsx'
-import type { TimeRange } from '@/types'
+import type { TimeRange } from './constants'
 
 import { TZDate } from '@date-fns/tz'
 import { clsx } from 'clsx'
@@ -44,17 +44,17 @@ export function getDateRange(range: TimeRange, timezone = DEFAULT_TIMEZONE): Dat
   let formatStr: string
 
   switch (range) {
-    case 'weekly': {
+    case '7d': {
       startDate = subDays(todayStart, 6)
       formatStr = 'EEE' // e.g., "Mon"
       break
     }
-    case 'monthly': {
+    case '30d': {
       startDate = subDays(todayStart, 29)
       formatStr = 'M/d' // e.g., "10/24"
       break
     }
-    case 'yearly': {
+    case '12m': {
       startDate = subYears(todayStart, 1)
       const months = eachMonthOfInterval({ start: startDate, end: todayStart })
       return {

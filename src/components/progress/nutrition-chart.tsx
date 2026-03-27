@@ -1,7 +1,7 @@
 'use client'
 
 import type { ChartConfig } from '@/components/ui/chart'
-import type { TimeRange } from '@/types'
+import type { TimeRange } from '@/lib/constants'
 
 import { useTranslations } from 'next-intl'
 import { useMemo, useState } from 'react'
@@ -37,7 +37,7 @@ export function NutritionChart({ range }: NutritionChartProps) {
   const t = useTranslations()
   const [chartType, setChartType] = useState<'bar' | 'area'>('area')
 
-  const isYearly = range === 'yearly'
+  const isYear = range === '12m'
   const dateRange = getDateRange(range)
   const hasDates = dateRange.dates.length > 0
   const dateInput = { startOfDay: dateRange.startOfDay, endOfDay: dateRange.endOfDay, hasDates }
@@ -47,7 +47,7 @@ export function NutritionChart({ range }: NutritionChartProps) {
   const data = useMemo(() => {
     const map = new Map<string, { protein: number; carbs: number; fat: number }>()
     for (const r of rows) {
-      const key = isYearly ? r.date.slice(0, 7) : r.date
+      const key = isYear ? r.date.slice(0, 7) : r.date
       const prev = map.get(key) ?? { protein: 0, carbs: 0, fat: 0 }
       map.set(key, {
         protein: prev.protein + r.protein,
@@ -65,7 +65,7 @@ export function NutritionChart({ range }: NutritionChartProps) {
         fat: Math.round(row?.fat ?? 0),
       }
     })
-  }, [rows, dateRange.dates, isYearly])
+  }, [rows, dateRange.dates, isYear])
 
   return (
     <Card size='sm'>

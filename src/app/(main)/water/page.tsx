@@ -22,7 +22,7 @@ export default async function Page() {
   const t = await getTranslations()
 
   const queryClient = getQueryClient()
-  const dateRange = getDateRange('weekly')
+  const dateRange = getDateRange('7d')
   const dayRange = getDayRange()
 
   await Promise.all([
