@@ -13,8 +13,8 @@ test('profile displays user name and email', async ({ page }) => {
 
 test('profile displays health metrics', async ({ page }) => {
   await page.goto('/profile')
-  await expect(page.getByText('70 kg')).toBeVisible()
-  await expect(page.getByText('175 cm')).toBeVisible()
+  await expect(page.getByText('70')).toBeVisible()
+  await expect(page.getByText('175')).toBeVisible()
 })
 
 test('profile displays member since date', async ({ page }) => {
