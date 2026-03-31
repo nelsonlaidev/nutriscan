@@ -54,8 +54,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       if (!SUPPORTED_IMAGE_TYPES.includes(file.type as (typeof SUPPORTED_IMAGE_TYPES)[number])) {
         toast.error(t('settings.profile.invalid-avatar-format'))
-        // Resetting file input value is standard practice
-        // oxlint-disable-next-line react-x/immutability
         event.target.value = ''
         return
       }
@@ -69,8 +67,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         })
       } catch {
         toast.error(t('settings.profile.avatar-processing-error'))
-        // Resetting file input value is standard practice
-        // oxlint-disable-next-line react-x/immutability
         event.target.value = ''
         return
       }
@@ -97,8 +93,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         setPreviewUrl(null)
         setAvatarUrl(user.image ?? null)
       } finally {
-        // Resetting file input value is standard practice
-        // oxlint-disable-next-line react-x/immutability
         event.target.value = ''
       }
     },

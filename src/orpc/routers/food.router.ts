@@ -54,7 +54,7 @@ const getById = protectedProcedure.input(GetFoodEntryByIdInputSchema).handler(as
     .where(and(eq(foodEntries.id, input.id), eq(foodEntries.userId, context.session.user.id)))
     .limit(1)
 
-  if (!entry || entry.mealCategory !== input.category) {
+  if (entry?.mealCategory !== input.category) {
     throw new ORPCError('NOT_FOUND')
   }
 

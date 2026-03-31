@@ -96,8 +96,6 @@ export function AiImageMode(props: AiImageModeProps) {
       if (file) {
         void handleFileSelected(file)
       }
-      // Resetting file input value is standard practice
-      // oxlint-disable-next-line react-x/immutability
       e.target.value = ''
     },
     [handleFileSelected],

@@ -69,7 +69,7 @@ export function Chat(props: ChatProps) {
           await client.chat.send(
             {
               chatId: options.chatId,
-              // oxlint-disable-next-line typescript/no-non-null-assertion
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               message: options.messages.at(-1)!,
             },
             { signal: options.abortSignal },
@@ -118,6 +118,7 @@ export function Chat(props: ChatProps) {
         return
       }
 
+      // eslint-disable-next-line sonarjs/void-use
       void scrollToBottom()
 
       void sendMessage({
@@ -222,6 +223,7 @@ export function Chat(props: ChatProps) {
               <div ref={contentRef} className='space-y-4 pb-10 sm:pb-20'>
                 {messages.map((message) =>
                   message.parts.map((part, partIdx) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     <Response key={`${message.id}-${partIdx}`} part={part} role={message.role} />
                   )),
                 )}
@@ -234,8 +236,9 @@ export function Chat(props: ChatProps) {
             {(uploadedFiles.length > 0 || uploading) && (
               <div className='mb-2 flex gap-2'>
                 {uploadedFiles.map((file, idx) => (
+                  // eslint-disable-next-line @eslint-react/no-array-index-key
                   <div key={idx} className='relative'>
-                    {/* oxlint-disable-next-line @next/next/no-img-element */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={file.url}
                       alt={file.filename ?? 'Attachment'}
@@ -298,6 +301,7 @@ export function Chat(props: ChatProps) {
             type='button'
             className='fixed bottom-50 left-1/2 flex size-8 -translate-x-1/2 items-center justify-center rounded-full border bg-accent'
             onClick={() => {
+              // eslint-disable-next-line sonarjs/void-use
               void scrollToBottom()
             }}
           >

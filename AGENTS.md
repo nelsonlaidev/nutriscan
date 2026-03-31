@@ -19,7 +19,7 @@ Use Bun for all local work.
 
 ## Coding Style & Naming Conventions
 
-The codebase is TypeScript-first and uses the `@/*` path alias for `src/*`. Formatting is handled by `oxfmt`; linting uses `oxlint` with Tailwind-aware rules. Pre-commit hooks run both tools through `lefthook`, so keep files formatted before committing. Follow the existing naming patterns: React components in PascalCase, hooks prefixed with `use-`, route files named `page.tsx`, `layout.tsx`, or `route.ts`, and tests ending in `.test.ts` or `.spec.ts`.
+The codebase is TypeScript-first and uses the `@/*` path alias for `src/*`. Formatting is handled by `prettier`; linting uses `eslint` with Tailwind-aware rules. Pre-commit hooks run both tools through `lefthook`, so keep files formatted before committing. Follow the existing naming patterns: React components in PascalCase, hooks prefixed with `use-`, route files named `page.tsx`, `layout.tsx`, or `route.ts`, and tests ending in `.test.ts` or `.spec.ts`.
 
 ## Testing Guidelines
 

@@ -24,7 +24,7 @@ async function main() {
         userId: user.id,
         password:
           // Fixed password hash for "12341234"
-          // oxlint-disable-next-line sonarjs/no-hardcoded-passwords
+          // eslint-disable-next-line sonarjs/no-hardcoded-passwords
           '02f7f10d52a0bf69d0ec91c77dd63b47:0601078e5ea7c1a592695bd096f6ea18a1bf6e323cabad8be7f1100a6ea21a63db127128b123da2c847a97763c89683093b6fb36badc9e917a73f230ef82022b',
       })),
     )

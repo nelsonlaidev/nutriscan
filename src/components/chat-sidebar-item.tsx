@@ -142,7 +142,7 @@ export function ChatSidebarItem(props: ChatSidebarItemProps) {
                           aria-invalid={isInvalid}
                           placeholder={t('chat.title-placeholder')}
                           disabled={isSavingTitle}
-                          // oxlint-disable-next-line jsx_a11y/no-autofocus
+                          // eslint-disable-next-line jsx-a11y/no-autofocus
                           autoFocus
                         />
                         <FieldDescription>{t('chat.title-description')}</FieldDescription>

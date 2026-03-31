@@ -28,7 +28,7 @@ export async function generateTitle(message: UIMessage): Promise<string> {
     return (
       text
         .replace(/^[#*"\s]+/, '')
-        // oxlint-disable-next-line sonarjs/slow-regex
+        // eslint-disable-next-line sonarjs/slow-regex
         .replace(/"+$/, '')
         .trim()
     )
