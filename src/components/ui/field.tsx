@@ -196,7 +196,7 @@ function FieldError(props: FieldErrorProps) {
   // which causes a false positive for this sync useMemo callback.
   // eslint-disable-next-line @typescript-eslint/promise-function-async
   const content = useMemo(() => {
-    if (children !== null) {
+    if (children) {
       return children
     }
 
@@ -204,21 +204,16 @@ function FieldError(props: FieldErrorProps) {
       return null
     }
 
-    const uniqueMessages = [...new Set(errors.map((error) => error?.message).filter(Boolean))]
+    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()]
 
-    if (uniqueMessages.length === 0) {
-      return null
-    }
-
-    if (uniqueMessages.length === 1) {
-      return uniqueMessages[0]
+    if (uniqueErrors.length === 1) {
+      return uniqueErrors[0]?.message
     }
 
     return (
       <ul className='ml-4 flex list-disc flex-col gap-1'>
-        {uniqueMessages.map((message) => (
-          <li key={message}>{message}</li>
-        ))}
+        {/* eslint-disable-next-line @eslint-react/no-array-index-key */}
+        {uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
       </ul>
     )
   }, [children, errors])
