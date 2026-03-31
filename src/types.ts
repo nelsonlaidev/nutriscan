@@ -9,6 +9,7 @@ export type DeepObject = {
 }
 
 export type Translator = ReturnType<typeof useTranslations<never>>
+export type TranslationKey = Parameters<Translator>[0]
 
 export type Transaction = PgTransaction<
   PostgresJsQueryResultHKT,

@@ -1,6 +1,6 @@
 import type { ListChatOutput } from '@/orpc/client'
 
-import { PencilIcon, TrashIcon } from '@phosphor-icons/react'
+import { PencilIcon, TrashIcon } from '@phosphor-icons/react/ssr'
 import { useForm } from '@tanstack/react-form'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 type LandingButtonsProps = {
   signUpText: string
@@ -14,10 +15,10 @@ export function LandingButtons(props: LandingButtonsProps) {
 
   return (
     <div className='flex flex-col gap-4'>
-      <Link href='/auth/sign-up' className={buttonVariants({ size: 'lg' })}>
+      <Link href='/auth/sign-up' className={cn(buttonVariants({ size: 'lg' }))}>
         {signUpText}
       </Link>
-      <Link href='/auth/sign-in' className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
+      <Link href='/auth/sign-in' className={cn(buttonVariants({ variant: 'ghost', size: 'lg' }))}>
         {signInText}
       </Link>
     </div>

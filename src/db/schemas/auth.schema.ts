@@ -16,6 +16,7 @@ import {
 import { achievementUnlocks } from './achievement.schema'
 import { chats } from './chat.schema'
 import { foodEntries } from './food-entry.schema'
+import { learnAttempts, learnProgress } from './learn.schema'
 import { weightEntries } from './weight-entry.schema'
 
 export const users = pgTable('users', {
@@ -113,6 +114,8 @@ export const userRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   chats: many(chats),
   foodEntries: many(foodEntries),
+  learnAttempts: many(learnAttempts),
+  learnProgress: many(learnProgress),
   weightEntries: many(weightEntries),
 }))
 

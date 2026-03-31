@@ -83,7 +83,7 @@ export function WeightHistory(props: WeightHistoryProps) {
     setEditWeight(String(entry.weight))
   }
 
-  function handleEditSave(e: React.FormEvent) {
+  function handleEditSave(e: React.SubmitEvent) {
     e.preventDefault()
     if (!editEntry) return
 

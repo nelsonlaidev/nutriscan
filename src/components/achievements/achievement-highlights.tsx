@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 
 import { useAchievementsOverview } from '@/hooks/queries/achievements.query'
 import { ACHIEVEMENT_CATALOG_BY_ID, getAchievementTitle } from '@/lib/achievements/catalog'
+import { cn } from '@/lib/utils'
 
 import { buttonVariants } from '../ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
@@ -51,7 +52,7 @@ export function AchievementHighlights() {
             <h3 className='text-sm font-medium text-muted-foreground'>{t('achievements.recent-unlocks')}</h3>
             <Link
               href='/profile#achievements'
-              className={buttonVariants({ variant: 'outline', size: 'xs', className: 'rounded-full' })}
+              className={cn(buttonVariants({ variant: 'outline', size: 'xs', className: 'rounded-full' }))}
             >
               {t('achievements.view-all')}
             </Link>

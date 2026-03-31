@@ -34,6 +34,7 @@ export type CalorieChartInput = Inputs['progress']['calorieChart']
 export type NutritionChartInput = Inputs['progress']['nutritionChart']
 export type WaterChartInput = Inputs['progress']['waterChart']
 export type WeightByDateRangeInput = Inputs['progress']['weightByDateRange']
+export type GetLearnLessonInput = Inputs['learn']['getLesson']
 
 export type GetTotalWaterInput = Inputs['water']['total']
 export type GetWaterEntriesInput = Inputs['water']['list']
@@ -42,3 +43,5 @@ export type GetFoodTotalsInput = Inputs['food']['totals']
 export type GetFoodMealsInput = Inputs['food']['meals']
 
 export type ListChatOutput = Outputs['chat']['list']
+export type LearnOverviewOutput = Outputs['learn']['overview']
+export type SubmitLearnAttemptOutput = Outputs['learn']['submitAttempt']

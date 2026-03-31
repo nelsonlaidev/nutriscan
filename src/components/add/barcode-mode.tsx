@@ -27,7 +27,7 @@ export function BarcodeMode(props: BarcodeModeProps) {
     useBarcodeScanner(onResult)
   const [manualBarcode, setManualBarcode] = useState('')
 
-  function handleManualSubmit(e: React.FormEvent) {
+  function handleManualSubmit(e: React.SubmitEvent) {
     e.preventDefault()
     if (!manualBarcode.trim()) return
     lookupManualBarcode(manualBarcode)

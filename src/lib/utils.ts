@@ -30,7 +30,7 @@ export function getDateBucket(date: Date | string, timezone = DEFAULT_TIMEZONE) 
   return format(toZonedDate(date, timezone), 'yyyy-MM-dd')
 }
 
-export type DateRange = {
+type DateRange = {
   dates: Array<{ label: string; value: string }>
   startOfDay: string
   endOfDay: string

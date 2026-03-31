@@ -13,6 +13,7 @@ concurrency:
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+  BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
   OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
   R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
   R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}

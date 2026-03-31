@@ -3,7 +3,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node"]
   },
   "extends": "@nelsonlaidev/typescript-config/nextjs.json",
   "exclude": ["node_modules"],
