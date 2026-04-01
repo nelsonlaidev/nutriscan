@@ -18,7 +18,7 @@ import {
 } from './types'
 
 function normalizeIds(values: readonly string[]) {
-  return [...new Set(values)].toSorted()
+  return [...new Set(values)].toSorted((a, b) => a.localeCompare(b))
 }
 
 function buildAnswerMap(answers: LearnAnswerInput[]) {
@@ -170,6 +170,6 @@ export function evaluateLearnLessonAttempt(input: {
 }
 
 export function calculateLearningStreak(dates: Date[]) {
-  const dayKeys = [...new Set(dates.map((date) => getDateBucket(date)))].toSorted()
+  const dayKeys = [...new Set(dates.map((date) => getDateBucket(date)))].toSorted((a, b) => a.localeCompare(b))
   return calculateDayStreak(dayKeys)
 }

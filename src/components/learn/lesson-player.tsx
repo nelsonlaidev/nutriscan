@@ -142,6 +142,7 @@ export function LessonPlayer(props: LessonPlayerProps) {
   const answersRef = useRef<LearnAnswerInput[]>([])
 
   const [questionIndex, setQuestionIndex] = useState(0)
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
   const [heartsRemaining, setHeartsRemaining] = useState<number>(lesson.hearts)
   const [selectedChoiceIds, setSelectedChoiceIds] = useState<string[]>([])
   const [feedback, setFeedback] = useState<FeedbackState | null>(null)
@@ -337,6 +338,7 @@ export function LessonPlayer(props: LessonPlayerProps) {
               <CardDescription>{t(currentQuestion.explanationKey)}</CardDescription>
             </CardHeader>
             <CardContent>
+              {/* eslint-disable-next-line no-void */}
               <Button onClick={() => void handleContinue()} className='w-full' disabled={isSubmitting}>
                 {questionIndex === lesson.questions.length - 1 || feedback.completed
                   ? t('learn.lesson.finish')
