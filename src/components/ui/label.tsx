@@ -9,7 +9,7 @@ function Label(props: LabelProps) {
 
   return (
     // This is a reusable label component
-    // oxlint-disable-next-line jsx-a11y/label-has-associated-control
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label
       data-slot='label'
       className={cn(

@@ -1,6 +1,6 @@
-import { defineConfig } from '@nelsonlaidev/oxlint-config'
+import { defineConfig } from '@nelsonlaidev/eslint-config'
 
-export default defineConfig(undefined, {
+export default defineConfig({
   tailwindcss: {
     entryPoint: 'src/styles/globals.css',
     rootFontSize: 16,

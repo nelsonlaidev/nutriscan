@@ -76,7 +76,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       // This is necessary
-      // oxlint-disable-next-line react-dom/no-dangerously-set-innerhtml
+      // eslint-disable-next-line @eslint-react/dom-no-dangerously-set-innerhtml
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
@@ -206,7 +206,7 @@ function ChartTooltipContent({
                         {nestLabel ? tooltipLabel : null}
                         <span className='text-muted-foreground'>{itemConfig?.label ?? item.name}</span>
                       </div>
-                      {item.value && (
+                      {typeof item.value === 'number' && (
                         <span className='font-mono font-medium text-foreground tabular-nums'>
                           {item.value.toLocaleString()}
                         </span>

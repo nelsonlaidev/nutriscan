@@ -18,6 +18,7 @@ export function CircularProgress(props: CircularProgressProps) {
   const circumference = 2 * Math.PI * radius
   const percentage = max > 0 ? Math.min(value / max, 1) : 0
   const offset = circumference - percentage * circumference
+  const hasChildren = children !== null
 
   return (
     <div
@@ -45,7 +46,7 @@ export function CircularProgress(props: CircularProgressProps) {
           className={cn('stroke-primary transition-all duration-500', progressClassName)}
         />
       </svg>
-      {children && <div className='absolute inset-0 flex flex-col items-center justify-center'>{children}</div>}
+      {hasChildren && <div className='absolute inset-0 flex flex-col items-center justify-center'>{children}</div>}
     </div>
   )
 }

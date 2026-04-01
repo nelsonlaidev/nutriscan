@@ -15,7 +15,7 @@ type TimestampedActivity = {
 }
 
 function getSortedDistinctDayKeys(dates: Date[], timezone = DEFAULT_TIMEZONE) {
-  return [...new Set(dates.map((date) => getDateBucket(date, timezone)))].toSorted()
+  return [...new Set(dates.map((date) => getDateBucket(date, timezone)))].toSorted((a, b) => a.localeCompare(b))
 }
 
 export function calculateDayStreak(dayKeys: string[], today = new Date()): AchievementStreak {
@@ -23,7 +23,7 @@ export function calculateDayStreak(dayKeys: string[], today = new Date()): Achie
     return { current: 0, best: 0 }
   }
 
-  const uniqueKeys = [...new Set(dayKeys)].toSorted()
+  const uniqueKeys = [...new Set(dayKeys)].toSorted((a, b) => a.localeCompare(b))
   let best = 1
   let run = 1
 

@@ -4,7 +4,7 @@ import type { users } from '@/db/schemas'
 import { env } from '@/env'
 
 // window is not always defined
-// oxlint-disable-next-line unicorn/no-typeof-undefined
+// eslint-disable-next-line unicorn/no-typeof-undefined
 export const IS_SERVER = typeof globalThis.window === 'undefined'
 
 export const IS_PROD = env.NODE_ENV === 'production'

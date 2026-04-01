@@ -163,16 +163,17 @@ type FieldSeparatorProps = React.ComponentProps<'div'> & {
 
 function FieldSeparator(props: FieldSeparatorProps) {
   const { children, className, ...rest } = props
+  const hasChildren = children !== null
 
   return (
     <div
       data-slot='field-separator'
-      data-content={Boolean(children)}
+      data-content={hasChildren}
       className={cn('relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2', className)}
       {...rest}
     >
       <Separator className='absolute inset-0 top-1/2' />
-      {children && (
+      {hasChildren && (
         <span
           className='relative mx-auto block w-fit bg-background px-2 text-muted-foreground'
           data-slot='field-separator-content'
@@ -191,9 +192,9 @@ type FieldErrorProps = React.ComponentProps<'div'> & {
 function FieldError(props: FieldErrorProps) {
   const { className, children, errors, ...rest } = props
 
-  // ReactNode includes Promise<AwaitedReactNode>,
-  // which triggers this rule incorrectly in Client Components.
-  // oxlint-disable-next-line typescript/promise-function-async
+  // ReactNode types may include Promise-like branches in React's typings,
+  // which causes a false positive for this sync useMemo callback.
+  // eslint-disable-next-line @typescript-eslint/promise-function-async
   const content = useMemo(() => {
     if (children) {
       return children
@@ -211,6 +212,7 @@ function FieldError(props: FieldErrorProps) {
 
     return (
       <ul className='ml-4 flex list-disc flex-col gap-1'>
+        {/* eslint-disable-next-line @eslint-react/no-array-index-key */}
         {uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
       </ul>
     )

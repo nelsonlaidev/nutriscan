@@ -47,7 +47,7 @@ jobs:
       - name: Configure environment
         uses: ./.github/actions/setup
 
-      - name: Run Oxlint
+      - name: Run ESLint
         run: bun lint
 
   spellcheck:
@@ -86,7 +86,7 @@ jobs:
       - name: Configure environment
         uses: ./.github/actions/setup
 
-      - name: Run Oxfmt format check
+      - name: Run Prettier format check
         run: bun format:check
 
   knip:
