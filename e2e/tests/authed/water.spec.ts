@@ -1,4 +1,43 @@
 import { expect, test } from '@playwright/test'
+import { eq } from 'drizzle-orm'
+
+import { db } from '@/db'
+import { users } from '@/db/schemas/auth.schema'
+import { waterEntries } from '@/db/schemas/water-entry.schema'
+import { TEST_USER_CLEAN } from '@/lib/constants'
+
+test.use({ storageState: 'e2e/.auth/clean-user.json' })
+
+test.describe.configure({ mode: 'serial' })
+
+async function resetWaterState() {
+  const today = new Date()
+  today.setHours(9, 0, 0, 0)
+
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  await db.delete(waterEntries).where(eq(waterEntries.userId, TEST_USER_CLEAN.id))
+
+  await db.update(users).set({ waterGoal: TEST_USER_CLEAN.waterGoal }).where(eq(users.id, TEST_USER_CLEAN.id))
+
+  await db.insert(waterEntries).values([
+    {
+      userId: TEST_USER_CLEAN.id,
+      amount: 200,
+      createdAt: today,
+    },
+    {
+      userId: TEST_USER_CLEAN.id,
+      amount: 300,
+      createdAt: yesterday,
+    },
+  ])
+}
+
+test.beforeEach(async () => {
+  await resetWaterState()
+})
 
 test('water page loads with title and daily goal', async ({ page }) => {
   await page.goto('/water')
@@ -47,14 +86,6 @@ test('water goal dialog opens, validates, and saves', async ({ page }) => {
   // Dialog closes and goal button updates
   await expect(page.getByRole('dialog')).not.toBeVisible()
   await expect(page.getByRole('button', { name: /Daily goal: 3 L/ })).toBeVisible()
-
-  // Restore original goal
-  await page.getByRole('button', { name: /Daily goal/ }).click()
-  const restoreInput = page.getByLabel('Goal (mL)')
-  await restoreInput.clear()
-  await restoreInput.fill('2500')
-  await page.getByRole('button', { name: 'Save' }).click()
-  await expect(page.getByRole('dialog')).not.toBeVisible()
 })
 
 test('water entry can be edited via dialog', async ({ page }) => {
@@ -65,9 +96,10 @@ test('water entry can be edited via dialog', async ({ page }) => {
   await page.getByRole('button', { name: 'Drink Water (+250 mL)' }).click()
   await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore + 1)
 
-  // Open edit dialog on the first (newest) entry
-  const editButton = page.getByRole('button', { name: 'Edit entry' }).first()
-  await editButton.waitFor({ state: 'visible' })
+  // Open the edit dialog for the newly added 250 mL entry specifically.
+  const newEntryRow = page.getByText('250 mL', { exact: true }).locator('xpath=..')
+  const editButton = newEntryRow.getByRole('button', { name: 'Edit entry' })
+  await expect(editButton).toBeVisible()
   await editButton.click()
 
   // Wait for dialog to be fully open and interactive
@@ -94,14 +126,17 @@ test('water entry can be deleted via dialog', async ({ page }) => {
 
   // Count existing entries, then add one and wait for the API response to settle
   const entriesBefore = await page.getByRole('button', { name: 'Edit entry' }).count()
-  const responsePromise = page.waitForResponse((resp) => resp.url().includes('/rpc') && resp.status() === 200)
+  const responsePromise = page.waitForResponse(
+    (resp) => resp.url().includes('/rpc') && resp.request().method() === 'POST' && resp.status() === 200,
+  )
   await page.getByRole('button', { name: 'Drink Water (+250 mL)' }).click()
   await responsePromise
   await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore + 1)
 
-  // Open edit dialog on the first (newest) entry
-  const editButton = page.getByRole('button', { name: 'Edit entry' }).first()
-  await editButton.waitFor({ state: 'visible' })
+  // Open the edit dialog for the newly added 250 mL entry specifically.
+  const newEntryRow = page.getByText('250 mL', { exact: true }).locator('xpath=..')
+  const editButton = newEntryRow.getByRole('button', { name: 'Edit entry' })
+  await expect(editButton).toBeVisible()
   await editButton.click()
 
   // Wait for dialog to be fully open and interactive
@@ -109,10 +144,12 @@ test('water entry can be deleted via dialog', async ({ page }) => {
   await expect(dialog).toBeVisible()
   await expect(dialog.getByText('Edit Water Entry')).toBeVisible()
 
+  await expect(dialog.getByLabel('Amount (mL)')).toHaveValue('250')
+
   // Delete — scope within dialog
   await dialog.getByRole('button', { name: 'Delete' }).click()
 
-  // Dialog closes, entry count decreases back to original
+  // Dialog closes and the entry count returns to baseline.
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('button', { name: 'Edit entry' })).toHaveCount(entriesBefore)
 })
@@ -127,8 +164,20 @@ test('all quick add options are present', async ({ page }) => {
 })
 
 test('water history groups entries by date', async ({ page }) => {
+  await db.delete(waterEntries).where(eq(waterEntries.userId, TEST_USER_CLEAN.id))
+
+  const today = new Date()
+  today.setHours(9, 0, 0, 0)
+
+  await db.insert(waterEntries).values({
+    userId: TEST_USER_CLEAN.id,
+    amount: 200,
+    createdAt: today,
+  })
+
   await page.goto('/water')
 
-  // Seed data creates entries for the past 30 days, so "Today" group should exist
+  // This scenario should render a single "Today" group only.
   await expect(page.getByText(/Today/).first()).toBeVisible()
+  await expect(page.getByText(/Yesterday/)).toHaveCount(0)
 })

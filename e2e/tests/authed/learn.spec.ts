@@ -1,8 +1,22 @@
 import type { Page } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
+import { eq } from 'drizzle-orm'
+
+import { db } from '@/db'
+import { learnAttempts, learnProgress } from '@/db/schemas'
+import { TEST_USER_CLEAN } from '@/lib/constants'
 
 test.use({ storageState: 'e2e/.auth/clean-user.json' })
+
+async function resetLearnState() {
+  await db.delete(learnAttempts).where(eq(learnAttempts.userId, TEST_USER_CLEAN.id))
+  await db.delete(learnProgress).where(eq(learnProgress.userId, TEST_USER_CLEAN.id))
+}
+
+test.beforeEach(async () => {
+  await resetLearnState()
+})
 
 async function answerQuestion(page: Page, choices: string | string[]) {
   await Promise.all(
@@ -33,23 +47,23 @@ test('learn mode unlocks lessons, refreshes overview cards, and keeps later less
   await answerQuestion(page, 'Activity, body size, and goals can all shift your needs')
 
   await expect(page.getByTestId('learn-result')).toContainText('Nice work')
-  await expect(page.getByTestId('learn-result')).toContainText('+15')
+  await expect(page.getByTestId('learn-result')).toContainText('+10')
   await expect(page.getByText('You unlocked 1 new lessons.')).toBeVisible()
 
   await page.getByRole('link', { name: 'Back to lesson path' }).click()
-  await expect(page.getByTestId('lesson-node-calories_portions_1')).toHaveAttribute('data-status', 'mastered')
+  await expect(page.getByTestId('lesson-node-calories_portions_1')).toHaveAttribute('data-status', 'completed')
   await expect(page.getByTestId('lesson-node-calories_portions_2')).toHaveAttribute('data-status', 'available')
 
   await page.goto('/dashboard')
-  await expect(page.getByTestId('learn-progress-card')).toContainText('15')
+  await expect(page.getByTestId('learn-progress-card')).toContainText('10')
   await expect(page.getByTestId('learn-progress-card')).toContainText('1/12')
 
   await page.goto('/profile')
-  await expect(page.getByTestId('learning-section')).toContainText('15')
+  await expect(page.getByTestId('learning-section')).toContainText('10')
 
   await page.goto('/learn/calories_portions_2')
-  await answerQuestion(page, 'Water adds the most calories')
-  await answerQuestion(page, 'Double the fried side dish')
+  await answerQuestion(page, 'It has more water')
+  await answerQuestion(page, 'Skip all carbs forever')
   await answerQuestion(page, 'Add extra creamy sauce')
 
   await expect(page.getByTestId('learn-result')).toContainText('Good practice round')

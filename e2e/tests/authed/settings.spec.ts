@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test'
 
 import { TEST_USER } from '@/lib/constants'
 
-import { capitalize } from '../../utils'
-
 test('settings page loads and shows title', async ({ page }) => {
   await page.goto('/settings')
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
@@ -70,7 +68,8 @@ test('personal details form is pre-filled with seed data', async ({ page }) => {
   await expect(page.getByLabel('Goal Weight')).toHaveValue(String(TEST_USER.goalWeight))
   await expect(page.getByLabel('Height')).toHaveValue(String(TEST_USER.height))
   await expect(page.getByLabel('Birthday')).toHaveValue(TEST_USER.birthday)
-  await expect(page.getByRole('radio', { name: capitalize(TEST_USER.gender), exact: true })).toBeChecked()
+  await expect(page.getByTestId(`gender-${TEST_USER.gender}`)).toBeChecked()
+  await expect(page.getByTestId(`plan-${TEST_USER.plan}`)).toBeChecked()
 })
 
 test('feedback dialog opens and can be submitted', async ({ page }) => {

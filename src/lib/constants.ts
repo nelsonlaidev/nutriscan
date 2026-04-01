@@ -63,6 +63,7 @@ export const TEST_USER: InferInsertModel<typeof users> = {
   carbTarget: 220,
   fatTarget: 70,
   onboarded: true,
+  plan: 'steady',
 }
 
 export const TEST_USER_CLEAN: InferInsertModel<typeof users> = {

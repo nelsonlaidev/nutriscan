@@ -1,6 +1,30 @@
 import { expect, test } from '@playwright/test'
+import { eq } from 'drizzle-orm'
+
+import { db } from '@/db'
+import { achievementUnlocks, foodEntries, users, waterEntries, weightEntries } from '@/db/schemas'
+import { TEST_USER_CLEAN } from '@/lib/constants'
 
 test.use({ storageState: 'e2e/.auth/clean-user.json' })
+
+async function resetAchievementState() {
+  await db.delete(achievementUnlocks).where(eq(achievementUnlocks.userId, TEST_USER_CLEAN.id))
+  await db.delete(foodEntries).where(eq(foodEntries.userId, TEST_USER_CLEAN.id))
+  await db.delete(waterEntries).where(eq(waterEntries.userId, TEST_USER_CLEAN.id))
+  await db.delete(weightEntries).where(eq(weightEntries.userId, TEST_USER_CLEAN.id))
+
+  await db
+    .update(users)
+    .set({
+      currentWeight: TEST_USER_CLEAN.currentWeight,
+      waterGoal: TEST_USER_CLEAN.waterGoal,
+    })
+    .where(eq(users.id, TEST_USER_CLEAN.id))
+}
+
+test.beforeEach(async () => {
+  await resetAchievementState()
+})
 
 test('achievement flow unlocks badges, updates progress, and keeps unlocked badges after deletes', async ({ page }) => {
   await page.goto('/dashboard')
