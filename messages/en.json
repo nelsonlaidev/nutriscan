@@ -352,6 +352,778 @@
       }
     }
   },
+  "learn": {
+    "page-title": "Learn",
+    "badge": "Learn Mode",
+    "dashboard": {
+      "title": "Build nutrition knowledge",
+      "subtitle": "Short lessons that make healthy choices easier in real life.",
+      "continue-lesson": "Continue lesson",
+      "open": "Open learn mode",
+      "explore-path": "View full path",
+      "next-up": "Next up:"
+    },
+    "home": {
+      "title": "Your nutrition path",
+      "subtitle": "Learn the basics in tiny rounds, then bring them back to your meals, shopping, and daily routines.",
+      "continue-lesson": "Continue learning",
+      "start": "Start your first lesson",
+      "jump-to-path": "See lesson path"
+    },
+    "path": {
+      "title": "Lesson path",
+      "subtitle": "Finish each lesson to unlock the next one.",
+      "unit-progress": "{completed} of {total} passed",
+      "mastered-count": "{count} mastered",
+      "score": "Best {score}/{total}",
+      "attempts": "{count} attempts"
+    },
+    "profile": {
+      "title": "Learning Progress",
+      "subtitle": "Keep your knowledge streak going alongside your habit streaks.",
+      "progress-title": "Nutrition learning",
+      "progress-description": "XP comes from passed lessons, and mastery comes from perfect rounds.",
+      "review-title": "Ready to master",
+      "open-path": "Open learn mode"
+    },
+    "review": {
+      "title": "Review to master",
+      "subtitle": "Replay passed lessons to earn a perfect score and turn them into mastery.",
+      "empty": "Pass more lessons to unlock review rounds.",
+      "lesson-ready": "Replay for a perfect score."
+    },
+    "metrics": {
+      "xp": "XP",
+      "streak": "Streak",
+      "completed": "Completed",
+      "mastered": "Mastered",
+      "score": "Score",
+      "hearts-left": "Hearts left"
+    },
+    "status": {
+      "locked": "Locked",
+      "available": "Ready",
+      "completed": "Passed",
+      "mastered": "Mastered"
+    },
+    "locked": {
+      "title": "That lesson is still locked",
+      "description": "{lesson} opens after you clear the lesson before it."
+    },
+    "lesson": {
+      "question-step": "Question {current} of {total}",
+      "select-one": "Choose one answer.",
+      "select-many": "Choose {count} answers.",
+      "correct": "Correct",
+      "incorrect": "Not quite",
+      "check": "Check",
+      "continue": "Continue",
+      "finish": "Finish lesson",
+      "submitting": "Saving your lesson result...",
+      "lesson-status": "Lesson status",
+      "submit-error": "Could not save your lesson. Please try again."
+    },
+    "result": {
+      "passed-badge": "Lesson cleared",
+      "retry-badge": "Keep going",
+      "title-pass": "Nice work",
+      "title-fail": "Good practice round",
+      "subtitle": "Every lesson makes the next food choice easier.",
+      "unlocked-lessons": "You unlocked {count} new lessons.",
+      "next-lesson": "Go to next lesson",
+      "retry-lesson": "Try this lesson again",
+      "back-to-path": "Back to lesson path"
+    },
+    "streak-days": "{count} days",
+    "units": {
+      "calories_portions": {
+        "title": "Calories & Portions",
+        "description": "Learn what calories mean and how portion habits shape your day."
+      },
+      "macro_basics": {
+        "title": "Macro Basics",
+        "description": "Understand protein, carbs, and fats without getting lost in jargon."
+      },
+      "balanced_meals_labels": {
+        "title": "Balanced Meals & Food Labels",
+        "description": "Build better plates, compare labels, and make realistic healthy swaps."
+      }
+    },
+    "lessons": {
+      "calories_portions_1": {
+        "title": "What a Calorie Means",
+        "description": "Start with the simple idea behind calories.",
+        "questions": {
+          "q1": {
+            "prompt": "What is a calorie?",
+            "choices": {
+              "a": "A kind of vitamin",
+              "b": "A unit of energy",
+              "c": "A measure of water",
+              "d": "A type of protein"
+            },
+            "explanation": "Calories describe energy. Your body uses that energy for breathing, moving, digesting, and more."
+          },
+          "q2": {
+            "prompt": "Which statement about daily calorie needs is most accurate?",
+            "choices": {
+              "a": "Everyone should eat exactly 2,000 calories",
+              "b": "Calorie needs only depend on height",
+              "c": "Calorie needs vary from person to person",
+              "d": "Only athletes need to think about calories"
+            },
+            "explanation": "Age, body size, activity, goals, and routine all affect calorie needs. There is no one perfect number for everyone."
+          },
+          "q3": {
+            "prompt": "Which drinks provide little to no calories in their plain form?",
+            "choices": {
+              "a": "Water",
+              "b": "Olive oil",
+              "c": "Regular soda",
+              "d": "Black coffee"
+            },
+            "explanation": "Plain water and black coffee are very low in calories. Oils and sugary drinks add much more energy."
+          },
+          "q4": {
+            "prompt": "A food with more calories is always unhealthy.",
+            "choices": {
+              "a": "False",
+              "b": "True",
+              "c": "Only at breakfast",
+              "d": "Only if it has protein"
+            },
+            "explanation": "Higher-calorie foods can still be nutritious. Nuts, salmon, yogurt, and avocado all bring useful nutrients along with calories."
+          },
+          "q5": {
+            "prompt": "Why can your calorie needs change over time?",
+            "choices": {
+              "a": "Only seasons change calorie needs",
+              "b": "Only sleep changes calorie needs",
+              "c": "Needs never change after age 18",
+              "d": "Activity, body size, and goals can all shift your needs"
+            },
+            "explanation": "Your routine is not static, so your energy needs are not static either."
+          }
+        }
+      },
+      "calories_portions_2": {
+        "title": "Portions and Energy Density",
+        "description": "See how volume and calorie density work together.",
+        "questions": {
+          "q1": {
+            "prompt": "What does it mean when a food is energy dense?",
+            "choices": {
+              "a": "It has more water",
+              "b": "It packs many calories into a small amount",
+              "c": "It is always high in protein",
+              "d": "It must be spicy"
+            },
+            "explanation": "Energy-dense foods can add up quickly because you do not need much volume to get a lot of calories."
+          },
+          "q2": {
+            "prompt": "Which plate habit can help lower calories while keeping meals satisfying?",
+            "choices": {
+              "a": "Fill half the plate with vegetables",
+              "b": "Skip all carbs forever",
+              "c": "Only drink juice with meals",
+              "d": "Eat as fast as possible"
+            },
+            "explanation": "Vegetables add volume and fiber, which can help meals feel bigger without adding many calories."
+          },
+          "q3": {
+            "prompt": "Which changes usually lower calories without making a meal feel tiny?",
+            "choices": {
+              "a": "Add extra creamy sauce",
+              "b": "Use a smaller bowl or plate",
+              "c": "Add fruit or vegetables for volume",
+              "d": "Double the fried side dish"
+            },
+            "explanation": "Portion cues and higher-volume foods make it easier to keep meals satisfying."
+          },
+          "q4": {
+            "prompt": "Why are liquid calories easy to overlook?",
+            "choices": {
+              "a": "They always contain protein",
+              "b": "They count only on weekends",
+              "c": "They cancel out meal calories",
+              "d": "Drinks can add energy without much fullness"
+            },
+            "explanation": "Sugary coffees, juices, and sodas can add a lot of energy while barely changing fullness."
+          },
+          "q5": {
+            "prompt": "What is a helpful pause before getting seconds?",
+            "choices": {
+              "a": "Ask if dessert is available first",
+              "b": "Count how many bites you took",
+              "c": "Check whether you are still hungry or just eating automatically",
+              "d": "Drink only soda"
+            },
+            "explanation": "A short pause helps you notice fullness instead of eating on autopilot."
+          }
+        }
+      },
+      "calories_portions_3": {
+        "title": "Build a Lighter Plate",
+        "description": "Use satisfaction, not restriction, to shape meals.",
+        "questions": {
+          "q1": {
+            "prompt": "Which nutrients often help a meal feel more filling?",
+            "choices": {
+              "a": "Protein and fiber",
+              "b": "Only sugar",
+              "c": "Only sodium",
+              "d": "Only caffeine"
+            },
+            "explanation": "Protein and fiber often improve fullness, which can make a meal more satisfying."
+          },
+          "q2": {
+            "prompt": "Which snack is more likely to keep you full for longer?",
+            "choices": {
+              "a": "Candy on its own",
+              "b": "Chips on its own",
+              "c": "Greek yogurt with berries",
+              "d": "Sweet tea on its own"
+            },
+            "explanation": "Protein plus fiber-rich fruit usually keeps you satisfied longer than a mostly refined snack."
+          },
+          "q3": {
+            "prompt": "Which lunch upgrades can make a meal lighter but still satisfying?",
+            "choices": {
+              "a": "Choose grilled protein instead of fried",
+              "b": "Remove all vegetables",
+              "c": "Add crunchy vegetables or fruit",
+              "d": "Double the creamy dressing"
+            },
+            "explanation": "Grilled protein and produce often improve fullness and lower the meal's calorie load."
+          },
+          "q4": {
+            "prompt": "What is true about restaurant servings?",
+            "choices": {
+              "a": "They always match one serving",
+              "b": "They never contain vegetables",
+              "c": "They are always low calorie",
+              "d": "They can be much larger than one serving"
+            },
+            "explanation": "Restaurant portions often exceed one serving, which is why splitting or saving part can help."
+          },
+          "q5": {
+            "prompt": "Which snack pattern is usually more balanced?",
+            "choices": {
+              "a": "Only crackers",
+              "b": "Fruit with yogurt or nuts",
+              "c": "Only candy",
+              "d": "Only a sugary drink"
+            },
+            "explanation": "Combining carbs with protein or healthy fat usually makes a snack steadier and more filling."
+          }
+        }
+      },
+      "calories_portions_4": {
+        "title": "Portion Awareness in Real Life",
+        "description": "Use repeatable cues instead of trying to be perfect.",
+        "questions": {
+          "q1": {
+            "prompt": "Which habit makes portions easier to repeat consistently?",
+            "choices": {
+              "a": "Guess differently every day",
+              "b": "Ignore serving sizes completely",
+              "c": "Wait until you are overly hungry",
+              "d": "Use the same bowl, plate, or hand cue often"
+            },
+            "explanation": "Consistent cues reduce guesswork and make portion habits easier to repeat."
+          },
+          "q2": {
+            "prompt": "If you want to snack from a large bag, what is a helpful first step?",
+            "choices": {
+              "a": "Eat directly from the bag while distracted",
+              "b": "Pour some into a bowl first",
+              "c": "Skip all meals later",
+              "d": "Add another snack too"
+            },
+            "explanation": "A bowl gives you a visible stopping point and makes mindless eating less likely."
+          },
+          "q3": {
+            "prompt": "Which habits support better portion awareness?",
+            "choices": {
+              "a": "Notice serving size information",
+              "b": "Rush through meals",
+              "c": "Keep every snack package open nearby",
+              "d": "Slow down enough to notice fullness"
+            },
+            "explanation": "Serving cues and slower eating both make it easier to notice how much you actually want."
+          },
+          "q4": {
+            "prompt": "Which mindset is most helpful after a larger meal?",
+            "choices": {
+              "a": "The whole week is ruined",
+              "b": "Skip food for the rest of the day",
+              "c": "Return to normal balanced choices at the next meal",
+              "d": "Only drink coffee tomorrow"
+            },
+            "explanation": "A single larger meal does not define your progress. Your overall pattern matters more."
+          },
+          "q5": {
+            "prompt": "If you still feel hungry after a balanced meal, what is a useful first move?",
+            "choices": {
+              "a": "Add more high-volume foods like vegetables or fruit first",
+              "b": "Assume you should never eat more",
+              "c": "Only drink soda",
+              "d": "Avoid protein next time"
+            },
+            "explanation": "High-volume foods can add satisfaction while keeping the meal balanced."
+          }
+        }
+      },
+      "macro_basics_1": {
+        "title": "Meet the Macros",
+        "description": "Get the big picture on protein, carbs, and fats.",
+        "questions": {
+          "q1": {
+            "prompt": "Which macro is especially important for building and repairing body tissue?",
+            "choices": {
+              "a": "Water",
+              "b": "Sodium",
+              "c": "Protein",
+              "d": "Caffeine"
+            },
+            "explanation": "Protein supports repair, recovery, and many important body functions."
+          },
+          "q2": {
+            "prompt": "Which macro is the body's easiest energy source for many daily activities?",
+            "choices": {
+              "a": "Fiber only",
+              "b": "Carbohydrates",
+              "c": "Vitamin C",
+              "d": "Water"
+            },
+            "explanation": "Carbohydrates are a major fuel source for your brain, muscles, and everyday movement."
+          },
+          "q3": {
+            "prompt": "Which macros provide 4 calories per gram?",
+            "choices": {
+              "a": "Protein",
+              "b": "Fat",
+              "c": "Alcohol",
+              "d": "Carbohydrates"
+            },
+            "explanation": "Protein and carbs provide 4 calories per gram. Fat provides 9 calories per gram."
+          },
+          "q4": {
+            "prompt": "Why does your body still need some fat?",
+            "choices": {
+              "a": "Fat helps with hormones, cells, and vitamin absorption",
+              "b": "Fat has no purpose",
+              "c": "Fat only matters for dessert",
+              "d": "Fat replaces water"
+            },
+            "explanation": "Fat supports many important functions, including absorption of vitamins A, D, E, and K."
+          },
+          "q5": {
+            "prompt": "What is the healthiest way to think about macros?",
+            "choices": {
+              "a": "One macro should always be zero",
+              "b": "Only protein matters",
+              "c": "Carbs and fats are always bad",
+              "d": "Each macro has a role in a balanced pattern"
+            },
+            "explanation": "Balanced eating is usually about proportions and quality, not treating one macro as the enemy."
+          }
+        }
+      },
+      "macro_basics_2": {
+        "title": "Protein Basics",
+        "description": "Learn why protein matters and where to find it.",
+        "questions": {
+          "q1": {
+            "prompt": "Why is it helpful to include protein across the day instead of only at dinner?",
+            "choices": {
+              "a": "It can support fullness and recovery throughout the day",
+              "b": "Protein only counts before noon",
+              "c": "Protein disappears after breakfast",
+              "d": "It makes vegetables unhealthy"
+            },
+            "explanation": "Spreading protein across meals can make eating more satisfying and support muscle repair."
+          },
+          "q2": {
+            "prompt": "Which snack is a stronger protein choice?",
+            "choices": {
+              "a": "Plain candy",
+              "b": "Butter on its own",
+              "c": "Juice on its own",
+              "d": "Greek yogurt"
+            },
+            "explanation": "Greek yogurt is a classic higher-protein snack compared with sweets or drinks."
+          },
+          "q3": {
+            "prompt": "Which foods are good protein sources?",
+            "choices": {
+              "a": "Jam",
+              "b": "Tofu",
+              "c": "Salmon",
+              "d": "Soda"
+            },
+            "explanation": "Tofu and salmon both provide meaningful protein."
+          },
+          "q4": {
+            "prompt": "What is true about a very high-protein eating pattern?",
+            "choices": {
+              "a": "It means vegetables no longer matter",
+              "b": "It automatically fixes every nutrition problem",
+              "c": "You still need carbs, fats, and produce too",
+              "d": "It only works for athletes"
+            },
+            "explanation": "Protein matters, but a healthy pattern still includes a range of foods."
+          },
+          "q5": {
+            "prompt": "After strength training, which meal pattern is helpful?",
+            "choices": {
+              "a": "Skip food entirely",
+              "b": "Include a meal or snack with protein",
+              "c": "Only drink soda",
+              "d": "Eat only vegetables forever"
+            },
+            "explanation": "A protein-containing meal or snack can support recovery after lifting or resistance work."
+          }
+        }
+      },
+      "macro_basics_3": {
+        "title": "Carbs and Fiber",
+        "description": "Separate helpful carb habits from carb fear.",
+        "questions": {
+          "q1": {
+            "prompt": "What is fiber?",
+            "choices": {
+              "a": "A type of fat",
+              "b": "A type of vitamin",
+              "c": "A type of protein",
+              "d": "A type of carbohydrate"
+            },
+            "explanation": "Fiber is a kind of carbohydrate that supports fullness, digestion, and overall health."
+          },
+          "q2": {
+            "prompt": "Which foods often provide both carbs and fiber?",
+            "choices": {
+              "a": "Beans, fruit, and whole grains",
+              "b": "Butter and oil",
+              "c": "Only candy",
+              "d": "Only cheese"
+            },
+            "explanation": "Beans, fruit, vegetables, and whole grains are common fiber-rich carb foods."
+          },
+          "q3": {
+            "prompt": "Which choices are usually higher-fiber carb options?",
+            "choices": {
+              "a": "Oats",
+              "b": "Sugary soda",
+              "c": "Beans",
+              "d": "Candy"
+            },
+            "explanation": "Oats and beans usually bring more fiber than sugary drinks or candy."
+          },
+          "q4": {
+            "prompt": "Why pair carbs with protein or fat in a snack?",
+            "choices": {
+              "a": "To remove all calories",
+              "b": "To make the snack more filling and steady",
+              "c": "Because carbs should never be eaten alone",
+              "d": "To stop digestion completely"
+            },
+            "explanation": "Adding protein or fat can help slow the meal down and improve staying power."
+          },
+          "q5": {
+            "prompt": "What is a balanced view of carbohydrates?",
+            "choices": {
+              "a": "They are always harmful",
+              "b": "Only children need them",
+              "c": "They can support energy, exercise, and everyday life",
+              "d": "They should never appear at dinner"
+            },
+            "explanation": "Carbs can be very useful. Quality and context matter more than fear."
+          }
+        }
+      },
+      "macro_basics_4": {
+        "title": "Better Fat Choices",
+        "description": "See why fat quality and portions both matter.",
+        "questions": {
+          "q1": {
+            "prompt": "Which type of fat is generally considered the heart-friendlier choice?",
+            "choices": {
+              "a": "Trans fat",
+              "b": "Unsaturated fat",
+              "c": "Only cooking spray",
+              "d": "No fat at all"
+            },
+            "explanation": "Unsaturated fats, like those in nuts, seeds, olive oil, and fish, are often the better choice."
+          },
+          "q2": {
+            "prompt": "Which food pair contains mostly unsaturated fats?",
+            "choices": {
+              "a": "Candy and soda",
+              "b": "White rice and jam",
+              "c": "Olive oil and nuts",
+              "d": "Sports drink and crackers"
+            },
+            "explanation": "Olive oil and nuts are classic examples of foods rich in unsaturated fat."
+          },
+          "q3": {
+            "prompt": "Which foods are known for helpful fats?",
+            "choices": {
+              "a": "Gummy candy",
+              "b": "Salmon",
+              "c": "Regular soda",
+              "d": "Avocado"
+            },
+            "explanation": "Salmon and avocado bring fats that can fit well in a balanced diet."
+          },
+          "q4": {
+            "prompt": "How can fat improve a meal?",
+            "choices": {
+              "a": "It adds flavor and can help meals feel satisfying",
+              "b": "It removes all hunger forever",
+              "c": "It replaces protein completely",
+              "d": "It means fiber no longer matters"
+            },
+            "explanation": "Fat adds flavor and satisfaction, which is one reason balanced meals feel better than ultra-low-fat meals."
+          },
+          "q5": {
+            "prompt": "Why do portions still matter with healthy fats?",
+            "choices": {
+              "a": "Healthy fats have zero calories",
+              "b": "Healthy fats are never satisfying",
+              "c": "Healthy fats do not count if they are natural",
+              "d": "Even healthy fats are calorie dense"
+            },
+            "explanation": "Healthy fats are valuable, but they are still energy dense, so portions matter."
+          }
+        }
+      },
+      "balanced_meals_labels_1": {
+        "title": "Build a Balanced Plate",
+        "description": "Use a simple meal pattern you can repeat anywhere.",
+        "questions": {
+          "q1": {
+            "prompt": "Which lunch is most balanced?",
+            "choices": {
+              "a": "Chicken, rice, and vegetables",
+              "b": "Only fries",
+              "c": "Only soda",
+              "d": "Only cookies"
+            },
+            "explanation": "A balanced plate often includes protein, a carb source, and produce."
+          },
+          "q2": {
+            "prompt": "About how much of a plate can vegetables or fruit take up in a balanced meal?",
+            "choices": {
+              "a": "None of the plate",
+              "b": "Only one bite",
+              "c": "The whole plate every time",
+              "d": "Around half the plate is a helpful target"
+            },
+            "explanation": "Half a plate of produce is a practical visual cue, not a strict rule."
+          },
+          "q3": {
+            "prompt": "Which breakfast pieces help make a meal more balanced?",
+            "choices": {
+              "a": "Only sweet syrup",
+              "b": "Eggs or yogurt",
+              "c": "Fruit",
+              "d": "Only energy drinks"
+            },
+            "explanation": "Protein plus fruit or another fiber source makes breakfast feel more complete."
+          },
+          "q4": {
+            "prompt": "How could you make instant noodles more balanced?",
+            "choices": {
+              "a": "Add extra sugar",
+              "b": "Only eat half and stay hungry",
+              "c": "Add vegetables and a protein source",
+              "d": "Drink soda with them"
+            },
+            "explanation": "Adding protein and vegetables makes a quick meal more complete."
+          },
+          "q5": {
+            "prompt": "What is true about balanced meals?",
+            "choices": {
+              "a": "They must look identical every day",
+              "b": "They can look different while following the same pattern",
+              "c": "They never include carbs",
+              "d": "They only matter at dinner"
+            },
+            "explanation": "Balanced eating is a pattern, not one exact plate."
+          }
+        }
+      },
+      "balanced_meals_labels_2": {
+        "title": "Read the Label",
+        "description": "Use the serving size and numbers to compare foods wisely.",
+        "questions": {
+          "q1": {
+            "prompt": "The nutrition label is based on which amount?",
+            "choices": {
+              "a": "The whole package every time",
+              "b": "Your friend's portion",
+              "c": "The serving size listed on the label",
+              "d": "Only the calories from sugar"
+            },
+            "explanation": "Serving size is the reference point for the calories and nutrients on the label."
+          },
+          "q2": {
+            "prompt": "If you eat two servings, what usually happens to the calories and macros?",
+            "choices": {
+              "a": "They roughly double",
+              "b": "They disappear",
+              "c": "They stay exactly the same",
+              "d": "Only protein changes"
+            },
+            "explanation": "Two servings usually means about twice the calories and nutrients shown per serving."
+          },
+          "q3": {
+            "prompt": "Which label numbers can help you compare two similar packaged foods?",
+            "choices": {
+              "a": "Added sugar",
+              "b": "The color of the package",
+              "c": "The mascot on the box",
+              "d": "Protein"
+            },
+            "explanation": "Added sugar and protein can both be useful comparison points, depending on the food."
+          },
+          "q4": {
+            "prompt": "What does it usually mean if an ingredient appears first on the list?",
+            "choices": {
+              "a": "It is optional",
+              "b": "There is more of it by weight than the ingredients after it",
+              "c": "It is always unhealthy",
+              "d": "It contains zero calories"
+            },
+            "explanation": "Ingredients are usually listed in descending order by weight."
+          },
+          "q5": {
+            "prompt": "What is the healthiest way to use food labels?",
+            "choices": {
+              "a": "As a perfect pass-fail grade",
+              "b": "Only to look at calories",
+              "c": "Only when a doctor forces you",
+              "d": "As a tool to compare options and notice patterns"
+            },
+            "explanation": "Labels are practical tools. They help with choices, not food guilt."
+          }
+        }
+      },
+      "balanced_meals_labels_3": {
+        "title": "Healthy Swaps That Stick",
+        "description": "Choose swaps you can actually repeat, not ones you will resent.",
+        "questions": {
+          "q1": {
+            "prompt": "Which drink swap is often a simple way to lower sugar?",
+            "choices": {
+              "a": "Double the soda",
+              "b": "Add syrup to tea",
+              "c": "Drink only juice all day",
+              "d": "Choose water or unsweetened tea instead of soda"
+            },
+            "explanation": "Drink swaps are powerful because liquid sugar can add up fast."
+          },
+          "q2": {
+            "prompt": "Which lunch choice is usually the lighter swap?",
+            "choices": {
+              "a": "Fried chicken with extra mayo",
+              "b": "Grilled chicken with vegetables",
+              "c": "Large fries and soda",
+              "d": "Two desserts"
+            },
+            "explanation": "Grilled protein and vegetables usually make a lighter, more balanced lunch."
+          },
+          "q3": {
+            "prompt": "Which swaps are realistic upgrades?",
+            "choices": {
+              "a": "Add more candy to oatmeal",
+              "b": "Choose whole grain bread instead of white when you enjoy it",
+              "c": "Replace every meal with only salad forever",
+              "d": "Swap chips for fruit and nuts sometimes"
+            },
+            "explanation": "Realistic swaps work because you can repeat them, not because they are extreme."
+          },
+          "q4": {
+            "prompt": "What makes a healthy swap more likely to last?",
+            "choices": {
+              "a": "It still feels satisfying and practical",
+              "b": "It is the most restrictive option possible",
+              "c": "It removes every favorite food",
+              "d": "It only works on weekdays"
+            },
+            "explanation": "If the swap still tastes good and fits your life, it is easier to keep."
+          },
+          "q5": {
+            "prompt": "Why do small swaps matter?",
+            "choices": {
+              "a": "They do not matter at all",
+              "b": "They only matter for athletes",
+              "c": "Repeated small choices can add up over time",
+              "d": "Only giant changes help"
+            },
+            "explanation": "Consistency beats drama. Small repeatable changes often create the biggest long-term shift."
+          }
+        }
+      },
+      "balanced_meals_labels_4": {
+        "title": "Everyday Nutrition Decisions",
+        "description": "Bring the basics into busy days and imperfect situations.",
+        "questions": {
+          "q1": {
+            "prompt": "If lunch was low in protein, what is a smart next move?",
+            "choices": {
+              "a": "Skip dinner",
+              "b": "Add protein to your next meal or snack",
+              "c": "Only drink coffee",
+              "d": "Assume the whole day is ruined"
+            },
+            "explanation": "Nutrition choices work together across the day, so the next meal is always another chance."
+          },
+          "q2": {
+            "prompt": "After a heavier dinner than planned, what is the best next step?",
+            "choices": {
+              "a": "Punish yourself with an extreme fast",
+              "b": "Cut out carbs forever",
+              "c": "Return to your normal balanced pattern at the next meal",
+              "d": "Only eat dessert tomorrow"
+            },
+            "explanation": "A heavier meal does not need a dramatic fix. Calm consistency works better."
+          },
+          "q3": {
+            "prompt": "Which convenience-store choices can make a stronger quick snack?",
+            "choices": {
+              "a": "Only candy",
+              "b": "Greek yogurt",
+              "c": "Only soda",
+              "d": "A piece of fruit"
+            },
+            "explanation": "Yogurt plus fruit is a quick combo with protein, carbs, and more staying power."
+          },
+          "q4": {
+            "prompt": "What can influence hunger besides food choice?",
+            "choices": {
+              "a": "Only weather",
+              "b": "Only the color of your plate",
+              "c": "Only whether you exercised once",
+              "d": "Sleep, hydration, and daily routine"
+            },
+            "explanation": "Hunger is shaped by more than meals. Sleep, stress, and hydration all play a role."
+          },
+          "q5": {
+            "prompt": "If you crash every afternoon, what is a useful first question?",
+            "choices": {
+              "a": "Did lunch include enough food, protein, or fiber?",
+              "b": "Should I skip breakfast forever?",
+              "c": "Do I need candy every hour?",
+              "d": "Should I stop drinking water?"
+            },
+            "explanation": "Afternoon energy often improves when earlier meals are more balanced and satisfying."
+          }
+        }
+      }
+    }
+  },
   "greeting": {
     "morning": "Good morning",
     "afternoon": "Good afternoon",

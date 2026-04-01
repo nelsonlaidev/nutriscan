@@ -10,6 +10,7 @@ import { MacronutrientCards } from '@/components/dashboard/macronutrient-cards'
 import { MealList } from '@/components/dashboard/meal-list'
 import { WaterIntake } from '@/components/dashboard/water-intake'
 import { WeightPanel } from '@/components/dashboard/weight-panel'
+import { LearnProgressCard } from '@/components/learn/learn-progress-card'
 import { MainLayout } from '@/components/main-layout'
 import { getSession } from '@/lib/auth'
 import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
@@ -37,6 +38,7 @@ export default async function Page(props: PageProps<'/dashboard'>) {
     queryClient.prefetchQuery(orpc.food.totals.queryOptions({ input: dayRange })),
     queryClient.prefetchQuery(orpc.food.meals.queryOptions({ input: dayRange })),
     queryClient.prefetchQuery(orpc.achievements.overview.queryOptions()),
+    queryClient.prefetchQuery(orpc.learn.overview.queryOptions()),
     queryClient.prefetchQuery(orpc.water.total.queryOptions({ input: dayRange })),
     queryClient.prefetchQuery(orpc.weight.latest.queryOptions()),
   ])
@@ -52,6 +54,7 @@ export default async function Page(props: PageProps<'/dashboard'>) {
         <CalorieSummary dayRange={dayRange} goal={calorieBudget} />
         <MacronutrientCards dayRange={dayRange} goals={macroGoals} />
         <AchievementHighlights />
+        <LearnProgressCard />
         <WaterIntake dayRange={dayRange} goal={waterGoal} />
         <WeightPanel
           fallbackWeight={session.user.currentWeight}

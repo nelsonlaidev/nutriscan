@@ -105,7 +105,7 @@ export function Chat(props: ChatProps) {
   }, [router])
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault()
 
       if (status !== 'ready') {

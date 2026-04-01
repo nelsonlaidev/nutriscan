@@ -13,7 +13,7 @@ Use Bun for all local work.
 - `bun start`: serve the production build.
 - `bun check`: run lint, typecheck, format check, knip, and spellcheck.
 - `bun test:unit`: run Vitest tests.
-- `bun test:e2e`: run Playwright flows with `.env.local` loaded.
+- `bun test:e2e`: run Playwright flows with `.env.local` loaded. Do not run this for the user unless they explicitly ask; they prefer to run E2E tests themselves.
 - `bun db:generate` / `bun db:migrate`: create and apply Drizzle migrations.
 - `bun db:seed` / `bun db:reset`: seed or recreate local data.
 
@@ -23,7 +23,7 @@ The codebase is TypeScript-first and uses the `@/*` path alias for `src/*`. Form
 
 ## Testing Guidelines
 
-Unit tests use Vitest and are discovered via `*.test.{ts,tsx}`. Keep unit tests close to the code they cover, like [`src/lib/achievements/evaluator.test.ts`](/Users/nelson/Developer/repositories/nutriscan/src/lib/achievements/evaluator.test.ts). E2E coverage uses Playwright with separate authenticated, destructive, and unauthenticated suites. Add or update the smallest relevant test when behavior changes, and run `bun test:unit` plus the targeted Playwright suite before opening a PR.
+Unit tests use Vitest and are discovered via `*.test.{ts,tsx}`. Keep unit tests close to the code they cover, like [`src/lib/achievements/evaluator.test.ts`](/Users/nelson/Developer/repositories/nutriscan/src/lib/achievements/evaluator.test.ts). E2E coverage uses Playwright with separate authenticated, destructive, and unauthenticated suites. Do not run `bun test:e2e` for the user unless they explicitly ask; they prefer to run end-to-end tests themselves. Add or update the smallest relevant unit test when behavior changes, and let the user run the targeted Playwright suite before opening a PR when E2E verification is needed.
 
 ## Commit & Pull Request Guidelines
 

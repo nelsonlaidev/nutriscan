@@ -289,6 +289,7 @@ export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
                         <RadioGroupItem
                           value={option.value}
                           id={`${field.name}-${option.value}`}
+                          data-testid={`gender-${option.value}`}
                           aria-label={option.label}
                           aria-invalid={isInvalid}
                         />
@@ -339,6 +340,7 @@ export function PersonalDetailsForm({ user }: PersonalDetailsFormProps) {
                               <RadioGroupItem
                                 value={option.plan}
                                 id={`${field.name}-${option.plan}`}
+                                data-testid={`plan-${option.plan}`}
                                 aria-invalid={isInvalid}
                               />
                               <span className='text-sm font-semibold text-primary'>

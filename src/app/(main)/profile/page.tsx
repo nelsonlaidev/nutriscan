@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AchievementSection } from '@/components/achievements/achievement-section'
+import { LearningSection } from '@/components/learn/learning-section'
 import { MainLayout } from '@/components/main-layout'
 import { UserAvatar } from '@/components/user-avatar'
 import { getSession } from '@/lib/auth'
@@ -44,6 +45,7 @@ export default async function Page() {
   await Promise.all([
     queryClient.prefetchQuery(orpc.achievements.overview.queryOptions()),
     queryClient.prefetchQuery(orpc.achievements.list.queryOptions()),
+    queryClient.prefetchQuery(orpc.learn.overview.queryOptions()),
   ])
 
   const memberSince = new Intl.DateTimeFormat(locale, {
@@ -55,7 +57,7 @@ export default async function Page() {
   })
 
   return (
-    <MainLayout title={t('profile.page-title')} className='space-y-6' rightTitleButton={<SettingsLink />}>
+    <MainLayout title={t('profile.page-title')} className='space-y-12' rightTitleButton={<SettingsLink />}>
       <HydrateClient client={queryClient}>
         <section className='overflow-hidden rounded-[2rem] border border-border/60 bg-linear-to-br from-background via-background to-primary/5 shadow-xs'>
           <div className='space-y-6 px-5 py-6'>
@@ -91,6 +93,7 @@ export default async function Page() {
           </div>
         </section>
 
+        <LearningSection />
         <AchievementSection />
       </HydrateClient>
     </MainLayout>

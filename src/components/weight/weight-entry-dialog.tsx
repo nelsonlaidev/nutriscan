@@ -32,7 +32,7 @@ export function WeightEntryDialog() {
     setWeight('')
   })
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault()
 
     const value = Number.parseFloat(weight)

@@ -1,4 +1,60 @@
 import { expect, test } from '@playwright/test'
+import { eq } from 'drizzle-orm'
+
+import { db } from '@/db'
+import { users } from '@/db/schemas/auth.schema'
+import { weightEntries } from '@/db/schemas/weight-entry.schema'
+import { TEST_USER_CLEAN } from '@/lib/constants'
+
+test.use({ storageState: 'e2e/.auth/clean-user.json' })
+
+test.describe.configure({ mode: 'serial' })
+
+const INITIAL_WEIGHT = '72.0'
+
+async function resetWeightState() {
+  const today = new Date()
+  today.setHours(9, 0, 0, 0)
+
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  const twoDaysAgo = new Date(today)
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+  await db.delete(weightEntries).where(eq(weightEntries.userId, TEST_USER_CLEAN.id))
+
+  await db
+    .update(users)
+    .set({
+      currentWeight: TEST_USER_CLEAN.currentWeight,
+      startingWeight: TEST_USER_CLEAN.startingWeight,
+      goalWeight: TEST_USER_CLEAN.goalWeight,
+    })
+    .where(eq(users.id, TEST_USER_CLEAN.id))
+
+  await db.insert(weightEntries).values([
+    {
+      userId: TEST_USER_CLEAN.id,
+      weight: 72,
+      createdAt: today,
+    },
+    {
+      userId: TEST_USER_CLEAN.id,
+      weight: 72.4,
+      createdAt: yesterday,
+    },
+    {
+      userId: TEST_USER_CLEAN.id,
+      weight: 72.8,
+      createdAt: twoDaysAgo,
+    },
+  ])
+}
+
+test.beforeEach(async () => {
+  await resetWeightState()
+})
 
 test('weight page loads with current weight and progress bar', async ({ page }) => {
   await page.goto('/weight')
@@ -25,19 +81,20 @@ test('add weight entry and clean up', async ({ page }) => {
 
   // Use a distinctive value unlikely to exist
   const testWeight = '123.4'
+  const dialog = page.getByRole('dialog', { name: 'Update Weight' })
 
   // Open add weight dialog
   await page.getByRole('button', { name: 'Update Weight' }).click()
-  await expect(page.getByRole('dialog')).toBeVisible()
-  await expect(page.getByText('Enter your current weight in kilograms.')).toBeVisible()
-  await expect(page.getByText('Enter a value between 20 and 300 kg')).toBeVisible()
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByText('Enter your current weight in kilograms.')).toBeVisible()
+  await expect(dialog.getByText('Enter a value between 20 and 300 kg')).toBeVisible()
 
   // Fill in weight and save
-  await page.getByLabel('Weight (kg)').fill(testWeight)
-  await page.getByRole('button', { name: 'Save' }).click()
+  await dialog.getByLabel('Weight (kg)').fill(testWeight)
+  await dialog.getByRole('button', { name: 'Save' }).click()
 
   // Dialog closes, new entry appears
-  await expect(page.getByRole('dialog')).not.toBeVisible()
+  await expect(dialog).not.toBeVisible()
   await expect(page.getByText(`${testWeight} kg`).first()).toBeVisible()
 
   // Current weight should reflect the new value
@@ -56,39 +113,47 @@ test('add weight entry and clean up', async ({ page }) => {
 test('edit weight entry and restore original value', async ({ page }) => {
   await page.goto('/weight')
 
-  // Read the original weight of the first entry before editing
-  const firstEntry = page.locator('[data-testid="current-weight"]')
-  const originalText = await firstEntry.textContent()
-  const originalWeight = originalText?.replace(' kg', '') ?? ''
+  const originalWeight = INITIAL_WEIGHT
+  const updatedWeight = '234.5'
+  const dialog = page.getByRole('dialog', { name: 'Edit Weight' })
+  let entryRow = page
+    .getByTestId('weight-entry')
+    .filter({ hasText: `${originalWeight} kg` })
+    .first()
 
-  // Open the options menu on the first entry
-  await page.getByRole('button', { name: 'Entry options' }).first().click()
+  // Open the options menu on the specific entry we want to edit
+  await entryRow.getByRole('button', { name: 'Entry options' }).click()
   await page.getByRole('menuitem', { name: 'Edit' }).click()
 
   // Edit dialog should open
-  await expect(page.getByRole('dialog')).toBeVisible()
-  await expect(page.getByText('Edit Weight')).toBeVisible()
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByText('Update the weight for this entry.')).toBeVisible()
 
   // Change weight to a distinctive value
-  const testWeight = '234.5'
-  const input = page.getByLabel('Weight (kg)')
+  const input = dialog.getByLabel('Weight (kg)')
   await input.clear()
-  await input.fill(testWeight)
-  await page.getByRole('button', { name: 'Save' }).click()
+  await input.fill(updatedWeight)
+  await dialog.getByRole('button', { name: 'Save' }).click()
 
   // Dialog closes, updated value visible
-  await expect(page.getByRole('dialog')).not.toBeVisible()
-  await expect(page.getByText(`${testWeight} kg`).first()).toBeVisible()
+  await expect(dialog).not.toBeVisible()
+  entryRow = page
+    .getByTestId('weight-entry')
+    .filter({ hasText: `${updatedWeight} kg` })
+    .first()
+  await expect(entryRow).toBeVisible()
+  await expect(page.getByTestId('current-weight')).toHaveText(`${updatedWeight} kg`)
 
   // Restore original value
-  await page.getByRole('button', { name: 'Entry options' }).first().click()
+  await entryRow.getByRole('button', { name: 'Entry options' }).click()
   await page.getByRole('menuitem', { name: 'Edit' }).click()
-  await expect(page.getByRole('dialog')).toBeVisible()
-  const restoreInput = page.getByLabel('Weight (kg)')
+  await expect(dialog).toBeVisible()
+  const restoreInput = dialog.getByLabel('Weight (kg)')
   await restoreInput.clear()
   await restoreInput.fill(originalWeight)
-  await page.getByRole('button', { name: 'Save' }).click()
-  await expect(page.getByRole('dialog')).not.toBeVisible()
+  await dialog.getByRole('button', { name: 'Save' }).click()
+  await expect(dialog).not.toBeVisible()
+  await expect(page.getByTestId('current-weight')).toHaveText(`${originalWeight} kg`)
 })
 
 test('delete weight entry via dropdown menu', async ({ page }) => {
@@ -96,10 +161,11 @@ test('delete weight entry via dropdown menu', async ({ page }) => {
 
   // Add an entry first so we know what to delete
   const testWeight = '199.9'
+  const dialog = page.getByRole('dialog', { name: 'Update Weight' })
   await page.getByRole('button', { name: 'Update Weight' }).click()
-  await page.getByLabel('Weight (kg)').fill(testWeight)
-  await page.getByRole('button', { name: 'Save' }).click()
-  await expect(page.getByRole('dialog')).not.toBeVisible()
+  await dialog.getByLabel('Weight (kg)').fill(testWeight)
+  await dialog.getByRole('button', { name: 'Save' }).click()
+  await expect(dialog).not.toBeVisible()
   await expect(page.getByText(`${testWeight} kg`).first()).toBeVisible()
 
   // Delete it via the dropdown
