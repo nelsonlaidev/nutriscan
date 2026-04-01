@@ -60,7 +60,10 @@ export function LearnHome() {
         </Alert>
       ) : null}
 
-      <Card className='overflow-hidden border border-amber-200/70 bg-linear-to-br from-amber-500/15 via-background to-orange-500/12 ring-amber-200/70 dark:border-amber-900/50 dark:ring-amber-900/50'>
+      <Card
+        size='sm'
+        className='border-amber-200/70 bg-linear-to-br from-amber-500/15 via-background to-orange-500/12 ring-amber-200/70 dark:border-amber-900/50 dark:ring-amber-900/50'
+      >
         <CardContent className='space-y-6'>
           <div className='flex items-start justify-between gap-4'>
             <div className='space-y-2'>
@@ -113,11 +116,14 @@ export function LearnHome() {
           <div className='flex flex-col gap-2 sm:flex-row'>
             <Link
               href={continueLesson ? `/learn/${continueLesson.id}` : '/learn'}
-              className={cn(buttonVariants({ className: 'flex-1' }))}
+              className={cn(buttonVariants({ className: 'sm:flex sm:flex-1' }))}
             >
               {continueLesson ? t('learn.home.continue-lesson') : t('learn.home.start')}
             </Link>
-            <Link href='#learn-path' className={cn(buttonVariants({ variant: 'outline', className: 'flex-1' }))}>
+            <Link
+              href='#learn-path'
+              className={cn(buttonVariants({ variant: 'outline', className: 'sm:flex sm:flex-1' }))}
+            >
               {t('learn.home.jump-to-path')}
             </Link>
           </div>
@@ -195,7 +201,7 @@ export function LearnHome() {
 
         {reviewLessons.length === 0 ? (
           <Card size='sm'>
-            <CardContent className='pt-4'>
+            <CardContent>
               <p className='text-sm text-muted-foreground'>{t('learn.review.empty')}</p>
             </CardContent>
           </Card>
