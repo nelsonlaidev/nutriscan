@@ -74,19 +74,6 @@ export function useCustomFoods() {
   return useQuery(orpc.food.listCustomFoods.queryOptions())
 }
 
-export function useCreateCustomFood(onSuccess?: () => void) {
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    orpc.food.createCustomFood.mutationOptions({
-      onSuccess: () => {
-        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
-        onSuccess?.()
-      },
-    }),
-  )
-}
-
 export function useSavedFoods() {
   return useQuery(orpc.food.listSavedFoods.queryOptions())
 }

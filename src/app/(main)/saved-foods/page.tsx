@@ -4,6 +4,7 @@ import type { Meal } from '@/lib/constants'
 import type { FoodLibraryRecord } from '@/lib/food-library'
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
 import type { SavedFoodsOutput } from '@/orpc/client'
+import type { Translator } from '@/types'
 
 import { BookmarkSimpleIcon, MagnifyingGlassIcon, PlusIcon } from '@phosphor-icons/react/ssr'
 import { useTranslations } from 'next-intl'
@@ -49,7 +50,7 @@ type AddableFood = FoodLibraryRecord & {
 
 type SavedFoodLike = SavedFoodsOutput[number]
 
-function getSavedFoodBadge(source: SavedFoodLike['source'], t: ReturnType<typeof useTranslations>) {
+function getSavedFoodBadge(source: SavedFoodLike['source'], t: Translator) {
   if (source === 'manual') {
     return t('saved-meals.saved-foods-tab')
   }

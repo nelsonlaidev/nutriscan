@@ -59,8 +59,6 @@ export const DeleteSavedFoodInputSchema = z.object({
   savedFoodId: z.string().min(1),
 })
 
-export const CreateCustomFoodInputSchema = FoodLibraryItemInputSchema
-
 export const CreateSavedFoodInputSchema = FoodLibraryItemInputSchema.extend({
   source: z.enum(['manual', 'ai-scan', 'barcode']),
 })

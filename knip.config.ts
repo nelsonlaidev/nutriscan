@@ -4,7 +4,6 @@ const config: KnipConfig = {
   ignoreDependencies: [
     'postcss',
     'pino-pretty',
-    /eslint-plugin/,
     // We might use this in dev
     '@tanstack/react-query-devtools',
   ],

@@ -9,7 +9,6 @@ import { getNutritionTotals } from '@/lib/food-library'
 import { protectedProcedure } from '../procedures'
 import {
   AddFoodEntryInputSchema,
-  CreateCustomFoodInputSchema,
   CreateSavedFoodInputSchema,
   CreateSavedMealFromCategoryInputSchema,
   CreateSavedMealInputSchema,
@@ -86,18 +85,6 @@ const listCustomFoods = protectedProcedure.handler(async ({ context }) => {
     where: eq(customFoods.userId, context.session.user.id),
     orderBy: desc(customFoods.createdAt),
   })
-})
-
-const createCustomFood = protectedProcedure.input(CreateCustomFoodInputSchema).handler(async ({ input, context }) => {
-  const [customFood] = await context.db
-    .insert(customFoods)
-    .values({
-      ...input,
-      userId: context.session.user.id,
-    })
-    .returning()
-
-  return customFood
 })
 
 const listSavedFoods = protectedProcedure.handler(async ({ context }) => {
@@ -327,7 +314,6 @@ export const foodRouter = {
   getById,
   create,
   listCustomFoods,
-  createCustomFood,
   listSavedFoods,
   createSavedFood,
   deleteSavedFood,
