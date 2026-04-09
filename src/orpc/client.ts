@@ -41,6 +41,9 @@ export type GetWaterEntriesInput = Inputs['water']['list']
 
 export type GetFoodTotalsInput = Inputs['food']['totals']
 export type GetFoodMealsInput = Inputs['food']['meals']
+export type CustomFoodsOutput = Outputs['food']['listCustomFoods']
+export type SavedFoodsOutput = Outputs['food']['listSavedFoods']
+export type SavedMealTemplateListOutput = Outputs['food']['listSavedMeals']
 
 export type ListChatOutput = Outputs['chat']['list']
 export type LearnOverviewOutput = Outputs['learn']['overview']

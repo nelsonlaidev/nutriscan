@@ -15,8 +15,11 @@ import {
 
 import { achievementUnlocks } from './achievement.schema'
 import { chats } from './chat.schema'
+import { customFoods } from './custom-food.schema'
 import { foodEntries } from './food-entry.schema'
 import { learnAttempts, learnProgress } from './learn.schema'
+import { savedFoods } from './saved-food.schema'
+import { savedMealTemplates } from './saved-meal.schema'
 import { weightEntries } from './weight-entry.schema'
 
 export const users = pgTable('users', {
@@ -113,9 +116,12 @@ export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
   chats: many(chats),
+  customFoods: many(customFoods),
   foodEntries: many(foodEntries),
   learnAttempts: many(learnAttempts),
   learnProgress: many(learnProgress),
+  savedFoods: many(savedFoods),
+  savedMealTemplates: many(savedMealTemplates),
   weightEntries: many(weightEntries),
 }))
 

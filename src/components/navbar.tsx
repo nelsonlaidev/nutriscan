@@ -19,13 +19,14 @@ export function Navbar({ user }: NavbarProps) {
   return (
     <nav className='fixed bottom-0 left-1/2 flex w-full max-w-240 -translate-x-1/2 items-center justify-around gap-1 border-t bg-background p-2'>
       {NAVBAR_LINKS.map((link) => {
-        const active = pathname === link.href
+        const active = pathname === link.href || pathname.startsWith(`${link.href}/`)
         const isPrimary = link.href === '/add'
 
         return (
           <Link
             href={link.href}
             key={link.href}
+            aria-current={active ? 'page' : undefined}
             aria-label={t(link.title)}
             data-active={active}
             data-primary={isPrimary}

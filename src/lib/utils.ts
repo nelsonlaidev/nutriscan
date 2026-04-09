@@ -26,6 +26,17 @@ export function formatMl(ml: number) {
   return ml >= 1000 ? `${(ml / 1000).toFixed(1).replace(/\.0$/, '')} L` : `${ml} mL`
 }
 
+export function formatDateForTimezone(
+  date: Date | string,
+  locale: Intl.LocalesArgument,
+  options: Intl.DateTimeFormatOptions,
+  timezone = DEFAULT_TIMEZONE,
+) {
+  return new Intl.DateTimeFormat(locale, { ...options, timeZone: timezone }).format(
+    date instanceof Date ? date : new Date(date),
+  )
+}
+
 export function getDateBucket(date: Date | string, timezone = DEFAULT_TIMEZONE) {
   return format(toZonedDate(date, timezone), 'yyyy-MM-dd')
 }

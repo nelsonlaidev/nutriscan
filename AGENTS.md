@@ -17,9 +17,21 @@ Use Bun for all local work.
 - `bun db:generate` / `bun db:migrate`: create and apply Drizzle migrations.
 - `bun db:seed` / `bun db:reset`: seed or recreate local data.
 
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
+<!-- END:nextjs-agent-rules -->
+
 ## Coding Style & Naming Conventions
 
 The codebase is TypeScript-first and uses the `@/*` path alias for `src/*`. Formatting is handled by `prettier`; linting uses `eslint` with Tailwind-aware rules. Pre-commit hooks run both tools through `lefthook`, so keep files formatted before committing. Follow the existing naming patterns: React components in PascalCase, hooks prefixed with `use-`, route files named `page.tsx`, `layout.tsx`, or `route.ts`, and tests ending in `.test.ts` or `.spec.ts`.
+
+Treat the product as a mobile app by default. Prefer mobile-first layouts and touch-friendly interactions, and avoid desktop-only polish such as hover-dependent affordances unless explicitly requested.
+
+Do not add border utilities to `<Card />` by default. The shared `Card` component already provides its own border/ring treatment, so only override that styling when there is an explicit design reason.
 
 ## Testing Guidelines
 

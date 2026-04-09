@@ -8,7 +8,18 @@ import { eq } from 'drizzle-orm'
 import { MEALS, TEST_USER, TEST_USER_CLEAN } from '@/lib/constants'
 
 import { db } from './index'
-import { accounts, chatMessages, chats, foodEntries, users, waterEntries, weightEntries } from './schemas'
+import {
+  accounts,
+  chatMessages,
+  chats,
+  foodEntries,
+  savedFoods,
+  savedMealTemplateItems,
+  savedMealTemplates,
+  users,
+  waterEntries,
+  weightEntries,
+} from './schemas'
 
 async function main() {
   consola.info('Starting database seed...')
@@ -101,6 +112,127 @@ async function main() {
 
     consola.info(`Inserting ${weightData.length} weight entries...`)
     await db.insert(weightEntries).values(weightData)
+
+    const savedFoodData = [
+      {
+        id: faker.string.uuid(),
+        userId: TEST_USER.id,
+        foodName: 'Overnight Oats',
+        servingSize: '1 jar',
+        calories: 320,
+        protein: 16,
+        carbs: 42,
+        fat: 9,
+        source: 'manual' as const,
+      },
+      {
+        id: faker.string.uuid(),
+        userId: TEST_USER.id,
+        foodName: 'Chicken Rice Bowl',
+        servingSize: '1 bowl',
+        calories: 520,
+        protein: 38,
+        carbs: 46,
+        fat: 18,
+        source: 'ai-scan' as const,
+      },
+      {
+        id: faker.string.uuid(),
+        userId: TEST_USER.id,
+        foodName: 'Protein Shake',
+        servingSize: '1 bottle',
+        calories: 190,
+        protein: 30,
+        carbs: 9,
+        fat: 3,
+        source: 'barcode' as const,
+      },
+      {
+        id: faker.string.uuid(),
+        userId: TEST_USER.id,
+        foodName: 'Banana',
+        servingSize: '1 medium',
+        calories: 105,
+        protein: 1,
+        carbs: 27,
+        fat: 0,
+        source: 'manual' as const,
+      },
+    ]
+
+    consola.info(`Inserting ${savedFoodData.length} saved foods...`)
+    await db.insert(savedFoods).values(savedFoodData)
+
+    const breakfastTemplateId = faker.string.uuid()
+    const lunchTemplateId = faker.string.uuid()
+
+    const savedMealData = [
+      {
+        id: breakfastTemplateId,
+        userId: TEST_USER.id,
+        name: 'Quick Breakfast',
+        defaultMealCategory: 'breakfast' as const,
+      },
+      {
+        id: lunchTemplateId,
+        userId: TEST_USER.id,
+        name: 'Gym Lunch',
+        defaultMealCategory: 'lunch' as const,
+      },
+    ]
+
+    const savedMealItemData = [
+      {
+        id: faker.string.uuid(),
+        templateId: breakfastTemplateId,
+        position: 0,
+        foodName: 'Overnight Oats',
+        servingSize: '1 jar',
+        calories: 320,
+        protein: 16,
+        carbs: 42,
+        fat: 9,
+      },
+      {
+        id: faker.string.uuid(),
+        templateId: breakfastTemplateId,
+        position: 1,
+        foodName: 'Banana',
+        servingSize: '1 medium',
+        calories: 105,
+        protein: 1,
+        carbs: 27,
+        fat: 0,
+      },
+      {
+        id: faker.string.uuid(),
+        templateId: lunchTemplateId,
+        position: 0,
+        foodName: 'Chicken Rice Bowl',
+        servingSize: '1 bowl',
+        calories: 520,
+        protein: 38,
+        carbs: 46,
+        fat: 18,
+      },
+      {
+        id: faker.string.uuid(),
+        templateId: lunchTemplateId,
+        position: 1,
+        foodName: 'Protein Shake',
+        servingSize: '1 bottle',
+        calories: 190,
+        protein: 30,
+        carbs: 9,
+        fat: 3,
+      },
+    ]
+
+    consola.info(`Inserting ${savedMealData.length} saved meals...`)
+    await db.insert(savedMealTemplates).values(savedMealData)
+
+    consola.info(`Inserting ${savedMealItemData.length} saved meal items...`)
+    await db.insert(savedMealTemplateItems).values(savedMealItemData)
 
     // Generate chat data
     const chat1Id = faker.string.uuid()

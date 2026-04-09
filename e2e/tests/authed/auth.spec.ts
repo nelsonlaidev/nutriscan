@@ -22,7 +22,16 @@ test('redirects onboarded user from /onboarding to dashboard', async ({ page }) 
 })
 
 // Authenticated users can access all protected routes
-const PROTECTED_ROUTES = ['/dashboard', '/add', '/progress', '/profile', '/settings', '/water', '/weight']
+const PROTECTED_ROUTES = [
+  '/dashboard',
+  '/add',
+  '/saved-foods',
+  '/progress',
+  '/profile',
+  '/settings',
+  '/water',
+  '/weight',
+]
 
 for (const route of PROTECTED_ROUTES) {
   test(`authenticated user can access ${route}`, async ({ page }) => {

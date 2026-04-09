@@ -10,6 +10,7 @@
   "dictionaries": ["npm", "fullstack", "html", "sql"],
   "ignorePaths": [".git", "src/db/migrations/meta/*.json"],
   "words": [
+    "affordances",
     "asse",
     "bradlc",
     "carb",

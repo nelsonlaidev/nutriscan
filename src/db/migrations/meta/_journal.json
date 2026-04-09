@@ -43,6 +43,20 @@
       "when": 1774693578057,
       "tag": "0005_faulty_true_believers",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1775118536884,
+      "tag": "0006_nosy_tiger_shark",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1775456582082,
+      "tag": "0007_burly_norman_osborn",
+      "breakpoints": true
     }
   ]
 }

@@ -31,6 +31,7 @@ test('achievement flow unlocks badges, updates progress, and keeps unlocked badg
   await expect(page.getByTestId('achievement-highlights')).toContainText('0/9')
 
   await page.goto('/add')
+  await page.getByRole('link', { name: /Scan Food/i }).click()
   await page.getByRole('tab', { name: 'Manual' }).click()
   await page.getByLabel('Food Name').fill('Greek Yogurt')
   await page.getByLabel('Serving Size').fill('1 bowl')

@@ -23,7 +23,7 @@ export const foodEntries = pgTable(
     mealCategory: text('meal_category', {
       enum: [...MEALS],
     }).notNull(),
-    source: text('source', { enum: ['ai-scan', 'manual', 'barcode'] }).notNull(),
+    source: text('source', { enum: ['ai-scan', 'manual', 'barcode', 'saved-meal', 'repeat'] }).notNull(),
     imageUrl: text('image_url'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },

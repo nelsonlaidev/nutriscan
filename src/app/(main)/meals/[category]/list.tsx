@@ -28,7 +28,7 @@ export function List(props: ListProps) {
   return (
     <div className='space-y-4'>
       {entries.map((entry) => (
-        <Link key={entry.id} href={`/meals/${input.category}/${entry.id}`}>
+        <Link key={entry.id} href={`/meals/${input.category}/${entry.id}`} className='block'>
           <Card size='sm'>
             <CardContent className='flex items-center gap-3'>
               {entry.imageUrl ? (

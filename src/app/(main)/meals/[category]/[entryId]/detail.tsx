@@ -25,6 +25,8 @@ export function Detail(props: DetailProps) {
     'ai-scan': t('meals.source-ai-scan'),
     manual: t('meals.source-manual'),
     barcode: t('meals.source-barcode'),
+    'saved-meal': t('meals.source-saved-meal'),
+    repeat: t('meals.source-repeat'),
   }
 
   const { data: entry } = useFoodEntryById(input)

@@ -1,131 +1,45 @@
 'use client'
 
-import type { Mode } from '@/components/add/mode-selector'
-import type { NutritionData } from '@/components/add/nutrition-result'
-import type { Meal } from '@/lib/constants'
-
-import { useRouter } from 'next/navigation'
+import { ArrowRightIcon } from '@phosphor-icons/react/ssr'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { useCallback, useState } from 'react'
-import { toast } from 'sonner'
 
-import { MealCategoryPicker } from '@/components/add/meal-category-picker'
-import { ModeSelector } from '@/components/add/mode-selector'
-import { NutritionResult } from '@/components/add/nutrition-result'
-import { BackButton } from '@/components/back-button'
 import { MainLayout } from '@/components/main-layout'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
-import { useCreateFoodEntry } from '@/hooks/queries/food.query'
-import { showAchievementUnlockToast } from '@/lib/achievements/toast'
-import { DEFAULT_MEAL } from '@/lib/constants'
-
-type Step = 'input' | 'review' | 'meal-pick'
+import { Card, CardContent } from '@/components/ui/card'
+import { ADD_FOOD_OPTIONS } from '@/lib/links'
+import { cn } from '@/lib/utils'
 
 export default function Page() {
   const t = useTranslations()
-  const router = useRouter()
-  const [mode, setMode] = useState<Mode>('ai-scan')
-  const [step, setStep] = useState<Step>('input')
-  const [nutritionData, setNutritionData] = useState<NutritionData | null>(null)
-  const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
-
-  const { mutate: addToMeal, isPending } = useCreateFoodEntry()
-
-  const handleScanResult = useCallback((data: NutritionData) => {
-    setNutritionData(data)
-    setStep('review')
-  }, [])
-
-  const handleManualSubmit = useCallback((data: NutritionData) => {
-    setNutritionData(data)
-    setStep('meal-pick')
-  }, [])
-
-  function handleConfirmNutrition() {
-    setStep('meal-pick')
-  }
-
-  function handleAddToMeal() {
-    if (!nutritionData) {
-      toast.error(t('add-food.select-meal-error'))
-      return
-    }
-
-    addToMeal(
-      {
-        foodName: nutritionData.foodName,
-        servingSize: nutritionData.servingSize,
-        calories: nutritionData.calories,
-        protein: nutritionData.protein,
-        carbs: nutritionData.carbs,
-        fat: nutritionData.fat,
-        mealCategory: selectedMeal,
-        source: mode,
-        imageUrl: nutritionData.imageUrl,
-      },
-      {
-        onSuccess: (data) => {
-          toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
-          showAchievementUnlockToast(data.newUnlocks, t)
-          router.push('/dashboard')
-        },
-        onError: () => toast.error(t('add-food.save-error')),
-      },
-    )
-  }
-
-  function handleBack() {
-    if (step === 'meal-pick') {
-      setStep(mode === 'manual' ? 'input' : 'review')
-      setSelectedMeal(DEFAULT_MEAL)
-    }
-
-    if (step === 'review') {
-      setStep('input')
-      setNutritionData(null)
-    }
-  }
 
   return (
-    <MainLayout
-      title={t('add-food.page-title')}
-      leftTitleButton={step !== 'input' && <BackButton onClick={handleBack} />}
-    >
-      <div className='flex flex-col gap-5'>
-        {step === 'input' && (
-          <ModeSelector
-            handleScanResult={handleScanResult}
-            handleManualSubmit={handleManualSubmit}
-            value={mode}
-            onValueChange={setMode}
-          />
-        )}
+    <MainLayout title={t('add-food.page-title')}>
+      <div className='space-y-4'>
+        <p className='text-sm text-muted-foreground'>{t('add-food.options-description')}</p>
 
-        {step === 'review' && nutritionData && (
-          <>
-            <NutritionResult data={nutritionData} onChange={setNutritionData} />
-            <Button onClick={handleConfirmNutrition}>{t('add-food.confirm')}</Button>
-          </>
-        )}
+        {ADD_FOOD_OPTIONS.map((option) => (
+          <Link href={option.href} key={option.href} className='block'>
+            <Card size='sm'>
+              <CardContent className='flex h-24 items-center gap-4'>
+                <div
+                  className={cn(
+                    'flex size-14 shrink-0 items-center justify-center rounded-3xl ring-1',
+                    option.iconClassName,
+                  )}
+                >
+                  <option.icon size={28} weight='duotone' />
+                </div>
 
-        {step === 'meal-pick' && (
-          <>
-            {nutritionData && (
-              <div className='rounded-2xl border border-border bg-card p-4'>
-                <p className='font-medium'>{nutritionData.foodName}</p>
-                <p className='text-sm text-muted-foreground'>
-                  {nutritionData.servingSize} &middot; {nutritionData.calories} kcal
-                </p>
-              </div>
-            )}
-            <MealCategoryPicker value={selectedMeal} onChange={setSelectedMeal} />
-            <Button onClick={handleAddToMeal} disabled={isPending}>
-              {isPending && <Spinner data-icon='inline-start' />}
-              {t('add-food.add-to-meal')}
-            </Button>
-          </>
-        )}
+                <div className='min-w-0 flex-1'>
+                  <h2 className='text-lg font-semibold tracking-tight'>{t(option.title)}</h2>
+                  <p className='mt-1 text-sm text-muted-foreground'>{t(option.description)}</p>
+                </div>
+
+                <ArrowRightIcon className='size-6 shrink-0 text-muted-foreground' />
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
     </MainLayout>
   )

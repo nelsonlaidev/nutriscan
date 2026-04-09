@@ -1,6 +1,6 @@
 import type { GetFoodByIdInput, GetFoodMealsInput, GetFoodTotalsInput, ListFoodByCategoryInput } from '@/orpc/client'
 
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 
 import { orpc } from '@/orpc/client'
 
@@ -21,6 +21,96 @@ export function useCreateFoodEntry(onSuccess?: () => void) {
         void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.progress.key() })
         void queryClient.invalidateQueries({ queryKey: orpc.achievements.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useSavedMealTemplates() {
+  return useQuery(orpc.food.listSavedMeals.queryOptions())
+}
+
+export function useCreateSavedMeal(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.createSavedMeal.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useCreateSavedMealFromCategory(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.createSavedMealFromCategory.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useDeleteSavedMeal(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.deleteSavedMeal.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useCustomFoods() {
+  return useQuery(orpc.food.listCustomFoods.queryOptions())
+}
+
+export function useCreateCustomFood(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.createCustomFood.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useSavedFoods() {
+  return useQuery(orpc.food.listSavedFoods.queryOptions())
+}
+
+export function useCreateSavedFood(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.createSavedFood.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
+        onSuccess?.()
+      },
+    }),
+  )
+}
+
+export function useDeleteSavedFood(onSuccess?: () => void) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    orpc.food.deleteSavedFood.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: orpc.food.key() })
         onSuccess?.()
       },
     }),
