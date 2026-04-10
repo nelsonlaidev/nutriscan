@@ -397,7 +397,29 @@
     "goal-weight": "Goal Weight",
     "height": "Height",
     "account": "Account",
-    "member-since": "Member since"
+    "member-since": "Member since",
+    "share": {
+      "button": "Download share image",
+      "generating": "Generating...",
+      "download-success": "Share image downloaded",
+      "error": "Could not generate your share image. Please try again.",
+      "photo-kicker": "Progress Snapshot",
+      "overview-title": "Overview",
+      "stats-title": "Highlights",
+      "daily-calorie-budget": "Daily calorie target",
+      "water-goal": "Water goal",
+      "badges": "Badges",
+      "lessons": "Lessons",
+      "meal-streak": "Meal streak",
+      "water-streak": "Water streak",
+      "streak-days": "{count} days",
+      "goal-reached": "Goal reached",
+      "goal-progress": {
+        "down": "{value} kg to goal",
+        "up": "{value} kg to goal"
+      },
+      "generated-with-nutriscan": "Generated with NutriScan"
+    }
   },
   "achievements": {
     "title": "Achievements",

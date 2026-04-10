@@ -24,9 +24,22 @@ export type MealCardProps = {
   onDelete: (meal: SavedMealLike) => void
   itemsCaloriesText: string
   deleteButtonLabel: string
+  actionLabel?: string
+  onAction?: () => void
+  actionDisabled?: boolean
+  actionLoading?: boolean
 }
 
-export function MealCard({ meal, onDelete, itemsCaloriesText, deleteButtonLabel }: MealCardProps) {
+export function MealCard({
+  meal,
+  onDelete,
+  itemsCaloriesText,
+  deleteButtonLabel,
+  actionLabel,
+  onAction,
+  actionDisabled,
+  actionLoading,
+}: MealCardProps) {
   return (
     <article className='rounded-[1.75rem] border border-border/70 bg-card p-4 ring-1 ring-foreground/5'>
       <div className='space-y-4'>
@@ -64,6 +77,12 @@ export function MealCard({ meal, onDelete, itemsCaloriesText, deleteButtonLabel 
             </span>
           ))}
         </div>
+
+        {actionLabel && onAction ? (
+          <Button variant='outline' className='w-full' onClick={onAction} disabled={actionDisabled ?? actionLoading}>
+            {actionLoading ? `${actionLabel}...` : actionLabel}
+          </Button>
+        ) : null}
       </div>
     </article>
   )

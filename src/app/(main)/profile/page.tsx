@@ -6,6 +6,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { AchievementSection } from '@/components/achievements/achievement-section'
 import { LearningSection } from '@/components/learn/learning-section'
 import { MainLayout } from '@/components/main-layout'
+import { ProfileShareButton } from '@/components/profile/profile-share-button'
 import { UserAvatar } from '@/components/user-avatar'
 import { getSession } from '@/lib/auth'
 import { getQueryClient, HydrateClient } from '@/lib/query/hydration'
@@ -89,6 +90,9 @@ export default async function Page() {
                 />
                 <ProfileMetricCard label={t('profile.height')} value={formatMetric.format(user.height)} unit='cm' />
               </div>
+            </div>
+            <div className='pt-1'>
+              <ProfileShareButton name={user.name} />
             </div>
           </div>
         </section>

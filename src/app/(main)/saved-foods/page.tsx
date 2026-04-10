@@ -3,7 +3,7 @@
 import type { Meal } from '@/lib/constants'
 import type { FoodLibraryRecord } from '@/lib/food-library'
 import type { ManualFoodEntry } from '@/lib/zod-schemas'
-import type { SavedFoodsOutput } from '@/orpc/client'
+import type { SavedFoodsOutput, SavedMealTemplateListOutput } from '@/orpc/client'
 import type { Translator } from '@/types'
 
 import { BookmarkSimpleIcon, MagnifyingGlassIcon, PlusIcon } from '@phosphor-icons/react/ssr'
@@ -49,6 +49,16 @@ type AddableFood = FoodLibraryRecord & {
 }
 
 type SavedFoodLike = SavedFoodsOutput[number]
+type SavedMealLike = SavedMealTemplateListOutput[number]
+type AddToMealTarget =
+  | {
+      type: 'food'
+      item: AddableFood
+    }
+  | {
+      type: 'saved-meal'
+      item: SavedMealLike
+    }
 
 function getSavedFoodBadge(source: SavedFoodLike['source'], t: Translator) {
   if (source === 'manual') {
@@ -98,7 +108,7 @@ function EmptyState(props: {
 
 export default function Page() {
   const t = useTranslations()
-  const [selectedFood, setSelectedFood] = useState<AddableFood | null>(null)
+  const [addToMealTarget, setAddToMealTarget] = useState<AddToMealTarget | null>(null)
   const [selectedMeal, setSelectedMeal] = useState<Meal>(DEFAULT_MEAL)
   const [deleteDialogFood, setDeleteDialogFood] = useState<SavedFoodLike | null>(null)
 
@@ -158,7 +168,7 @@ export default function Page() {
     setDeleteDialogFood(null)
   })
 
-  const { mutate: addToMeal, isPending: isAddingToMeal } = useCreateFoodEntry()
+  const { mutateAsync: addToMeal, isPending: isAddingToMeal } = useCreateFoodEntry()
 
   function handleAddSavedFood(data: ManualFoodEntry) {
     createSavedFood(
@@ -222,35 +232,63 @@ export default function Page() {
   }
 
   function openAddToMealDialog(food: AddableFood) {
-    setSelectedFood(food)
+    setAddToMealTarget({
+      type: 'food',
+      item: food,
+    })
     setSelectedMeal(DEFAULT_MEAL)
   }
 
-  function handleConfirmAddToMeal() {
-    if (!selectedFood) return
+  function openAddSavedMealDialog(meal: SavedMealLike) {
+    setAddToMealTarget({
+      type: 'saved-meal',
+      item: meal,
+    })
+    setSelectedMeal(meal.defaultMealCategory)
+  }
 
-    addToMeal(
-      {
-        foodName: selectedFood.foodName,
-        servingSize: selectedFood.servingSize,
-        calories: selectedFood.calories,
-        protein: selectedFood.protein,
-        carbs: selectedFood.carbs,
-        fat: selectedFood.fat,
-        imageUrl: selectedFood.imageUrl ?? undefined,
-        mealCategory: selectedMeal,
-        source: selectedFood.source,
-      },
-      {
-        onSuccess: () => {
-          toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
-          setSelectedFood(null)
-        },
-        onError: () => {
-          toast.error(t('add-food.save-error'))
-        },
-      },
-    )
+  async function handleConfirmAddToMeal() {
+    if (!addToMealTarget) return
+
+    try {
+      if (addToMealTarget.type === 'food') {
+        await addToMeal({
+          foodName: addToMealTarget.item.foodName,
+          servingSize: addToMealTarget.item.servingSize,
+          calories: addToMealTarget.item.calories,
+          protein: addToMealTarget.item.protein,
+          carbs: addToMealTarget.item.carbs,
+          fat: addToMealTarget.item.fat,
+          imageUrl: addToMealTarget.item.imageUrl ?? undefined,
+          mealCategory: selectedMeal,
+          source: addToMealTarget.item.source,
+        })
+
+        toast.success(t('add-food.success', { mealName: t(`meals.${selectedMeal}`) }))
+      } else {
+        await Promise.all(
+          addToMealTarget.item.items.map(async (item) =>
+            addToMeal({
+              foodName: item.foodName,
+              servingSize: item.servingSize,
+              calories: item.calories,
+              protein: item.protein,
+              carbs: item.carbs,
+              fat: item.fat,
+              imageUrl: item.imageUrl ?? undefined,
+              mealCategory: selectedMeal,
+              source: 'saved-meal',
+            }),
+          ),
+        )
+
+        toast.success(t('saved-meals.apply-success', { mealName: t(`meals.${selectedMeal}`) }))
+      }
+
+      setAddToMealTarget(null)
+    } catch {
+      toast.error(addToMealTarget.type === 'food' ? t('add-food.save-error') : t('saved-meals.apply-error'))
+    }
   }
 
   return (
@@ -318,6 +356,16 @@ export default function Page() {
                               calories: Math.round(meal.totals.calories),
                             })}
                             deleteButtonLabel={t('saved-meals.delete')}
+                            actionLabel={t('saved-meals.add-template-to-meal')}
+                            onAction={() => {
+                              openAddSavedMealDialog(meal)
+                            }}
+                            actionDisabled={isAddingToMeal}
+                            actionLoading={
+                              isAddingToMeal &&
+                              addToMealTarget?.type === 'saved-meal' &&
+                              addToMealTarget.item.id === meal.id
+                            }
                           />
                         ))}
                       </div>
@@ -411,6 +459,14 @@ export default function Page() {
                         calories: Math.round(meal.totals.calories),
                       })}
                       deleteButtonLabel={t('saved-meals.delete')}
+                      actionLabel={t('saved-meals.add-template-to-meal')}
+                      onAction={() => {
+                        openAddSavedMealDialog(meal)
+                      }}
+                      actionDisabled={isAddingToMeal}
+                      actionLoading={
+                        isAddingToMeal && addToMealTarget?.type === 'saved-meal' && addToMealTarget.item.id === meal.id
+                      }
                     />
                   ))}
                 </div>
@@ -553,17 +609,19 @@ export default function Page() {
       />
 
       <Dialog
-        open={Boolean(selectedFood)}
+        open={Boolean(addToMealTarget)}
         onOpenChange={(open) => {
           if (!isAddingToMeal && !open) {
-            setSelectedFood(null)
+            setAddToMealTarget(null)
           }
         }}
       >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('saved-meals.choose-meal')}</DialogTitle>
-            <DialogDescription>{selectedFood?.foodName}</DialogDescription>
+            <DialogDescription>
+              {addToMealTarget?.type === 'food' ? addToMealTarget.item.foodName : addToMealTarget?.item.name}
+            </DialogDescription>
           </DialogHeader>
 
           <div className='space-y-4'>
@@ -574,14 +632,16 @@ export default function Page() {
                 variant='outline'
                 size='sm'
                 onClick={() => {
-                  setSelectedFood(null)
+                  setAddToMealTarget(null)
                 }}
                 disabled={isAddingToMeal}
               >
                 {t('saved-meals.cancel')}
               </Button>
               <Button size='sm' onClick={handleConfirmAddToMeal} disabled={isAddingToMeal}>
-                {t('add-food.add-to-meal')}
+                {addToMealTarget?.type === 'saved-meal'
+                  ? t('saved-meals.add-template-to-meal')
+                  : t('add-food.add-to-meal')}
               </Button>
             </DialogFooter>
           </div>

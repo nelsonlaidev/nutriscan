@@ -397,7 +397,29 @@
     "goal-weight": "目標體重",
     "height": "身高",
     "account": "帳號",
-    "member-since": "加入日期"
+    "member-since": "加入日期",
+    "share": {
+      "button": "下載分享圖片",
+      "generating": "產生中...",
+      "download-success": "分享圖片已下載",
+      "error": "無法產生分享圖片，請再試一次。",
+      "photo-kicker": "進度快照",
+      "overview-title": "總覽",
+      "stats-title": "亮點數據",
+      "daily-calorie-budget": "每日熱量目標",
+      "water-goal": "喝水目標",
+      "badges": "徽章",
+      "lessons": "課程",
+      "meal-streak": "飲食連續天數",
+      "water-streak": "喝水連續天數",
+      "streak-days": "{count} 天",
+      "goal-reached": "已達到目標",
+      "goal-progress": {
+        "down": "距離目標還差 {value} 公斤",
+        "up": "距離目標還差 {value} 公斤"
+      },
+      "generated-with-nutriscan": "由 NutriScan 產生"
+    }
   },
   "achievements": {
     "title": "成就",

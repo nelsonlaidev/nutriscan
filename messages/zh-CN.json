@@ -402,7 +402,29 @@
     "goal-weight": "目标体重",
     "height": "身高",
     "account": "账号",
-    "member-since": "加入日期"
+    "member-since": "加入日期",
+    "share": {
+      "button": "下载分享图片",
+      "generating": "生成中...",
+      "download-success": "分享图片已下载",
+      "error": "无法生成分享图片，请再试一次。",
+      "photo-kicker": "进度快照",
+      "overview-title": "概览",
+      "stats-title": "亮点数据",
+      "daily-calorie-budget": "每日热量目标",
+      "water-goal": "喝水目标",
+      "badges": "徽章",
+      "lessons": "课程",
+      "meal-streak": "饮食连续天数",
+      "water-streak": "喝水连续天数",
+      "streak-days": "{count} 天",
+      "goal-reached": "已达到目标",
+      "goal-progress": {
+        "down": "距离目标还差 {value} 公斤",
+        "up": "距离目标还差 {value} 公斤"
+      },
+      "generated-with-nutriscan": "由 NutriScan 生成"
+    }
   },
   "achievements": {
     "title": "成就",
