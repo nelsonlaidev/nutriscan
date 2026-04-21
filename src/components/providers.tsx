@@ -22,7 +22,7 @@ export function Providers(props: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <ThemeProvider attribute='class' disableTransitionOnChange>
+        <ThemeProvider attribute='class' defaultTheme='light' disableTransitionOnChange>
           <JotaiProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
           </JotaiProvider>
